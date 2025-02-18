@@ -1,0 +1,45 @@
+{
+    "name": "athemes/athemes-blocks",
+    "description": "Extend the Gutenberg Block Editor with additional functionality.",
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://athemes.com/",
+    "authors": [
+        {
+            "name": "aThemes",
+            "homepage": "https://athemes.com/"
+        },
+        {
+            "name": "Rodrigo Teixeira",
+            "role": "Developer"
+        }
+    ],
+    "scripts": {
+        "phpcs": "@php ./vendor/bin/phpcs",
+        "phpcs:fix": "@php ./vendor/bin/phpcbf",
+        "run-tests": [
+            "@phpcs:fix",
+            "@phpcs"
+        ]
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
+        "wp-coding-standards/wpcs": "^3.0.0",
+        "woocommerce/woocommerce-sniffs": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "*",
+        "phpdocumentor/shim": "^3.7",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "phpstan/extension-installer": "^1.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpdocumentor/shim": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "AThemes_Blocks\\": "includes/"
+        }
+    }
+}

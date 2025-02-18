@@ -1,13 +1,23 @@
 {
-  "name": "athemes-blocks-cgb-guten-block",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "cgb-scripts start",
-    "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
-  },
-  "dependencies": {
-    "cgb-scripts": "1.23.1"
-  }
+	"name": "athemes-blocks",
+	"version": "2.0.0",
+	"description": "Extend the Gutenberg Block Editor with additional functionality.",
+	"author": "aThemes",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M"
+	},
+	"devDependencies": {
+		"@wordpress/icons": "^9.13.0",
+		"@wordpress/scripts": "^24.4.0",
+		"copy-webpack-plugin": "^9.0.0",
+		"webpack-cli": "^6.0.1"
+	}
 }

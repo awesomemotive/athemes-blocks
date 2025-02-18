@@ -4,6 +4,7 @@ node_modules
 /test-results/
 /playwright/.cache/
 /vendor/
+/docs/
 **.code-workspace
 **.vscode
 .DS_Store
