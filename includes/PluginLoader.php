@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+use AThemes_Blocks\Admin\BlockEditorAssets;
+
 class PluginLoader {
 
     /**
@@ -26,6 +28,9 @@ class PluginLoader {
 
         // Load blocks.
         $this->load_blocks();
+
+        // Load admin only stuff.
+        $this->load_admin();
     }
 
     /**
@@ -35,6 +40,19 @@ class PluginLoader {
      */
     public function load_textdomain(): void {
         load_plugin_textdomain( 'athemes-blocks', false, dirname( plugin_basename( ATHEMES_BLOCKS_FILE ) ) . '/languages' );
+    }
+
+    /**
+     * Load admin only stuff.
+     * 
+     * @return void
+     */
+    public function load_admin(): void {
+        if ( ! is_admin() ) {
+            return;
+        }
+
+        new BlockEditorAssets();
     }
 
     /**

@@ -1,4 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
 const fs = require('fs');
@@ -22,6 +24,7 @@ const copyPatterns = blockFolders.map((folder) => ({
 }));
 
 module.exports = [
+    // Blocks Configuration
     {
         ...defaultConfig,
         entry: {
@@ -37,5 +40,33 @@ module.exports = [
             ...defaultConfig.plugins,
             new CopyWebpackPlugin({ patterns: copyPatterns }),
         ],
+    },
+
+    // SCSS Compilation Configuration
+    {
+        entry: {
+            'Is': path.resolve(__dirname, 'assets/sass/block-editor.scss'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/css/'),
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.scss$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+            ],
+        },
+        plugins: [
+            new FixStyleOnlyEntriesPlugin(),
+            new MiniCssExtractPlugin({
+                filename: 'block-editor.css',
+            }),
+        ]
     },
 ];
