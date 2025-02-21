@@ -6,13 +6,11 @@ import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption, 
 } from '@wordpress/components';
-import {
-    DeviceSwitcher
-} from '../controls-auxiliary/device-switcher/device-switcher-control';
-
+import { DeviceSwitcher } from '../controls-auxiliary/device-switcher/device-switcher-control';
+import { ResetValues } from '../controls-auxiliary/reset-values/reset-values-control';
 
 export function RadioButtons( props ) {
-    const { label, options, defaultValue, responsive, onChange } = props;
+    const { label, options, defaultValue, responsive, reset, onChange, onClickReset } = props;
     const [ value, setValue ] = useState( defaultValue );
 
     useEffect(() => {
@@ -26,6 +24,13 @@ export function RadioButtons( props ) {
                 {
                     responsive && (
                         <DeviceSwitcher />
+                    )
+                }
+                {
+                    reset && (
+                        <ResetValues 
+                            onClick={ onClickReset }
+                        />
                     )
                 }
             </div>

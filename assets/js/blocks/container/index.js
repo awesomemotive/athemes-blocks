@@ -212,6 +212,43 @@ const styles = {
 
 /***/ }),
 
+/***/ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx":
+/*!*********************************************************************************************!*\
+  !*** ./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ResetValues: () => (/* binding */ ResetValues)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+
+/** @jsx jsx */;
+
+
+
+
+function ResetValues(props) {
+  const {
+    onClick
+  } = props;
+  return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+    onClick: onClick
+  }, "Reset");
+}
+;
+
+/***/ }),
+
 /***/ "./assets/js/src/block-editor/controls/radio-buttons.jsx":
 /*!***************************************************************!*\
   !*** ./assets/js/src/block-editor/controls/radio-buttons.jsx ***!
@@ -232,6 +269,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controls-auxiliary/device-switcher/device-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/device-switcher/device-switcher-control.jsx");
+/* harmony import */ var _controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controls-auxiliary/reset-values/reset-values-control */ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx");
+
 
 
 
@@ -244,7 +283,9 @@ function RadioButtons(props) {
     options,
     defaultValue,
     responsive,
-    onChange
+    reset,
+    onChange,
+    onClickReset
   } = props;
   const [value, setValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(defaultValue);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
@@ -254,7 +295,9 @@ function RadioButtons(props) {
     className: "atblocks-component-header"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "atblocks-component-header__title"
-  }, label), responsive && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__.DeviceSwitcher, null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalToggleGroupControl, {
+  }, label), responsive && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__.DeviceSwitcher, null), reset && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_6__.ResetValues, {
+    onClick: onClickReset
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalToggleGroupControl, {
     __next40pxDefaultSize: true,
     __nextHasNoMarginBottom: true,
     className: "atblocks-radio-buttons",

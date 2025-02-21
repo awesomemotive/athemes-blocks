@@ -1,11 +1,15 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { use, useSelect } from "@wordpress/data";
+import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider';
+import { Select } from '../../block-editor/controls/select';
+import { SwitchToggle } from '../../block-editor/controls/switch-toggle';
+import { ColorPicker } from '../../block-editor/controls/color-picker';
+import { Typography } from '../../block-editor/controls/typography';
 import { createAttributeUpdater } from '../../utils/block-attributes';
 
 import attributesDefaults from './attributes';
@@ -15,7 +19,7 @@ export default function Edit( props ) {
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
-console.log(attributesDefaults);
+
 	return (
 		<div>
 		
@@ -31,7 +35,9 @@ console.log(attributesDefaults);
 								{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
 							]}
 							responsive={ true }
+							reset={true}
 							onChange={ ( value ) => updateAttribute( 'alignment', value, currentDevice ) }
+							onClickReset={ () => updateAttribute( 'alignment', attributesDefaults.alignment.default?.[currentDevice], currentDevice ) }
 						/>
 
 						<RangeSlider 
@@ -71,6 +77,57 @@ console.log(attributesDefaults);
 								value: atts.fontSizeTwo?.[currentDevice].value,
 								unit: value
 							}, currentDevice ) }
+						/>
+
+						<Select
+							label={ __( 'Font family', 'athemes-blocks' ) }
+							options={[
+								{ label: __( 'Arial', 'athemes-blocks' ), value: 'Arial' },
+								{ label: __( 'Helvetica', 'athemes-blocks' ), value: 'Helvetica' },
+								{ label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
+							]}
+							value={ atts.fontFamily?.[currentDevice] }
+							responsive={ true }
+							reset={true}
+							onChange={ ( value ) => updateAttribute( 'fontFamily', value, currentDevice ) }
+							onClickReset={ () => updateAttribute( 'fontFamily', attributesDefaults.fontFamily.default?.[currentDevice], currentDevice ) }
+						/>
+
+						<SwitchToggle
+							label={ __( 'Show border', 'athemes-blocks' ) }
+							value={ atts.showBorder?.[currentDevice] }
+							responsive={ true }
+							reset={true}
+							onChange={ ( value ) => updateAttribute( 'showBorder', value, currentDevice ) }
+							onClickReset={ () => updateAttribute( 'showBorder', attributesDefaults.showBorder.default?.[currentDevice], currentDevice ) }
+						/>
+
+						<ColorPicker
+							label={ __( 'Text color', 'athemes-blocks' ) }
+							value={ atts.textColor?.[currentDevice] }
+							hover={true}
+							responsive={true}
+							reset={true}
+							defaultStateOnChangeComplete={ ( value ) => updateAttribute( 'textColor', {
+								defaultState: value.hex,
+								hoverState: atts.textColor?.[currentDevice].hoverState
+							}, currentDevice ) }
+							hoverStateOnChangeComplete={ ( value ) => updateAttribute( 'textColor', {
+								defaultState: atts.textColor?.[currentDevice].defaultState,
+								hoverState: value.hex
+							}, currentDevice ) }
+							onClickReset={ () => updateAttribute( 'textColor', {
+								defaultState: attributesDefaults.textColor.default?.[currentDevice].defaultState,
+								hoverState: attributesDefaults.textColor.default?.[currentDevice].hoverState
+							}, currentDevice ) }
+						/>
+
+						<Typography
+							label={ __( 'Typography', 'athemes-blocks' ) }
+							attributeId="textTypography"
+							attributes={ atts }
+							setAttributes={ setAttributes }
+							attributesDefaults={ attributesDefaults }
 						/>
 					</PanelBody>
 				</Panel>
