@@ -1,13 +1,13 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { store as deviceSwitcherStore } from '../store/device-switcher-store';
-import { BaseControl, SelectControl } from '@wordpress/components';
-import { DeviceSwitcher } from '../controls-auxiliary/device-switcher/device-switcher-control';
-import { ResetValues } from '../controls-auxiliary/reset-values/reset-values-control';
+import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
+import { BaseControl, ToggleControl } from '@wordpress/components';
+import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
+import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
-export function Select( props ) {
-    const { label, value, options, responsive, reset, onChange, onClickReset } = props;
-
+export function SwitchToggle( props ) {
+    const { label, value, responsive, reset, onChange, onClickReset } = props;
+console.log(value);
     return(
         <BaseControl>
             <div className="atblocks-component-header">
@@ -26,12 +26,11 @@ export function Select( props ) {
                 }
             </div>
             
-            <SelectControl
+            <ToggleControl
                 __next40pxDefaultSize
                 __nextHasNoMarginBottom
                 label=""
-                value={value}
-                options={options}
+                checked={value}
                 onChange={onChange}
             />
         </BaseControl>

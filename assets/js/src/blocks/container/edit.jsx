@@ -3,7 +3,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { RadioButtons } from '../../block-editor/controls/radio-buttons';
+import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 
 export default function Edit( props ) {
 	const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());

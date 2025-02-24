@@ -1,13 +1,13 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { store as deviceSwitcherStore } from '../store/device-switcher-store';
+import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 import { 
     BaseControl,
     RangeControl,
 } from '@wordpress/components';
-import { DeviceSwitcher } from '../controls-auxiliary/device-switcher/device-switcher-control';
-import { UnitSwitcher } from '../controls-auxiliary/unit-switcher/unit-switcher-control';
-import { ResetValues } from '../controls-auxiliary/reset-values/reset-values-control';
+import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
+import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switcher-control';
+import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 export function RangeSlider( props ) {
     const { label, description, options, defaultValue, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;

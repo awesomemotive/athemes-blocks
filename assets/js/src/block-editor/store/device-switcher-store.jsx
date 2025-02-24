@@ -31,12 +31,21 @@ const selectors = {
     }
 };
 
-const store = createReduxStore('device-switcher-store', {
-    reducer,
-    actions,
-    selectors,
-});
+let store = {};
 
-register(store);
+if ( ! window.__DEVICE_SWITCHER_STORE_IS_REGISTERED__ ) {
+    store = createReduxStore('device-switcher-store', {
+        reducer,
+        actions,
+        selectors,
+    });
+    
+    register(store);
+
+    window.__DEVICE_SWITCHER_STORE_IS_REGISTERED__ = true;
+    window.__DEVICE_SWITCHER_STORE__ = store;
+} else {
+    store = window.__DEVICE_SWITCHER_STORE__;
+}
 
 export { store };

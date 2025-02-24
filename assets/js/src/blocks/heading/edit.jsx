@@ -4,12 +4,13 @@ import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
-import { RadioButtons } from '../../block-editor/controls/radio-buttons';
-import { RangeSlider } from '../../block-editor/controls/range-slider';
-import { Select } from '../../block-editor/controls/select';
-import { SwitchToggle } from '../../block-editor/controls/switch-toggle';
-import { ColorPicker } from '../../block-editor/controls/color-picker';
-import { Typography } from '../../block-editor/controls/typography';
+import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
+import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
+import { Select } from '../../block-editor/controls/select/select';
+import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
+import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
+import { Typography } from '../../block-editor/controls/typography/typography';
+import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
 import { createAttributeUpdater } from '../../utils/block-attributes';
 
 import attributesDefaults from './attributes';
@@ -128,6 +129,22 @@ export default function Edit( props ) {
 							attributes={ atts }
 							setAttributes={ setAttributes }
 							attributesDefaults={ attributesDefaults }
+							subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+						/>
+
+						<Dimensions
+							label={ __( 'Padding', 'athemes-blocks' ) }
+							directions={[
+								{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+								{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+								{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+								{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+							]}
+							// value={ atts.padding?.[currentDevice] }
+							responsive={ true }
+							reset={true}
+							// onChange={ ( value ) => updateAttribute( 'padding', value, currentDevice ) }
+							// onClickReset={ () => updateAttribute( 'padding', attributesDefaults.padding.default?.[currentDevice], currentDevice ) }
 						/>
 					</PanelBody>
 				</Panel>

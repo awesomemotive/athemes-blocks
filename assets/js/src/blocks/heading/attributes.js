@@ -78,6 +78,7 @@ export default {
         type: 'object',
         default: {
             typographySettings: {
+                fontFamily: 'default',
                 fontSize: {
                     desktop: {
                         value: 40,
@@ -92,15 +93,65 @@ export default {
                         unit: 'px',
                     },
                 },
-                fontFamily: 'Arial',
-                fontWeight: 'normal',
-                fontStyle: 'normal',
-                fontVariant: 'normal',
-                textTransform: 'none',
-                textDecoration: 'none',
-                lineHeight: 1.5,
-                letterSpacing: 0,
+                fontWeight: 'default',
+                fontStyle: 'default',
+                textTransform: 'default',
+                textDecoration: 'default',
+                lineHeight: {
+                    desktop: {
+                        value: 1.3,
+                        unit: 'px',
+                    },
+                    tablet: {
+                        value: 1.3,
+                        unit: 'px',
+                    },
+                    mobile: {
+                        value: 1.3,
+                        unit: 'px',
+                    },
+                },
+                letterSpacing: {
+                    desktop: {
+                        value: 0,
+                        unit: 'px',
+                    },
+                    tablet: {
+                        value: 0,
+                        unit: 'px',
+                    },
+                    mobile: {
+                        value: 0,
+                        unit: 'px',
+                    },
+                },
             },
         }
     },
+    padding: {
+        type: 'object',
+        default: {
+            desktop: {
+                top: 10,
+                right: 20,
+                bottom: 10,
+                left: 20,
+                unit: 'px',
+            },
+            tablet: {
+                top: 10,
+                right: 20,
+                bottom: 10,
+                left: 20,
+                unit: 'px',
+            },
+            mobile: {
+                top: 10,
+                right: 20,
+                bottom: 10,
+                left: 20,
+                unit: 'px',
+            },
+        }
+    }
 }
