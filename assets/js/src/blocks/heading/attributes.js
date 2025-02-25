@@ -132,25 +132,34 @@ export default {
         type: 'object',
         default: {
             desktop: {
-                top: 10,
-                right: 20,
-                bottom: 10,
-                left: 20,
+                value: {
+                    top: 10,
+                    right: 20,
+                    bottom: 10,
+                    left: 20,
+                },
                 unit: 'px',
+                connect: false,
             },
             tablet: {
-                top: 10,
-                right: 20,
-                bottom: 10,
-                left: 20,
+                value: {
+                    top: 30,
+                    right: 40,
+                    bottom: 50,
+                    left: 60,
+                },
                 unit: 'px',
+                connect: false,
             },
             mobile: {
-                top: 10,
-                right: 20,
-                bottom: 10,
-                left: 20,
+                value: {
+                    top: 1,
+                    right: 2,
+                    bottom: 1,
+                    left: 4,
+                },
                 unit: 'px',
+                connect: false,
             },
         }
     }

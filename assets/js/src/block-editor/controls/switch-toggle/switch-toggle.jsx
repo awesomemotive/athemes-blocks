@@ -7,7 +7,7 @@ import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-
 
 export function SwitchToggle( props ) {
     const { label, value, responsive, reset, onChange, onClickReset } = props;
-console.log(value);
+
     return(
         <BaseControl>
             <div className="atblocks-component-header">

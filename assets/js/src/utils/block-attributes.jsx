@@ -12,6 +12,7 @@ export const createAttributeUpdater = (attributes, setAttributes) => {
 
         // Update the attribute for the current device
         if (device) {
+            console.log(value);
             setAttributes({
                 [attributeName]: {
                     ...attributes[attributeName],

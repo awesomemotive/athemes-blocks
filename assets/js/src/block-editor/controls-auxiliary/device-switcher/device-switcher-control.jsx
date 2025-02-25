@@ -23,10 +23,10 @@ export function DeviceSwitcher() {
     }, [currentDevice]);
 
     return (
-        <ButtonGroup css={styles.buttonGroup}>
+        <ButtonGroup css={styles.buttonGroup} className="atblocks-component-device-switcher">
             <Button 
                 css={styles.button}
-                variant={ device === 'desktop' ? 'primary' : '' } 
+                className={ device === 'desktop' ? 'is-active' : '' } 
                 onClick={ () => onClickHandler('desktop') }
             >
                 <Icon 
@@ -43,7 +43,7 @@ export function DeviceSwitcher() {
             </Button>
             <Button 
                 css={styles.button}
-                variant={ device === 'tablet' ? 'primary' : '' } 
+                className={ device === 'tablet' ? 'is-active' : '' } 
                 onClick={() => onClickHandler('tablet')}
             >
                 <Icon 
@@ -58,7 +58,7 @@ export function DeviceSwitcher() {
             </Button>
             <Button 
                 css={styles.button}
-                variant={ device === 'mobile' ? 'primary' : '' } 
+                className={ device === 'mobile' ? 'is-active' : '' } 
                 onClick={() => onClickHandler('mobile')}
             >
                 <Icon 

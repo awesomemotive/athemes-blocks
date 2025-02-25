@@ -1,17 +1,22 @@
 /** @jsx jsx */;
 import { css, jsx } from '@emotion/react';
-import { useState, useEffect } from "@wordpress/element";
-import { useSelect } from "@wordpress/data";
-import { SelectControl } from "@wordpress/components";
+import { Icon, rotateLeft } from '@wordpress/icons';
+
+import { styles } from './reset-values-styles';
 
 export function ResetValues(props) {
     const { onClick } = props;
 
     return (
-        <button 
+        <button
+            css={styles.button}
+            className="atblocks-component-reset-values"
             onClick={onClick}
         >
-            Reset
+            <Icon
+                css={styles.icon} 
+                icon={rotateLeft} 
+            />
         </button>
     );
 };

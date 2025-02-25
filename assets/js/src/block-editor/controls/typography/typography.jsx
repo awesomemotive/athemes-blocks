@@ -1,8 +1,11 @@
+/** @jsx jsx */;
+import { css, jsx } from '@emotion/react';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from "@wordpress/data";
 import { useState, useEffect } from '@wordpress/element';
 import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 import { BaseControl, Button, Popover, SelectControl } from '@wordpress/components';
+import { Icon, edit } from '@wordpress/icons';
 import { Select } from '../select/select';
 import { RangeSlider } from '../range-slider/range-slider';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
@@ -10,6 +13,8 @@ import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switch
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 import { createInnerControlAttributeUpdater } from '../../../utils/block-attributes';
+
+import { styles } from './styles';
 
 export function Typography( props ) {
     const { label, attributeId, attributes, setAttributes, attributesDefaults, subFields } = props;
@@ -34,17 +39,20 @@ export function Typography( props ) {
     };
 
     return(
-        <BaseControl>
+        <BaseControl className="atblocks-component-typography">
             <div className="atblocks-component-header">
                 <span className="atblocks-component-header__title">{ label }</span>
                 <Button 
+                    css={styles.button}
                     label=""
+                    icon={edit}
                     variant="secondary" 
                     onClick={ toggleDefaultVisible } 
                 >
 
                     { isDefaultVisible && (
                         <Popover
+                            css={styles.popover}
                             onClick={ ( event ) => event.stopPropagation() }
                             onFocusOutside={ toggleDefaultVisible }
                         >

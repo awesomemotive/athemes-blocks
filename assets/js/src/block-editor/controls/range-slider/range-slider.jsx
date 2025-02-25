@@ -20,7 +20,7 @@ export function RangeSlider( props ) {
     }, [ defaultValue ]);
 
     return(
-        <BaseControl>
+        <BaseControl className="atblocks-component-range-slider">
             <div className="atblocks-component-header">
                 <span className="atblocks-component-header__title">{ label }</span>
                 {
@@ -29,18 +29,18 @@ export function RangeSlider( props ) {
                     )
                 }
                 {
+                    reset && (
+                        <ResetValues 
+                            onClick={ onClickReset }
+                        />
+                    )
+                }
+                {
                     units && (
                         <UnitSwitcher
                             units={units}
                             value={valueUnit}
                             onChange={ onChangeUnit }
-                        />
-                    )
-                }
-                {
-                    reset && (
-                        <ResetValues 
-                            onClick={ onClickReset }
                         />
                     )
                 }

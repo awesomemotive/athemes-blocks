@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
 
 const styles = {
-    buttonGroup: css`
-        display: flex;
-        align-items: center;
-    `,
     button: css`
         padding: 2px;
         box-shadow: none !important;
         height: auto;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        outline: none;
 
         &.is-active {
             svg {
