@@ -11,8 +11,8 @@ import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-
 import { styles } from './styles';
 
 export function Dimensions( props ) {
-    const { label, value, directions, connect, responsive, reset, onChange, onClickReset } = props;
-    const [ inputNumberValues, setInputNumberValues ] = useState( value.value );
+    const { label, value, directionsValue, directions, connect, responsive, reset, onChange, onClickReset } = props;
+    const [ inputNumberValues, setInputNumberValues ] = useState( directionsValue );
     const [ valueToReturn, setValueToReturn ] = useState(value);
     const [ isConnected, setIsConnected ] = useState( connect );
 
@@ -75,9 +75,9 @@ export function Dimensions( props ) {
         }
     }
 
-    // Update the input number values.
+    // Update directionsValue, the input number values.
     useEffect( () => {
-        setInputNumberValues( value.value );
+        setInputNumberValues( directionsValue );
     }, [ value ] );
 
     // Update the value to return to the main control.

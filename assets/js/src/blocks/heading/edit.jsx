@@ -16,7 +16,8 @@ import { createAttributeUpdater } from '../../utils/block-attributes';
 import attributesDefaults from './attributes';
 import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
 
-import { applyPreviewCSS, getControlCSS } from '../../block-editor/css-helpers';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue } from '../../utils/settings';
+import { applyPreviewCSS, getControlCSS } from '../../utils/css';
 
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
@@ -29,9 +30,14 @@ export default function Edit( props ) {
 
 	useEffect(() => {
 		if ( updateCss ) {
-			const css = getControlCSS( updateCss );
+			const settingId = updateCss?.settingId;
+			const cssData = {
+				css: attributesDefaults[settingId]?.css,
+				attibuteName: settingId
+			};
+			const css = getControlCSS( cssData, clientId, atts );
 
-			applyPreviewCSS( css, clientId );
+			applyPreviewCSS( css, clientId, settingId );
 		}
 	}, [ updateCss ]);
 
@@ -54,7 +60,7 @@ export default function Edit( props ) {
 							<PanelBody title={ __( 'General', 'botiga-pro' ) }>
 								<RadioButtons 
 									label={ __( 'Alignment', 'athemes-blocks' ) }
-									defaultValue={ atts.alignment?.[currentDevice] }
+									defaultValue={ getSettingValue( 'alignment', currentDevice, atts ) }
 									options={[
 										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
 										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
@@ -63,53 +69,54 @@ export default function Edit( props ) {
 									responsive={ true }
 									reset={true}
 									onChange={ ( value ) => {
-										updateAttribute( 'alignment', value, currentDevice ); 
-										setUpdateCss( {
-											selector: '{{WRAPPER}}',
-											property: 'text-align',
-											attributeValue: atts.alignment
-										} );
+										updateAttribute( 'alignment', {
+											value: value
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'alignment', value: value } );
 									} }
-									onClickReset={ () => updateAttribute( 'alignment', attributesDefaults.alignment.default?.[currentDevice], currentDevice ) }
+									onClickReset={ () => {
+										updateAttribute( 'alignment', {
+											value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults )
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
+									} }
 								/>
 
 								<RangeSlider 
 									label={ __( 'Font size', 'athemes-blocks' ) }
-									defaultValue={ atts.fontSize?.[currentDevice] }
-									min={ 10 }
-									max={ 100 }
-									responsive={ true }
-									units={['px', 'em', 'rem']}
-									reset={true}
-									onChange={ ( value ) => updateAttribute( 'fontSize', {
-										value: value,
-										unit: atts.fontSize?.[currentDevice].unit
-									}, currentDevice ) }
-									onChangeUnit={ ( value ) => updateAttribute( 'fontSize', {
-										value: atts.fontSize?.[currentDevice].value,
-										unit: value
-									}, currentDevice ) }
-									onClickReset={ () => updateAttribute( 'fontSize', {
-										value: attributesDefaults.fontSize.default?.[currentDevice].value,
-										unit: attributesDefaults.fontSize.default?.[currentDevice].unit
-									}, currentDevice ) }
-								/>
-
-								<RangeSlider 
-									label={ __( 'Font size2', 'athemes-blocks' ) }
-									defaultValue={ atts.fontSizeTwo?.[currentDevice] }
-									min={ 10 }
+									defaultValue={ getSettingValue( 'fontSize', currentDevice, atts ) }
+									defaultUnit={ getSettingUnit( 'fontSize', currentDevice, atts ) }
+									min={ 1 }
 									max={ 200 }
 									responsive={ true }
 									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => updateAttribute( 'fontSizeTwo', {
-										value: value,
-										unit: atts.fontSizeTwo?.[currentDevice].unit
-									}, currentDevice ) }
-									onChangeUnit={ ( value ) => updateAttribute( 'fontSizeTwo', {
-										value: atts.fontSizeTwo?.[currentDevice].value,
-										unit: value
-									}, currentDevice ) }
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'fontSize', {
+											value: value,
+											unit: getSettingUnit( 'fontSize', currentDevice, atts )
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'fontSize', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'fontSize', {
+											value: getSettingValue( 'fontSize', currentDevice, atts ),
+											unit: value
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'fontSize', value: getSettingValue( 'fontSize', currentDevice, atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'fontSize', {
+											value: getSettingDefaultValue( 'fontSize', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'fontSize', currentDevice, attributesDefaults )
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'fontSize', value: getSettingDefaultValue( 'fontSize', currentDevice, attributesDefaults ) } );
+									} }
 								/>
 
 								<Select
@@ -119,40 +126,78 @@ export default function Edit( props ) {
 										{ label: __( 'Helvetica', 'athemes-blocks' ), value: 'Helvetica' },
 										{ label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
 									]}
-									value={ atts.fontFamily?.[currentDevice] }
+									value={ getSettingValue( 'fontFamily', currentDevice, atts ) }
 									responsive={ true }
 									reset={true}
-									onChange={ ( value ) => updateAttribute( 'fontFamily', value, currentDevice ) }
-									onClickReset={ () => updateAttribute( 'fontFamily', attributesDefaults.fontFamily.default?.[currentDevice], currentDevice ) }
+									onChange={ ( value ) => {
+										updateAttribute( 'fontFamily', {
+											value: value
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'fontFamily', value: getSettingDefaultValue( 'fontFamily', currentDevice, atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'fontFamily', {
+											value: getSettingDefaultValue( 'fontFamily', currentDevice, attributesDefaults )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'fontFamily', value: getSettingDefaultValue( 'fontFamily', currentDevice, attributesDefaults ) } );
+									} }
 								/>
 
 								<SwitchToggle
 									label={ __( 'Show border', 'athemes-blocks' ) }
-									value={ atts.showBorder?.[currentDevice] }
+									value={ getSettingValue( 'showBorder', currentDevice, atts ) }
 									responsive={ true }
 									reset={true}
-									onChange={ ( value ) => updateAttribute( 'showBorder', value, currentDevice ) }
-									onClickReset={ () => updateAttribute( 'showBorder', attributesDefaults.showBorder.default?.[currentDevice], currentDevice ) }
+									onChange={ ( value ) => {
+										updateAttribute( 'showBorder', {
+											value: value
+										}, currentDevice );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'showBorder', {
+											value: getSettingDefaultValue( 'showBorder', currentDevice, attributesDefaults )
+										}, currentDevice );
+									} }
 								/>
 
 								<ColorPicker
 									label={ __( 'Text color', 'athemes-blocks' ) }
-									value={ atts.textColor?.[currentDevice] }
+									value={ getSettingValue( 'textColor', currentDevice, atts ) }
 									hover={true}
 									responsive={true}
 									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => updateAttribute( 'textColor', {
-										defaultState: value.hex,
-										hoverState: atts.textColor?.[currentDevice].hoverState
-									}, currentDevice ) }
-									hoverStateOnChangeComplete={ ( value ) => updateAttribute( 'textColor', {
-										defaultState: atts.textColor?.[currentDevice].defaultState,
-										hoverState: value.hex
-									}, currentDevice ) }
-									onClickReset={ () => updateAttribute( 'textColor', {
-										defaultState: attributesDefaults.textColor.default?.[currentDevice].defaultState,
-										hoverState: attributesDefaults.textColor.default?.[currentDevice].hoverState
-									}, currentDevice ) }
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'textColor', currentDevice, 'hoverState', atts )
+											}
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', currentDevice, 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'textColor', currentDevice, 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', currentDevice, 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'hoverState', attributesDefaults )	
+											}
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'defaultState', attributesDefaults ) } );
+									} }
 								/>
 
 								<Typography
@@ -172,22 +217,36 @@ export default function Edit( props ) {
 										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
 										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
 									]}
-									value={ atts.padding?.[currentDevice] }
-									connect={atts.padding?.[currentDevice].connect}
+									value={ getDimensionsSettingValue( 'padding', currentDevice, atts ) }
+									directionsValue={ getDimensionsSettingDirectionsValue( 'padding', currentDevice, atts ) }
+									connect={getDimensionsSettingConnectValue( 'padding', currentDevice, atts )}
 									responsive={ true }
 									reset={true}
-									onChange={ ( value ) => updateAttribute( 'padding', value, currentDevice ) }
-									onClickReset={ () => updateAttribute( 'padding', attributesDefaults.padding.default?.[currentDevice], currentDevice ) }
+									onChange={ ( value ) => {
+										updateAttribute( 'padding', {
+											value: value.value,
+											connect: getDimensionsSettingConnectValue( 'padding', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'padding', value: value.value } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'padding', getDimensionsSettingDefaultValue( 'padding', currentDevice, attributesDefaults ), currentDevice );
+
+										setUpdateCss( { settingId: 'padding', value: getDimensionsSettingDefaultValue( 'padding', currentDevice, attributesDefaults ) } );
+									} }
 								/>
 							</PanelBody>
 						</Panel>
 					)
 				}
 			</InspectorControls>
-
-			<h1 { ...useBlockProps() }>
-				The heading text here.
-			</h1>			
+			
+			<div class="at-block" { ...useBlockProps() }>
+				<h1>
+					The heading text here.
+				</h1>
+			</div>
 
 		</div>
 	);

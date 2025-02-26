@@ -10,14 +10,14 @@ import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switch
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 export function RangeSlider( props ) {
-    const { label, description, options, defaultValue, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
-    const [ value, setValue ] = useState( defaultValue.value );
-    const [ valueUnit, setValueUnit ] = useState( defaultValue.unit );
+    const { label, description, options, defaultValue, defaultUnit, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
+    const [ value, setValue ] = useState( defaultValue );
+    const [ valueUnit, setValueUnit ] = useState( defaultUnit );
 
     useEffect(() => {
-        setValue( defaultValue.value );
-        setValueUnit( defaultValue.unit );
-    }, [ defaultValue ]);
+        setValue( defaultValue );
+        setValueUnit( defaultUnit );
+    }, [ defaultValue, defaultUnit ]);
 
     return(
         <BaseControl className="atblocks-component-range-slider">

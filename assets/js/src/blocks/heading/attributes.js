@@ -2,9 +2,22 @@ export default {
     alignment: {
         type: 'object',
         default: {
-            desktop: 'left',
-            tablet: 'center',
-            mobile: 'right',
+            desktop: {
+                value: 'left',
+            },
+            tablet: {
+                value: 'center',
+            },
+            mobile: {
+                value: 'right',
+            },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}}',
+                '{{WRAPPER}} .test'
+            ],
+            property: 'text-align',
         }
     },
     fontSize: {
@@ -22,6 +35,13 @@ export default {
                 value: 20,
                 unit: 'px',
             },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}} h1',
+                '{{WRAPPER}} .test2'
+            ],
+            property: 'font-size',
         }
     },
     fontSizeTwo: {
@@ -39,39 +59,78 @@ export default {
                 value: 120,
                 unit: 'px',
             },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}} h2',
+                '{{WRAPPER}} .test3'
+            ],
+            property: 'font-size',
         }
     },
     fontFamily: {
         type: 'object',
         default: {
-            desktop: 'Arial',
-            tablet: 'Helvetica',
-            mobile: 'Times New Roman',
+            desktop: {
+                value: 'Arial',
+            },
+            tablet: {
+                value: 'Helvetica',
+            },
+            mobile: {
+                value: 'Times New Roman',
+            },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}} h1',
+                '{{WRAPPER}} .test2'
+            ],
+            property: 'font-family',
         }
     },
     showBorder: {
         type: 'object',
         default: {
-            desktop: true,
-            tablet: false,
-            mobile: false,
+            desktop: {
+                value: true,
+            },
+            tablet: {
+                value: false,
+            },
+            mobile: {
+                value: true,
+            },
         }
     },
     textColor: {
         type: 'object',
         default: {
             desktop: {
-                defaultState: 'transparent',
-                hoverState: '#CCC'
+                value: {
+                    defaultState: 'transparent',
+                    hoverState: '#CCC'
+                }
             },
             tablet: {
-                defaultState: '#CCC',
-                hoverState: '#CCC'
+                value: {
+                    defaultState: '#CCC',
+                    hoverState: '#CCC'
+                }
             },
             mobile: {
-                defaultState: '#f5f5f5',
-                hoverState: '#CCC'
+                value: {
+                    defaultState: '#f5f5f5',
+                    hoverState: '#CCC'
+                }
             },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}} h1',
+                '{{WRAPPER}} .test2'
+            ],
+            property: 'color',
         }
     },
     textTypography: {
@@ -126,7 +185,7 @@ export default {
                     },
                 },
             },
-        }
+        },
     },
     padding: {
         type: 'object',
@@ -161,6 +220,13 @@ export default {
                 unit: 'px',
                 connect: false,
             },
+        },
+        css: {
+            selectors: [
+                '{{WRAPPER}} h1',
+                '{{WRAPPER}} .test2'
+            ],
+            property: 'padding',
         }
     }
 }
