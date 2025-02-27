@@ -8,15 +8,20 @@
  * 
  * @returns {void}
  */
-export function applyPreviewCSS(css, clientId, settingId) {
+export function applyPreviewCSS(css, clientId, settingId, innerSettingId = null) {
     const blockIframe = document.querySelector(`iframe[name="editor-canvas"]`);
     
     if (blockIframe?.contentDocument) {
-        let styleTag = blockIframe.contentDocument.getElementById(`athemes-blocks-editor-preview-css-${settingId}-${clientId}`);
+        let styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
+        if ( innerSettingId ) {
+            styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${innerSettingId}-${clientId}`;
+        }
+
+        let styleTag = blockIframe.contentDocument.getElementById(styleTagId);
         
         if (!styleTag) {
             styleTag = blockIframe.contentDocument.createElement('style');
-            styleTag.id = `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
+            styleTag.id = styleTagId;
             blockIframe.contentDocument.head.appendChild(styleTag);
         }
         
@@ -39,20 +44,30 @@ export function getControlCSS( cssData, clientId, attributes ) {
     }
 
     const { selectors, property } = cssData.css;
-    const attributeName = cssData.attibuteName;
+    const settingId = cssData.settingId;
+    const innerSettingId = cssData?.innerSettingId;
 
     // Ensure the keys are always in this order. It is crucial for the CSS to work correctly.
     const sortedKeys = ['mobile', 'tablet', 'desktop']; 
         
     const sortedAttributeValue = {}
     sortedKeys.forEach( key => {
-        sortedAttributeValue[key] = attributes[attributeName][key];
+        if ( innerSettingId ) {
+            sortedAttributeValue[key] = attributes[settingId].innerSettings[innerSettingId].default[key];
+        } else {
+            sortedAttributeValue[key] = attributes[settingId][key];
+        }
     });
 
     // Check if the attribute value data is a color picker object.
     let isColorPicker = false;
     if ( sortedAttributeValue.desktop.value.defaultState || sortedAttributeValue.desktop.value.hoverState ) {
         isColorPicker = true;
+    }
+
+    let isDimensions = false;
+    if ( sortedAttributeValue.desktop.value.top || sortedAttributeValue.desktop.value.right || sortedAttributeValue.desktop.value.bottom || sortedAttributeValue.desktop.value.left ) {
+        isDimensions = true;
     }
 
     // Generate the CSS for each device.
@@ -66,6 +81,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     if ( isColorPicker ) {
                         css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }; } }`;
                         css += `@media (min-width: 1025px) { ${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }; } }`;
+                    } else if ( isDimensions ) { 
+                        css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.top }${unit} ${ sortedAttributeValue[device].value.right }${unit} ${ sortedAttributeValue[device].value.bottom }${unit} ${ sortedAttributeValue[device].value.left }${unit}; } }`;
                     } else {
                         css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}; } }`;
                     }
@@ -77,6 +94,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     if ( isColorPicker ) {
                         css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
                         css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                    } else if ( isDimensions ) {
+                        css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
                     } else {
                         css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
                     }
@@ -88,6 +107,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     if ( isColorPicker ) {
                         css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
                         css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                    } else if ( isDimensions) {
+                        css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
                     } else {
                         css += `${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; }`;
                     }

@@ -14,10 +14,12 @@ import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-
 
 import { createInnerControlAttributeUpdater } from '../../../utils/block-attributes';
 
+import { getInnerSettingDefaultValue, getInnerSettingDefaultUnit } from '../../../utils/settings';
+
 import { styles } from './styles';
 
 export function Typography( props ) {
-    const { label, attributeId, attributes, setAttributes, attributesDefaults, subFields } = props;
+    const { label, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
     const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
     const { 
         fontSize, 
@@ -28,9 +30,9 @@ export function Typography( props ) {
         textDecoration,
         lineHeight,
         letterSpacing,
-    } = attributes[attributeId].typographySettings;
+    } = attributes[settingId].innerSettings;
 
-    const updateInnerControlAttribute = createInnerControlAttributeUpdater( attributeId, attributes, setAttributes);
+    const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
     // Popover State (default)
     const [ isDefaultVisible, setIsDefaultVisible ] = useState( false );
@@ -66,10 +68,29 @@ export function Typography( props ) {
                                             { label: __( 'Helvetica', 'athemes-blocks' ), value: 'Helvetica' },
                                             { label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
                                         ]}
-                                        value={ fontFamily }
+                                        value={ fontFamily.default[currentDevice].value }
+                                        responsive={false}
                                         reset={true}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'fontFamily', value, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'fontFamily', attributesDefaults[attributeId].default.typographySettings.fontFamily, currentDevice ) }
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'fontFamily', value, currentDevice );
+                                            
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontFamily',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontFamily',
+                                                value: getInnerSettingDefaultValue( settingId, 'fontFamily', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
                                     />
                                 )
                             }
@@ -78,21 +99,52 @@ export function Typography( props ) {
                                 ( subFields && subFields.includes('fontSize') ) && (
                                     <RangeSlider 
                                         label={ __( 'Font size', 'athemes-blocks' ) }
-                                        defaultValue={ fontSize[currentDevice] }
+                                        defaultValue={ fontSize.default[currentDevice].value }
+                                        defaultUnit={ fontSize.default[currentDevice].unit }
                                         min={ 10 }
                                         max={ 200 }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'fontSize', {
-                                            value: value,
-                                            unit: fontSize[currentDevice].unit
-                                        }, currentDevice ) }
-                                        onChangeUnit={ ( value ) => updateInnerControlAttribute( 'fontSize', {
-                                            value: fontSize[currentDevice].value,
-                                            unit: value
-                                        }, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'fontSize', attributesDefaults[attributeId].default.typographySettings.fontSize[currentDevice], currentDevice ) }
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'fontSize', {
+                                                value: value,
+                                                unit: fontSize.default[currentDevice].unit
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontSize',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onChangeUnit={ ( value ) => {
+                                            updateInnerControlAttribute( 'fontSize', {
+                                                value: fontSize.default[currentDevice].value,
+                                                unit: value
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontSize',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'fontSize', {
+                                                value: getInnerSettingDefaultValue( settingId, 'fontSize', currentDevice, attributesDefaults ),
+                                                unit: getInnerSettingDefaultUnit( settingId, 'fontSize', currentDevice, attributesDefaults )
+                                            }, currentDevice ); 
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontSize',
+                                                value: getInnerSettingDefaultValue( settingId, 'fontSize', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
                                     />
                                 )
                             }
@@ -113,11 +165,29 @@ export function Typography( props ) {
                                             { label: '800', value: '800' },
                                             { label: '900', value: '900' },
                                         ]}
-                                        value={ fontWeight }
+                                        value={ fontWeight.default[currentDevice].value }
                                         responsive={ false }
                                         reset={true}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'fontWeight', value, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'fontWeight', attributesDefaults[attributeId].default.typographySettings.fontWeight, currentDevice ) }
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'fontWeight', value, currentDevice );
+                                            
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontWeight',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'fontWeight', attributesDefaults[settingId].default.innerSettings.fontWeight.default[currentDevice].value, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontWeight',
+                                                value: getInnerSettingDefaultValue( settingId, 'fontWeight', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
                                     />                                    
                                 )
                             }
@@ -131,12 +201,30 @@ export function Typography( props ) {
                                             { label: __( 'Italic', 'athemes-blocks' ), value: 'italic' },
                                             { label: __( 'Oblique', 'athemes-blocks' ), value: 'oblique' },
                                         ]}
-                                        value={ fontStyle }
+                                        value={ fontStyle.default[currentDevice].value }
                                         responsive={ false }
                                         reset={true}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'fontStyle', value, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'fontStyle', attributesDefaults[attributeId].default.typographySettings.fontStyle, currentDevice ) }
-                                    />
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'fontStyle', value, currentDevice );
+                                            
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontStyle',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'fontStyle', attributesDefaults[settingId].default.innerSettings.fontStyle.default[currentDevice].value, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'fontStyle',
+                                                value: getInnerSettingDefaultValue( settingId, 'fontStyle', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
+                                    />                                    
                                 )
                             }
 
@@ -151,12 +239,30 @@ export function Typography( props ) {
                                             { label: __( 'Uppercase', 'athemes-blocks' ), value: 'uppercase' },
                                             { label: __( 'Lowercase', 'athemes-blocks' ), value: 'lowercase' },
                                         ]}
-                                        value={ textTransform }
+                                        value={ textTransform.default[currentDevice].value }
                                         responsive={ false }
                                         reset={true}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'textTransform', value, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'textTransform', attributesDefaults[attributeId].default.typographySettings.textTransform, currentDevice ) }
-                                    />                                
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'textTransform', value, currentDevice );
+                                            
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'textTransform',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'textTransform', attributesDefaults[settingId].default.innerSettings.textTransform.default[currentDevice].value, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'textTransform',
+                                                value: getInnerSettingDefaultValue( settingId, 'textTransform', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
+                                    />                                    
                                 )
                             }
 
@@ -171,12 +277,30 @@ export function Typography( props ) {
                                             { label: __( 'Overline', 'athemes-blocks' ), value: 'overline' },
                                             { label: __( 'Line Through', 'athemes-blocks' ), value: 'line-through' },
                                         ]}
-                                        value={ textDecoration }
+                                        value={ textDecoration.default[currentDevice].value }
                                         responsive={ false }
                                         reset={true}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'textDecoration', value, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'textDecoration', attributesDefaults[attributeId].default.typographySettings.textDecoration, currentDevice ) }
-                                    />                                
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'textDecoration', value, currentDevice );
+                                            
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'textDecoration',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'textDecoration', attributesDefaults[settingId].default.innerSettings.textDecoration.default[currentDevice].value, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'textDecoration',
+                                                value: getInnerSettingDefaultValue( settingId, 'textDecoration', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
+                                    />                                    
                                 )
                             }
 
@@ -184,22 +308,53 @@ export function Typography( props ) {
                                 ( subFields && subFields.includes('lineHeight') ) && (
                                     <RangeSlider 
                                         label={ __( 'Line Height', 'athemes-blocks' ) }
-                                        defaultValue={ lineHeight[currentDevice] }
-                                        min={ 0 }
-                                        max={ 10 }
+                                        defaultValue={ lineHeight.default[currentDevice].value }
+                                        defaultUnit={ lineHeight.default[currentDevice].unit }
+                                        min={ 1 }
+                                        max={ 150 }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'lineHeight', {
-                                            value: value,
-                                            unit: lineHeight[currentDevice].unit
-                                        }, currentDevice ) }
-                                        onChangeUnit={ ( value ) => updateInnerControlAttribute( 'lineHeight', {
-                                            value: lineHeight[currentDevice].value,
-                                            unit: value
-                                        }, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'lineHeight', attributesDefaults[attributeId].default.typographySettings.lineHeight[currentDevice], currentDevice ) }
-                                    />                                
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'lineHeight', {
+                                                value: value,
+                                                unit: lineHeight.default[currentDevice].unit
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'lineHeight',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onChangeUnit={ ( value ) => {
+                                            updateInnerControlAttribute( 'lineHeight', {
+                                                value: lineHeight.default[currentDevice].value,
+                                                unit: value
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'lineHeight',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'lineHeight', {
+                                                value: getInnerSettingDefaultValue( settingId, 'lineHeight', currentDevice, attributesDefaults ),
+                                                unit: getInnerSettingDefaultUnit( settingId, 'lineHeight', currentDevice, attributesDefaults )
+                                            }, currentDevice ); 
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'lineHeight',
+                                                value: getInnerSettingDefaultValue( settingId, 'lineHeight', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
+                                    />
                                 )
                             }
 
@@ -207,21 +362,52 @@ export function Typography( props ) {
                                 ( subFields && subFields.includes('letterSpacing') ) && (
                                     <RangeSlider 
                                         label={ __( 'Letter Spacing', 'athemes-blocks' ) }
-                                        defaultValue={ letterSpacing[currentDevice] }
-                                        min={ -50 }
-                                        max={ 200 }
+                                        defaultValue={ letterSpacing.default[currentDevice].value }
+                                        defaultUnit={ letterSpacing.default[currentDevice].unit }
+                                        min={ 1 }
+                                        max={ 10 }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}
-                                        onChange={ ( value ) => updateInnerControlAttribute( 'letterSpacing', {
-                                            value: value,
-                                            unit: letterSpacing[currentDevice].unit
-                                        }, currentDevice ) }
-                                        onChangeUnit={ ( value ) => updateInnerControlAttribute( 'letterSpacing', {
-                                            value: letterSpacing[currentDevice].value,
-                                            unit: value
-                                        }, currentDevice ) }
-                                        onClickReset={ () => updateInnerControlAttribute( 'letterSpacing', attributesDefaults[attributeId].default.typographySettings.letterSpacing[currentDevice], currentDevice ) }
+                                        onChange={ ( value ) => {
+                                            updateInnerControlAttribute( 'letterSpacing', {
+                                                value: value,
+                                                unit: letterSpacing.default[currentDevice].unit
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'letterSpacing',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onChangeUnit={ ( value ) => {
+                                            updateInnerControlAttribute( 'letterSpacing', {
+                                                value: letterSpacing.default[currentDevice].value,
+                                                unit: value
+                                            }, currentDevice );
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'letterSpacing',
+                                                value: value,
+                                            } );
+                                        } }
+                                        onClickReset={ () => {
+                                            updateInnerControlAttribute( 'letterSpacing', {
+                                                value: getInnerSettingDefaultValue( settingId, 'letterSpacing', currentDevice, attributesDefaults ),
+                                                unit: getInnerSettingDefaultUnit( settingId, 'letterSpacing', currentDevice, attributesDefaults )
+                                            }, currentDevice ); 
+
+                                            setUpdateCss( {
+                                                type: 'inner-control',
+                                                settingId: settingId,
+                                                innerSettingId: 'letterSpacing',
+                                                value: getInnerSettingDefaultValue( settingId, 'letterSpacing', currentDevice, attributesDefaults ),
+                                            } );
+                                        } }
                                     />
                                 )
                             }

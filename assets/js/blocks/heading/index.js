@@ -442,7 +442,6 @@ function ColorPicker(props) {
     defaultStateOnChangeComplete,
     hoverStateOnChangeComplete
   } = props;
-  console.log(value);
   const {
     defaultState,
     hoverState
@@ -526,7 +525,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
@@ -534,13 +533,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_device_switcher_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../store/device-switcher-store */ "./assets/js/src/block-editor/store/device-switcher-store.jsx");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link-off.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link-off.js");
 /* harmony import */ var _controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../controls-auxiliary/device-switcher/device-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/device-switcher/device-switcher-control.jsx");
-/* harmony import */ var _controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../controls-auxiliary/reset-values/reset-values-control */ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx");
-/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles */ "./assets/js/src/block-editor/controls/dimensions/styles.jsx");
+/* harmony import */ var _controls_auxiliary_unit_switcher_unit_switcher_control__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../controls-auxiliary/unit-switcher/unit-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/unit-switcher/unit-switcher-control.jsx");
+/* harmony import */ var _controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../controls-auxiliary/reset-values/reset-values-control */ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx");
+/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles */ "./assets/js/src/block-editor/controls/dimensions/styles.jsx");
 
 /** @jsx jsx */;
+
 
 
 
@@ -554,15 +555,19 @@ function Dimensions(props) {
   const {
     label,
     value,
+    defaultUnit,
     directionsValue,
     directions,
     connect,
     responsive,
+    units,
     reset,
     onChange,
+    onChangeUnit,
     onClickReset
   } = props;
   const [inputNumberValues, setInputNumberValues] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(directionsValue);
+  const [valueUnit, setValueUnit] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(defaultUnit);
   const [valueToReturn, setValueToReturn] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(value);
   const [isConnected, setIsConnected] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(connect);
   const onChangeNumberInput = (direction, newValue) => {
@@ -580,6 +585,7 @@ function Dimensions(props) {
           bottom: newValue,
           left: newValue
         },
+        unit: valueUnit,
         connect: true
       });
     } else {
@@ -589,6 +595,7 @@ function Dimensions(props) {
           ...inputNumberValues,
           [directionKey]: newValue
         },
+        unit: valueUnit,
         connect: false
       });
     }
@@ -604,6 +611,7 @@ function Dimensions(props) {
           bottom: inputNumberValues.top,
           left: inputNumberValues.top
         },
+        unit: valueUnit,
         connect: false
       });
     } else {
@@ -615,6 +623,7 @@ function Dimensions(props) {
           bottom: inputNumberValues.bottom,
           left: inputNumberValues.left
         },
+        unit: valueUnit,
         connect: true
       });
     }
@@ -623,7 +632,8 @@ function Dimensions(props) {
   // Update directionsValue, the input number values.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     setInputNumberValues(directionsValue);
-  }, [value]);
+    setValueUnit(defaultUnit);
+  }, [value, defaultUnit]);
 
   // Update the value to return to the main control.
   // It must return an object with the value with this data structure:
@@ -639,41 +649,45 @@ function Dimensions(props) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     onChange(valueToReturn);
   }, [valueToReturn]);
-  return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.BaseControl, {
+  return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.BaseControl, {
     className: "atblocks-control-dimensions"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
     className: "atblocks-component-header"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
     className: "atblocks-component-header__title"
-  }, label), responsive && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__.DeviceSwitcher, null), reset && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_6__.ResetValues, {
+  }, label), responsive && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_5__.DeviceSwitcher, null), reset && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_7__.ResetValues, {
     onClick: onClickReset
-  })), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-    css: _styles__WEBPACK_IMPORTED_MODULE_7__.styles.control,
+  }), units && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_controls_auxiliary_unit_switcher_unit_switcher_control__WEBPACK_IMPORTED_MODULE_6__.UnitSwitcher, {
+    units: units,
+    value: valueUnit,
+    onChange: onChangeUnit
+  })), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    css: _styles__WEBPACK_IMPORTED_MODULE_8__.styles.control,
     className: "atblocks-dimensions-control"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-    css: _styles__WEBPACK_IMPORTED_MODULE_7__.styles.inputWrapper,
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    css: _styles__WEBPACK_IMPORTED_MODULE_8__.styles.inputWrapper,
     className: "atblocks-dimensions-control__input-wrapper"
   }, directions.map((direction, index) => {
     const directionKey = direction.value;
-    return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+    return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
       key: index,
-      css: _styles__WEBPACK_IMPORTED_MODULE_7__.styles.inputItem,
+      css: _styles__WEBPACK_IMPORTED_MODULE_8__.styles.inputItem,
       className: "atblocks-dimensions-control__input-item"
-    }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalNumberControl, {
+    }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalNumberControl, {
       __next40pxDefaultSize: true,
       label: "",
       onChange: newValue => onChangeNumberInput(direction, newValue),
       value: inputNumberValues[directionKey]
-    }), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-      css: _styles__WEBPACK_IMPORTED_MODULE_7__.styles.inputLabel,
+    }), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("label", {
+      css: _styles__WEBPACK_IMPORTED_MODULE_8__.styles.inputLabel,
       className: "atblocks-dimensions-control__input-label"
     }, direction.label));
-  })), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-    css: _styles__WEBPACK_IMPORTED_MODULE_7__.styles.connectValuesToggle,
+  })), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    css: _styles__WEBPACK_IMPORTED_MODULE_8__.styles.connectValuesToggle,
     className: "atblocks-dimensions-control__connect-values-toggle"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     className: isConnected ? 'is-active' : '',
-    icon: isConnected ? _wordpress_icons__WEBPACK_IMPORTED_MODULE_9__["default"] : _wordpress_icons__WEBPACK_IMPORTED_MODULE_10__["default"],
+    icon: isConnected ? _wordpress_icons__WEBPACK_IMPORTED_MODULE_10__["default"] : _wordpress_icons__WEBPACK_IMPORTED_MODULE_11__["default"],
     label: "",
     onClick: onClickConnectValuesToggle
   }))));
@@ -1173,7 +1187,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
@@ -1183,16 +1197,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_device_switcher_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../store/device-switcher-store */ "./assets/js/src/block-editor/store/device-switcher-store.jsx");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/edit.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/edit.js");
 /* harmony import */ var _select_select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../select/select */ "./assets/js/src/block-editor/controls/select/select.jsx");
 /* harmony import */ var _range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../range-slider/range-slider */ "./assets/js/src/block-editor/controls/range-slider/range-slider.jsx");
 /* harmony import */ var _controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../controls-auxiliary/device-switcher/device-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/device-switcher/device-switcher-control.jsx");
 /* harmony import */ var _controls_auxiliary_unit_switcher_unit_switcher_control__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../controls-auxiliary/unit-switcher/unit-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/unit-switcher/unit-switcher-control.jsx");
 /* harmony import */ var _controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../controls-auxiliary/reset-values/reset-values-control */ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx");
 /* harmony import */ var _utils_block_attributes__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../utils/block-attributes */ "./assets/js/src/utils/block-attributes.jsx");
-/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./styles */ "./assets/js/src/block-editor/controls/typography/styles.jsx");
+/* harmony import */ var _utils_settings__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../utils/settings */ "./assets/js/src/utils/settings.jsx");
+/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./styles */ "./assets/js/src/block-editor/controls/typography/styles.jsx");
 
 /** @jsx jsx */;
+
 
 
 
@@ -1210,10 +1226,11 @@ __webpack_require__.r(__webpack_exports__);
 function Typography(props) {
   const {
     label,
-    attributeId,
+    settingId,
     attributes,
     setAttributes,
     attributesDefaults,
+    setUpdateCss,
     subFields
   } = props;
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => select('device-switcher-store').getCurrentDevice());
@@ -1226,31 +1243,31 @@ function Typography(props) {
     textDecoration,
     lineHeight,
     letterSpacing
-  } = attributes[attributeId].typographySettings;
-  const updateInnerControlAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_11__.createInnerControlAttributeUpdater)(attributeId, attributes, setAttributes);
+  } = attributes[settingId].innerSettings;
+  const updateInnerControlAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_11__.createInnerControlAttributeUpdater)(settingId, attributes, setAttributes);
 
   // Popover State (default)
   const [isDefaultVisible, setIsDefaultVisible] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
   const toggleDefaultVisible = () => {
     setIsDefaultVisible(state => !state);
   };
-  return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+  return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
     className: "atblocks-component-typography"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
     className: "atblocks-component-header"
-  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+  }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)("span", {
     className: "atblocks-component-header__title"
-  }, label), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
-    css: _styles__WEBPACK_IMPORTED_MODULE_12__.styles.button,
+  }, label), (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
+    css: _styles__WEBPACK_IMPORTED_MODULE_13__.styles.button,
     label: "",
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_14__["default"],
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_15__["default"],
     variant: "secondary",
     onClick: toggleDefaultVisible
-  }, isDefaultVisible && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Popover, {
-    css: _styles__WEBPACK_IMPORTED_MODULE_12__.styles.popover,
+  }, isDefaultVisible && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Popover, {
+    css: _styles__WEBPACK_IMPORTED_MODULE_13__.styles.popover,
     onClick: event => event.stopPropagation(),
     onFocusOutside: toggleDefaultVisible
-  }, subFields && subFields.includes('fontFamily') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
+  }, subFields && subFields.includes('fontFamily') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Font family', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default', 'athemes-blocks'),
@@ -1265,28 +1282,73 @@ function Typography(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Times New Roman', 'athemes-blocks'),
       value: 'Times New Roman'
     }],
-    value: fontFamily,
+    value: fontFamily.default[currentDevice].value,
+    responsive: false,
     reset: true,
-    onChange: value => updateInnerControlAttribute('fontFamily', value, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('fontFamily', attributesDefaults[attributeId].default.typographySettings.fontFamily, currentDevice)
-  }), subFields && subFields.includes('fontSize') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
+    onChange: value => {
+      updateInnerControlAttribute('fontFamily', value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontFamily',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontFamily',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'fontFamily', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('fontSize') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Font size', 'athemes-blocks'),
-    defaultValue: fontSize[currentDevice],
+    defaultValue: fontSize.default[currentDevice].value,
+    defaultUnit: fontSize.default[currentDevice].unit,
     min: 10,
     max: 200,
     responsive: true,
     reset: true,
     units: ['px', 'em', 'rem'],
-    onChange: value => updateInnerControlAttribute('fontSize', {
-      value: value,
-      unit: fontSize[currentDevice].unit
-    }, currentDevice),
-    onChangeUnit: value => updateInnerControlAttribute('fontSize', {
-      value: fontSize[currentDevice].value,
-      unit: value
-    }, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('fontSize', attributesDefaults[attributeId].default.typographySettings.fontSize[currentDevice], currentDevice)
-  }), subFields && subFields.includes('fontWeight') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
+    onChange: value => {
+      updateInnerControlAttribute('fontSize', {
+        value: value,
+        unit: fontSize.default[currentDevice].unit
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontSize',
+        value: value
+      });
+    },
+    onChangeUnit: value => {
+      updateInnerControlAttribute('fontSize', {
+        value: fontSize.default[currentDevice].value,
+        unit: value
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontSize',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('fontSize', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'fontSize', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultUnit)(settingId, 'fontSize', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontSize',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'fontSize', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('fontWeight') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Weight', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default', 'athemes-blocks'),
@@ -1319,12 +1381,28 @@ function Typography(props) {
       label: '900',
       value: '900'
     }],
-    value: fontWeight,
+    value: fontWeight.default[currentDevice].value,
     responsive: false,
     reset: true,
-    onChange: value => updateInnerControlAttribute('fontWeight', value, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('fontWeight', attributesDefaults[attributeId].default.typographySettings.fontWeight, currentDevice)
-  }), subFields && subFields.includes('fontStyle') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
+    onChange: value => {
+      updateInnerControlAttribute('fontWeight', value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontWeight',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('fontWeight', attributesDefaults[settingId].default.innerSettings.fontWeight.default[currentDevice].value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontWeight',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'fontWeight', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('fontStyle') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Style', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default', 'athemes-blocks'),
@@ -1336,12 +1414,28 @@ function Typography(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Oblique', 'athemes-blocks'),
       value: 'oblique'
     }],
-    value: fontStyle,
+    value: fontStyle.default[currentDevice].value,
     responsive: false,
     reset: true,
-    onChange: value => updateInnerControlAttribute('fontStyle', value, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('fontStyle', attributesDefaults[attributeId].default.typographySettings.fontStyle, currentDevice)
-  }), subFields && subFields.includes('textTransform') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
+    onChange: value => {
+      updateInnerControlAttribute('fontStyle', value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontStyle',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('fontStyle', attributesDefaults[settingId].default.innerSettings.fontStyle.default[currentDevice].value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontStyle',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'fontStyle', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('textTransform') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Transform', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default', 'athemes-blocks'),
@@ -1359,12 +1453,28 @@ function Typography(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Lowercase', 'athemes-blocks'),
       value: 'lowercase'
     }],
-    value: textTransform,
+    value: textTransform.default[currentDevice].value,
     responsive: false,
     reset: true,
-    onChange: value => updateInnerControlAttribute('textTransform', value, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('textTransform', attributesDefaults[attributeId].default.typographySettings.textTransform, currentDevice)
-  }), subFields && subFields.includes('textDecoration') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
+    onChange: value => {
+      updateInnerControlAttribute('textTransform', value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'textTransform',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('textTransform', attributesDefaults[settingId].default.innerSettings.textTransform.default[currentDevice].value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'textTransform',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'textTransform', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('textDecoration') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_select_select__WEBPACK_IMPORTED_MODULE_6__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Decoration', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default', 'athemes-blocks'),
@@ -1382,45 +1492,117 @@ function Typography(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Line Through', 'athemes-blocks'),
       value: 'line-through'
     }],
-    value: textDecoration,
+    value: textDecoration.default[currentDevice].value,
     responsive: false,
     reset: true,
-    onChange: value => updateInnerControlAttribute('textDecoration', value, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('textDecoration', attributesDefaults[attributeId].default.typographySettings.textDecoration, currentDevice)
-  }), subFields && subFields.includes('lineHeight') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
+    onChange: value => {
+      updateInnerControlAttribute('textDecoration', value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'textDecoration',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('textDecoration', attributesDefaults[settingId].default.innerSettings.textDecoration.default[currentDevice].value, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'textDecoration',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'textDecoration', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('lineHeight') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Line Height', 'athemes-blocks'),
-    defaultValue: lineHeight[currentDevice],
-    min: 0,
+    defaultValue: lineHeight.default[currentDevice].value,
+    defaultUnit: lineHeight.default[currentDevice].unit,
+    min: 1,
+    max: 150,
+    responsive: true,
+    reset: true,
+    units: ['px', 'em', 'rem'],
+    onChange: value => {
+      updateInnerControlAttribute('lineHeight', {
+        value: value,
+        unit: lineHeight.default[currentDevice].unit
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'lineHeight',
+        value: value
+      });
+    },
+    onChangeUnit: value => {
+      updateInnerControlAttribute('lineHeight', {
+        value: lineHeight.default[currentDevice].value,
+        unit: value
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'lineHeight',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('lineHeight', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'lineHeight', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultUnit)(settingId, 'lineHeight', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'lineHeight',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'lineHeight', currentDevice, attributesDefaults)
+      });
+    }
+  }), subFields && subFields.includes('letterSpacing') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_14__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Letter Spacing', 'athemes-blocks'),
+    defaultValue: letterSpacing.default[currentDevice].value,
+    defaultUnit: letterSpacing.default[currentDevice].unit,
+    min: 1,
     max: 10,
     responsive: true,
     reset: true,
     units: ['px', 'em', 'rem'],
-    onChange: value => updateInnerControlAttribute('lineHeight', {
-      value: value,
-      unit: lineHeight[currentDevice].unit
-    }, currentDevice),
-    onChangeUnit: value => updateInnerControlAttribute('lineHeight', {
-      value: lineHeight[currentDevice].value,
-      unit: value
-    }, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('lineHeight', attributesDefaults[attributeId].default.typographySettings.lineHeight[currentDevice], currentDevice)
-  }), subFields && subFields.includes('letterSpacing') && (0,_emotion_react__WEBPACK_IMPORTED_MODULE_13__.jsx)(_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Letter Spacing', 'athemes-blocks'),
-    defaultValue: letterSpacing[currentDevice],
-    min: -50,
-    max: 200,
-    responsive: true,
-    reset: true,
-    units: ['px', 'em', 'rem'],
-    onChange: value => updateInnerControlAttribute('letterSpacing', {
-      value: value,
-      unit: letterSpacing[currentDevice].unit
-    }, currentDevice),
-    onChangeUnit: value => updateInnerControlAttribute('letterSpacing', {
-      value: letterSpacing[currentDevice].value,
-      unit: value
-    }, currentDevice),
-    onClickReset: () => updateInnerControlAttribute('letterSpacing', attributesDefaults[attributeId].default.typographySettings.letterSpacing[currentDevice], currentDevice)
+    onChange: value => {
+      updateInnerControlAttribute('letterSpacing', {
+        value: value,
+        unit: letterSpacing.default[currentDevice].unit
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'letterSpacing',
+        value: value
+      });
+    },
+    onChangeUnit: value => {
+      updateInnerControlAttribute('letterSpacing', {
+        value: letterSpacing.default[currentDevice].value,
+        unit: value
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'letterSpacing',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateInnerControlAttribute('letterSpacing', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'letterSpacing', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultUnit)(settingId, 'letterSpacing', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'letterSpacing',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_12__.getInnerSettingDefaultValue)(settingId, 'letterSpacing', currentDevice, attributesDefaults)
+      });
+    }
   })))));
 }
 
@@ -1679,52 +1861,150 @@ __webpack_require__.r(__webpack_exports__);
   textTypography: {
     type: 'object',
     default: {
-      typographySettings: {
-        fontFamily: 'default',
-        fontSize: {
-          desktop: {
-            value: 40,
-            unit: 'px'
+      innerSettings: {
+        fontFamily: {
+          default: {
+            desktop: {
+              value: 'default'
+            },
+            tablet: {
+              value: 'default'
+            },
+            mobile: {
+              value: 'default'
+            }
           },
-          tablet: {
-            value: 30,
-            unit: 'px'
-          },
-          mobile: {
-            value: 20,
-            unit: 'px'
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test3'],
+            property: 'font-family'
           }
         },
-        fontWeight: 'default',
-        fontStyle: 'default',
-        textTransform: 'default',
-        textDecoration: 'default',
+        fontSize: {
+          default: {
+            desktop: {
+              value: 40,
+              unit: 'px'
+            },
+            tablet: {
+              value: 30,
+              unit: 'px'
+            },
+            mobile: {
+              value: 20,
+              unit: 'px'
+            }
+          },
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test3'],
+            property: 'font-size'
+          }
+        },
+        fontWeight: {
+          default: {
+            desktop: {
+              value: 'default'
+            },
+            tablet: {
+              value: 'default'
+            },
+            mobile: {
+              value: 'default'
+            }
+          },
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test4'],
+            property: 'font-weight'
+          }
+        },
+        fontStyle: {
+          default: {
+            desktop: {
+              value: 'default'
+            },
+            tablet: {
+              value: 'default'
+            },
+            mobile: {
+              value: 'default'
+            }
+          },
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test4'],
+            property: 'font-style'
+          }
+        },
+        textTransform: {
+          default: {
+            desktop: {
+              value: 'default'
+            },
+            tablet: {
+              value: 'default'
+            },
+            mobile: {
+              value: 'default'
+            }
+          },
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test4'],
+            property: 'text-transform'
+          }
+        },
+        textDecoration: {
+          default: {
+            desktop: {
+              value: 'default'
+            },
+            tablet: {
+              value: 'default'
+            },
+            mobile: {
+              value: 'default'
+            }
+          },
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test4'],
+            property: 'text-decoration'
+          }
+        },
         lineHeight: {
-          desktop: {
-            value: 1.3,
-            unit: 'px'
+          default: {
+            desktop: {
+              value: 1,
+              unit: 'em'
+            },
+            tablet: {
+              value: 1,
+              unit: 'em'
+            },
+            mobile: {
+              value: 1,
+              unit: 'em'
+            }
           },
-          tablet: {
-            value: 1.3,
-            unit: 'px'
-          },
-          mobile: {
-            value: 1.3,
-            unit: 'px'
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test3'],
+            property: 'line-height'
           }
         },
         letterSpacing: {
-          desktop: {
-            value: 0,
-            unit: 'px'
+          default: {
+            desktop: {
+              value: 0,
+              unit: 'px'
+            },
+            tablet: {
+              value: 0,
+              unit: 'px'
+            },
+            mobile: {
+              value: 0,
+              unit: 'px'
+            }
           },
-          tablet: {
-            value: 0,
-            unit: 'px'
-          },
-          mobile: {
-            value: 0,
-            unit: 'px'
+          css: {
+            selectors: ['{{WRAPPER}} h1', '{{WRAPPER}} .test3'],
+            property: 'letter-spacing'
           }
         }
       }
@@ -1735,30 +2015,30 @@ __webpack_require__.r(__webpack_exports__);
     default: {
       desktop: {
         value: {
-          top: 10,
-          right: 20,
-          bottom: 10,
-          left: 20
+          top: '',
+          right: '',
+          bottom: '',
+          left: ''
         },
         unit: 'px',
         connect: false
       },
       tablet: {
         value: {
-          top: 30,
-          right: 40,
-          bottom: 50,
-          left: 60
+          top: '',
+          right: '',
+          bottom: '',
+          left: ''
         },
         unit: 'px',
         connect: false
       },
       mobile: {
         value: {
-          top: 1,
-          right: 2,
-          bottom: 1,
-          left: 4
+          top: '',
+          right: '',
+          bottom: '',
+          left: ''
         },
         unit: 'px',
         connect: false
@@ -1846,17 +2126,71 @@ function Edit(props) {
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('device-switcher-store').getCurrentDevice());
   const currentTab = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('persistent-tabs-store').getCurrentTab());
   const [updateCss, setUpdateCss] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false);
+
+  // Watch for changes in the updateCss state and apply the CSS.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     if (updateCss) {
-      const settingId = updateCss?.settingId;
-      const cssData = {
-        css: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId]?.css,
-        attibuteName: settingId
-      };
-      const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.getControlCSS)(cssData, clientId, atts);
-      (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.applyPreviewCSS)(css, clientId, settingId);
+      if (updateCss.type === 'all') {
+        updateCss.settings.forEach(setting => {
+          const cssData = {
+            css: setting.css,
+            settingId: setting.settingId,
+            innerSettingId: setting?.innerSettingId ? setting.innerSettingId : null
+          };
+          const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.getControlCSS)(cssData, clientId, atts);
+          (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.applyPreviewCSS)(css, clientId, setting.settingId, setting.innerSettingId);
+        });
+      } else if (updateCss.type === 'inner-control') {
+        const cssData = {
+          css: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][updateCss.settingId].default?.innerSettings[updateCss.innerSettingId]?.css,
+          settingId: updateCss.settingId,
+          innerSettingId: updateCss.innerSettingId
+        };
+        const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.getControlCSS)(cssData, clientId, atts);
+        (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.applyPreviewCSS)(css, clientId, updateCss.settingId, updateCss.innerSettingId);
+      } else {
+        const settingId = updateCss?.settingId;
+        const cssData = {
+          css: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId]?.css,
+          settingId: settingId
+        };
+        const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.getControlCSS)(cssData, clientId, atts);
+        (0,_utils_css__WEBPACK_IMPORTED_MODULE_17__.applyPreviewCSS)(css, clientId, settingId);
+      }
     }
   }, [updateCss]);
+
+  // Render the CSS for the first load.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
+    const allSettings = Object.keys(_attributes__WEBPACK_IMPORTED_MODULE_14__["default"]);
+    const allSettingsStyles = [];
+    allSettings.forEach(settingId => {
+      const isInnerSetting = _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId]?.default?.innerSettings;
+      if (isInnerSetting) {
+        const allInnerSettings = Object.keys(_attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId].default.innerSettings);
+        allInnerSettings.forEach(innerSettingId => {
+          allSettingsStyles.push({
+            type: 'inner-setting',
+            settingId: settingId,
+            innerSettingId: innerSettingId,
+            value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getInnerSettingValue)(settingId, innerSettingId, currentDevice, atts),
+            css: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId].default.innerSettings[innerSettingId].css
+          });
+        });
+      } else {
+        allSettingsStyles.push({
+          type: 'setting',
+          settingId: settingId,
+          value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)(settingId, currentDevice, atts),
+          css: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"][settingId].css
+        });
+      }
+    });
+    setUpdateCss({
+      type: 'all',
+      settings: allSettingsStyles
+    });
+  }, []);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_tabs_tabs_navigation__WEBPACK_IMPORTED_MODULE_15__.TabsNavigation, {
     value: "general",
     options: [{
@@ -1902,45 +2236,6 @@ function Edit(props) {
       setUpdateCss({
         settingId: 'alignment',
         value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingDefaultValue)('alignment', currentDevice, _attributes__WEBPACK_IMPORTED_MODULE_14__["default"])
-      });
-    }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Font size', 'athemes-blocks'),
-    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)('fontSize', currentDevice, atts),
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingUnit)('fontSize', currentDevice, atts),
-    min: 1,
-    max: 200,
-    responsive: true,
-    units: ['px', 'em', 'rem'],
-    reset: true,
-    onChange: value => {
-      updateAttribute('fontSize', {
-        value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingUnit)('fontSize', currentDevice, atts)
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'fontSize',
-        value: value
-      });
-    },
-    onChangeUnit: value => {
-      updateAttribute('fontSize', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)('fontSize', currentDevice, atts),
-        unit: value
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'fontSize',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)('fontSize', currentDevice, atts)
-      });
-    },
-    onClickReset: () => {
-      updateAttribute('fontSize', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingDefaultValue)('fontSize', currentDevice, _attributes__WEBPACK_IMPORTED_MODULE_14__["default"]),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingDefaultUnit)('fontSize', currentDevice, _attributes__WEBPACK_IMPORTED_MODULE_14__["default"])
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'fontSize',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingDefaultValue)('fontSize', currentDevice, _attributes__WEBPACK_IMPORTED_MODULE_14__["default"])
       });
     }
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_8__.Select, {
@@ -2035,10 +2330,11 @@ function Edit(props) {
     }
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_11__.Typography, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Typography', 'athemes-blocks'),
-    attributeId: "textTypography",
+    settingId: "textTypography",
     attributes: atts,
     setAttributes: setAttributes,
     attributesDefaults: _attributes__WEBPACK_IMPORTED_MODULE_14__["default"],
+    setUpdateCss: setUpdateCss,
     subFields: ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_dimensions_dimensions__WEBPACK_IMPORTED_MODULE_12__.Dimensions, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Padding', 'athemes-blocks'),
@@ -2056,18 +2352,32 @@ function Edit(props) {
       value: 'left'
     }],
     value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getDimensionsSettingValue)('padding', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingUnit)('padding', currentDevice, atts),
     directionsValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getDimensionsSettingDirectionsValue)('padding', currentDevice, atts),
     connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getDimensionsSettingConnectValue)('padding', currentDevice, atts),
     responsive: true,
+    units: ['px', 'em', 'rem'],
     reset: true,
     onChange: value => {
       updateAttribute('padding', {
         value: value.value,
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingUnit)('padding', currentDevice, atts),
         connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getDimensionsSettingConnectValue)('padding', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'padding',
         value: value.value
+      });
+    },
+    onChangeUnit: value => {
+      updateAttribute('padding', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)('padding', currentDevice, atts),
+        unit: value,
+        connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getDimensionsSettingConnectValue)('padding', currentDevice, atts)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'padding',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_16__.getSettingValue)('padding', currentDevice, atts)
       });
     },
     onClickReset: () => {
@@ -2129,17 +2439,16 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {Function} - A function that updates a specific attribute.
  */
 const createAttributeUpdater = (attributes, setAttributes) => {
-  return (attributeName, value, device = null) => {
+  return (settingId, value, device = null) => {
     const valueIsObject = typeof value === 'object';
 
     // Update the attribute for the current device
     if (device) {
-      console.log(value);
       setAttributes({
-        [attributeName]: {
-          ...attributes[attributeName],
+        [settingId]: {
+          ...attributes[settingId],
           [device]: valueIsObject ? {
-            ...attributes[attributeName][device].value,
+            ...attributes[settingId][device].value,
             ...value
           } : value
         }
@@ -2150,15 +2459,15 @@ const createAttributeUpdater = (attributes, setAttributes) => {
     // Update the attribute for all devices
     if (valueIsObject) {
       setAttributes({
-        [attributeName]: {
-          ...attributes[attributeName].value,
+        [settingId]: {
+          ...attributes[settingId].value,
           ...value
         }
       });
       return;
     }
     setAttributes({
-      [attributeName]: value
+      [settingId]: value
     });
   };
 };
@@ -2166,29 +2475,37 @@ const createAttributeUpdater = (attributes, setAttributes) => {
 /**
  * A curried function to update inner control attributes.
  * 
- * @param {string} attributeId - The ID of the inner control attribute.
+ * @param {string} settingId - The ID of the inner control attribute.
  * @param {Object} attributes - The current attributes object.
  * @param {Function} setAttributes - The setAttributes function from the block editor.
  * 
  * @returns {Function} - A function that updates a specific inner control attribute.
  */
-const createInnerControlAttributeUpdater = (attributeId, attributes, setAttributes) => {
-  return (attributeName, value, device = null) => {
+const createInnerControlAttributeUpdater = (settingId, attributes, setAttributes) => {
+  return (innerSettingId, value, device = null) => {
     const valueIsObject = typeof value === 'object';
 
     // Update the attribute for the current device
     if (device) {
       setAttributes({
-        [attributeId]: {
-          typographySettings: {
-            ...attributes[attributeId]?.typographySettings,
-            [attributeName]: valueIsObject ? {
-              ...attributes[attributeId]?.typographySettings[attributeName],
-              [device]: {
-                ...attributes[attributeId]?.typographySettings[attributeName]?.[device],
-                ...value
+        [settingId]: {
+          innerSettings: {
+            ...attributes[settingId]?.innerSettings,
+            [innerSettingId]: {
+              ...attributes[settingId]?.innerSettings[innerSettingId],
+              ...{
+                default: {
+                  ...attributes[settingId]?.innerSettings[innerSettingId]?.default,
+                  [device]: valueIsObject ? {
+                    ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
+                    ...value
+                  } : {
+                    ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
+                    value
+                  }
+                }
               }
-            } : value
+            }
           }
         }
       });
@@ -2198,10 +2515,10 @@ const createInnerControlAttributeUpdater = (attributeId, attributes, setAttribut
     // Update the attribute for all devices
     if (valueIsObject) {
       setAttributes({
-        [attributeId]: {
-          ...attributes[attributeId].typographySettings,
-          [attributeName]: {
-            ...attributes[attributeId].typographySettings[attributeName].value,
+        [settingId]: {
+          ...attributes[settingId].innerSettings,
+          [innerSettingId]: {
+            ...attributes[settingId].innerSettings[innerSettingId].default[device].value,
             ...value
           }
         }
@@ -2209,9 +2526,15 @@ const createInnerControlAttributeUpdater = (attributeId, attributes, setAttribut
       return;
     }
     setAttributes({
-      [attributeId]: {
-        ...attributes[attributeId].typographySettings,
-        [attributeName]: value
+      [settingId]: {
+        innerSettings: {
+          [innerSettingId]: {
+            ...attributes[settingId].innerSettings[innerSettingId],
+            ...{
+              default: value
+            }
+          }
+        }
       }
     });
   };
@@ -2240,13 +2563,17 @@ __webpack_require__.r(__webpack_exports__);
  * 
  * @returns {void}
  */
-function applyPreviewCSS(css, clientId, settingId) {
+function applyPreviewCSS(css, clientId, settingId, innerSettingId = null) {
   const blockIframe = document.querySelector(`iframe[name="editor-canvas"]`);
   if (blockIframe?.contentDocument) {
-    let styleTag = blockIframe.contentDocument.getElementById(`athemes-blocks-editor-preview-css-${settingId}-${clientId}`);
+    let styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
+    if (innerSettingId) {
+      styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${innerSettingId}-${clientId}`;
+    }
+    let styleTag = blockIframe.contentDocument.getElementById(styleTagId);
     if (!styleTag) {
       styleTag = blockIframe.contentDocument.createElement('style');
-      styleTag.id = `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
+      styleTag.id = styleTagId;
       blockIframe.contentDocument.head.appendChild(styleTag);
     }
     styleTag.innerHTML = css;
@@ -2271,19 +2598,28 @@ function getControlCSS(cssData, clientId, attributes) {
     selectors,
     property
   } = cssData.css;
-  const attributeName = cssData.attibuteName;
+  const settingId = cssData.settingId;
+  const innerSettingId = cssData?.innerSettingId;
 
   // Ensure the keys are always in this order. It is crucial for the CSS to work correctly.
   const sortedKeys = ['mobile', 'tablet', 'desktop'];
   const sortedAttributeValue = {};
   sortedKeys.forEach(key => {
-    sortedAttributeValue[key] = attributes[attributeName][key];
+    if (innerSettingId) {
+      sortedAttributeValue[key] = attributes[settingId].innerSettings[innerSettingId].default[key];
+    } else {
+      sortedAttributeValue[key] = attributes[settingId][key];
+    }
   });
 
   // Check if the attribute value data is a color picker object.
   let isColorPicker = false;
   if (sortedAttributeValue.desktop.value.defaultState || sortedAttributeValue.desktop.value.hoverState) {
     isColorPicker = true;
+  }
+  let isDimensions = false;
+  if (sortedAttributeValue.desktop.value.top || sortedAttributeValue.desktop.value.right || sortedAttributeValue.desktop.value.bottom || sortedAttributeValue.desktop.value.left) {
+    isDimensions = true;
   }
 
   // Generate the CSS for each device.
@@ -2296,6 +2632,8 @@ function getControlCSS(cssData, clientId, attributes) {
           if (isColorPicker) {
             css += `@media (min-width: 1025px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
             css += `@media (min-width: 1025px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+          } else if (isDimensions) {
+            css += `@media (min-width: 1025px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
           } else {
             css += `@media (min-width: 1025px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
           }
@@ -2306,6 +2644,8 @@ function getControlCSS(cssData, clientId, attributes) {
           if (isColorPicker) {
             css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
             css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+          } else if (isDimensions) {
+            css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
           } else {
             css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
           }
@@ -2316,6 +2656,8 @@ function getControlCSS(cssData, clientId, attributes) {
           if (isColorPicker) {
             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
             css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+          } else if (isDimensions) {
+            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
           } else {
             css += `${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; }`;
           }
@@ -2345,6 +2687,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getDimensionsSettingDefaultValue: () => (/* binding */ getDimensionsSettingDefaultValue),
 /* harmony export */   getDimensionsSettingDirectionsValue: () => (/* binding */ getDimensionsSettingDirectionsValue),
 /* harmony export */   getDimensionsSettingValue: () => (/* binding */ getDimensionsSettingValue),
+/* harmony export */   getInnerSettingDefaultUnit: () => (/* binding */ getInnerSettingDefaultUnit),
+/* harmony export */   getInnerSettingDefaultValue: () => (/* binding */ getInnerSettingDefaultValue),
+/* harmony export */   getInnerSettingValue: () => (/* binding */ getInnerSettingValue),
 /* harmony export */   getSettingDefaultUnit: () => (/* binding */ getSettingDefaultUnit),
 /* harmony export */   getSettingDefaultValue: () => (/* binding */ getSettingDefaultValue),
 /* harmony export */   getSettingUnit: () => (/* binding */ getSettingUnit),
@@ -2480,6 +2825,48 @@ function getDimensionsSettingConnectValue(settingId, device, attributes) {
  */
 function getDimensionsSettingDefaultValue(settingId, device, attributesDefaults) {
   return attributesDefaults[settingId]?.default?.[device];
+}
+
+/**
+ * Get the value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributes - The attributes object.
+ * 
+ * @returns {string} - The value of the setting.
+ */
+function getInnerSettingValue(settingId, innerSettingId, device, attributes) {
+  return attributes[settingId]?.innerSettings?.[innerSettingId]?.default?.[device]?.value;
+}
+
+/**
+ * Get the default value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributesDefaults - The default attributes object.
+ * 
+ * @returns {string} - The default value of the setting.
+ */
+function getInnerSettingDefaultValue(settingId, innerSettingId, device, attributesDefaults) {
+  return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.value;
+}
+
+/**
+ * Get the default unit value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributesDefaults - The default attributes object.
+ * 
+ * @returns {string} - The default value of the setting.
+ */
+function getInnerSettingDefaultUnit(settingId, innerSettingId, device, attributesDefaults) {
+  return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.unit;
 }
 
 /***/ }),

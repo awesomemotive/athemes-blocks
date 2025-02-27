@@ -6,13 +6,15 @@ import { store as deviceSwitcherStore } from '../../store/device-switcher-store'
 import { BaseControl, __experimentalNumberControl as NumberControl, Button } from '@wordpress/components';
 import { Icon, link, linkOff } from '@wordpress/icons';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
+import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 import { styles } from './styles';
 
 export function Dimensions( props ) {
-    const { label, value, directionsValue, directions, connect, responsive, reset, onChange, onClickReset } = props;
+    const { label, value, defaultUnit, directionsValue, directions, connect, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
     const [ inputNumberValues, setInputNumberValues ] = useState( directionsValue );
+    const [ valueUnit, setValueUnit ] = useState( defaultUnit );
     const [ valueToReturn, setValueToReturn ] = useState(value);
     const [ isConnected, setIsConnected ] = useState( connect );
 
@@ -33,6 +35,7 @@ export function Dimensions( props ) {
                     bottom: newValue,
                     left: newValue
                 },
+                unit: valueUnit,
                 connect: true
             } );
         } else {
@@ -42,6 +45,7 @@ export function Dimensions( props ) {
                     ...inputNumberValues,
                     [directionKey]: newValue
                 },
+                unit: valueUnit,
                 connect: false
             } );
         }
@@ -59,6 +63,7 @@ export function Dimensions( props ) {
                     bottom: inputNumberValues.top,
                     left: inputNumberValues.top
                 },
+                unit: valueUnit,
                 connect: false
             } );
         } else {
@@ -70,6 +75,7 @@ export function Dimensions( props ) {
                     bottom: inputNumberValues.bottom,
                     left: inputNumberValues.left
                 },
+                unit: valueUnit,
                 connect: true
             } );
         }
@@ -78,7 +84,8 @@ export function Dimensions( props ) {
     // Update directionsValue, the input number values.
     useEffect( () => {
         setInputNumberValues( directionsValue );
-    }, [ value ] );
+        setValueUnit( defaultUnit );
+    }, [ value, defaultUnit ] );
 
     // Update the value to return to the main control.
     // It must return an object with the value with this data structure:
@@ -108,6 +115,15 @@ export function Dimensions( props ) {
                     reset && (
                         <ResetValues 
                             onClick={ onClickReset }
+                        />
+                    )
+                }
+                {
+                    units && (
+                        <UnitSwitcher
+                            units={units}
+                            value={valueUnit}
+                            onChange={ onChangeUnit }
                         />
                     )
                 }

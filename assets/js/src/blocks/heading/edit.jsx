@@ -16,7 +16,7 @@ import { createAttributeUpdater } from '../../utils/block-attributes';
 import attributesDefaults from './attributes';
 import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
 
-import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue } from '../../utils/settings';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../utils/settings';
 import { applyPreviewCSS, getControlCSS } from '../../utils/css';
 
 export default function Edit( props ) {
@@ -28,18 +28,77 @@ export default function Edit( props ) {
 
 	const [ updateCss, setUpdateCss ] = useState(false);
 
+	// Watch for changes in the updateCss state and apply the CSS.
 	useEffect(() => {
 		if ( updateCss ) {
-			const settingId = updateCss?.settingId;
-			const cssData = {
-				css: attributesDefaults[settingId]?.css,
-				attibuteName: settingId
-			};
-			const css = getControlCSS( cssData, clientId, atts );
+			if ( updateCss.type === 'all' ) {
+				updateCss.settings.forEach( setting => {
+					const cssData = {
+						css: setting.css,
+						settingId: setting.settingId,
+						innerSettingId: setting?.innerSettingId ? setting.innerSettingId : null
+					};
+					const css = getControlCSS( cssData, clientId, atts );
 
-			applyPreviewCSS( css, clientId, settingId );
+					applyPreviewCSS( css, clientId, setting.settingId, setting.innerSettingId );
+				});
+			} else if ( updateCss.type === 'inner-control' ) {
+				const cssData = {
+					css: attributesDefaults[updateCss.settingId].default?.innerSettings[updateCss.innerSettingId]?.css,
+					settingId: updateCss.settingId,
+					innerSettingId: updateCss.innerSettingId
+				};
+				const css = getControlCSS( cssData, clientId, atts );
+
+				applyPreviewCSS( css, clientId, updateCss.settingId, updateCss.innerSettingId );
+			} else {
+				const settingId = updateCss?.settingId;
+				const cssData = {
+					css: attributesDefaults[settingId]?.css,
+					settingId: settingId
+				};
+				const css = getControlCSS( cssData, clientId, atts );
+
+				applyPreviewCSS( css, clientId, settingId );
+			}
 		}
 	}, [ updateCss ]);
+
+	// Render the CSS for the first load.
+	useEffect(() => {
+		const allSettings = Object.keys( attributesDefaults );
+		const allSettingsStyles = [];
+
+		allSettings.forEach(settingId => {
+			const isInnerSetting = attributesDefaults[settingId]?.default?.innerSettings;
+
+			if ( isInnerSetting ) {
+				const allInnerSettings = Object.keys( attributesDefaults[settingId].default.innerSettings );
+
+				allInnerSettings.forEach(innerSettingId => {
+					allSettingsStyles.push({
+						type: 'inner-setting',
+						settingId: settingId,
+						innerSettingId: innerSettingId,
+						value: getInnerSettingValue( settingId, innerSettingId, currentDevice, atts ),
+						css: attributesDefaults[settingId].default.innerSettings[innerSettingId].css
+					});
+				});
+			} else {
+				allSettingsStyles.push({
+					type: 'setting',
+					settingId: settingId,
+					value: getSettingValue( settingId, currentDevice, atts ),
+					css: attributesDefaults[settingId].css
+				});
+			}
+		});
+
+		setUpdateCss({
+			type: 'all',
+			settings: allSettingsStyles
+		});
+	}, []);
 
 	return (
 		<div>
@@ -84,7 +143,7 @@ export default function Edit( props ) {
 									} }
 								/>
 
-								<RangeSlider 
+								{/* <RangeSlider 
 									label={ __( 'Font size', 'athemes-blocks' ) }
 									defaultValue={ getSettingValue( 'fontSize', currentDevice, atts ) }
 									defaultUnit={ getSettingUnit( 'fontSize', currentDevice, atts ) }
@@ -117,7 +176,7 @@ export default function Edit( props ) {
 										
 										setUpdateCss( { settingId: 'fontSize', value: getSettingDefaultValue( 'fontSize', currentDevice, attributesDefaults ) } );
 									} }
-								/>
+								/> */}
 
 								<Select
 									label={ __( 'Font family', 'athemes-blocks' ) }
@@ -202,10 +261,11 @@ export default function Edit( props ) {
 
 								<Typography
 									label={ __( 'Typography', 'athemes-blocks' ) }
-									attributeId="textTypography"
+									settingId="textTypography"
 									attributes={ atts }
 									setAttributes={ setAttributes }
 									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
 									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
 								/>
 
@@ -218,17 +278,29 @@ export default function Edit( props ) {
 										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
 									]}
 									value={ getDimensionsSettingValue( 'padding', currentDevice, atts ) }
+									defaultUnit={ getSettingUnit( 'padding', currentDevice, atts ) }
 									directionsValue={ getDimensionsSettingDirectionsValue( 'padding', currentDevice, atts ) }
 									connect={getDimensionsSettingConnectValue( 'padding', currentDevice, atts )}
 									responsive={ true }
+									units={['px', 'em', 'rem']}
 									reset={true}
 									onChange={ ( value ) => {
 										updateAttribute( 'padding', {
 											value: value.value,
+											unit: getSettingUnit( 'padding', currentDevice, atts ),
 											connect: getDimensionsSettingConnectValue( 'padding', currentDevice, atts )
 										}, currentDevice );
 
 										setUpdateCss( { settingId: 'padding', value: value.value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'padding', {
+											value: getSettingValue( 'padding', currentDevice, atts ),
+											unit: value,
+											connect: getDimensionsSettingConnectValue( 'padding', currentDevice, atts )
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'padding', value: getSettingValue( 'padding', currentDevice, atts ) } );
 									} }
 									onClickReset={ () => {
 										updateAttribute( 'padding', getDimensionsSettingDefaultValue( 'padding', currentDevice, attributesDefaults ), currentDevice );

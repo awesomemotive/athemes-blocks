@@ -129,3 +129,45 @@ export function getDimensionsSettingConnectValue( settingId, device, attributes 
 export function getDimensionsSettingDefaultValue( settingId, device, attributesDefaults ) {
     return attributesDefaults[settingId]?.default?.[device];
 }
+
+/**
+ * Get the value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributes - The attributes object.
+ * 
+ * @returns {string} - The value of the setting.
+ */
+export function getInnerSettingValue( settingId, innerSettingId, device, attributes ) {
+    return attributes[settingId]?.innerSettings?.[innerSettingId]?.default?.[device]?.value;
+}
+
+/**
+ * Get the default value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributesDefaults - The default attributes object.
+ * 
+ * @returns {string} - The default value of the setting.
+ */
+export function getInnerSettingDefaultValue( settingId, innerSettingId, device, attributesDefaults ) {
+    return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.value;
+}
+
+/**
+ * Get the default unit value of a inner setting.
+ * 
+ * @param {string} settingId - The ID of the setting.
+ * @param {string} innerSettingId - The ID of the inner setting.
+ * @param {string} device - The device type.
+ * @param {Object} attributesDefaults - The default attributes object.
+ * 
+ * @returns {string} - The default value of the setting.
+ */
+export function getInnerSettingDefaultUnit( settingId, innerSettingId, device, attributesDefaults ) {
+    return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.unit;
+}

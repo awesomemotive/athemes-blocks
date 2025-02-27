@@ -314,30 +314,30 @@ export default {
         default: {
             desktop: {
                 value: {
-                    top: '',
-                    right: '',
-                    bottom: '',
-                    left: '',
+                    top: 10,
+                    right: 20,
+                    bottom: 10,
+                    left: 20,
                 },
                 unit: 'px',
                 connect: false,
             },
             tablet: {
                 value: {
-                    top: '',
-                    right: '',
-                    bottom: '',
-                    left: '',
+                    top: 30,
+                    right: 40,
+                    bottom: 50,
+                    left: 60,
                 },
                 unit: 'px',
                 connect: false,
             },
             mobile: {
                 value: {
-                    top: '',
-                    right: '',
-                    bottom: '',
-                    left: '',
+                    top: 1,
+                    right: 2,
+                    bottom: 1,
+                    left: 4,
                 },
                 unit: 'px',
                 connect: false,

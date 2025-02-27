@@ -3,16 +3,10 @@
 	"apiVersion": 3,
 	"name": "athemes-blocks/flex-container",
 	"version": "1.0.0",
-	"title": "Flex Container",
+	"title": "Container",
 	"category": "athemes-blocks",
 	"icon": "formatBold",
 	"description": "A container block that allows you to create a flex layout.",
-	"attributes": {
-		"preset": {
-			"type": "string",
-			"default": "default"
-		}
-	},
 	"textdomain": "athemes-blocks",
 	"editorScript": "file:./index.js",
 	"style": "file:./style.css"
