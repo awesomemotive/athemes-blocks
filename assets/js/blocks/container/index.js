@@ -2557,18 +2557,21 @@ __webpack_require__.r(__webpack_exports__);
  */
 function applyPreviewCSS(css, clientId, settingId, innerSettingId = null) {
   const blockIframe = document.querySelector(`iframe[name="editor-canvas"]`);
-  if (blockIframe?.contentDocument) {
-    let styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
-    if (innerSettingId) {
-      styleTagId = `athemes-blocks-editor-preview-css-${settingId}-${innerSettingId}-${clientId}`;
-    }
-    let styleTag = blockIframe.contentDocument.getElementById(styleTagId);
+  const styleTagId = innerSettingId ? `athemes-blocks-editor-preview-css-${settingId}-${innerSettingId}-${clientId}` : `athemes-blocks-editor-preview-css-${settingId}-${clientId}`;
+  const applyCss = doc => {
+    if (!doc) return;
+    let styleTag = doc.getElementById(styleTagId);
     if (!styleTag) {
-      styleTag = blockIframe.contentDocument.createElement('style');
+      styleTag = doc.createElement('style');
       styleTag.id = styleTagId;
-      blockIframe.contentDocument.head.appendChild(styleTag);
+      doc.head.appendChild(styleTag);
     }
     styleTag.innerHTML = css;
+  };
+  if (blockIframe?.contentDocument) {
+    applyCss(blockIframe.contentDocument);
+  } else {
+    applyCss(document);
   }
 }
 ;
@@ -2603,22 +2606,28 @@ function getControlCSS(cssData, clientId, attributes) {
       sortedAttributeValue[key] = attributes[settingId][key];
     }
   });
-
-  // Check if the attribute value data is a color picker object.
-  let isColorPicker = false;
-  if (sortedAttributeValue.desktop.value.defaultState || sortedAttributeValue.desktop.value.hoverState) {
-    isColorPicker = true;
-  }
-  let isDimensions = false;
-  if (sortedAttributeValue.desktop.value.top || sortedAttributeValue.desktop.value.right || sortedAttributeValue.desktop.value.bottom || sortedAttributeValue.desktop.value.left) {
-    isDimensions = true;
-  }
+  const isColorPicker = ['defaultState', 'hoverState'].some(prop => Object.prototype.hasOwnProperty.call(sortedAttributeValue.desktop.value, prop));
+  const isDimensions = ['top', 'right', 'bottom', 'left'].some(prop => Object.prototype.hasOwnProperty.call(sortedAttributeValue.desktop.value, prop));
 
   // Generate the CSS for each device.
   let css = '';
   for (const device in sortedAttributeValue) {
     if (sortedAttributeValue[device]) {
+      const valueIsObject = typeof sortedAttributeValue[device].value === 'object';
       const unit = sortedAttributeValue[device].unit ? sortedAttributeValue[device].unit : '';
+      if (sortedAttributeValue[device].value === '') {
+        continue;
+      }
+      if (isColorPicker && valueIsObject) {
+        if (sortedAttributeValue[device].value.defaultState === '' && sortedAttributeValue[device].value.hoverState === '') {
+          continue;
+        }
+      }
+      if (isDimensions && valueIsObject) {
+        if (sortedAttributeValue[device].value.top === '' && sortedAttributeValue[device].value.right === '' && sortedAttributeValue[device].value.bottom === '' && sortedAttributeValue[device].value.left === '') {
+          continue;
+        }
+      }
       if (device === 'desktop') {
         selectors.forEach(selector => {
           if (isColorPicker) {
@@ -2651,7 +2660,7 @@ function getControlCSS(cssData, clientId, attributes) {
           } else if (isDimensions) {
             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
           } else {
-            css += `${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; }`;
+            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
           }
         });
       }

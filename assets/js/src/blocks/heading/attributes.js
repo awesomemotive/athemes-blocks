@@ -3,13 +3,13 @@ export default {
         type: 'object',
         default: {
             desktop: {
-                value: 'left',
+                value: '',
             },
             tablet: {
-                value: 'center',
+                value: '',
             },
             mobile: {
-                value: 'right',
+                value: '',
             },
         },
         css: {
@@ -48,15 +48,15 @@ export default {
         type: 'object',
         default: {
             desktop: {
-                value: 140,
+                value: '',
                 unit: 'px',
             },
             tablet: {
-                value: 130,
+                value: '',
                 unit: 'px',
             },
             mobile: {
-                value: 120,
+                value: '',
                 unit: 'px',
             },
         },
@@ -108,20 +108,20 @@ export default {
         default: {
             desktop: {
                 value: {
-                    defaultState: 'transparent',
-                    hoverState: '#CCC'
+                    defaultState: '',
+                    hoverState: ''
                 }
             },
             tablet: {
                 value: {
-                    defaultState: '#CCC',
-                    hoverState: '#CCC'
+                    defaultState: '',
+                    hoverState: ''
                 }
             },
             mobile: {
                 value: {
-                    defaultState: '#f5f5f5',
-                    hoverState: '#CCC'
+                    defaultState: '',
+                    hoverState: ''
                 }
             },
         },
@@ -160,15 +160,15 @@ export default {
                 fontSize: {
                     default: {
                         desktop: {
-                            value: 40,
+                            value: '',
                             unit: 'px',
                         },
                         tablet: {
-                            value: 30,
+                            value: '',
                             unit: 'px',
                         },
                         mobile: {
-                            value: 20,
+                            value: '',
                             unit: 'px',
                         },
                     },
