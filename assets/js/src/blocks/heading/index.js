@@ -5,7 +5,7 @@ import save from './save';
 import metadata from './block.json';
 import atts from './attributes';
 import { Icon, settings } from '@wordpress/icons';
-import './style.scss';
+
 registerBlockType( metadata.name, {
 	icon: {
 		src: (

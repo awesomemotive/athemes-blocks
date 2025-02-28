@@ -1,4 +1,8 @@
 export default {
+    content: {
+        type: 'string',
+        default: '',
+    },
     alignment: {
         type: 'object',
         default: {

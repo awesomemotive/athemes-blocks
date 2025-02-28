@@ -3,8 +3,55 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const sass = require('sass');
 const path = require('path');
 const fs = require('fs');
+
+// Custom plugin to delete files after copying
+class DeleteAfterCopyPlugin {
+    constructor(filesToDelete) {
+        this.filesToDelete = filesToDelete;
+    }
+
+    apply(compiler) {
+        compiler.hooks.afterEmit.tap('DeleteAfterCopyPlugin', (compilation) => {
+            this.filesToDelete.forEach((file) => {
+                if (fs.existsSync(file)) {
+                    fs.unlinkSync(file);
+                    console.log(`Deleted: ${file}`);
+                }
+            });
+        });
+    }
+}
+
+class AfterBuildPlugin {
+    constructor(scssConfig) {
+        this.scssConfig = scssConfig; // SCSS compilation configuration
+    }
+
+    apply(compiler) {
+        compiler.hooks.afterEmit.tap('AfterBuildPlugin', (compilation) => {
+            console.log('Build completed. Running SCSS compilation task...');
+
+            // Compile SCSS files
+            this.scssConfig.forEach((config) => {
+                const { input, output } = config;
+                this.compileScss(input, output);
+            });
+        });
+    }
+
+    compileScss(input, output) {
+        try {
+            const result = sass.compile(input, { style: 'compressed' });
+            fs.writeFileSync(output, result.css);
+            console.log(`Compiled: ${input} -> ${output}`);
+        } catch (error) {
+            console.error(`Failed to compile SCSS: ${input}`, error);
+        }
+    }
+}
 
 // Get all block directories inside ./assets/js/src/blocks/
 const blocksDir = path.resolve(__dirname, 'assets/js/src/blocks/');
@@ -27,24 +74,16 @@ const copyPatterns = blockFolders.flatMap((folder) => [
     {
         from: path.join(blocksDir, folder, 'render.php'),
         to: path.join(__dirname, 'assets/js/blocks/', folder, 'render.php'),
-    },
-    {
-        from: path.join(__dirname, 'assets/js/blocks/', '', `style-${folder}.css`),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, `style-${folder}.css`),
     }
 ]);
 
-// Delete specific files.
-const deleteFiles = blockFolders.flatMap((folder) => [
-    {
-        from: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
-    },
-    {
-        from: path.join(__dirname, 'assets/js/blocks/', folder, 'style.scss'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'style.scss'),
+const deleteFileTask = () => {
+    const filePath = path.resolve(__dirname, 'build/style-container.css');
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`Deleted: ${filePath}`);
     }
-]);
+};
 
 module.exports = [
     // Blocks Configuration
@@ -61,14 +100,18 @@ module.exports = [
         plugins: [
             ...defaultConfig.plugins,
             new CopyWebpackPlugin({ patterns: copyPatterns }),
-            new CleanWebpackPlugin({
-                cleanOnceBeforeBuildPatterns: ['**/render.php'], // Deletes all render.php files
-                verbose: true, // Logs deleted files
-            }),
+            new AfterBuildPlugin(
+                blockFolders.flatMap((folder) => [
+                    {
+                        input: path.join(blocksDir, folder, 'style.scss'),
+                        output: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
+                    },
+                ])
+            ),                
         ],
     },
 
-    // SCSS Compilation Configuration
+    // Global SCSS Compilation Configuration
     {
         entry: {
             'Is': path.resolve(__dirname, 'assets/sass/block-editor.scss'),
@@ -95,4 +138,63 @@ module.exports = [
             }),
         ]
     },
+
+     // Copy Generated CSS Files Configuration
+    //  {
+    //     entry: {}, // No entry points needed for this task
+    //     output: {
+    //         path: path.resolve(__dirname, 'assets/js/blocks/'),
+    //     },
+    //     plugins: [
+    //         new CopyWebpackPlugin({
+    //             patterns: blockFolders.flatMap((folder) => [
+    //                 {
+    //                     from: path.join(__dirname, 'assets/js/blocks/', './', `style-${folder}.css`),
+    //                     to: path.join(__dirname, 'assets/js/blocks/', folder, `style-${folder}.css`),
+    //                 },
+    //                 {
+    //                     from: path.join(__dirname, 'assets/js/blocks/', './', `style-${folder}.css.map`),
+    //                     to: path.join(__dirname, 'assets/js/blocks/', folder, `style-${folder}.css.map`),
+    //                 },
+    //             ])
+    //         }),
+    //          // Delete the origin file after copying
+    //         new DeleteAfterCopyPlugin(
+    //             blockFolders.flatMap((folder) => [
+    //                 path.join(__dirname, 'assets/js/blocks/', './', `style-${folder}.css`),
+    //                 path.join(__dirname, 'assets/js/blocks/', './', `style-${folder}.css.map`)
+    //             ])
+    //         ),
+    //     ],
+    // },
+
+    // {
+    //     entry: {
+    //         'container': path.resolve(__dirname, 'assets/js/src/blocks/container/style.scss'),
+    //         'heading': path.resolve(__dirname, 'assets/js/src/blocks/heading/style.scss'),
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'assets/js/blocks/'),
+    //         filename: '[name]/[name].css', // Output CSS files directly
+    //     },
+    //     module: {
+    //         rules: [
+    //             {
+    //                 test: /\.scss$/,
+    //                 use: [
+    //                     MiniCssExtractPlugin.loader,
+    //                     'css-loader',
+    //                     'sass-loader',
+    //                 ],
+    //             },
+    //         ],
+    //     },
+    //     plugins: [
+    //         new MiniCssExtractPlugin({
+    //             filename: '[name].css', // Output CSS files
+    //         }),
+            
+    //     ],
+    // }
 ];
+

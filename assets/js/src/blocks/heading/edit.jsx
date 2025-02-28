@@ -4,6 +4,8 @@ import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
+import { RichText } from '@wordpress/block-editor';
+
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
 import { Select } from '../../block-editor/controls/select/select';
@@ -21,6 +23,7 @@ import { applyPreviewCSS, getControlCSS } from '../../utils/css';
 
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
+	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
@@ -315,9 +318,12 @@ export default function Edit( props ) {
 			</InspectorControls>
 			
 			<div class="at-block" { ...useBlockProps() }>
-				<h1>
-					The heading text here.
-				</h1>
+				<RichText
+					tagName="h1"
+					value={ content }
+					onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+					placeholder={ __( 'Type your heading here...', 'text-domain' ) }
+				/>
 			</div>
 
 		</div>
