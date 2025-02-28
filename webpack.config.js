@@ -1,6 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
 const fs = require('fs');
@@ -18,10 +19,32 @@ const entries = blockFolders.reduce((acc, folder) => {
 }, {});
 
 // Generate copy patterns for block.json files.
-const copyPatterns = blockFolders.map((folder) => ({
-    from: path.join(blocksDir, folder, 'block.json'),
-    to: path.join(__dirname, 'assets/js/blocks/', folder, 'block.json'),
-}));
+const copyPatterns = blockFolders.flatMap((folder) => [
+    {
+        from: path.join(blocksDir, folder, 'block.json'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'block.json'),
+    },
+    {
+        from: path.join(blocksDir, folder, 'render.php'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'render.php'),
+    },
+    {
+        from: path.join(__dirname, 'assets/js/blocks/', '', `style-${folder}.css`),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, `style-${folder}.css`),
+    }
+]);
+
+// Delete specific files.
+const deleteFiles = blockFolders.flatMap((folder) => [
+    {
+        from: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
+    },
+    {
+        from: path.join(__dirname, 'assets/js/blocks/', folder, 'style.scss'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'style.scss'),
+    }
+]);
 
 module.exports = [
     // Blocks Configuration
@@ -32,13 +55,16 @@ module.exports = [
             ...entries,
         },
         output: {
-            ...defaultConfig.output,
             filename: '[name]/index.js',
             path: path.resolve(__dirname, 'assets/js/blocks/'),
         },
         plugins: [
             ...defaultConfig.plugins,
             new CopyWebpackPlugin({ patterns: copyPatterns }),
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: ['**/render.php'], // Deletes all render.php files
+                verbose: true, // Logs deleted files
+            }),
         ],
     },
 
