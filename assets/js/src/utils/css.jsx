@@ -96,44 +96,50 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 }
             }
 
-            if ( device === 'desktop' ) {
-                selectors.forEach( selector => {
-                    if ( isColorPicker ) {
-                        css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }; } }`;
-                        css += `@media (min-width: 1025px) { ${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }; } }`;
-                    } else if ( isDimensions ) { 
-                        css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.top }${unit} ${ sortedAttributeValue[device].value.right }${unit} ${ sortedAttributeValue[device].value.bottom }${unit} ${ sortedAttributeValue[device].value.left }${unit}; } }`;
-                    } else {
-                        css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}; } }`;
-                    }
-                });
-            }
+            const selectors_is_key_value_pair = selectors instanceof Object && selectors !== null && !Array.isArray(selectors);
 
-            if ( device === 'tablet' ) {
-                selectors.forEach( selector => {
-                    if ( isColorPicker ) {
-                        css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
-                        css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
-                    } else if ( isDimensions ) {
-                        css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
-                    } else {
-                        css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
-                    }
-                });
-            }
+            if ( selectors_is_key_value_pair ) {
 
-            if ( device === 'mobile' ) {
-                selectors.forEach( selector => {
-                    if ( isColorPicker ) {
-                        css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
-                        css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
-                    } else if ( isDimensions) {
-                        css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
-                    } else {
-                        css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
-                    }
-                });
-            } 
+            } else {
+                if ( device === 'desktop' ) {
+                    selectors.forEach( selector => {
+                        if ( isColorPicker ) {
+                            css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }; } }`;
+                            css += `@media (min-width: 1025px) { ${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }; } }`;
+                        } else if ( isDimensions ) { 
+                            css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value.top }${unit} ${ sortedAttributeValue[device].value.right }${unit} ${ sortedAttributeValue[device].value.bottom }${unit} ${ sortedAttributeValue[device].value.left }${unit}; } }`;
+                        } else {
+                            css += `@media (min-width: 1025px) { ${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}; } }`;
+                        }
+                    });
+                }
+    
+                if ( device === 'tablet' ) {
+                    selectors.forEach( selector => {
+                        if ( isColorPicker ) {
+                            css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
+                            css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                        } else if ( isDimensions ) {
+                            css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
+                        } else {
+                            css += `@media (min-width: 768px) and (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
+                        }
+                    });
+                }
+    
+                if ( device === 'mobile' ) {
+                    selectors.forEach( selector => {
+                        if ( isColorPicker ) {
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
+                            css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                        } else if ( isDimensions) {
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
+                        } else {
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
+                        }
+                    });
+                } 
+            }
         }        
     }
 

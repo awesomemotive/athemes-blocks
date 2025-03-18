@@ -13,11 +13,12 @@ import { Typography } from '../../block-editor/controls/typography/typography';
 import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
 import { createAttributeUpdater } from '../../utils/block-attributes';
 
-import attributesDefaults from './attributes';
 import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
 
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../utils/settings';
 import { applyPreviewCSS, getControlCSS } from '../../utils/css';
+
+const attributesDefaults = athemesBlocksAttributes.container.attributes;
 
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
@@ -27,6 +28,11 @@ export default function Edit( props ) {
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
 	const [ updateCss, setUpdateCss ] = useState(false);
+
+	// Save the Client ID to attributes.
+	useEffect(() => {
+		setAttributes({ clientId: clientId });
+	}, [clientId]);
 
 	// Watch for changes in the updateCss state and apply the CSS.
 	useEffect(() => {

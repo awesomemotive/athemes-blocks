@@ -3,7 +3,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
-import atts from './attributes';
 import { Icon, settings } from '@wordpress/icons';
 
 registerBlockType( metadata.name, {
@@ -19,7 +18,7 @@ registerBlockType( metadata.name, {
 	/**
 	 * @see ./attributes.js
 	 */
-	attributes: atts,
+	attributes: athemesBlocksAttributes.heading.attributes,
 
 	/**
 	 * @see ./edit.js

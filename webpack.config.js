@@ -74,6 +74,10 @@ const copyPatterns = blockFolders.flatMap((folder) => [
     {
         from: path.join(blocksDir, folder, 'render.php'),
         to: path.join(__dirname, 'assets/js/blocks/', folder, 'render.php'),
+    },
+    {
+        from: path.join(blocksDir, folder, 'attributes.php'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'attributes.php'),
     }
 ]);
 
