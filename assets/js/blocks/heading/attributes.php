@@ -91,8 +91,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
-                '{{WRAPPER}} .test'
+                '{{WRAPPER}} h1',
             ),
             'property' => 'font-family',
         )
@@ -309,7 +308,7 @@ return array(
                     'css' => array(
                         'selectors' => array(
                             '{{WRAPPER}} h1',
-                            '{{WRAPPER}} .test3'
+                            '{{WRAPPER}} .test3444'
                         ),
                         'property' => 'letter-spacing',
                     )

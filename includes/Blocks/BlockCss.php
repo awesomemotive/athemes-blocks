@@ -57,9 +57,9 @@ class BlockCss {
     public function get_block_css( $attributes, $block_id, $default_attributes ): string {
         $css = '';
         $media_queries = array(
-            'mobile' => '',
-            'tablet' => '@media (min-width: 768px) and (max-width: 1024px)',
-            'desktop' => '@media (min-width: 1025px)',
+            'desktop' => '',
+            'tablet' => '@media (max-width: 1024px)',
+            'mobile' => '@media (max-width: 767px)',
         );
 
         $responsive_values = array(
@@ -68,20 +68,37 @@ class BlockCss {
             'mobile' => array(),
         );
 
+        // var_dump($attributes['textTypography']);
+        // $inner_setting_id = ;
+
         foreach ( $default_attributes as $attribute_name => $attribute_settings ) {
             if ( ! isset( $attributes[$attribute_name] ) ) {
+                continue;
+            }
+// var_dump($attribute_name);
+
+            // Inner settings.
+            if ( isset( $attributes[$attribute_name]['innerSettings'] ) ) {
+                // recursive.
+                // var_dump($attributes[$attribute_name]['innerSettings']);
+                $attributes = $attributes[$attribute_name]['innerSettings'];
+                $block_id = $block_id;
+                $default_attributes = $attribute_settings['default']['innerSettings'];
+                // var_dump($attribute_settings['default']['innerSettings']);
+
+                $css .= self::get_block_css( $attributes, $block_id, $default_attributes );
                 continue;
             }
 
             if ( isset( $attribute_settings['css'] ) ) {
                 $selectors = $attribute_settings['css']['selectors'];
                 $property = $attribute_settings['css']['property'];
+                $attribute_data = isset( $attributes[$attribute_name]['default'] ) ? $attributes[$attribute_name]['default'] : $attributes[$attribute_name];
 
-                foreach ( $attributes[$attribute_name] as $device => $value ) {
+                foreach ( $attribute_data as $device => $value ) {
                     if ( empty( $value['value'] ) ) {
                         continue;
                     }
-
                     $value_is_object = is_array( $value['value'] );
                     $unit = isset( $value['unit'] ) ? $value['unit'] : '';
 
@@ -93,30 +110,22 @@ class BlockCss {
                     if ( $is_associative_array_selectors ) {
                         foreach ( $selectors as $selector => $selector_value ) {
                             $selector = str_replace( '{{WRAPPER}}', '.wp-block-athemes-blocks-heading-' . $block_id, $selector );
-                            $selector_value = $is_color_picker ? '{{VALUE}}' : str_replace( '{{VALUE}}', $value['value'], $selector_value );
-                            $selector_unit = $is_color_picker ? '{{UNIT}}' : str_replace( '{{UNIT}}', $unit, $unit );
+
+                            $replaced_selector_value = is_array( $value['value'] )
+                                ? str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( array_values( $value['value'] )[0], $unit ), $selector_value )
+                                : str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( $value['value'], $unit ), $selector_value );
 
                             if ( $is_color_picker ) {
-                                $selector_value = str_replace( array( '{{VALUE}}', '{{HOVER}}' ), array( $value['value']['defaultState'], $value['value']['hoverState'] ), $selector_value );
+                                $replaced_selector_value = str_replace( array( '{{VALUE}}', '{{HOVER}}' ), array( $value['value']['defaultState'], $value['value']['hoverState'] ), $selector_value );
                             }
 
-                            if ( $device === 'desktop' ) {
-                                if ( $value_is_object ) {
-                                    if ( $is_color_picker ) {
-                                        $responsive_values['desktop'][$selector][] = sprintf( '%s: %s', $property, $selector_value );
-                                    }
-                                } else {
-                                    $responsive_values['desktop'][$selector][] = sprintf( '%s: %s%s', $property, $selector_value, $selector_unit );
+                            if ( $value_is_object ) {
+                                if ( $is_color_picker ) {
+                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $replaced_selector_value );
                                 }
                             } else {
-                                if ( $value_is_object ) {
-                                    if ( $is_color_picker ) {
-                                        $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $selector_value );
-                                    }
-                                } else {
-                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s%s', $property, $selector_value, $selector_unit );
-                                }
-                            }                          
+                                $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $replaced_selector_value );
+                            }
                         }
                     } else {
                         foreach ( $selectors as $selector ) {
@@ -164,7 +173,7 @@ class BlockCss {
 
         
         foreach( $media_queries as $device => $media_query ) {
-            if ( $device === 'mobile' ) {
+            if ( $device === 'desktop' ) {
                 if ( ! empty( $responsive_values[$device] ) ) {
                     foreach ( $responsive_values[$device] as $selector => $properties ) {
                         $css .= sprintf( '%s { %s } ', $selector, implode( ';', $properties ) );
