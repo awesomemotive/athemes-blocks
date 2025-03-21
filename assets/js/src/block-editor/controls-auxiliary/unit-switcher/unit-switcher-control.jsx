@@ -12,9 +12,6 @@ export function UnitSwitcher(props) {
     }
         
     const { units, value, onChange } = props;
-    const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
-    const [ unit, setUnit ] = useState(units);
-
     const options = units.map( ( item ) => {
         return {
             label: item,

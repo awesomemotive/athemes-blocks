@@ -54,7 +54,7 @@ export function getControlCSS( cssData, clientId, attributes ) {
     const innerSettingId = cssData?.innerSettingId;
 
     // Ensure the keys are always in this order. It is crucial for the CSS to work correctly.
-    const sortedKeys = ['mobile', 'tablet', 'desktop']; 
+    const sortedKeys = ['desktop', 'tablet', 'mobile']; 
         
     const sortedAttributeValue = {}
     sortedKeys.forEach( key => {
@@ -112,7 +112,6 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     if (device === 'desktop') {
                         if (valueIsObject) {
                             if (isColorPicker) {
-                                
                                 css += `${replacedSelector} { ${property}: ${replacedSelectorValue}; }`;
                             }
                         } else {
@@ -143,7 +142,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }; }`;
                             css += `${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }; }`;
                         } else if ( isDimensions ) { 
-                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.top }${unit} ${ sortedAttributeValue[device].value.right }${unit} ${ sortedAttributeValue[device].value.bottom }${unit} ${ sortedAttributeValue[device].value.left }${unit}; }`;
+                            Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
+                                if (directionValue === '') {
+                                    return;
+                                }
+
+                                css += `${selector} { ${property}-${direction}: ${directionValue}${unit}; }`;
+                            });
                         } else {
                             css += `${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}; }`;
                         }
@@ -156,7 +161,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
                             css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
                         } else if ( isDimensions ) {
-                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
+                            Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
+                                if (directionValue === '') {
+                                    return;
+                                }
+
+                                css += `@media (max-width: 1024px) { ${selector} { ${property}-${direction}: ${directionValue}${unit}; } }`;
+                            });
                         } else {
                             css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
                         }
@@ -169,7 +180,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
                             css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
                         } else if ( isDimensions) {
-                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.top}${unit} ${sortedAttributeValue[device].value.right}${unit} ${sortedAttributeValue[device].value.bottom}${unit} ${sortedAttributeValue[device].value.left}${unit}; } }`;
+                            Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
+                                if (directionValue === '') {
+                                    return;
+                                }
+
+                                css += `@media (max-width: 767px) { ${selector} { ${property}-${direction}: ${directionValue}${unit}; } }`;
+                            });
                         } else {
                             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
                         }

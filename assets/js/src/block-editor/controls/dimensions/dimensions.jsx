@@ -2,7 +2,6 @@
 import { css, jsx } from '@emotion/react';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 import { BaseControl, __experimentalNumberControl as NumberControl, Button } from '@wordpress/components';
 import { Icon, link, linkOff } from '@wordpress/icons';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';

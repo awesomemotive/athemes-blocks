@@ -36,5 +36,13 @@ class BlockEditorAssets {
             array( 'wp-edit-blocks' ),
             ATHEMES_BLOCKS_VERSION
         );
+
+        wp_enqueue_script(
+            'athemes-blocks-block-editor',
+            ATHEMES_BLOCKS_URL . 'assets/js/block-editor/at-blocks-block-editor.js',
+            array('wp-hooks', 'wp-edit-post', 'wp-data', 'wp-components', 'wp-element', 'wp-block-editor'),
+            ATHEMES_BLOCKS_VERSION,
+            true
+        );
     }
 }

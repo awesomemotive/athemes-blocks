@@ -75,6 +75,6 @@ abstract class BlockBase {
 
         $css = new BlockCss( $attributes, $block_id, $default_attributes );
 
-        return $block_content . $css->get_block_style_tag();
+        return $css->get_block_style_tag() . $block_content;
     }
 }

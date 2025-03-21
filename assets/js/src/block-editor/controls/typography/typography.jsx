@@ -20,7 +20,7 @@ import { styles } from './styles';
 
 export function Typography( props ) {
     const { label, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
-    const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
+    const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
     const { 
         fontSize, 
         fontFamily, 

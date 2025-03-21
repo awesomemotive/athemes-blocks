@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 import { 
     BaseControl,
     RangeControl,

@@ -1,21 +1,21 @@
 /** @jsx jsx */;
 import { css, jsx } from '@emotion/react';
 import { useState, useEffect } from "@wordpress/element";
-import { useDispatch, useSelect } from "@wordpress/data";
+import { dispatch, useDispatch, useSelect } from "@wordpress/data";
 import { ButtonGroup, Button, Icon } from "@wordpress/components";
-import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 
 import { styles } from './device-switcher-styles';
 
 export function DeviceSwitcher() {
-    const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
+    const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 
     const [ device, setDevice ] = useState(currentDevice);
-    const { switchDeviceTo } = useDispatch(deviceSwitcherStore);
 
     const onClickHandler = (device) => {
         setDevice(device);
-        switchDeviceTo(device);
+
+        const deviceCapitalized = device.charAt(0).toUpperCase() + device.slice(1);
+        dispatch('core/edit-post').__experimentalSetPreviewDeviceType(deviceCapitalized);
     }
 
     useEffect(() => {

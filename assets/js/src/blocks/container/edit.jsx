@@ -24,7 +24,7 @@ export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
-	const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
+	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
 	const [ updateCss, setUpdateCss ] = useState(false);

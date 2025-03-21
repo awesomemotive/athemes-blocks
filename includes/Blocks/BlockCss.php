@@ -68,25 +68,18 @@ class BlockCss {
             'mobile' => array(),
         );
 
-        // var_dump($attributes['textTypography']);
-        // $inner_setting_id = ;
-
         foreach ( $default_attributes as $attribute_name => $attribute_settings ) {
             if ( ! isset( $attributes[$attribute_name] ) ) {
                 continue;
             }
-// var_dump($attribute_name);
 
-            // Inner settings.
+            // Inner settings (recursive).
             if ( isset( $attributes[$attribute_name]['innerSettings'] ) ) {
-                // recursive.
-                // var_dump($attributes[$attribute_name]['innerSettings']);
-                $attributes = $attributes[$attribute_name]['innerSettings'];
+                $inner_settings_attributes = $attributes[$attribute_name]['innerSettings'];
                 $block_id = $block_id;
                 $default_attributes = $attribute_settings['default']['innerSettings'];
-                // var_dump($attribute_settings['default']['innerSettings']);
 
-                $css .= self::get_block_css( $attributes, $block_id, $default_attributes );
+                $css .= self::get_block_css( $inner_settings_attributes, $block_id, $default_attributes );
                 continue;
             }
 
@@ -96,26 +89,39 @@ class BlockCss {
                 $attribute_data = isset( $attributes[$attribute_name]['default'] ) ? $attributes[$attribute_name]['default'] : $attributes[$attribute_name];
 
                 foreach ( $attribute_data as $device => $value ) {
-                    if ( empty( $value['value'] ) ) {
+                    if ( empty( $value['value'] ) || $value['value'] === 'default' ) {
                         continue;
                     }
+
                     $value_is_object = is_array( $value['value'] );
                     $unit = isset( $value['unit'] ) ? $value['unit'] : '';
 
                     $is_color_picker = isset( $value['value']['defaultState'] ) || isset( $value['value']['hoverState'] );
                     $is_dimensions = isset( $value['value']['top'] ) || isset( $value['value']['right'] ) || isset( $value['value']['bottom'] ) || isset( $value['value']['left'] );
 
+                    if ( $is_color_picker && empty( $value['value']['defaultState'] ) && empty( $value['value']['hoverState'] ) ) {
+                        continue;
+                    }
+
+                    if ( $is_dimensions && ( empty( $value['value']['top'] ) && empty( $value['value']['right'] ) && empty( $value['value']['bottom'] ) && empty( $value['value']['left'] ) ) ) {
+                        continue;
+                    }
+
                     $is_associative_array_selectors = $selectors === array_values( $selectors ) ? false : true;
 
                     if ( $is_associative_array_selectors ) {
                         foreach ( $selectors as $selector => $selector_value ) {
-                            $selector = str_replace( '{{WRAPPER}}', '.wp-block-athemes-blocks-heading-' . $block_id, $selector );
+                            $selector = str_replace( '{{WRAPPER}}', '.at-block-' . $block_id, $selector );
 
                             $replaced_selector_value = is_array( $value['value'] )
                                 ? str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( array_values( $value['value'] )[0], $unit ), $selector_value )
                                 : str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( $value['value'], $unit ), $selector_value );
 
                             if ( $is_color_picker ) {
+                                if ( empty( $replaced_selector_value ) || $replaced_selector_value === '{{HOVER}}' && empty( $value['value']['hoverState'] ) ) {
+                                    continue;
+                                }
+
                                 $replaced_selector_value = str_replace( array( '{{VALUE}}', '{{HOVER}}' ), array( $value['value']['defaultState'], $value['value']['hoverState'] ), $selector_value );
                             }
 
@@ -129,12 +135,16 @@ class BlockCss {
                         }
                     } else {
                         foreach ( $selectors as $selector ) {
-                            $selector = str_replace( '{{WRAPPER}}', '.wp-block-athemes-blocks-heading-' . $block_id, $selector );
+                            $selector = str_replace( '{{WRAPPER}}', '.at-block-' . $block_id, $selector );
         
                             if ( $device === 'desktop' ) {
                                 if ( $value_is_object ) {
                                     if ( $is_dimensions ) {
                                         foreach ( $value['value'] as $sub_property => $sub_value ) {
+                                            if ( empty( $sub_value ) && $sub_value !== '0' ) {
+                                                continue;
+                                            }
+
                                             $responsive_values['desktop'][$selector][] = sprintf( '%s: %s%s ', $property . '-' . $sub_property, $sub_value, $unit );
                                         }                                
                                     }
@@ -150,6 +160,10 @@ class BlockCss {
                                 if ( $value_is_object ) {
                                     if ( $is_dimensions ) {
                                         foreach ( $value['value'] as $sub_property => $sub_value ) {
+                                            if ( empty( $sub_value ) && $sub_value !== '0' ) {
+                                                continue;
+                                            }
+
                                             $responsive_values[$device][$selector][] = sprintf( '%s: %s%s ', $property . '-' . $sub_property, $sub_value, $unit );
                                         }                                
                                     }
@@ -164,14 +178,10 @@ class BlockCss {
                             }
                         }
                     }
-                    
-
-                    
                 }
             }
         }
 
-        
         foreach( $media_queries as $device => $media_query ) {
             if ( $device === 'desktop' ) {
                 if ( ! empty( $responsive_values[$device] ) ) {

@@ -16,8 +16,10 @@
 	},
 	"devDependencies": {
 		"@emotion/react": "^11.1.5",
+		"@wordpress/hooks": "^4.20.0",
 		"@wordpress/icons": "^9.13.0",
 		"@wordpress/scripts": "^24.4.0",
+		"babel-loader": "^10.0.0",
 		"colord": "^2.9.3",
 		"copy-webpack-plugin": "^9.0.0",
 		"css-loader": "^7.1.2",

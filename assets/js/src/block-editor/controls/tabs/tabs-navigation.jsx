@@ -1,10 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from "@wordpress/data";
-import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
-import { BaseControl, Button } from '@wordpress/components';
-import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
-import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
+import { Button } from '@wordpress/components';
 
 import { store as persistentTabsStore } from '../../store/persistent-tabs-store';
 
@@ -24,6 +21,21 @@ export function TabsNavigation( props ) {
     useEffect(() => {
         setTab(currentTab);
     }, [currentTab]);
+
+    // Hide the 'Advanced' panel if the current tab is 'advanced'.
+    useEffect(() => {
+        if (tab === 'advanced') {
+            const advancedPanel = document.querySelector('.block-editor-block-inspector__advanced');
+            if (advancedPanel) {
+                advancedPanel.style.display = 'block';
+            }
+        } else {
+            const advancedPanel = document.querySelector('.block-editor-block-inspector__advanced');
+            if (advancedPanel) {
+                advancedPanel.style.display = 'none';
+            }
+        }
+    }, [tab]);
 
     return(
         <div className="atblocks-tabs-navigation">

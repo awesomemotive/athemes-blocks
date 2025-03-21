@@ -115,6 +115,31 @@ module.exports = [
         ],
     },
 
+    // Global JS Compilation Configuration
+    {
+        entry: {
+            'at-blocks-block-editor': path.resolve(__dirname, 'assets/js/src/block-editor/block-editor.jsx'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/js/block-editor/'),
+            filename: '[name].js',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@wordpress/babel-preset-default'],
+                        },
+                    },
+                },
+            ],
+        },
+    },
+
     // Global SCSS Compilation Configuration
     {
         entry: {

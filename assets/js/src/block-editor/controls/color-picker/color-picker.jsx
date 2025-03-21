@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { store as deviceSwitcherStore } from '../../store/device-switcher-store';
 import { BaseControl, Button, Popover, ColorPicker as ColorPickerControl } from '@wordpress/components';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';

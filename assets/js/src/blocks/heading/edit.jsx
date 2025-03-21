@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
+import { store as viewportStore } from '@wordpress/viewport';
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
@@ -27,7 +28,8 @@ export default function Edit( props ) {
 	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
-	const currentDevice = useSelect((select) => select('device-switcher-store').getCurrentDevice());
+
+	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
 	const [ updateCss, setUpdateCss ] = useState(false);
