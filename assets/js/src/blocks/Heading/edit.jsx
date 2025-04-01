@@ -1,8 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
+import { store as viewportStore } from '@wordpress/viewport';
 import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+
+import { RichText } from '@wordpress/block-editor';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
@@ -18,12 +21,14 @@ import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../utils/settings';
 import { applyPreviewCSS, getControlCSS } from '../../utils/css';
 
-const attributesDefaults = athemesBlocksAttributes.container.attributes;
+const attributesDefaults = HeadingBlockData.attributes;
 
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
+	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
+
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
@@ -131,7 +136,7 @@ export default function Edit( props ) {
 										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
 										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
 									]}
-									responsive={ false }
+									responsive={ true }
 									reset={true}
 									onChange={ ( value ) => {
 										updateAttribute( 'alignment', {
@@ -192,7 +197,7 @@ export default function Edit( props ) {
 										{ label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
 									]}
 									value={ getSettingValue( 'fontFamily', currentDevice, atts ) }
-									responsive={ false }
+									responsive={ true }
 									reset={true}
 									onChange={ ( value ) => {
 										updateAttribute( 'fontFamily', {
@@ -213,7 +218,7 @@ export default function Edit( props ) {
 								<SwitchToggle
 									label={ __( 'Show border', 'athemes-blocks' ) }
 									value={ getSettingValue( 'showBorder', currentDevice, atts ) }
-									responsive={ false }
+									responsive={ true }
 									reset={true}
 									onChange={ ( value ) => {
 										updateAttribute( 'showBorder', {
@@ -231,7 +236,7 @@ export default function Edit( props ) {
 									label={ __( 'Text color', 'athemes-blocks' ) }
 									value={ getSettingValue( 'textColor', currentDevice, atts ) }
 									hover={true}
-									responsive={false}
+									responsive={true}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'textColor', {
@@ -287,7 +292,7 @@ export default function Edit( props ) {
 									defaultUnit={ getSettingUnit( 'padding', currentDevice, atts ) }
 									directionsValue={ getDimensionsSettingDirectionsValue( 'padding', currentDevice, atts ) }
 									connect={getDimensionsSettingConnectValue( 'padding', currentDevice, atts )}
-									responsive={ false }
+									responsive={ true }
 									units={['px', 'em', 'rem']}
 									reset={true}
 									onChange={ ( value ) => {
@@ -321,9 +326,12 @@ export default function Edit( props ) {
 			</InspectorControls>
 			
 			<div class="at-block" { ...useBlockProps() }>
-				<h1>
-					The heading text here.
-				</h1>
+				<RichText
+					tagName="h1"
+					value={ content }
+					onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+					placeholder={ __( 'Type your heading here...', 'text-domain' ) }
+				/>
 			</div>
 
 		</div>

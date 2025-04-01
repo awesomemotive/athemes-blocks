@@ -22,7 +22,7 @@ class Heading extends BlockBase {
      *
      */
     public function __construct() {
-        $this->id = 'heading';
+        $this->id = 'Heading';
         
         parent::__construct();
     }

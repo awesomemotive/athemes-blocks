@@ -18,7 +18,7 @@ registerBlockType( metadata.name, {
 	/**
 	 * @see ./attributes.js
 	 */
-	attributes: athemesBlocksAttributes.heading.attributes,
+	attributes: HeadingBlockData.attributes,
 
 	/**
 	 * @see ./edit.js

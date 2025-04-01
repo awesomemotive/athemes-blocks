@@ -62,7 +62,7 @@ class PluginLoader {
      */
     public function load_blocks(): void {
         $blocks = array(
-            // 'Container',
+            'FlexContainer',
             'Heading',
         );
 

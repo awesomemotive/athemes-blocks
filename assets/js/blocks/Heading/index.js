@@ -1719,9 +1719,9 @@ if (!window.__PERSISTENT_TABS_STORE_IS_REGISTERED__) {
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/heading/block.json":
+/***/ "./assets/js/src/blocks/Heading/block.json":
 /*!*************************************************!*\
-  !*** ./assets/js/src/blocks/heading/block.json ***!
+  !*** ./assets/js/src/blocks/Heading/block.json ***!
   \*************************************************/
 /***/ ((module) => {
 
@@ -1729,9 +1729,9 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/heading/edit.jsx":
+/***/ "./assets/js/src/blocks/Heading/edit.jsx":
 /*!***********************************************!*\
-  !*** ./assets/js/src/blocks/heading/edit.jsx ***!
+  !*** ./assets/js/src/blocks/Heading/edit.jsx ***!
   \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1783,7 +1783,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const attributesDefaults = athemesBlocksAttributes.heading.attributes;
+const attributesDefaults = HeadingBlockData.attributes;
 function Edit(props) {
   const {
     attributes,
@@ -1900,7 +1900,6 @@ function Edit(props) {
     responsive: true,
     reset: true,
     onChange: value => {
-      console.log(value);
       updateAttribute('alignment', {
         value: value
       }, currentDevice);
@@ -2082,9 +2081,9 @@ function Edit(props) {
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/heading/save.jsx":
+/***/ "./assets/js/src/blocks/Heading/save.jsx":
 /*!***********************************************!*\
-  !*** ./assets/js/src/blocks/heading/save.jsx ***!
+  !*** ./assets/js/src/blocks/Heading/save.jsx ***!
   \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -6732,16 +6731,16 @@ var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
 (() => {
 /*!***********************************************!*\
-  !*** ./assets/js/src/blocks/heading/index.js ***!
+  !*** ./assets/js/src/blocks/Heading/index.js ***!
   \***********************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./assets/js/src/blocks/heading/edit.jsx");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./assets/js/src/blocks/heading/save.jsx");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./assets/js/src/blocks/heading/block.json");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./assets/js/src/blocks/Heading/edit.jsx");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./assets/js/src/blocks/Heading/save.jsx");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./assets/js/src/blocks/Heading/block.json");
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/icon/index.js");
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/settings.js");
 
@@ -6760,7 +6759,7 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * @see ./attributes.js
    */
-  attributes: athemesBlocksAttributes.heading.attributes,
+  attributes: HeadingBlockData.attributes,
   /**
    * @see ./edit.js
    */

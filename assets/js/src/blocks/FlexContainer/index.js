@@ -18,7 +18,7 @@ registerBlockType( metadata.name, {
 	/**
 	 * @see ./attributes.js
 	 */
-	attributes: athemesBlocksAttributes.container.attributes,
+	attributes: FlexContainerBlockData.attributes,
 
 	/**
 	 * @see ./edit.js

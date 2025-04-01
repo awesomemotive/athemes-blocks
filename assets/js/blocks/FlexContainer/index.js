@@ -1719,20 +1719,20 @@ if (!window.__PERSISTENT_TABS_STORE_IS_REGISTERED__) {
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/container/block.json":
-/*!***************************************************!*\
-  !*** ./assets/js/src/blocks/container/block.json ***!
-  \***************************************************/
+/***/ "./assets/js/src/blocks/FlexContainer/block.json":
+/*!*******************************************************!*\
+  !*** ./assets/js/src/blocks/FlexContainer/block.json ***!
+  \*******************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"athemes-blocks/flex-container","version":"1.0.0","title":"Container","category":"athemes-blocks","icon":"formatBold","description":"A container block that allows you to create a flex layout.","textdomain":"athemes-blocks","editorScript":"file:./index.js","style":"file:./style.css"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"athemes-blocks/flex-container","version":"1.0.0","title":"Container","category":"athemes-blocks","icon":"formatBold","description":"A container block that allows you to create a flex layout.","textdomain":"athemes-blocks","render":"file:./render.php","editorScript":"file:./index.js","style":"file:./style.css"}');
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/container/edit.jsx":
-/*!*************************************************!*\
-  !*** ./assets/js/src/blocks/container/edit.jsx ***!
-  \*************************************************/
+/***/ "./assets/js/src/blocks/FlexContainer/edit.jsx":
+/*!*****************************************************!*\
+  !*** ./assets/js/src/blocks/FlexContainer/edit.jsx ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1779,7 +1779,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const attributesDefaults = athemesBlocksAttributes.container.attributes;
+const attributesDefaults = FlexContainerBlockData.attributes;
 function Edit(props) {
   const {
     attributes,
@@ -1876,201 +1876,491 @@ function Edit(props) {
       value: 'advanced'
     }]
   }), currentTab === 'general' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('General', 'botiga-pro')
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Type', 'botiga-pro')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alignment', 'athemes-blocks'),
-    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('alignment', currentDevice, atts),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Container Width', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('containerWidth', currentDevice, atts),
     options: [{
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Left', 'athemes-blocks'),
-      value: 'left'
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Full Width', 'athemes-blocks'),
+      value: 'full-width'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Boxed', 'athemes-blocks'),
+      value: 'boxed'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Custom', 'athemes-blocks'),
+      value: 'custom'
+    }],
+    responsive: false,
+    reset: true,
+    onChange: value => {
+      updateAttribute('containerWidth', {
+        value: value
+      }, 'desktop');
+      setUpdateCss({
+        settingId: 'containerWidth',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('containerWidth', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
+      }, 'desktop');
+      setUpdateCss({
+        settingId: 'containerWidth',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
+      });
+    }
+  }), atts.containerWidth.desktop.value === 'full-width' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Content Width', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('contentWidth', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Boxed', 'athemes-blocks'),
+      value: 'boxed'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Full Width', 'athemes-blocks'),
+      value: 'full-width'
+    }],
+    responsive: true,
+    reset: true,
+    onChange: value => {
+      updateAttribute('contentWidth', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'contentWidth',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('contentWidth', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('contentWidth', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'contentWidth',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('contentWidth', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Content Box Width', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('contentBoxWidth', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('contentBoxWidth', currentDevice, atts),
+    min: 10,
+    max: 200,
+    responsive: true,
+    reset: true,
+    units: ['px', 'em', 'rem'],
+    onChange: value => {
+      updateAttribute('contentBoxWidth', {
+        value: value,
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('contentBoxWidth', currentDevice, atts)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'contentBoxWidth',
+        value: value
+      });
+    },
+    onChangeUnit: value => {
+      updateAttribute('contentBoxWidth', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('contentBoxWidth', currentDevice, atts),
+        unit: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'contentBoxWidth',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('contentBoxWidth', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultUnit)('contentBoxWidth', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'contentBoxWidth',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults)
+      });
+    }
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_7__.RangeSlider, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Minimum Height', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('minHeight', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('minHeight', currentDevice, atts),
+    min: 10,
+    max: 200,
+    responsive: true,
+    reset: true,
+    units: ['px', 'vh'],
+    onChange: value => {
+      updateAttribute('minHeight', {
+        value: value,
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('minHeight', currentDevice, atts)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'minHeight',
+        value: value
+      });
+    },
+    onChangeUnit: value => {
+      updateAttribute('minHeight', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('minHeight', currentDevice, atts),
+        unit: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'minHeight',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('minHeight', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultUnit)('minHeight', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'minHeight',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_9__.SwitchToggle, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Equal Height', 'athemes-blocks'),
+    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('equalHeight', currentDevice, atts),
+    responsive: false,
+    reset: true,
+    onChange: value => {
+      updateAttribute('equalHeight', {
+        value: value
+      }, currentDevice);
+    },
+    onClickReset: () => {
+      updateAttribute('equalHeight', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('equalHeight', currentDevice, attributesDefaults)
+      }, currentDevice);
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_8__.Select, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('HTML Tag', 'athemes-blocks'),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Div', 'athemes-blocks'),
+      value: 'div'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Header', 'athemes-blocks'),
+      value: 'header'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Footer', 'athemes-blocks'),
+      value: 'footer'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Main', 'athemes-blocks'),
+      value: 'main'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Article', 'athemes-blocks'),
+      value: 'article'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Section', 'athemes-blocks'),
+      value: 'section'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Aside', 'athemes-blocks'),
+      value: 'aside'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Figure', 'athemes-blocks'),
+      value: 'figure'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Figcaption', 'athemes-blocks'),
+      value: 'figcaption'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Summary', 'athemes-blocks'),
+      value: 'summary'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Nav', 'athemes-blocks'),
+      value: 'nav'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Link', 'athemes-blocks'),
+      value: 'link'
+    }],
+    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('htmlTag', currentDevice, atts),
+    responsive: false,
+    reset: true,
+    onChange: value => {
+      updateAttribute('htmlTag', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'htmlTag',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('htmlTag', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('htmlTag', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'htmlTag',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('htmlTag', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Overflow', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('overflow', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Visible', 'athemes-blocks'),
+      value: 'visible'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hidden', 'athemes-blocks'),
+      value: 'hidden'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Auto', 'athemes-blocks'),
+      value: 'auto'
+    }],
+    responsive: true,
+    reset: true,
+    onChange: value => {
+      updateAttribute('overflow', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'overflow',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('overflow', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'overflow',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
+      });
+    }
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'botiga-pro'),
+    initialOpen: false
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('layout', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Flex', 'athemes-blocks'),
+      value: 'flex'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Grid', 'athemes-blocks'),
+      value: 'grid'
+    }],
+    responsive: false,
+    reset: true,
+    onChange: value => {
+      updateAttribute('layout', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'layout',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('layout', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'layout',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Direction', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('direction', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Row', 'athemes-blocks'),
+      value: 'row'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Column', 'athemes-blocks'),
+      value: 'column'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Row Reverse', 'athemes-blocks'),
+      value: 'row-reverse'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Column Reverse', 'athemes-blocks'),
+      value: 'column-reverse'
+    }],
+    responsive: true,
+    reset: true,
+    onChange: value => {
+      updateAttribute('direction', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'direction',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('direction', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'direction',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Children Width', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('childrenWidth', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Auto', 'athemes-blocks'),
+      value: 'auto'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Full', 'athemes-blocks'),
+      value: 'full'
+    }],
+    responsive: false,
+    reset: true,
+    onChange: value => {
+      updateAttribute('childrenWidth', {
+        value: value
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'childrenWidth',
+        value: value
+      });
+    },
+    onClickReset: () => {
+      updateAttribute('childrenWidth', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
+      }, currentDevice);
+      setUpdateCss({
+        settingId: 'childrenWidth',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
+      });
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Align Items', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('alignItems', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Flex Start', 'athemes-blocks'),
+      value: 'flex-start'
     }, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Center', 'athemes-blocks'),
       value: 'center'
     }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Right', 'athemes-blocks'),
-      value: 'right'
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Flex End', 'athemes-blocks'),
+      value: 'flex-end'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Stretch', 'athemes-blocks'),
+      value: 'stretch'
     }],
-    responsive: false,
+    responsive: true,
     reset: true,
     onChange: value => {
-      updateAttribute('alignment', {
+      updateAttribute('alignItems', {
         value: value
       }, currentDevice);
       setUpdateCss({
-        settingId: 'alignment',
+        settingId: 'alignItems',
         value: value
       });
     },
     onClickReset: () => {
-      updateAttribute('alignment', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
+      updateAttribute('alignItems', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
-        settingId: 'alignment',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
+        settingId: 'alignItems',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_8__.Select, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Font family', 'athemes-blocks'),
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Justify Content', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('justifyContent', currentDevice, atts),
     options: [{
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Arial', 'athemes-blocks'),
-      value: 'Arial'
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Flex Start', 'athemes-blocks'),
+      value: 'flex-start'
     }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Helvetica', 'athemes-blocks'),
-      value: 'Helvetica'
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Center', 'athemes-blocks'),
+      value: 'center'
     }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Times New Roman', 'athemes-blocks'),
-      value: 'Times New Roman'
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Flex End', 'athemes-blocks'),
+      value: 'flex-end'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Space Between', 'athemes-blocks'),
+      value: 'space-between'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Space Around', 'athemes-blocks'),
+      value: 'space-around'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Space Evenly', 'athemes-blocks'),
+      value: 'space-evenly'
     }],
-    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('fontFamily', currentDevice, atts),
-    responsive: false,
+    responsive: true,
     reset: true,
     onChange: value => {
-      updateAttribute('fontFamily', {
+      updateAttribute('justifyContent', {
         value: value
       }, currentDevice);
       setUpdateCss({
-        settingId: 'fontFamily',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('fontFamily', currentDevice, atts)
+        settingId: 'justifyContent',
+        value: value
       });
     },
     onClickReset: () => {
-      updateAttribute('fontFamily', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('fontFamily', currentDevice, attributesDefaults)
+      updateAttribute('justifyContent', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
-        settingId: 'fontFamily',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('fontFamily', currentDevice, attributesDefaults)
+        settingId: 'justifyContent',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_9__.SwitchToggle, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show border', 'athemes-blocks'),
-    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('showBorder', currentDevice, atts),
-    responsive: false,
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_6__.RadioButtons, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Wrap', 'athemes-blocks'),
+    defaultValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('wrap', currentDevice, atts),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Wrap', 'athemes-blocks'),
+      value: 'wrap'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No Wrap', 'athemes-blocks'),
+      value: 'nowrap'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Wrap Reverse', 'athemes-blocks'),
+      value: 'wrap-reverse'
+    }],
+    responsive: true,
     reset: true,
     onChange: value => {
-      updateAttribute('showBorder', {
+      updateAttribute('wrap', {
         value: value
       }, currentDevice);
-    },
-    onClickReset: () => {
-      updateAttribute('showBorder', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('showBorder', currentDevice, attributesDefaults)
-      }, currentDevice);
-    }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_10__.ColorPicker, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Text color', 'athemes-blocks'),
-    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('textColor', currentDevice, atts),
-    hover: true,
-    responsive: false,
-    reset: true,
-    defaultStateOnChangeComplete: value => {
-      updateAttribute('textColor', {
-        value: {
-          defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingValue)('textColor', currentDevice, 'hoverState', atts)
-        }
-      }, currentDevice);
       setUpdateCss({
-        settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingValue)('textColor', currentDevice, 'defaultState', atts)
-      });
-    },
-    hoverStateOnChangeComplete: value => {
-      updateAttribute('textColor', {
-        value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingValue)('textColor', currentDevice, 'defaultState', atts),
-          hoverState: value.hex
-        }
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingValue)('textColor', currentDevice, 'hoverState', atts)
+        settingId: 'wrap',
+        value: value
       });
     },
     onClickReset: () => {
-      updateAttribute('textColor', {
-        value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingDefaultValue)('textColor', currentDevice, 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingDefaultValue)('textColor', currentDevice, 'hoverState', attributesDefaults)
-        }
+      updateAttribute('wrap', {
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
-        settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getColorPickerSettingDefaultValue)('textColor', currentDevice, 'defaultState', attributesDefaults)
-      });
-    }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_11__.Typography, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Typography', 'athemes-blocks'),
-    settingId: "textTypography",
-    attributes: atts,
-    setAttributes: setAttributes,
-    attributesDefaults: attributesDefaults,
-    setUpdateCss: setUpdateCss,
-    subFields: ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_dimensions_dimensions__WEBPACK_IMPORTED_MODULE_12__.Dimensions, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Padding', 'athemes-blocks'),
-    directions: [{
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Top', 'athemes-blocks'),
-      value: 'top'
-    }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Right', 'athemes-blocks'),
-      value: 'right'
-    }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Bottom', 'athemes-blocks'),
-      value: 'bottom'
-    }, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Left', 'athemes-blocks'),
-      value: 'left'
-    }],
-    value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingValue)('padding', currentDevice, atts),
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('padding', currentDevice, atts),
-    directionsValue: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingDirectionsValue)('padding', currentDevice, atts),
-    connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingConnectValue)('padding', currentDevice, atts),
-    responsive: false,
-    units: ['px', 'em', 'rem'],
-    reset: true,
-    onChange: value => {
-      updateAttribute('padding', {
-        value: value.value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingUnit)('padding', currentDevice, atts),
-        connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingConnectValue)('padding', currentDevice, atts)
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'padding',
-        value: value.value
-      });
-    },
-    onChangeUnit: value => {
-      updateAttribute('padding', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('padding', currentDevice, atts),
-        unit: value,
-        connect: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingConnectValue)('padding', currentDevice, atts)
-      }, currentDevice);
-      setUpdateCss({
-        settingId: 'padding',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingValue)('padding', currentDevice, atts)
-      });
-    },
-    onClickReset: () => {
-      updateAttribute('padding', (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingDefaultValue)('padding', currentDevice, attributesDefaults), currentDevice);
-      setUpdateCss({
-        settingId: 'padding',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getDimensionsSettingDefaultValue)('padding', currentDevice, attributesDefaults)
+        settingId: 'wrap',
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_15__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
       });
     }
   })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "at-block",
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)()
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "The heading text here.")));
+  }, atts.containerWidth.desktop.value === 'boxed' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks, {
+    templateLock: false,
+    renderAppender: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.ButtonBlockAppender, null)
+  }) : atts.containerWidth.desktop.value === 'custom' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "at-block-flex-container__inner-blocks-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks, {
+    templateLock: false,
+    renderAppender: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.ButtonBlockAppender, null)
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "at-block-flex-container__inner-blocks-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks, {
+    templateLock: false,
+    renderAppender: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.ButtonBlockAppender, null)
+  }))));
 }
 
 /***/ }),
 
-/***/ "./assets/js/src/blocks/container/save.jsx":
-/*!*************************************************!*\
-  !*** ./assets/js/src/blocks/container/save.jsx ***!
-  \*************************************************/
+/***/ "./assets/js/src/blocks/FlexContainer/save.jsx":
+/*!*****************************************************!*\
+  !*** ./assets/js/src/blocks/FlexContainer/save.jsx ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6706,17 +6996,17 @@ module.exports = window["React"];
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
 (() => {
-/*!*************************************************!*\
-  !*** ./assets/js/src/blocks/container/index.js ***!
-  \*************************************************/
+/*!*****************************************************!*\
+  !*** ./assets/js/src/blocks/FlexContainer/index.js ***!
+  \*****************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./assets/js/src/blocks/container/edit.jsx");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./assets/js/src/blocks/container/save.jsx");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./assets/js/src/blocks/container/block.json");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./assets/js/src/blocks/FlexContainer/edit.jsx");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./assets/js/src/blocks/FlexContainer/save.jsx");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./assets/js/src/blocks/FlexContainer/block.json");
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/icon/index.js");
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/settings.js");
 
@@ -6735,7 +7025,7 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * @see ./attributes.js
    */
-  attributes: athemesBlocksAttributes.container.attributes,
+  attributes: FlexContainerBlockData.attributes,
   /**
    * @see ./edit.js
    */

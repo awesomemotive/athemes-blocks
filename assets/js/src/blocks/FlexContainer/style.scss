@@ -1,0 +1,5 @@
+.at-block-flex-container {
+    &__inner-blocks-wrapper {
+        width: var(--atb-content-box-width, 100%);
+    }
+}

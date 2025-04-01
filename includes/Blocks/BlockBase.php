@@ -53,16 +53,18 @@ abstract class BlockBase {
     public function localize_block_attributes(): void {
         $attributes = require ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/attributes.php';
 
-        wp_localize_script( 'wp-block-editor', 'athemesBlocksAttributes', array(
-            $this->id => array(
-                'attributes' => $attributes,
-            ),
+        wp_localize_script( 'wp-block-editor', $this->id . 'BlockData', array(
+            'attributes' => $attributes,
         ) );
     }
 
     /**
      * Append the block css.
      * 
+     * @param string $block_content Block content.
+     * @param array<string, mixed> $block Block.
+     * 
+     * @return string Block content.
      */
     public function block_css( $block_content, $block ): string {
         if ( $block['blockName'] !== 'athemes-blocks/'. $this->id ) {

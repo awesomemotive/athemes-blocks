@@ -15,14 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AThemes_Blocks\Blocks\BlockBase;
 
-class Container extends BlockBase {
+class FlexContainer extends BlockBase {
 
     /**
      * Constructor.
      *
      */
     public function __construct() {
-        $this->id = 'container';
+        $this->id = 'FlexContainer';
         
         parent::__construct();
     }
