@@ -1,4 +1,56 @@
 .at-block-flex-container {
+    min-height: var(--atb-min-height, 100%);
+
+    // Container Full width.
+    &--container-full-width {
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        width: 100vw;
+        max-width: 100vw;
+
+        &.wp-block {
+            max-width: 100vw;
+        }
+
+        // Content Full width.
+        .wp-block {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        // Content Boxed.
+        .at-block-flex-container__inner-blocks-wrapper {
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+
+            .wp-block {
+                max-width: var(--atb-content-box-width, 100%);
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
+
+    // Container Boxed.
+    &--container-boxed {
+        max-width: var(--atb-container-boxed-width, 1140px);
+    }
+
+    // Container Custom.
+    &--container-custom {
+        width: var(--atb-container-custom-width, 100%);
+        max-width: var(--atb-container-custom-width, 100%);
+    }
+
+    // Children Width Auto.
+    &--children-w-auto {
+        .wp-block {
+            width: auto;
+        }
+    }
+    
+
     &__inner-blocks-wrapper {
         width: var(--atb-content-box-width, 100%);
     }

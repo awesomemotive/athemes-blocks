@@ -72,6 +72,29 @@ return array(
             'property' => '--atb-content-box-width',
         ),
     ),
+    'customWidth' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => 100,
+                'unit' => '%',
+            ),
+            'tablet' => array(
+                'value' => 100,
+                'unit' => '%',
+            ),
+            'mobile' => array(
+                'value' => 100,
+                'unit' => '%',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
+            ),
+            'property' => '--atb-container-custom-width',
+        ),
+    ),
     'minHeight' => array(
         'type' => 'object',
         'default' => array(
@@ -90,9 +113,9 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
             ),
-            'property' => '',
+            'property' => '--atb-min-height',
         ),
     ),
     'equalHeight' => array(
@@ -120,6 +143,34 @@ return array(
             ),
             'mobile' => array(
                 'value' => 'div',
+            ),
+        ),
+    ),
+    'htmlTagLink' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => 'xxx',
+            ),
+            'tablet' => array(
+                'value' => 'ccc',
+            ),
+            'mobile' => array(
+                'value' => 'zzz',
+            ),
+        ),
+    ),
+    'htmlTagLinkOpenInNewWindow' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => false,
+            ),
+            'tablet' => array(
+                'value' => false,
+            ),
+            'mobile' => array(
+                'value' => false,
             ),
         ),
     ),
@@ -160,7 +211,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'display',
         ),
@@ -180,7 +231,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'flex-direction',
         ),
@@ -189,20 +240,14 @@ return array(
         'type' => 'object',
         'default' => array(
             'desktop' => array(
-                'value' => 'full',
+                'value' => 'equal',
             ),
             'tablet' => array(
-                'value' => 'full',
+                'value' => 'equal',
             ),
             'mobile' => array(
-                'value' => 'full',
+                'value' => 'equal',
             ),
-        ),
-        'css' => array(
-            'selectors' => array(
-                '{{WRAPPER}}',
-            ),
-            'property' => '',
         ),
     ),
     'alignItems' => array(
@@ -220,7 +265,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'align-items',
         ),
@@ -240,7 +285,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'justify-content',
         ),
@@ -260,9 +305,29 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}}',
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'flex-wrap',
+        ),
+    ),
+    'alignContent' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => 'flex-start',
+            ),
+            'tablet' => array(
+                'value' => 'flex-start',
+            ),
+            'mobile' => array(
+                'value' => 'flex-start',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+            ),
+            'property' => 'align-content',
         ),
     ),
 );

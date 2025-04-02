@@ -9,9 +9,14 @@ import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switch
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 export function RangeSlider( props ) {
-    const { label, description, options, defaultValue, defaultUnit, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
+    let { label, description, options, defaultValue, defaultUnit, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
     const [ value, setValue ] = useState( defaultValue );
     const [ valueUnit, setValueUnit ] = useState( defaultUnit );
+
+    // Depending on the unit, the max value should be 100.
+    if ( valueUnit === '%' || valueUnit === 'vw' || valueUnit === 'vh' ) {
+        max = 100;
+    }
 
     useEffect(() => {
         setValue( defaultValue );

@@ -110,6 +110,10 @@ module.exports = [
                         input: path.join(blocksDir, folder, 'style.scss'),
                         output: path.join(__dirname, 'assets/js/blocks/', folder, 'style.css'),
                     },
+                    {
+                        input: path.join(blocksDir, folder, 'editor.scss'),
+                        output: path.join(__dirname, 'assets/js/blocks/', folder, 'editor.css'),
+                    },
                 ])
             ),                
         ],

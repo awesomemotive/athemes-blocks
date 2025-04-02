@@ -892,7 +892,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function RangeSlider(props) {
-  const {
+  let {
     label,
     description,
     options,
@@ -909,6 +909,11 @@ function RangeSlider(props) {
   } = props;
   const [value, setValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(defaultValue);
   const [valueUnit, setValueUnit] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(defaultUnit);
+
+  // Depending on the unit, the max value should be 100.
+  if (valueUnit === '%' || valueUnit === 'vw' || valueUnit === 'vh') {
+    max = 100;
+  }
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     setValue(defaultValue);
     setValueUnit(defaultUnit);
