@@ -1,5 +1,6 @@
 .at-block-flex-container {
     min-height: var(--atb-min-height, 100%);
+    box-sizing: border-box;
 
     // Container Full width.
     &--container-full-width {
@@ -23,6 +24,8 @@
             max-width: 100%;
             margin-left: auto;
             margin-right: auto;
+            column-gap: var(--atb-container-columns-gap, 15px);
+            row-gap: var(--atb-container-rows-gap, 15px);
 
             .wp-block {
                 max-width: var(--atb-content-box-width, 100%);

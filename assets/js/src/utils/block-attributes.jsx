@@ -12,6 +12,7 @@ export const createAttributeUpdater = (attributes, setAttributes) => {
 
         // Update the attribute for the current device
         if (device) {
+
             setAttributes({
                 [settingId]: {
                     ...attributes[settingId],
@@ -66,9 +67,15 @@ export const createInnerControlAttributeUpdater = (settingId, attributes, setAtt
                             ...attributes[settingId]?.innerSettings[innerSettingId],
                             ...{ default: {
                                 ...attributes[settingId]?.innerSettings[innerSettingId]?.default,
-                                [device]: valueIsObject ? {
+                                [device]: valueIsObject && value?.value ? {
                                     ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device], 
                                     ...value
+                                } : valueIsObject && !value?.value ? {
+                                    ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
+                                    value: {
+                                        ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device].value,
+                                        ...value
+                                    }
                                 } : {
                                     ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
                                     value

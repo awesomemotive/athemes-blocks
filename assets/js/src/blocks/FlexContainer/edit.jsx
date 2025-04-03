@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
-import { Panel, PanelBody, TextControl } from '@wordpress/components';
+import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
@@ -10,25 +10,23 @@ import { Select } from '../../block-editor/controls/select/select';
 import { TextInput } from '../../block-editor/controls/text-input/text-input';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
-import { Typography } from '../../block-editor/controls/typography/typography';
-import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
+import { Border } from '../../block-editor/controls/border/border';
 import { createAttributeUpdater } from '../../utils/block-attributes';
+import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
+import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
 
 import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
 
-import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../utils/settings';
-import { applyPreviewCSS, getControlCSS } from '../../utils/css';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
 const attributesDefaults = FlexContainerBlockData.attributes;
 
-export default function Edit( props ) {
-	const { attributes, setAttributes, clientId } = props;
+const Edit = (props) => {
+	const { attributes, setAttributes, clientId, setUpdateCss } = props;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
-
-	const [ updateCss, setUpdateCss ] = useState(false);
 
 	// Detect if this block is a child of a flex-container block.
 	const parentBlock = useSelect(select => {
@@ -44,7 +42,7 @@ export default function Edit( props ) {
 
 	const isChildOfFlexContainer = parentBlock !== null;
 
-	// Remove some attributes when it is a child block.
+	// Remove some attributes when it is a child block from a flex-container block (nested flex-container).
 	if ( isChildOfFlexContainer ) {
 		atts.containerWidth = {
 			desktop: {
@@ -74,49 +72,61 @@ export default function Edit( props ) {
 
 	const {
 
-		// Type settings.
+		// General - Type settings.
 		containerWidth,
 		contentWidth,
 		contentBoxWidth,
 		customWidth,
 		minHeight,
-		equalHeight,
 		htmlTag,
 		htmlTagLink,
 		htmlTagLinkOpenInNewWindow,
 		overflow,
 
-		// Layout settings.
+		// General - Layout settings.
 		layout,
 		direction,
+		columnsGap,
+		rowsGap,
 		childrenWidth,
 		alignItems,
 		justifyContent,
 		wrap,
 		alignContent,
+
+		// Style.
+		backgroundColor,
+		textColor,
+		linkColor,
 	} = useMemo(() => {
 		return {
 
-			// Type settings.
+			// General - Type settings.
 			containerWidth: getSettingValue('containerWidth', 'desktop', atts),
 			contentWidth: getSettingValue('contentWidth', 'desktop', atts),
 			contentBoxWidth: getSettingValue('contentBoxWidth', currentDevice, atts),
 			customWidth: getSettingValue('customWidth', currentDevice, atts),
 			minHeight: getSettingValue('minHeight', currentDevice, atts),
-			equalHeight: getSettingValue('equalHeight', 'desktop', atts),
 			htmlTag: getSettingValue('htmlTag', 'desktop', atts),
 			htmlTagLink: getSettingValue('htmlTagLink', 'desktop', atts),
 			htmlTagLinkOpenInNewWindow: getSettingValue('htmlTagLinkOpenInNewWindow', 'desktop', atts),
 			overflow: getSettingValue('overflow', currentDevice, atts),
 
-			// Layout settings.
+			// General - Layout settings.
 			layout: getSettingValue('layout', 'desktop', atts),
-			direction: getSettingValue('direction', 'desktop', atts),
+			direction: getSettingValue('direction', currentDevice, atts),
+			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
+			rowsGap: getSettingValue('rowsGap', currentDevice, atts),
 			childrenWidth: getSettingValue('childrenWidth', 'desktop', atts),
-			alignItems: getSettingValue('alignItems', 'desktop', atts),
-			justifyContent: getSettingValue('justifyContent', 'desktop', atts),
-			wrap: getSettingValue('wrap', 'desktop', atts),
-			alignContent: getSettingValue('alignContent', 'desktop', atts),
+			alignItems: getSettingValue('alignItems', currentDevice, atts),
+			justifyContent: getSettingValue('justifyContent', currentDevice, atts),
+			wrap: getSettingValue('wrap', currentDevice, atts),
+			alignContent: getSettingValue('alignContent', currentDevice, atts),
+
+			// Style.
+			backgroundColor: getSettingValue('backgroundColor', 'desktop', atts),
+			textColor: getSettingValue('textColor', 'desktop', atts),
+			linkColor: getSettingValue('linkColor', 'desktop', atts),
 		};
 	}, [atts, currentDevice]);
 
@@ -124,78 +134,6 @@ export default function Edit( props ) {
 	useEffect(() => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
-
-	// Watch for changes in the updateCss state and apply the CSS.
-	useEffect(() => {
-		if ( updateCss ) {
-			if ( updateCss.type === 'all' ) {
-				updateCss.settings.forEach( setting => {
-					const cssData = {
-						css: setting.css,
-						settingId: setting.settingId,
-						innerSettingId: setting?.innerSettingId ? setting.innerSettingId : null
-					};
-					const css = getControlCSS( cssData, clientId, atts );
-
-					applyPreviewCSS( css, clientId, setting.settingId, setting.innerSettingId );
-				});
-			} else if ( updateCss.type === 'inner-control' ) {
-				const cssData = {
-					css: attributesDefaults[updateCss.settingId].default?.innerSettings[updateCss.innerSettingId]?.css,
-					settingId: updateCss.settingId,
-					innerSettingId: updateCss.innerSettingId
-				};
-				const css = getControlCSS( cssData, clientId, atts );
-
-				applyPreviewCSS( css, clientId, updateCss.settingId, updateCss.innerSettingId );
-			} else {
-				const settingId = updateCss?.settingId;
-				const cssData = {
-					css: attributesDefaults[settingId]?.css,
-					settingId: settingId
-				};
-				const css = getControlCSS( cssData, clientId, atts );
-
-				applyPreviewCSS( css, clientId, settingId );
-			}
-		}
-	}, [ updateCss ]);
-
-	// Render the CSS for the first load.
-	useEffect(() => {
-		const allSettings = Object.keys( attributesDefaults );
-		const allSettingsStyles = [];
-
-		allSettings.forEach(settingId => {
-			const isInnerSetting = attributesDefaults[settingId]?.default?.innerSettings;
-
-			if ( isInnerSetting ) {
-				const allInnerSettings = Object.keys( attributesDefaults[settingId].default.innerSettings );
-
-				allInnerSettings.forEach(innerSettingId => {
-					allSettingsStyles.push({
-						type: 'inner-setting',
-						settingId: settingId,
-						innerSettingId: innerSettingId,
-						value: getInnerSettingValue( settingId, innerSettingId, currentDevice, atts ),
-						css: attributesDefaults[settingId].default.innerSettings[innerSettingId].css
-					});
-				});
-			} else {
-				allSettingsStyles.push({
-					type: 'setting',
-					settingId: settingId,
-					value: getSettingValue( settingId, currentDevice, atts ),
-					css: attributesDefaults[settingId].css
-				});
-			}
-		});
-
-		setUpdateCss({
-			type: 'all',
-			settings: allSettingsStyles
-		});
-	}, []);
 
 	return (
 		<>
@@ -382,22 +320,6 @@ export default function Edit( props ) {
 										setUpdateCss( { settingId: 'minHeight', value: getSettingDefaultValue( 'minHeight', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
-								<SwitchToggle
-									label={ __( 'Equal Height', 'athemes-blocks' ) }
-									value={ equalHeight }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'equalHeight', {
-											value: value
-										}, 'desktop' );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'equalHeight', {
-											value: getSettingDefaultValue( 'equalHeight', 'desktop', attributesDefaults )
-										}, 'desktop' );
-									} }
-								/>
 								<Select
 									label={ __( 'HTML Tag', 'athemes-blocks' ) }
 									options={[
@@ -547,6 +469,74 @@ export default function Edit( props ) {
 										setUpdateCss( { settingId: 'direction', value: getSettingDefaultValue( 'direction', currentDevice, attributesDefaults ) } );
 									} }
 								/>
+								<RangeSlider 
+									label={ __( 'Columns Gap', 'athemes-blocks' ) }
+									defaultValue={ columnsGap }
+									defaultUnit={ getSettingUnit( 'columnsGap', currentDevice, atts ) }
+									min={ 0 }
+									max={ 200 }
+									responsive={ true }
+									reset={ true }
+									units={['px', '%', 'vw']}
+									onChange={ ( value ) => {
+										updateAttribute( 'columnsGap', {
+											value: value,
+											unit: getSettingUnit( 'columnsGap', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'columnsGap', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'columnsGap', {
+											value: columnsGap,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'columnsGap', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'columnsGap', {
+											value: getSettingDefaultValue( 'columnsGap', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'columnsGap', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'columnsGap', value: getSettingDefaultValue( 'columnsGap', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Rows Gap', 'athemes-blocks' ) }
+									defaultValue={ rowsGap }
+									defaultUnit={ getSettingUnit( 'rowsGap', currentDevice, atts ) }
+									min={ 0 }
+									max={ 200 }
+									responsive={ true }
+									reset={ true }
+									units={['px', '%', 'vw']}
+									onChange={ ( value ) => {
+										updateAttribute( 'rowsGap', {
+											value: value,
+											unit: getSettingUnit( 'rowsGap', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'rowsGap', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'rowsGap', {
+											value: rowsGap,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'rowsGap', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'rowsGap', {
+											value: getSettingDefaultValue( 'rowsGap', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'rowsGap', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'rowsGap', value: getSettingDefaultValue( 'rowsGap', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
 								<RadioButtons 
 									label={ __( 'Children Width', 'athemes-blocks' ) }
 									defaultValue={ childrenWidth }
@@ -686,6 +676,138 @@ export default function Edit( props ) {
 						</Panel>
 					)
 				}
+				{
+					currentTab === 'style' && (
+						<Panel>
+							<PanelBody title={ __( 'Background', 'botiga-pro' ) }>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ backgroundColor }
+									hover={false}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'backgroundColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'backgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'backgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+							<PanelBody title={ __( 'Color', 'botiga-pro' ) } initialOpen={false}>
+								<ColorPicker
+									label={ __( 'Text Color', 'athemes-blocks' ) }
+									value={ textColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'textColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'textColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'textColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<ColorPicker
+									label={ __( 'Link Color', 'athemes-blocks' ) }
+									value={ linkColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+							<PanelBody title={ __( 'Border', 'botiga-pro' ) } initialOpen={false}>
+								<Border
+									label=""
+									settingId="border"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+								/>
+							</PanelBody>
+						</Panel>
+					)
+				}
 			</InspectorControls>
 			
 			{(() => {
@@ -728,4 +850,9 @@ export default function Edit( props ) {
 			})()}
 		</>
 	);
-}
+};
+
+export default withDynamicCSS(
+	withAdvancedTab(Edit, attributesDefaults),
+	attributesDefaults
+);

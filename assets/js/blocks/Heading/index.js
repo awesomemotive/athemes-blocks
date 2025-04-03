@@ -438,6 +438,7 @@ function ColorPicker(props) {
     defaultState,
     hoverState
   } = value;
+  console.log(value);
   const colorObjectDefaultState = (0,colord__WEBPACK_IMPORTED_MODULE_6__.colord)(defaultState);
   const colorObjectHoverState = (0,colord__WEBPACK_IMPORTED_MODULE_6__.colord)(hoverState);
 
@@ -2179,9 +2180,15 @@ const createInnerControlAttributeUpdater = (settingId, attributes, setAttributes
               ...{
                 default: {
                   ...attributes[settingId]?.innerSettings[innerSettingId]?.default,
-                  [device]: valueIsObject ? {
+                  [device]: valueIsObject && value?.value ? {
                     ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
                     ...value
+                  } : valueIsObject && !value?.value ? {
+                    ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
+                    value: {
+                      ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device].value,
+                      ...value
+                    }
                   } : {
                     ...attributes[settingId]?.innerSettings[innerSettingId]?.default[device],
                     value
@@ -2299,6 +2306,7 @@ function getControlCSS(cssData, clientId, attributes) {
   });
   const isColorPicker = ['defaultState', 'hoverState'].some(prop => Object.prototype.hasOwnProperty.call(sortedAttributeValue.desktop.value, prop));
   const isDimensions = ['top', 'right', 'bottom', 'left'].some(prop => Object.prototype.hasOwnProperty.call(sortedAttributeValue.desktop.value, prop));
+  const isBorderRadius = property.indexOf('-radius') !== -1;
 
   // Generate the CSS for each device.
   let css = '';
@@ -2360,11 +2368,24 @@ function getControlCSS(cssData, clientId, attributes) {
               css += `${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; }`;
               css += `${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; }`;
             } else if (isDimensions) {
+              let replacedProperty = '';
               Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
                 if (directionValue === '') {
                   return;
                 }
-                css += `${selector} { ${property}-${direction}: ${directionValue}${unit}; }`;
+                replacedProperty = property.replace('{{DIRECTION}}', direction);
+                if (isBorderRadius) {
+                  if (direction === 'top') {
+                    replacedProperty = replacedProperty.replace('top', 'top-left');
+                  } else if (direction === 'right') {
+                    replacedProperty = replacedProperty.replace('right', 'top-right');
+                  } else if (direction === 'bottom') {
+                    replacedProperty = replacedProperty.replace('bottom', 'bottom-right');
+                  } else if (direction === 'left') {
+                    replacedProperty = replacedProperty.replace('left', 'bottom-left');
+                  }
+                }
+                css += `${selector} { ${replacedProperty}: ${directionValue}${unit}; }`;
               });
             } else {
               css += `${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; }`;
@@ -2377,11 +2398,24 @@ function getControlCSS(cssData, clientId, attributes) {
               css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
               css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
             } else if (isDimensions) {
+              let replacedProperty = '';
               Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
                 if (directionValue === '') {
                   return;
                 }
-                css += `@media (max-width: 1024px) { ${selector} { ${property}-${direction}: ${directionValue}${unit}; } }`;
+                replacedProperty = property.replace('{{DIRECTION}}', direction);
+                if (isBorderRadius) {
+                  if (direction === 'top') {
+                    replacedProperty = replacedProperty.replace('top', 'top-left');
+                  } else if (direction === 'right') {
+                    replacedProperty = replacedProperty.replace('right', 'top-right');
+                  } else if (direction === 'bottom') {
+                    replacedProperty = replacedProperty.replace('bottom', 'bottom-right');
+                  } else if (direction === 'left') {
+                    replacedProperty = replacedProperty.replace('left', 'bottom-left');
+                  }
+                }
+                css += `@media (max-width: 1024px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}; } }`;
               });
             } else {
               css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
@@ -2394,11 +2428,24 @@ function getControlCSS(cssData, clientId, attributes) {
               css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
               css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
             } else if (isDimensions) {
+              let replacedProperty = '';
               Object.entries(sortedAttributeValue[device].value).forEach(([direction, directionValue]) => {
                 if (directionValue === '') {
                   return;
                 }
-                css += `@media (max-width: 767px) { ${selector} { ${property}-${direction}: ${directionValue}${unit}; } }`;
+                replacedProperty = property.replace('{{DIRECTION}}', direction);
+                if (isBorderRadius) {
+                  if (direction === 'top') {
+                    replacedProperty = replacedProperty.replace('top', 'top-left');
+                  } else if (direction === 'right') {
+                    replacedProperty = replacedProperty.replace('right', 'top-right');
+                  } else if (direction === 'bottom') {
+                    replacedProperty = replacedProperty.replace('bottom', 'bottom-right');
+                  } else if (direction === 'left') {
+                    replacedProperty = replacedProperty.replace('left', 'bottom-left');
+                  }
+                }
+                css += `@media (max-width: 767px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}; } }`;
               });
             } else {
               css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;

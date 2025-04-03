@@ -8,7 +8,7 @@ return array(
         'default' => '',
     ),
     
-    // Type -----------------------------
+    // General - Type -----------------------------
     'containerWidth' => array(
         'type' => 'object',
         'default' => array(
@@ -118,20 +118,6 @@ return array(
             'property' => '--atb-min-height',
         ),
     ),
-    'equalHeight' => array(
-        'type' => 'object',
-        'default' => array(
-            'desktop' => array(
-                'value' => true,
-            ),
-            'tablet' => array(
-                'value' => false,
-            ),
-            'mobile' => array(
-                'value' => true,
-            ),
-        )
-    ),
     'htmlTag' => array(
         'type' => 'object',
         'default' => array(
@@ -195,7 +181,7 @@ return array(
         ),
     ),
 
-    // Layout -----------------------------
+    // General - Layout -----------------------------
     'layout' => array(
         'type' => 'object',
         'default' => array(
@@ -211,7 +197,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'display',
         ),
@@ -231,9 +217,55 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'flex-direction',
+        ),
+    ),
+    'columnsGap' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+            'tablet' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+            'mobile' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
+            ),
+            'property' => '--atb-container-columns-gap',
+        ),
+    ),
+    'rowsGap' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+            'tablet' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+            'mobile' => array(
+                'value' => '',
+                'unit' => 'px',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
+            ),
+            'property' => '--atb-container-rows-gap',
         ),
     ),
     'childrenWidth' => array(
@@ -265,7 +297,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'align-items',
         ),
@@ -285,7 +317,7 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'justify-content',
         ),
@@ -294,18 +326,18 @@ return array(
         'type' => 'object',
         'default' => array(
             'desktop' => array(
-                'value' => 'wrap',
+                'value' => 'nowrap',
             ),
             'tablet' => array(
-                'value' => 'wrap',
+                'value' => 'nowrap',
             ),
             'mobile' => array(
-                'value' => 'wrap',
+                'value' => 'nowrap',
             ),
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'flex-wrap',
         ),
@@ -325,9 +357,319 @@ return array(
         ),
         'css' => array(
             'selectors' => array(
-                '{{WRAPPER}} .block-editor-inner-blocks > .block-editor-block-list__layout',
+                '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
             ),
             'property' => 'align-content',
+        ),
+    ),
+
+    // Style - Background -----------------------------
+    'backgroundColor' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'tablet' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'mobile' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}',
+            ),
+            'property' => 'background-color',
+        ),
+    ),
+    'textColor' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'tablet' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'mobile' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}',
+                '{{WRAPPER}}:hover' => '{{HOVER}}',
+            ),
+            'property' => 'color',
+        )
+    ),
+    'linkColor' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'tablet' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+            'mobile' => array(
+                'value' => array(
+                    'defaultState' => '',
+                    'hoverState' => ''
+                )
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}} a' => '{{VALUE}}',
+                '{{WRAPPER}} a:hover' => '{{HOVER}}',
+            ),
+            'property' => 'color',
+        )
+    ),
+    'border' => array(
+        'type' => 'object',
+        'default' => array(
+            'innerSettings' => array(
+                'borderStyle' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => 'default'
+                        ),
+                        'tablet' => array(
+                            'value' => 'default'
+                        ),
+                        'mobile' => array(
+                            'value' => 'default'
+                        ),
+                    ),
+                    'css' => array(
+                        'selectors' => array(
+                            '{{WRAPPER}}',
+                        ),
+                        'property' => 'border-style',
+                    )
+                ),
+                'borderWidth' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                        'tablet' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                        'mobile' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                    ),
+                    'css' => array(
+                        'selectors' => array(
+                            '{{WRAPPER}}',
+                        ),
+                        'property' => 'border-{{DIRECTION}}-width',
+                    )
+                ),
+                'borderRadius' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                        'tablet' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                        'mobile' => array(
+                            'value' => array(
+                                'top' => '',
+                                'right' => '',
+                                'bottom' => '',
+                                'left' => '',
+                            ),
+                            'unit' => 'px',
+                            'connect' => true,
+                        ),
+                    ),
+                    'css' => array(
+                        'selectors' => array(
+                            '{{WRAPPER}}',
+                        ),
+                        'property' => 'border-{{DIRECTION}}-radius',
+                    )
+                ),
+                'borderColor' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => array(
+                                'defaultState' => '',
+                                'hoverState' => ''
+                            )
+                        ),
+                        'tablet' => array(
+                            'value' => array(
+                                'defaultState' => '',
+                                'hoverState' => ''
+                            )
+                        ),
+                        'mobile' => array(
+                            'value' => array(
+                                'defaultState' => '',
+                                'hoverState' => ''
+                            )
+                        ),
+                    ),
+                    'css' => array(
+                        'selectors' => array(
+                            '{{WRAPPER}}' => '{{VALUE}}',
+                            '{{WRAPPER}}:hover' => '{{HOVER}}',
+                        ),
+                        'property' => 'border-color',
+                    )
+                ),
+            ),
+        ),
+    ),
+
+    // Advanced -----------------------------
+    'padding' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+            'tablet' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+            'mobile' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}',
+            ),
+            'property' => 'padding-{{DIRECTION}}',
+        ),
+    ),
+    'margin' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+            'tablet' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+            'mobile' => array(
+                'value' => array(
+                    'top' => '',
+                    'right' => '',
+                    'bottom' => '',
+                    'left' => '',
+                ),
+                'connect' => true,
+                'unit' => 'px',
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}',
+            ),
+            'property' => 'margin-{{DIRECTION}}',
         ),
     ),
 );

@@ -1,6 +1,14 @@
 .at-block-flex-container {
-    border: 1px dashed #eaeaea;
-    .block-editor-inner-blocks {
+    > .block-editor-inner-blocks {
         width: 100%;
+
+        > .block-editor-block-list__layout {
+            column-gap: var(--atb-container-columns-gap, 15px);
+            row-gap: var(--atb-container-rows-gap, 15px);
+
+            > .wp-block {
+                margin: 0;
+            }
+        }
     }
 }

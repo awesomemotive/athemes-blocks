@@ -355,7 +355,7 @@ return array(
                 '{{WRAPPER}} h1',
                 '{{WRAPPER}} .test2',
             ),
-            'property' => 'padding',
+            'property' => 'padding-{{DIRECTION}}',
         ),
     ),
 );
