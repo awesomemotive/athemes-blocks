@@ -7,8 +7,13 @@
             row-gap: var(--atb-container-rows-gap, 15px);
 
             > .wp-block {
-                margin: 0;
+                // margin: 0;
             }
         }
+    }
+
+    // Always force the z-index to 0 in the editor to avoid losing the block mouse interaction.
+    &:not(.is-child-container) {
+        z-index: 0 !important;
     }
 }

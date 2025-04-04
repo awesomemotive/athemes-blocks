@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect, useMemo } from '@wordpress/element';
+import { useEffect, useMemo, useRef } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
@@ -16,7 +16,7 @@ import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
 
 import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
-
+import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
 const attributesDefaults = FlexContainerBlockData.attributes;
@@ -98,6 +98,11 @@ const Edit = (props) => {
 		backgroundColor,
 		textColor,
 		linkColor,
+
+		// Advanced.
+		hideOnDesktop,
+		hideOnTablet,
+		hideOnMobile,
 	} = useMemo(() => {
 		return {
 
@@ -127,6 +132,11 @@ const Edit = (props) => {
 			backgroundColor: getSettingValue('backgroundColor', 'desktop', atts),
 			textColor: getSettingValue('textColor', 'desktop', atts),
 			linkColor: getSettingValue('linkColor', 'desktop', atts),
+
+			// Advanced.
+			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
+			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
+			hideOnMobile: getSettingValue('hideOnMobile', 'desktop', atts),
 		};
 	}, [atts, currentDevice]);
 
@@ -820,7 +830,7 @@ const Edit = (props) => {
 					blockPropsClassName += ' at-block-flex-container--children-w-auto';
 				}
 
-				const blockProps = useBlockProps({
+				let blockProps = useBlockProps({
 					className: blockPropsClassName
 				});
 
@@ -832,6 +842,25 @@ const Edit = (props) => {
 						blockProps.target = '_blank';
 					}
 				}
+
+				if (hideOnDesktop) {
+					blockProps.className += ' atb-hide-desktop';
+				}
+
+				if (hideOnTablet) {
+					blockProps.className += ' atb-hide-tablet';
+				}
+
+				if (hideOnMobile) {
+					blockProps.className += ' atb-hide-mobile';
+				}
+
+				if (isChildOfFlexContainer) {
+					blockProps.className += ' is-child-container';
+				}
+
+				// Animation.
+				blockProps = blockPropsWithAnimation(blockProps, attributes);
 				
 				return (
 					<Tag { ...blockProps }>

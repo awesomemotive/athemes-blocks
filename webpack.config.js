@@ -143,6 +143,29 @@ module.exports = [
             ],
         },
     },
+    {
+        entry: {
+            'entrance-effects': path.resolve(__dirname, 'assets/js/src/animation/entrance-effects.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/js/animation/'),
+            filename: '[name].js',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js?$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@wordpress/babel-preset-default'],
+                        },
+                    },
+                },
+            ],
+        },
+    },
 
     // Global SCSS Compilation Configuration
     {
@@ -168,6 +191,32 @@ module.exports = [
             new FixStyleOnlyEntriesPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'block-editor.css',
+            }),
+        ]
+    },
+    {
+        entry: {
+            'Is': path.resolve(__dirname, 'assets/sass/blocks-common.scss'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/css/'),
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.scss$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+            ],
+        },
+        plugins: [
+            new FixStyleOnlyEntriesPlugin(),
+            new MiniCssExtractPlugin({
+                filename: 'blocks-common.css',
             }),
         ]
     },

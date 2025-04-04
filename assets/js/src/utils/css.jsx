@@ -49,7 +49,7 @@ export function getControlCSS( cssData, clientId, attributes ) {
         return '';
     }
 
-    const { selectors, property } = cssData.css;
+    const { selectors, property, important = false } = cssData.css;
     const settingId = cssData.settingId;
     const innerSettingId = cssData?.innerSettingId;
 
@@ -114,26 +114,26 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     if (device === 'desktop') {
                         if (valueIsObject) {
                             if (isColorPicker) {
-                                css += `${replacedSelector} { ${property}: ${replacedSelectorValue}; }`;
+                                css += `${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; }`;
                             }
                         } else {
-                            css += `${replacedSelector} { ${property}: ${replacedSelectorValue}; }`;
+                            css += `${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; }`;
                         }
                     } else if (device === 'tablet') {
                         if (valueIsObject) {
                             if (isColorPicker) {
-                                css += `@media (max-width: 1024px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}; } }`;
+                                css += `@media (max-width: 1024px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; } }`;
                             }
                         } else {
-                            css += `@media (max-width: 1024px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}; } }`;
+                            css += `@media (max-width: 1024px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; } }`;
                         }
                     } else if (device === 'mobile') {
                         if (valueIsObject) {
                             if (isColorPicker) {
-                                css += `@media (max-width: 767px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}; } }`;
+                                css += `@media (max-width: 767px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; } }`;
                             }
                         } else {
-                            css += `@media (max-width: 767px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}; } }`;
+                            css += `@media (max-width: 767px) { ${replacedSelector} { ${property}: ${replacedSelectorValue}${important ? '!important' : ''}; } }`;
                         }
                     }
                 }
@@ -141,8 +141,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'desktop' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }; }`;
-                            css += `${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }; }`;
+                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }${important ? '!important' : ''}; }`;
+                            css += `${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }${important ? '!important' : ''}; }`;
                         } else if ( isDimensions ) {
 
                             let replacedProperty = '';
@@ -165,10 +165,10 @@ export function getControlCSS( cssData, clientId, attributes ) {
                                     }
                                 }
 
-                                css += `${selector} { ${replacedProperty}: ${directionValue}${unit}; }`;
+                                css += `${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; }`;
                             });
                         } else {
-                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}; }`;
+                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}${important ? '!important' : ''}; }`;
                         }
                     });
                 }
@@ -176,8 +176,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'tablet' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
-                            css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
+                            css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
                         } else if ( isDimensions ) {
 
                             let replacedProperty = '';
@@ -200,10 +200,10 @@ export function getControlCSS( cssData, clientId, attributes ) {
                                     }
                                 }
 
-                                css += `@media (max-width: 1024px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}; } }`;
+                                css += `@media (max-width: 1024px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; } }`;
                             });
                         } else {
-                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
+                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }
                     });
                 }
@@ -211,8 +211,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'mobile' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}; } }`;
-                            css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}; } }`;
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
+                            css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
                         } else if ( isDimensions) {
 
                             let replacedProperty = '';
@@ -235,10 +235,10 @@ export function getControlCSS( cssData, clientId, attributes ) {
                                     }
                                 }
 
-                                css += `@media (max-width: 767px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}; } }`;
+                                css += `@media (max-width: 767px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; } }`;
                             });
                         } else {
-                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}; } }`;
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }
                     });
                 } 

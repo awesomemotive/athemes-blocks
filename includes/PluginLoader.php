@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AThemes_Blocks\Admin\BlockEditorAssets;
-
+use AThemes_Blocks\BlocksCommonCss;
+use AThemes_Blocks\BlocksCommonScripts;
 class PluginLoader {
 
     /**
@@ -31,6 +32,12 @@ class PluginLoader {
 
         // Load admin only stuff.
         $this->load_admin();
+
+        // Load blocks common CSS.
+        $this->load_blocks_common_css();
+
+        // Load blocks common scripts.
+        $this->load_blocks_common_scripts();
     }
 
     /**
@@ -70,5 +77,23 @@ class PluginLoader {
             $block_class = 'AThemes_Blocks\Blocks\\' . $block;
             new $block_class();
         }
+    }
+
+    /**
+     * Load blocks common CSS.
+     * 
+     * @return void
+     */
+    public function load_blocks_common_css(): void {
+        new BlocksCommonCss();
+    }
+
+    /**
+     * Load blocks common scripts.
+     * 
+     * @return void
+     */
+    public function load_blocks_common_scripts(): void {
+        new BlocksCommonScripts();
     }
 }

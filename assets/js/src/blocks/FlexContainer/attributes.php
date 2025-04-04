@@ -670,6 +670,119 @@ return array(
                 '{{WRAPPER}}',
             ),
             'property' => 'margin-{{DIRECTION}}',
+            'important' => true,
         ),
+    ),
+    'animation' => array(
+        'type' => 'object',
+        'default' => array(
+            'innerSettings' => array(
+                'entranceAnimation' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => 'default'
+                        ),
+                        'tablet' => array(
+                            'value' => 'default'
+                        ),
+                        'mobile' => array(
+                            'value' => 'default'
+                        ),
+                    ),
+                ),
+                'animationDuration' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => 'normal'
+                        ),
+                        'tablet' => array(
+                            'value' => 'normal'
+                        ),
+                        'mobile' => array(
+                            'value' => 'normal'
+                        ),
+                    ),
+                ),
+                'animationDelay' => array(
+                    'default' => array(
+                        'desktop' => array(
+                            'value' => ''
+                        ),
+                        'tablet' => array(
+                            'value' => ''
+                        ),
+                        'mobile' => array(
+                            'value' => ''
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'hideOnDesktop' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => false,
+            ),
+            'tablet' => array(
+                'value' => false,
+            ),
+            'mobile' => array(
+                'value' => false,
+            ),
+        ),
+    ),
+    'hideOnTablet' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => false,
+            ),
+            'tablet' => array(
+                'value' => false,
+            ),
+            'mobile' => array(
+                'value' => false,
+            ),
+        ),
+    ),
+    'hideOnMobile' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => false,
+            ),
+            'tablet' => array(
+                'value' => false,
+            ),
+            'mobile' => array(
+                'value' => false,
+            ),
+        ),
+    ),
+    'zIndex' => array(
+        'type' => 'object',
+        'default' => array(
+            'desktop' => array(
+                'value' => 0,
+            ),
+            'tablet' => array(
+                'value' => 0,
+            ),
+            'mobile' => array(
+                'value' => 0,
+            ),
+        ),
+        'css' => array(
+            'selectors' => array(
+                '{{WRAPPER}}' => '{{VALUE}}{{UNIT}}; position: relative;',
+            ),
+            'property' => 'z-index',
+        ),
+    ),
+    'cssID' => array(
+        'type' => 'string',
+        'default' => '',
     ),
 );
