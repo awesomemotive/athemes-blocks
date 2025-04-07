@@ -24,6 +24,13 @@ abstract class BlockBase {
     protected $id;
 
     /**
+     * Block slug.
+     * 
+     * @var string
+     */
+    protected $slug;
+
+    /**
      * Constructor.
      * 
      */
@@ -67,7 +74,7 @@ abstract class BlockBase {
      * @return string Block content.
      */
     public function block_css( $block_content, $block ): string {
-        if ( $block['blockName'] !== 'athemes-blocks/'. $this->id ) {
+        if ( $block['blockName'] !== 'athemes-blocks/'. $this->slug ) {
             return $block_content;
         }
 

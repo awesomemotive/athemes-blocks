@@ -69,9 +69,9 @@ class BlockCss {
         );
 
         foreach ( $default_attributes as $attribute_name => $attribute_settings ) {
-            if ( ! isset( $attributes[$attribute_name] ) ) {
-                continue;
-            }
+            // if ( ! isset( $attributes[$attribute_name] ) ) {
+            //     continue;
+            // }
 
             // Inner settings (recursive).
             if ( isset( $attributes[$attribute_name]['innerSettings'] ) ) {
@@ -86,7 +86,17 @@ class BlockCss {
             if ( isset( $attribute_settings['css'] ) ) {
                 $selectors = $attribute_settings['css']['selectors'];
                 $property = $attribute_settings['css']['property'];
-                $attribute_data = isset( $attributes[$attribute_name]['default'] ) ? $attributes[$attribute_name]['default'] : $attributes[$attribute_name];
+                $important = $attribute_settings['css']['important'] ?? false;
+
+                // Left condition refer to inner settings and right condition refer to default settings (from recursive call).
+                $attribute_data = array();
+                if ( isset( $attributes[$attribute_name] ) ) {
+                    $attribute_data = isset( $attributes[$attribute_name]['default'] ) ? $attributes[$attribute_name]['default'] : $attributes[$attribute_name];
+                } else {
+                    $attribute_data = $default_attributes[$attribute_name]['default'];
+                }
+
+                // var_dump($attribute_data);
 
                 foreach ( $attribute_data as $device => $value ) {
                     if ( empty( $value['value'] ) || $value['value'] === 'default' ) {
@@ -98,6 +108,7 @@ class BlockCss {
 
                     $is_color_picker = isset( $value['value']['defaultState'] ) || isset( $value['value']['hoverState'] );
                     $is_dimensions = isset( $value['value']['top'] ) || isset( $value['value']['right'] ) || isset( $value['value']['bottom'] ) || isset( $value['value']['left'] );
+                    $is_border_radius = strpos( $property, '-radius' ) !== false;
 
                     if ( $is_color_picker && empty( $value['value']['defaultState'] ) && empty( $value['value']['hoverState'] ) ) {
                         continue;
@@ -127,10 +138,10 @@ class BlockCss {
 
                             if ( $value_is_object ) {
                                 if ( $is_color_picker ) {
-                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $replaced_selector_value );
+                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $replaced_selector_value, $important ? '!important' : '' );
                                 }
                             } else {
-                                $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $replaced_selector_value );
+                                $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $replaced_selector_value, $important ? '!important' : '' );
                             }
                         }
                     } else {
@@ -140,12 +151,26 @@ class BlockCss {
                             if ( $device === 'desktop' ) {
                                 if ( $value_is_object ) {
                                     if ( $is_dimensions ) {
-                                        foreach ( $value['value'] as $sub_property => $sub_value ) {
-                                            if ( empty( $sub_value ) && $sub_value !== '0' ) {
+                                        foreach ( $value['value'] as $direction => $direction_value ) {
+                                            if ( empty( $direction_value ) && $direction_value !== '0' ) {
                                                 continue;
                                             }
 
-                                            $responsive_values['desktop'][$selector][] = sprintf( '%s: %s%s ', $property . '-' . $sub_property, $sub_value, $unit );
+                                            $replaced_property = str_replace( '{{DIRECTION}}', $direction, $property );
+
+                                            if ( $is_border_radius ) {
+                                                if ( $direction === 'top' ) {
+                                                    $replaced_property = str_replace( 'top', 'top-left', $replaced_property );
+                                                } else if ( $direction === 'right' ) {
+                                                    $replaced_property = str_replace( 'right', 'top-right', $replaced_property );
+                                                } else if ( $direction === 'bottom' ) {
+                                                    $replaced_property = str_replace( 'bottom', 'bottom-right', $replaced_property );
+                                                } else if ( $direction === 'left' ) {
+                                                    $replaced_property = str_replace( 'left', 'bottom-left', $replaced_property );
+                                                }
+                                            }
+
+                                            $responsive_values['desktop'][$selector][] = sprintf( '%s: %s%s %s', $replaced_property, $direction_value, $unit, $important ? '!important' : '' );
                                         }                                
                                     }
     
@@ -159,21 +184,35 @@ class BlockCss {
                             } else {
                                 if ( $value_is_object ) {
                                     if ( $is_dimensions ) {
-                                        foreach ( $value['value'] as $sub_property => $sub_value ) {
-                                            if ( empty( $sub_value ) && $sub_value !== '0' ) {
+                                        foreach ( $value['value'] as $direction => $direction_value ) {
+                                            if ( empty( $direction_value ) && $direction_value !== '0' ) {
                                                 continue;
                                             }
 
-                                            $responsive_values[$device][$selector][] = sprintf( '%s: %s%s ', $property . '-' . $sub_property, $sub_value, $unit );
+                                            $replaced_property = str_replace( '{{DIRECTION}}', $direction, $property );
+
+                                            if ( $is_border_radius ) {
+                                                if ( $direction === 'top' ) {
+                                                    $replaced_property = str_replace( 'top', 'top-left', $replaced_property );
+                                                } else if ( $direction === 'right' ) {
+                                                    $replaced_property = str_replace( 'right', 'top-right', $replaced_property );
+                                                } else if ( $direction === 'bottom' ) {
+                                                    $replaced_property = str_replace( 'bottom', 'bottom-right', $replaced_property );
+                                                } else if ( $direction === 'left' ) {
+                                                    $replaced_property = str_replace( 'left', 'bottom-left', $replaced_property );
+                                                }
+                                            }
+
+                                            $responsive_values[$device][$selector][] = sprintf( '%s: %s%s %s', $replaced_property, $direction_value, $unit, $important ? '!important' : '' );
                                         }                                
                                     }
     
                                     if ( $is_color_picker ) {
-                                        $responsive_values[$device][$selector][] = sprintf( '%s: %s', $property, $value['value']['defaultState'] );
-                                        $responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s', $property, $value['value']['hoverState'] );
+                                        $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $value['value']['defaultState'], $important ? '!important' : '' );
+                                        $responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s %s', $property, $value['value']['hoverState'], $important ? '!important' : '' );
                                     }
                                 } else {
-                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s%s', $property, $value['value'], $unit );
+                                    $responsive_values[$device][$selector][] = sprintf( '%s: %s%s %s', $property, $value['value'], $unit, $important ? '!important' : '' );
                                 }
                             }
                         }

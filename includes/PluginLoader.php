@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AThemes_Blocks\Admin\BlockEditorAssets;
 use AThemes_Blocks\BlocksCommonCss;
 use AThemes_Blocks\BlocksCommonScripts;
+use AThemes_Blocks\Blocks\Helper\Settings;
+
 class PluginLoader {
 
     /**

@@ -23,6 +23,7 @@ class FlexContainer extends BlockBase {
      */
     public function __construct() {
         $this->id = 'FlexContainer';
+        $this->slug = 'flex-container';
         
         parent::__construct();
     }

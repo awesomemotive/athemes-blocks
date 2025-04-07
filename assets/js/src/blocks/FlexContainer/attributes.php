@@ -706,13 +706,13 @@ return array(
                 'animationDelay' => array(
                     'default' => array(
                         'desktop' => array(
-                            'value' => ''
+                            'value' => 750
                         ),
                         'tablet' => array(
-                            'value' => ''
+                            'value' => 750
                         ),
                         'mobile' => array(
-                            'value' => ''
+                            'value' => 750
                         ),
                     ),
                 ),

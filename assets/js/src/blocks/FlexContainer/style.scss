@@ -43,7 +43,7 @@
     // Container Custom.
     &--container-custom {
         width: var(--atb-container-custom-width, 100%);
-        max-width: var(--atb-container-custom-width, 100%);
+        max-width: var(--atb-container-custom-width, 100%) !important;
     }
 
     // Children Width Auto.
@@ -52,9 +52,13 @@
             width: auto;
         }
     }
-    
 
     &__inner-blocks-wrapper {
         width: var(--atb-content-box-width, 100%);
     }
+}
+
+// As a link tag.
+a.at-block-flex-container {
+    display: block;
 }
