@@ -130,7 +130,7 @@ export function Border( props ) {
                 )
             }
             {
-                ( borderStyle.default[currentDevice].value !== 'none' && borderStyle.default[currentDevice].value !== 'default' && subFields && subFields.includes('borderRadius') ) && (
+                ( borderStyle.default[currentDevice].value !== 'default' && subFields && subFields.includes('borderRadius') ) && (
                     <Dimensions
                         label={ __( 'Radius', 'athemes-blocks' ) }
                         directions={[

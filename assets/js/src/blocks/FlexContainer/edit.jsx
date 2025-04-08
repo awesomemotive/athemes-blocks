@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
 import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { useMergeRefs } from '@wordpress/compose';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
@@ -12,22 +13,23 @@ import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-t
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
 import { Border } from '../../block-editor/controls/border/border';
 import { createAttributeUpdater } from '../../utils/block-attributes';
+import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
+import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persistent-panel-toggle';
 
-import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
 const attributesDefaults = FlexContainerBlockData.attributes;
 
 const Edit = (props) => {
-	const { attributes, setAttributes, clientId, setUpdateCss } = props;
+	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
-
+	
 	// Detect if this block is a child of a flex-container block.
 	const parentBlock = useSelect(select => {
 		const parents = select('core/block-editor').getBlockParents(clientId);
@@ -57,14 +59,23 @@ const Edit = (props) => {
 		};
 	}
 
+	// Check if has inner blocks.
+	const hasInnerBlocks = useSelect((select) => {
+		const { getBlockCount } = select('core/block-editor');
+
+		return getBlockCount(clientId) > 0;
+	}, [clientId]);
+
 	// Move renderAppender outside the render cycle.
-	const renderAppender = () => <InnerBlocks.DefaultBlockAppender />;
+	const renderAppender = () => hasInnerBlocks ? <InnerBlocks.DefaultBlockAppender /> : <InnerBlocks.ButtonBlockAppender />;
 
 	const innerBlocks = useMemo(
 		() => (
 			<InnerBlocks
 				templateLock={ false }
 				renderAppender={ renderAppender }
+				orientation="horizontal"
+				prioritizedInserterBlocks={ [ 'athemes-blocks/flex-container' ] }
 			/>
 		),
 		[ renderAppender ]
@@ -145,22 +156,55 @@ const Edit = (props) => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
 
+	useEffect(() => {
+		if ( isChildOfFlexContainer ) {
+			setAttributes({
+				direction: {
+					desktop: { value: 'column' },
+					tablet: { value: 'column' },
+					mobile: { value: 'column' }
+				}
+			});
+		}
+	}, []);
+
+	// Prevent the default click event handler for the block if the html tag is 'a'.
+	const blockRef = useRef(null);
+
+	useEffect(() => {
+		if ( blockRef === null ) {
+			return;
+		}
+		
+		if (htmlTag === 'a' && blockRef.current) {
+			const handleClick = (event) => {
+				event.preventDefault();
+			};
+
+			if ( blockRef.current ) {
+				blockRef.current.addEventListener('click', handleClick);
+			}
+
+			return () => {
+				if ( blockRef.current ) {
+					blockRef.current.removeEventListener('click', handleClick);
+				}
+			};
+		}
+	}, [htmlTag]);
+
 	return (
 		<>
 			<InspectorControls>
-				<TabsNavigation
-					value="general"
-					options={[
-						{ label: __( 'General', 'botiga-pro' ), value: 'general' },
-						{ label: __( 'Style', 'botiga-pro' ), value: 'style' },
-						{ label: __( 'Advanced', 'botiga-pro' ), value: 'advanced' },
-					]}
-				/>
-
 				{
 					currentTab === 'general' && (
 						<Panel>
-							<PanelBody title={ __( 'Type', 'botiga-pro' ) }>
+							<PanelBody 
+								title={ __( 'Type', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'type' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'type' ) }
+							>
 								{
 									isChildOfFlexContainer === false && (
 										<RadioButtons 
@@ -428,16 +472,22 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
-							<PanelBody title={ __( 'Layout', 'botiga-pro' ) } initialOpen={ false }>
+							<PanelBody 
+								title={ __( 'Layout', 'botiga-pro' ) } 
+								initialOpen={false} 
+								opened={ isPanelOpened( 'layout' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'layout' ) }
+							>
 								<RadioButtons 
 									label={ __( 'Layout', 'athemes-blocks' ) }
 									defaultValue={ layout }
 									options={[
 										{ label: __( 'Flex', 'athemes-blocks' ), value: 'flex' },
-										{ label: __( 'Grid', 'athemes-blocks' ), value: 'grid' },
+										// { label: __( 'Grid', 'athemes-blocks' ), value: 'grid' },
 									]}
 									responsive={false}
 									reset={true}
+									hidden={ true }
 									onChange={ ( value ) => {
 										updateAttribute( 'layout', {
 											value: value
@@ -689,7 +739,12 @@ const Edit = (props) => {
 				{
 					currentTab === 'style' && (
 						<Panel>
-							<PanelBody title={ __( 'Background', 'botiga-pro' ) }>
+							<PanelBody 
+								title={ __( 'Background', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'background' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
+							>
 								<ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ backgroundColor }
@@ -728,7 +783,12 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
-							<PanelBody title={ __( 'Color', 'botiga-pro' ) } initialOpen={false}>
+							<PanelBody 
+								title={ __( 'Color', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'color' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'color' ) }
+							>
 								<ColorPicker
 									label={ __( 'Text Color', 'athemes-blocks' ) }
 									value={ textColor }
@@ -804,7 +864,12 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
-							<PanelBody title={ __( 'Border', 'botiga-pro' ) } initialOpen={false}>
+							<PanelBody 
+								title={ __( 'Border', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'border' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'border' ) }
+							>
 								<Border
 									label=""
 									settingId="border"
@@ -843,6 +908,10 @@ const Edit = (props) => {
 					}
 				}
 
+				if (hasInnerBlocks) {
+					blockProps.className += ' has-inner-blocks';
+				}
+
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
 				}
@@ -863,7 +932,7 @@ const Edit = (props) => {
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
 				
 				return (
-					<Tag { ...blockProps }>
+					<Tag { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
 						{
 							// Full width container with boxed content.
 							containerWidth === 'full-width' && contentWidth === 'boxed' ? (
@@ -882,6 +951,11 @@ const Edit = (props) => {
 };
 
 export default withDynamicCSS(
-	withAdvancedTab(Edit, attributesDefaults),
+	withTabsNavigation(
+		withAdvancedTab(
+			withPersistentPanelToggle(Edit),
+			attributesDefaults
+		)
+	),
 	attributesDefaults
 );

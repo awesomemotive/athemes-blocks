@@ -93,6 +93,10 @@ class BlockCss {
                 if ( isset( $attributes[$attribute_name] ) ) {
                     $attribute_data = isset( $attributes[$attribute_name]['default'] ) ? $attributes[$attribute_name]['default'] : $attributes[$attribute_name];
                 } else {
+                    if ( ! isset( $default_attributes[$attribute_name] ) || ! isset( $default_attributes[$attribute_name]['default'] ) ) {
+                        continue;
+                    }
+                    
                     $attribute_data = $default_attributes[$attribute_name]['default'];
                 }
 

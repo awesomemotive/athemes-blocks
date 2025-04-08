@@ -1,14 +1,23 @@
 import { createReduxStore, register } from '@wordpress/data';
 
 // Defaults.
-const DEFAULT_STATE = 'general';
+const DEFAULT_STATE = {
+    currentTab: 'general',
+    lastPanelOpened: null
+};
 
 // Actions.
 const actions = {
-    switchTabTo( device ) {
+    switchTabTo( tabId ) {
         return {
             type: 'SWITCH_TAB',
-            device
+            tabId
+        };
+    },
+    setLastPanelOpened( lastPanelOpened ) {
+        return {
+            type: 'SET_LAST_PANEL_OPENED',
+            lastPanelOpened
         };
     }
 };
@@ -17,7 +26,16 @@ const actions = {
 const reducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case 'SWITCH_TAB':
-            return action.device;
+            return {
+                ...state,
+                currentTab: action.tabId
+            };
+
+        case 'SET_LAST_PANEL_OPENED':
+            return {
+                ...state,
+                lastPanelOpened: action.lastPanelOpened
+            };
 
         default:
             return state;
@@ -27,7 +45,10 @@ const reducer = (state = DEFAULT_STATE, action) => {
 // Selectors.
 const selectors = {
     getCurrentTab(state) {
-        return state;
+        return state.currentTab;
+    },
+    getLastPanelOpened(state) {
+        return state.lastPanelOpened;
     }
 };
 
@@ -43,9 +64,6 @@ if ( ! window.__PERSISTENT_TABS_STORE_IS_REGISTERED__ ) {
     register(store);
 
     window.__PERSISTENT_TABS_STORE_IS_REGISTERED__ = true;
-    window.__PERSISTENT_TABS_DEVICE_SWITCHER_STORE__ = store;
-} else {
-    store = window.__PERSISTENT_TABS_DEVICE_SWITCHER_STORE__;
 }
 
 export { store };

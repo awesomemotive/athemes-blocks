@@ -90,8 +90,8 @@ $wrapper_attributes['class'] = implode( ' ', $wrapper_classes );
 // Output.
 echo sprintf(
     '<%s %s>%s</%s>',
-    $htmlTag,
+    $htmlTag ? $htmlTag : 'div',
     get_block_wrapper_attributes( $wrapper_attributes ),
     $containerWidth === 'full-width' && $contentWidth === 'boxed' ? '<div class="at-block-flex-container__inner-blocks-wrapper">' . $content . '</div>' : $content,
-    $htmlTag
+    $htmlTag ? $htmlTag : 'div'
 );

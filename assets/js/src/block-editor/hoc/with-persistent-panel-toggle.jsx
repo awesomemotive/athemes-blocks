@@ -1,0 +1,30 @@
+import { useSelect, useDispatch } from '@wordpress/data';
+import { store as persistentTabsStore } from '../store/persistent-tabs-store';
+
+export const withPersistentPanelToggle = (WrappedComponent) => {
+    return (props) => {
+        const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+        const lastPanelOpened = useSelect((select) => select('persistent-tabs-store').getLastPanelOpened());
+        const { setLastPanelOpened } = useDispatch(persistentTabsStore);
+
+        const onTogglePanelBodyHandler = (panelId) => {
+            if (lastPanelOpened === `${currentTab}-${panelId}`) {
+                setLastPanelOpened(null);
+            } else {
+                setLastPanelOpened(`${currentTab}-${panelId}`);
+            }
+        };
+
+        const isPanelOpened = (panelId) => {
+            return lastPanelOpened === `${currentTab}-${panelId}`;
+        };
+
+        return (
+            <WrappedComponent 
+                {...props} 
+                isPanelOpened={isPanelOpened}
+                onTogglePanelBodyHandler={onTogglePanelBodyHandler}
+            />
+        );
+    };
+}; 

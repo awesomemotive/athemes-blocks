@@ -13,12 +13,16 @@ import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-
 import { styles } from './styles';
 
 export function RadioButtons( props ) {
-    const { label, options, defaultValue, responsive, reset, onChange, onClickReset } = props;
+    const { label, options, defaultValue, responsive, reset, hidden, onChange, onClickReset } = props;
     const [ value, setValue ] = useState( defaultValue );
 
     useEffect(() => {
         setValue( defaultValue );
     }, [ defaultValue ]);
+
+    if ( hidden ) {
+        return null;
+    }
 
     return(
         <BaseControl css={styles.wrapper} className="atblocks-component-radio-buttons">

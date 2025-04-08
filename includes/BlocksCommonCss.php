@@ -45,7 +45,7 @@ class BlocksCommonCss {
 	 * @return void
 	 */
 	public function enqueue_frontend_common_inline_css() {
-		wp_add_inline_style( 'athemes-blocks-style', $this->get_inline_styles() );
+		wp_add_inline_style( 'athemes-blocks-common', $this->get_inline_styles() );
 	}
 
 	/**
@@ -73,19 +73,19 @@ class BlocksCommonCss {
 		$css = "
 			@media (min-width: {$breakpoints['desktop-min']}px) {
 				.atb-hide-desktop {
-					display: none;
+					display: none !important;
 				}
 			}
 
 			@media (min-width: {$breakpoints['tablet-min']}px) and (max-width: {$breakpoints['tablet-max']}px) {
 				.atb-hide-tablet {
-					display: none;
+					display: none !important;
 				}
 			}
 
 			@media (max-width: {$breakpoints['mobile-max']}px) {
 				.atb-hide-mobile {
-					display: none;
+					display: none !important;
 				}
 			}
 		";

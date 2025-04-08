@@ -2,16 +2,17 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from "@wordpress/data";
 import { Button } from '@wordpress/components';
+import { icons } from '../../../utils/icons';
 
 import { store as persistentTabsStore } from '../../store/persistent-tabs-store';
 
 export function TabsNavigation( props ) {
-    const { value, options } = props;
+    const { options } = props;
 
     const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
     const [ tab, setTab ] = useState(currentTab);
-    const { switchTabTo } = useDispatch(persistentTabsStore);
+    const { switchTabTo, lastPanelOpened } = useDispatch(persistentTabsStore);
 
     const onClickHandler = (tabId) => {
         setTab(tabId);
@@ -44,10 +45,14 @@ export function TabsNavigation( props ) {
                     return(
                         <Button 
                             key={index}
-                            className={`atblocks-tabs-navigation__item ${ value === option.value ? 'is-active' : '' }`}
+                            className={`atblocks-tabs-navigation__item ${ tab === option.value ? 'is-active' : '' }`}
+                            data-tab={option.value}
                             onClick={() => onClickHandler(option.value)}
                         >
-                            { option.label }
+                            { option.value === 'advanced' && icons.advanced }
+                            { option.value === 'style' && icons.style }
+                            { option.value === 'general' && icons.general }
+                            <span className="atblocks-tabs-navigation__item-label">{ option.label }</span>
                         </Button>
                     );
                 })
