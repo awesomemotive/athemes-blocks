@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect, useMemo, useRef } from '@wordpress/element';
-import { useSelect } from "@wordpress/data";
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
@@ -21,6 +21,8 @@ import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persisten
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
+import LayoutSelector from './layout-selector';
+
 const attributesDefaults = FlexContainerBlockData.attributes;
 
 const Edit = (props) => {
@@ -29,6 +31,7 @@ const Edit = (props) => {
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+	const [selectedLayout, setSelectedLayout] = useState(null);
 	
 	// Detect if this block is a child of a flex-container block.
 	const parentBlock = useSelect(select => {
@@ -70,16 +73,30 @@ const Edit = (props) => {
 	const renderAppender = () => hasInnerBlocks ? <InnerBlocks.DefaultBlockAppender /> : <InnerBlocks.ButtonBlockAppender />;
 
 	const innerBlocks = useMemo(
-		() => (
-			<InnerBlocks
-				templateLock={ false }
-				renderAppender={ renderAppender }
-				orientation="horizontal"
-				prioritizedInserterBlocks={ [ 'athemes-blocks/flex-container' ] }
-			/>
-		),
-		[ renderAppender ]
+		() => {
+			console.log('Rendering InnerBlocks with template:', selectedLayout?.template);
+			return (
+				<InnerBlocks
+					template={selectedLayout?.template || []}
+					templateLock={false}
+					renderAppender={renderAppender}
+					orientation="horizontal"
+					prioritizedInserterBlocks={['athemes-blocks/flex-container']}
+				/>
+			);
+		},
+		[renderAppender, selectedLayout]
 	);
+
+	const handleLayoutSelect = (layout) => {
+		Object.entries(layout.attributes).forEach(([key, value]) => {
+			setAttributes({
+				[key]: value
+			});
+		});
+
+		setSelectedLayout(layout);
+	};
 
 	const {
 
@@ -933,8 +950,9 @@ const Edit = (props) => {
 				
 				return (
 					<Tag { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
-						{
-							// Full width container with boxed content.
+						{!hasInnerBlocks && !selectedLayout && !isChildOfFlexContainer ? (
+							<LayoutSelector onSelect={handleLayoutSelect} />
+						) : (
 							containerWidth === 'full-width' && contentWidth === 'boxed' ? (
 								<div class="at-block-flex-container__inner-blocks-wrapper">
 									{innerBlocks}
@@ -942,7 +960,7 @@ const Edit = (props) => {
 							) : (
 								innerBlocks
 							)
-						}
+						)}
 					</Tag>
 				);
 			})()}
