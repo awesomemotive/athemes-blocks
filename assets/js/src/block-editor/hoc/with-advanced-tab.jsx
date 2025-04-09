@@ -8,7 +8,7 @@ import { createAttributeUpdater } from '../../utils/block-attributes';
 
 export const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
     return (props) => {
-        const { attributes, setAttributes, setUpdateCss } = props;
+        const { attributes, setAttributes, setUpdateCss, onTogglePanelBodyHandler, isPanelOpened } = props;
         const updateAttribute = createAttributeUpdater(attributes, setAttributes);
         const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
         const blockName = props.name;
@@ -24,7 +24,9 @@ export const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
                                 setAttributes={setAttributes}
                                 attributesDefaults={attributesDefaults}
                                 updateAttribute={updateAttribute}
-                                setUpdateCss={setUpdateCss}
+                                setUpdateCss={setUpdateCss}    
+                                onTogglePanelBodyHandler={onTogglePanelBodyHandler}
+                                isPanelOpened={isPanelOpened}
                             />
                             <InspectorControls group="advanced">
                                 <TextControl

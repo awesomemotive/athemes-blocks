@@ -11,7 +11,40 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container']
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }]
         ],
         attributes: {
             direction: {
@@ -34,8 +67,74 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {
@@ -59,9 +158,108 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {
@@ -86,10 +284,142 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {
@@ -114,10 +444,142 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {
@@ -144,12 +606,210 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {
@@ -177,6 +837,38 @@ const LAYOUTS = [
                     desktop: { value: 25, unit: '%' },
                     tablet: { value: 25, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
             ['athemes-blocks/flex-container', {
@@ -184,6 +876,38 @@ const LAYOUTS = [
                     desktop: { value: 75, unit: '%' },
                     tablet: { value: 75, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
         ],
@@ -214,6 +938,38 @@ const LAYOUTS = [
                     desktop: { value: 25, unit: '%' },
                     tablet: { value: 25, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
             ['athemes-blocks/flex-container', {
@@ -221,6 +977,38 @@ const LAYOUTS = [
                     desktop: { value: 50, unit: '%' },
                     tablet: { value: 50, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
             ['athemes-blocks/flex-container', {
@@ -228,6 +1016,38 @@ const LAYOUTS = [
                     desktop: { value: 25, unit: '%' },
                     tablet: { value: 25, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
         ],
@@ -257,6 +1077,38 @@ const LAYOUTS = [
                     desktop: { value: 75, unit: '%' },
                     tablet: { value: 75, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
             ['athemes-blocks/flex-container', {
@@ -264,6 +1116,38 @@ const LAYOUTS = [
                     desktop: { value: 25, unit: '%' },
                     tablet: { value: 25, unit: '%' },
                     mobile: { value: 100, unit: '%' }
+                },
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },   
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        },
+                        unit: 'px',
+                        connect: false  
+                    }
                 }
             }],
         ],
@@ -289,9 +1173,108 @@ const LAYOUTS = [
             <div className="columns-icon__column"></div>
         </div>,
         template: [
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
-            ['athemes-blocks/flex-container'],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
+            ['athemes-blocks/flex-container', {
+                padding: {
+                    desktop: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    tablet: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    },
+                    mobile: { 
+                        value: {
+                            top: '',
+                            right: 15,
+                            bottom: '',
+                            left: 15
+                        }, 
+                        unit: 'px', 
+                        connect: false 
+                    }
+                }
+            }],
         ],
         attributes: {
             direction: {

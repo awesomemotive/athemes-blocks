@@ -438,13 +438,18 @@ const AdvancedPanel = props => {
     attributesDefaults,
     updateAttribute,
     setUpdateCss,
-    blockName
+    blockName,
+    isPanelOpened,
+    onTogglePanelBodyHandler
   } = props;
   const atts = attributes;
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+  console.log(atts.padding);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'athemes-blocks'),
-    initialOpen: false
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'botiga-pro'),
+    initialOpen: false,
+    opened: isPanelOpened('layout'),
+    onToggle: () => onTogglePanelBodyHandler('layout')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_dimensions_dimensions__WEBPACK_IMPORTED_MODULE_5__.Dimensions, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Padding', 'athemes-blocks'),
     directions: [{
@@ -579,7 +584,9 @@ const AdvancedPanel = props => {
     }
   })), ['athemes-blocks/flex-container'].includes(blockName) === false && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Background', 'athemes-blocks'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('background'),
+    onToggle: () => onTogglePanelBodyHandler('background')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_7__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Color', 'athemes-blocks'),
     value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_10__.getSettingValue)('backgroundColor', 'desktop', atts),
@@ -624,7 +631,9 @@ const AdvancedPanel = props => {
     }
   })), ['athemes-blocks/heading'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border', 'botiga-pro'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('border'),
+    onToggle: () => onTogglePanelBodyHandler('border')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Border, {
     label: "",
     settingId: "border",
@@ -635,7 +644,9 @@ const AdvancedPanel = props => {
     subFields: ['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Animation', 'botiga-pro'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('animation'),
+    onToggle: () => onTogglePanelBodyHandler('animation')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_animation_animation__WEBPACK_IMPORTED_MODULE_8__.Animation, {
     label: "",
     settingId: "animation",
@@ -646,7 +657,9 @@ const AdvancedPanel = props => {
     subFields: ['entranceAnimation', 'animationDuration', 'animationDelay']
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Responsive', 'athemes-blocks'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('responsive'),
+    onToggle: () => onTogglePanelBodyHandler('responsive')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_6__.SwitchToggle, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hide On Desktop', 'athemes-blocks'),
     value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_10__.getSettingValue)('hideOnDesktop', 'desktop', atts),
@@ -1134,6 +1147,7 @@ function Dimensions(props) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     onChange(valueToReturn);
   }, [valueToReturn]);
+  console.log(inputNumberValues);
   return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "atblocks-control-dimensions"
   }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
@@ -2142,7 +2156,9 @@ const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
     const {
       attributes,
       setAttributes,
-      setUpdateCss
+      setUpdateCss,
+      onTogglePanelBodyHandler,
+      isPanelOpened
     } = props;
     const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_6__.createAttributeUpdater)(attributes, setAttributes);
     const currentTab = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('persistent-tabs-store').getCurrentTab());
@@ -2153,7 +2169,9 @@ const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
       setAttributes: setAttributes,
       attributesDefaults: attributesDefaults,
       updateAttribute: updateAttribute,
-      setUpdateCss: setUpdateCss
+      setUpdateCss: setUpdateCss,
+      onTogglePanelBodyHandler: onTogglePanelBodyHandler,
+      isPanelOpened: isPanelOpened
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
       group: "advanced"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {

@@ -11,14 +11,21 @@ import { RangeSlider } from '../../../block-editor/controls/range-slider/range-s
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../../utils/settings';
 
 const AdvancedPanel = (props) => {
-    const { attributes, setAttributes, attributesDefaults, updateAttribute, setUpdateCss, blockName } = props;
+    const { attributes, setAttributes, attributesDefaults, updateAttribute, setUpdateCss, blockName, isPanelOpened, onTogglePanelBodyHandler } = props;
 
     const atts = attributes;
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 
+    console.log(atts.padding);
+
     return (
         <Panel>
-            <PanelBody title={__('Layout', 'athemes-blocks')} initialOpen={false}>
+            <PanelBody 
+                title={ __( 'Layout', 'botiga-pro' ) } 
+                initialOpen={false}
+                opened={ isPanelOpened( 'layout' ) }
+                onToggle={ () => onTogglePanelBodyHandler( 'layout' ) }
+            >
                 <Dimensions
                     label={ __( 'Padding', 'athemes-blocks' ) }
                     directions={[
@@ -127,7 +134,12 @@ const AdvancedPanel = (props) => {
             </PanelBody>
             {
                 ['athemes-blocks/flex-container'].includes(blockName) === false && (
-                    <PanelBody title={__('Background', 'athemes-blocks')} initialOpen={false}>
+                    <PanelBody 
+                        title={__('Background', 'athemes-blocks')} 
+                        initialOpen={false}
+                        opened={ isPanelOpened( 'background' ) }
+                        onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
+                    >
                         <ColorPicker
                             label={ __( 'Color', 'athemes-blocks' ) }
                             value={ getSettingValue('backgroundColor', 'desktop', atts) }
@@ -170,7 +182,12 @@ const AdvancedPanel = (props) => {
             }
             {
                 ['athemes-blocks/heading'].includes(blockName) === true && (
-                    <PanelBody title={ __( 'Border', 'botiga-pro' ) } initialOpen={false}>
+                    <PanelBody 
+                        title={ __( 'Border', 'botiga-pro' ) } 
+                        initialOpen={false}
+                        opened={ isPanelOpened( 'border' ) }
+                        onToggle={ () => onTogglePanelBodyHandler( 'border' ) }
+                    >
                         <Border
                             label=""
                             settingId="border"
@@ -183,7 +200,12 @@ const AdvancedPanel = (props) => {
                     </PanelBody>
                 )
             }
-            <PanelBody title={ __( 'Animation', 'botiga-pro' ) } initialOpen={false}>
+            <PanelBody 
+                title={ __( 'Animation', 'botiga-pro' ) } 
+                initialOpen={false}
+                opened={ isPanelOpened( 'animation' ) }
+                onToggle={ () => onTogglePanelBodyHandler( 'animation' ) }
+            >
                 <Animation
                     label=""
                     settingId="animation"
@@ -194,7 +216,12 @@ const AdvancedPanel = (props) => {
                     subFields={['entranceAnimation', 'animationDuration', 'animationDelay']}
                 />
             </PanelBody>
-            <PanelBody title={__('Responsive', 'athemes-blocks')} initialOpen={false}>
+            <PanelBody 
+                title={__('Responsive', 'athemes-blocks')} 
+                initialOpen={false}
+                opened={ isPanelOpened( 'responsive' ) }
+                onToggle={ () => onTogglePanelBodyHandler( 'responsive' ) }
+            >
                 <SwitchToggle
                     label={ __( 'Hide On Desktop', 'athemes-blocks' ) }
                     value={ getSettingValue( 'hideOnDesktop', 'desktop', atts ) }

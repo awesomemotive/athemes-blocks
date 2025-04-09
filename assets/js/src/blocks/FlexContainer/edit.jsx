@@ -5,6 +5,8 @@ import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
 
+import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
+
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
 import { Select } from '../../block-editor/controls/select/select';
@@ -31,6 +33,9 @@ const Edit = (props) => {
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+	const { switchTabTo } = useDispatch(persistentTabsStore);
+
+
 	const [selectedLayout, setSelectedLayout] = useState(null);
 	
 	// Detect if this block is a child of a flex-container block.
@@ -68,25 +73,6 @@ const Edit = (props) => {
 
 		return getBlockCount(clientId) > 0;
 	}, [clientId]);
-
-	// Move renderAppender outside the render cycle.
-	const renderAppender = () => hasInnerBlocks ? <InnerBlocks.DefaultBlockAppender /> : <InnerBlocks.ButtonBlockAppender />;
-
-	const innerBlocks = useMemo(
-		() => {
-			console.log('Rendering InnerBlocks with template:', selectedLayout?.template);
-			return (
-				<InnerBlocks
-					template={selectedLayout?.template || []}
-					templateLock={false}
-					renderAppender={renderAppender}
-					orientation="horizontal"
-					prioritizedInserterBlocks={['athemes-blocks/flex-container']}
-				/>
-			);
-		},
-		[renderAppender, selectedLayout]
-	);
 
 	const handleLayoutSelect = (layout) => {
 		Object.entries(layout.attributes).forEach(([key, value]) => {
@@ -185,6 +171,24 @@ const Edit = (props) => {
 		}
 	}, []);
 
+	// Move renderAppender outside the render cycle.
+	const renderAppender = () => hasInnerBlocks ? <InnerBlocks.DefaultBlockAppender /> : <InnerBlocks.ButtonBlockAppender />;
+
+	const innerBlocks = useMemo(
+		() => {
+			return (
+				<InnerBlocks
+					template={selectedLayout?.template || []}
+					templateLock={false}
+					renderAppender={renderAppender}
+					orientation={ isChildOfFlexContainer && direction === 'column' ? 'vertical' : 'horizontal' }
+					prioritizedInserterBlocks={['athemes-blocks/flex-container']}
+				/>
+			);
+		},
+		[renderAppender, selectedLayout]
+	);
+
 	// Prevent the default click event handler for the block if the html tag is 'a'.
 	const blockRef = useRef(null);
 
@@ -209,6 +213,10 @@ const Edit = (props) => {
 			};
 		}
 	}, [htmlTag]);
+
+	if ( !hasInnerBlocks && !selectedLayout && !isChildOfFlexContainer ) {
+		switchTabTo('general');
+	}
 
 	return (
 		<>
@@ -970,9 +978,8 @@ const Edit = (props) => {
 
 export default withDynamicCSS(
 	withTabsNavigation(
-		withAdvancedTab(
-			withPersistentPanelToggle(Edit),
-			attributesDefaults
+		withPersistentPanelToggle(	
+			withAdvancedTab(Edit, attributesDefaults)
 		)
 	),
 	attributesDefaults

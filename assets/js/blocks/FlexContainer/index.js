@@ -438,13 +438,18 @@ const AdvancedPanel = props => {
     attributesDefaults,
     updateAttribute,
     setUpdateCss,
-    blockName
+    blockName,
+    isPanelOpened,
+    onTogglePanelBodyHandler
   } = props;
   const atts = attributes;
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+  console.log(atts.padding);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'athemes-blocks'),
-    initialOpen: false
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'botiga-pro'),
+    initialOpen: false,
+    opened: isPanelOpened('layout'),
+    onToggle: () => onTogglePanelBodyHandler('layout')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_dimensions_dimensions__WEBPACK_IMPORTED_MODULE_5__.Dimensions, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Padding', 'athemes-blocks'),
     directions: [{
@@ -579,7 +584,9 @@ const AdvancedPanel = props => {
     }
   })), ['athemes-blocks/flex-container'].includes(blockName) === false && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Background', 'athemes-blocks'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('background'),
+    onToggle: () => onTogglePanelBodyHandler('background')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_7__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Color', 'athemes-blocks'),
     value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_10__.getSettingValue)('backgroundColor', 'desktop', atts),
@@ -624,7 +631,9 @@ const AdvancedPanel = props => {
     }
   })), ['athemes-blocks/heading'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border', 'botiga-pro'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('border'),
+    onToggle: () => onTogglePanelBodyHandler('border')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Border, {
     label: "",
     settingId: "border",
@@ -635,7 +644,9 @@ const AdvancedPanel = props => {
     subFields: ['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Animation', 'botiga-pro'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('animation'),
+    onToggle: () => onTogglePanelBodyHandler('animation')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_animation_animation__WEBPACK_IMPORTED_MODULE_8__.Animation, {
     label: "",
     settingId: "animation",
@@ -646,7 +657,9 @@ const AdvancedPanel = props => {
     subFields: ['entranceAnimation', 'animationDuration', 'animationDelay']
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Responsive', 'athemes-blocks'),
-    initialOpen: false
+    initialOpen: false,
+    opened: isPanelOpened('responsive'),
+    onToggle: () => onTogglePanelBodyHandler('responsive')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_6__.SwitchToggle, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hide On Desktop', 'athemes-blocks'),
     value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_10__.getSettingValue)('hideOnDesktop', 'desktop', atts),
@@ -1405,6 +1418,7 @@ function Dimensions(props) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     onChange(valueToReturn);
   }, [valueToReturn]);
+  console.log(inputNumberValues);
   return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "atblocks-control-dimensions"
   }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
@@ -1982,7 +1996,9 @@ const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
     const {
       attributes,
       setAttributes,
-      setUpdateCss
+      setUpdateCss,
+      onTogglePanelBodyHandler,
+      isPanelOpened
     } = props;
     const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_6__.createAttributeUpdater)(attributes, setAttributes);
     const currentTab = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('persistent-tabs-store').getCurrentTab());
@@ -1993,7 +2009,9 @@ const withAdvancedTab = (WrappedComponent, attributesDefaults) => {
       setAttributes: setAttributes,
       attributesDefaults: attributesDefaults,
       updateAttribute: updateAttribute,
-      setUpdateCss: setUpdateCss
+      setUpdateCss: setUpdateCss,
+      onTogglePanelBodyHandler: onTogglePanelBodyHandler,
+      isPanelOpened: isPanelOpened
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
       group: "advanced"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
@@ -2312,21 +2330,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../block-editor/controls/radio-buttons/radio-buttons */ "./assets/js/src/block-editor/controls/radio-buttons/radio-buttons.jsx");
-/* harmony import */ var _block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../block-editor/controls/range-slider/range-slider */ "./assets/js/src/block-editor/controls/range-slider/range-slider.jsx");
-/* harmony import */ var _block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../block-editor/controls/select/select */ "./assets/js/src/block-editor/controls/select/select.jsx");
-/* harmony import */ var _block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../block-editor/controls/text-input/text-input */ "./assets/js/src/block-editor/controls/text-input/text-input.jsx");
-/* harmony import */ var _block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../block-editor/controls/switch-toggle/switch-toggle */ "./assets/js/src/block-editor/controls/switch-toggle/switch-toggle.jsx");
-/* harmony import */ var _block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../block-editor/controls/color-picker/color-picker */ "./assets/js/src/block-editor/controls/color-picker/color-picker.jsx");
-/* harmony import */ var _block_editor_controls_border_border__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../block-editor/controls/border/border */ "./assets/js/src/block-editor/controls/border/border.jsx");
-/* harmony import */ var _utils_block_attributes__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../utils/block-attributes */ "./assets/js/src/utils/block-attributes.jsx");
-/* harmony import */ var _block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../block-editor/hoc/with-tabs-navigation */ "./assets/js/src/block-editor/hoc/with-tabs-navigation.jsx");
-/* harmony import */ var _block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../block-editor/hoc/with-advanced-tab */ "./assets/js/src/block-editor/hoc/with-advanced-tab.jsx");
-/* harmony import */ var _block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../block-editor/hoc/with-dynamic-css */ "./assets/js/src/block-editor/hoc/with-dynamic-css.jsx");
-/* harmony import */ var _block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../block-editor/hoc/with-persistent-panel-toggle */ "./assets/js/src/block-editor/hoc/with-persistent-panel-toggle.jsx");
-/* harmony import */ var _utils_block_animations__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../utils/block-animations */ "./assets/js/src/utils/block-animations.jsx");
-/* harmony import */ var _utils_settings__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../utils/settings */ "./assets/js/src/utils/settings.jsx");
-/* harmony import */ var _layout_selector__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./layout-selector */ "./assets/js/src/blocks/FlexContainer/layout-selector.jsx");
+/* harmony import */ var _block_editor_store_persistent_tabs_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../block-editor/store/persistent-tabs-store */ "./assets/js/src/block-editor/store/persistent-tabs-store.jsx");
+/* harmony import */ var _block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../block-editor/controls/radio-buttons/radio-buttons */ "./assets/js/src/block-editor/controls/radio-buttons/radio-buttons.jsx");
+/* harmony import */ var _block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../block-editor/controls/range-slider/range-slider */ "./assets/js/src/block-editor/controls/range-slider/range-slider.jsx");
+/* harmony import */ var _block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../block-editor/controls/select/select */ "./assets/js/src/block-editor/controls/select/select.jsx");
+/* harmony import */ var _block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../block-editor/controls/text-input/text-input */ "./assets/js/src/block-editor/controls/text-input/text-input.jsx");
+/* harmony import */ var _block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../block-editor/controls/switch-toggle/switch-toggle */ "./assets/js/src/block-editor/controls/switch-toggle/switch-toggle.jsx");
+/* harmony import */ var _block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../block-editor/controls/color-picker/color-picker */ "./assets/js/src/block-editor/controls/color-picker/color-picker.jsx");
+/* harmony import */ var _block_editor_controls_border_border__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../block-editor/controls/border/border */ "./assets/js/src/block-editor/controls/border/border.jsx");
+/* harmony import */ var _utils_block_attributes__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../utils/block-attributes */ "./assets/js/src/utils/block-attributes.jsx");
+/* harmony import */ var _block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../block-editor/hoc/with-tabs-navigation */ "./assets/js/src/block-editor/hoc/with-tabs-navigation.jsx");
+/* harmony import */ var _block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../block-editor/hoc/with-advanced-tab */ "./assets/js/src/block-editor/hoc/with-advanced-tab.jsx");
+/* harmony import */ var _block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../block-editor/hoc/with-dynamic-css */ "./assets/js/src/block-editor/hoc/with-dynamic-css.jsx");
+/* harmony import */ var _block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../block-editor/hoc/with-persistent-panel-toggle */ "./assets/js/src/block-editor/hoc/with-persistent-panel-toggle.jsx");
+/* harmony import */ var _utils_block_animations__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../utils/block-animations */ "./assets/js/src/utils/block-animations.jsx");
+/* harmony import */ var _utils_settings__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../utils/settings */ "./assets/js/src/utils/settings.jsx");
+/* harmony import */ var _layout_selector__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./layout-selector */ "./assets/js/src/blocks/FlexContainer/layout-selector.jsx");
+
 
 
 
@@ -2360,9 +2380,12 @@ const Edit = props => {
     onTogglePanelBodyHandler
   } = props;
   const atts = attributes;
-  const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_14__.createAttributeUpdater)(attributes, setAttributes);
+  const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_15__.createAttributeUpdater)(attributes, setAttributes);
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
   const currentTab = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('persistent-tabs-store').getCurrentTab());
+  const {
+    switchTabTo
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_block_editor_store_persistent_tabs_store__WEBPACK_IMPORTED_MODULE_7__.store);
   const [selectedLayout, setSelectedLayout] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null);
 
   // Detect if this block is a child of a flex-container block.
@@ -2399,19 +2422,6 @@ const Edit = props => {
     } = select('core/block-editor');
     return getBlockCount(clientId) > 0;
   }, [clientId]);
-
-  // Move renderAppender outside the render cycle.
-  const renderAppender = () => hasInnerBlocks ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.DefaultBlockAppender, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.ButtonBlockAppender, null);
-  const innerBlocks = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
-    console.log('Rendering InnerBlocks with template:', selectedLayout?.template);
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks, {
-      template: selectedLayout?.template || [],
-      templateLock: false,
-      renderAppender: renderAppender,
-      orientation: "horizontal",
-      prioritizedInserterBlocks: ['athemes-blocks/flex-container']
-    });
-  }, [renderAppender, selectedLayout]);
   const handleLayoutSelect = layout => {
     Object.entries(layout.attributes).forEach(([key, value]) => {
       setAttributes({
@@ -2452,33 +2462,33 @@ const Edit = props => {
   } = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
     return {
       // General - Type settings.
-      containerWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('containerWidth', 'desktop', atts),
-      contentWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('contentWidth', 'desktop', atts),
-      contentBoxWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('contentBoxWidth', currentDevice, atts),
-      customWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('customWidth', currentDevice, atts),
-      minHeight: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('minHeight', currentDevice, atts),
-      htmlTag: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('htmlTag', 'desktop', atts),
-      htmlTagLink: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('htmlTagLink', 'desktop', atts),
-      htmlTagLinkOpenInNewWindow: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('htmlTagLinkOpenInNewWindow', 'desktop', atts),
-      overflow: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('overflow', currentDevice, atts),
+      containerWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('containerWidth', 'desktop', atts),
+      contentWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('contentWidth', 'desktop', atts),
+      contentBoxWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('contentBoxWidth', currentDevice, atts),
+      customWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('customWidth', currentDevice, atts),
+      minHeight: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('minHeight', currentDevice, atts),
+      htmlTag: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('htmlTag', 'desktop', atts),
+      htmlTagLink: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('htmlTagLink', 'desktop', atts),
+      htmlTagLinkOpenInNewWindow: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('htmlTagLinkOpenInNewWindow', 'desktop', atts),
+      overflow: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('overflow', currentDevice, atts),
       // General - Layout settings.
-      layout: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('layout', 'desktop', atts),
-      direction: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('direction', currentDevice, atts),
-      columnsGap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('columnsGap', currentDevice, atts),
-      rowsGap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('rowsGap', currentDevice, atts),
-      childrenWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('childrenWidth', 'desktop', atts),
-      alignItems: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('alignItems', currentDevice, atts),
-      justifyContent: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('justifyContent', currentDevice, atts),
-      wrap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('wrap', currentDevice, atts),
-      alignContent: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('alignContent', currentDevice, atts),
+      layout: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('layout', 'desktop', atts),
+      direction: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('direction', currentDevice, atts),
+      columnsGap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('columnsGap', currentDevice, atts),
+      rowsGap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('rowsGap', currentDevice, atts),
+      childrenWidth: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('childrenWidth', 'desktop', atts),
+      alignItems: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('alignItems', currentDevice, atts),
+      justifyContent: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('justifyContent', currentDevice, atts),
+      wrap: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('wrap', currentDevice, atts),
+      alignContent: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('alignContent', currentDevice, atts),
       // Style.
-      backgroundColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('backgroundColor', 'desktop', atts),
-      textColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('textColor', 'desktop', atts),
-      linkColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('linkColor', 'desktop', atts),
+      backgroundColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('backgroundColor', 'desktop', atts),
+      textColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('textColor', 'desktop', atts),
+      linkColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('linkColor', 'desktop', atts),
       // Advanced.
-      hideOnDesktop: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('hideOnDesktop', 'desktop', atts),
-      hideOnTablet: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('hideOnTablet', 'desktop', atts),
-      hideOnMobile: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingValue)('hideOnMobile', 'desktop', atts)
+      hideOnDesktop: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('hideOnDesktop', 'desktop', atts),
+      hideOnTablet: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('hideOnTablet', 'desktop', atts),
+      hideOnMobile: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingValue)('hideOnMobile', 'desktop', atts)
     };
   }, [atts, currentDevice]);
 
@@ -2506,6 +2516,18 @@ const Edit = props => {
     }
   }, []);
 
+  // Move renderAppender outside the render cycle.
+  const renderAppender = () => hasInnerBlocks ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.DefaultBlockAppender, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks.ButtonBlockAppender, null);
+  const innerBlocks = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InnerBlocks, {
+      template: selectedLayout?.template || [],
+      templateLock: false,
+      renderAppender: renderAppender,
+      orientation: isChildOfFlexContainer && direction === 'column' ? 'vertical' : 'horizontal',
+      prioritizedInserterBlocks: ['athemes-blocks/flex-container']
+    });
+  }, [renderAppender, selectedLayout]);
+
   // Prevent the default click event handler for the block if the html tag is 'a'.
   const blockRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
@@ -2526,12 +2548,15 @@ const Edit = props => {
       };
     }
   }, [htmlTag]);
+  if (!hasInnerBlocks && !selectedLayout && !isChildOfFlexContainer) {
+    switchTabTo('general');
+  }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, currentTab === 'general' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Type', 'botiga-pro'),
     initialOpen: false,
     opened: isPanelOpened('type'),
     onToggle: () => onTogglePanelBodyHandler('type')
-  }, isChildOfFlexContainer === false && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }, isChildOfFlexContainer === false && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Container Width', 'athemes-blocks'),
     defaultValue: containerWidth,
     options: [{
@@ -2557,14 +2582,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('containerWidth', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
       }, 'desktop');
       setUpdateCss({
         settingId: 'containerWidth',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('containerWidth', 'desktop', attributesDefaults)
       });
     }
-  }), containerWidth === 'full-width' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), containerWidth === 'full-width' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Content Width', 'athemes-blocks'),
     defaultValue: contentWidth,
     options: [{
@@ -2587,17 +2612,17 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('contentWidth', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('contentWidth', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('contentWidth', 'desktop', attributesDefaults)
       }, 'desktop');
       setUpdateCss({
         settingId: 'contentWidth',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('contentWidth', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('contentWidth', 'desktop', attributesDefaults)
       });
     }
-  }), contentWidth === 'boxed' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__.RangeSlider, {
+  }), contentWidth === 'boxed' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Content Box Width', 'athemes-blocks'),
     defaultValue: contentBoxWidth,
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('contentBoxWidth', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('contentBoxWidth', currentDevice, atts),
     min: 10,
     max: 2000,
     responsive: true,
@@ -2606,7 +2631,7 @@ const Edit = props => {
     onChange: value => {
       updateAttribute('contentBoxWidth', {
         value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('contentBoxWidth', currentDevice, atts)
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('contentBoxWidth', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'contentBoxWidth',
@@ -2625,18 +2650,18 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('contentBoxWidth', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultUnit)('contentBoxWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultUnit)('contentBoxWidth', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'contentBoxWidth',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('contentBoxWidth', currentDevice, attributesDefaults)
       });
     }
-  })), containerWidth === 'custom' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__.RangeSlider, {
+  })), containerWidth === 'custom' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Custom Width', 'athemes-blocks'),
     defaultValue: customWidth,
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('customWidth', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('customWidth', currentDevice, atts),
     min: 0,
     max: 2000,
     responsive: true,
@@ -2645,7 +2670,7 @@ const Edit = props => {
     onChange: value => {
       updateAttribute('customWidth', {
         value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('customWidth', currentDevice, atts)
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('customWidth', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'customWidth',
@@ -2664,18 +2689,18 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('customWidth', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('customWidth', currentDevice, attributesDefaults),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultUnit)('customWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('customWidth', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultUnit)('customWidth', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'customWidth',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('customWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('customWidth', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__.RangeSlider, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Minimum Height', 'athemes-blocks'),
     defaultValue: minHeight,
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('minHeight', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('minHeight', currentDevice, atts),
     min: 10,
     max: 200,
     responsive: true,
@@ -2684,7 +2709,7 @@ const Edit = props => {
     onChange: value => {
       updateAttribute('minHeight', {
         value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('minHeight', currentDevice, atts)
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('minHeight', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'minHeight',
@@ -2703,15 +2728,15 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('minHeight', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultUnit)('minHeight', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultUnit)('minHeight', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'minHeight',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('minHeight', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_9__.Select, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_10__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('HTML Tag', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Div', 'athemes-blocks'),
@@ -2764,14 +2789,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('htmlTag', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
       }, 'desktop');
       setUpdateCss({
         settingId: 'htmlTag',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
       });
     }
-  }), htmlTag === 'a' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_10__.TextInput, {
+  }), htmlTag === 'a' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_11__.TextInput, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Link', 'athemes-blocks'),
     value: htmlTagLink,
     responsive: false,
@@ -2783,10 +2808,10 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('htmlTagLink', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('htmlTagLink', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('htmlTagLink', 'desktop', attributesDefaults)
       }, 'desktop');
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_11__.SwitchToggle, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_12__.SwitchToggle, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Open in new window', 'athemes-blocks'),
     value: htmlTagLinkOpenInNewWindow,
     responsive: false,
@@ -2798,10 +2823,10 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('htmlTagLinkOpenInNewWindow', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('htmlTagLinkOpenInNewWindow', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('htmlTagLinkOpenInNewWindow', 'desktop', attributesDefaults)
       }, 'desktop');
     }
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Overflow', 'athemes-blocks'),
     defaultValue: overflow,
     options: [{
@@ -2827,11 +2852,11 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('overflow', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'overflow',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('overflow', currentDevice, attributesDefaults)
       });
     }
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -2839,7 +2864,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('layout'),
     onToggle: () => onTogglePanelBodyHandler('layout')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'athemes-blocks'),
     defaultValue: layout,
     options: [{
@@ -2862,14 +2887,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('layout', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'layout',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('layout', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Direction', 'athemes-blocks'),
     defaultValue: direction,
     options: [{
@@ -2898,17 +2923,17 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('direction', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'direction',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('direction', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__.RangeSlider, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Columns Gap', 'athemes-blocks'),
     defaultValue: columnsGap,
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('columnsGap', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('columnsGap', currentDevice, atts),
     min: 0,
     max: 200,
     responsive: true,
@@ -2917,7 +2942,7 @@ const Edit = props => {
     onChange: value => {
       updateAttribute('columnsGap', {
         value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('columnsGap', currentDevice, atts)
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('columnsGap', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'columnsGap',
@@ -2936,18 +2961,18 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('columnsGap', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('columnsGap', currentDevice, attributesDefaults),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultUnit)('columnsGap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('columnsGap', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultUnit)('columnsGap', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'columnsGap',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('columnsGap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('columnsGap', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_8__.RangeSlider, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__.RangeSlider, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rows Gap', 'athemes-blocks'),
     defaultValue: rowsGap,
-    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('rowsGap', currentDevice, atts),
+    defaultUnit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('rowsGap', currentDevice, atts),
     min: 0,
     max: 200,
     responsive: true,
@@ -2956,7 +2981,7 @@ const Edit = props => {
     onChange: value => {
       updateAttribute('rowsGap', {
         value: value,
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingUnit)('rowsGap', currentDevice, atts)
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingUnit)('rowsGap', currentDevice, atts)
       }, currentDevice);
       setUpdateCss({
         settingId: 'rowsGap',
@@ -2975,15 +3000,15 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('rowsGap', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('rowsGap', currentDevice, attributesDefaults),
-        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultUnit)('rowsGap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('rowsGap', currentDevice, attributesDefaults),
+        unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultUnit)('rowsGap', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'rowsGap',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('rowsGap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('rowsGap', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Children Width', 'athemes-blocks'),
     defaultValue: childrenWidth,
     options: [{
@@ -3006,14 +3031,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('childrenWidth', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'childrenWidth',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('childrenWidth', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Align Items', 'athemes-blocks'),
     defaultValue: alignItems,
     options: [{
@@ -3042,14 +3067,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('alignItems', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'alignItems',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('alignItems', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Justify Content', 'athemes-blocks'),
     defaultValue: justifyContent,
     options: [{
@@ -3084,14 +3109,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('justifyContent', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'justifyContent',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('justifyContent', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Wrap', 'athemes-blocks'),
     defaultValue: wrap,
     options: [{
@@ -3117,14 +3142,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('wrap', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'wrap',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('wrap', currentDevice, attributesDefaults)
       });
     }
-  }), wrap !== 'nowrap' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
+  }), wrap !== 'nowrap' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Align Content', 'athemes-blocks'),
     defaultValue: alignContent,
     options: [{
@@ -3159,11 +3184,11 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('alignContent', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('alignContent', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('alignContent', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'alignContent',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getSettingDefaultValue)('alignContent', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getSettingDefaultValue)('alignContent', currentDevice, attributesDefaults)
       });
     }
   }))), currentTab === 'style' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -3171,7 +3196,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('background'),
     onToggle: () => onTogglePanelBodyHandler('background')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_12__.ColorPicker, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Color', 'athemes-blocks'),
     value: backgroundColor,
     hover: false,
@@ -3181,36 +3206,36 @@ const Edit = props => {
       updateAttribute('backgroundColor', {
         value: {
           defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'hoverState', atts)
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'hoverState', atts)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'backgroundColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'defaultState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'defaultState', atts)
       });
     },
     hoverStateOnChangeComplete: value => {
       updateAttribute('backgroundColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'defaultState', atts),
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'defaultState', atts),
           hoverState: value.hex
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'backgroundColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'hoverState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('backgroundColor', 'desktop', 'hoverState', atts)
       });
     },
     onClickReset: () => {
       updateAttribute('backgroundColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'hoverState', attributesDefaults)
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults),
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'hoverState', attributesDefaults)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'backgroundColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -3218,7 +3243,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('color'),
     onToggle: () => onTogglePanelBodyHandler('color')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_12__.ColorPicker, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Text Color', 'athemes-blocks'),
     value: textColor,
     hover: true,
@@ -3228,39 +3253,39 @@ const Edit = props => {
       updateAttribute('textColor', {
         value: {
           defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('textColor', 'desktop', 'hoverState', atts)
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('textColor', 'desktop', 'hoverState', atts)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('textColor', 'desktop', 'defaultState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('textColor', 'desktop', 'defaultState', atts)
       });
     },
     hoverStateOnChangeComplete: value => {
       updateAttribute('textColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('textColor', 'desktop', 'defaultState', atts),
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('textColor', 'desktop', 'defaultState', atts),
           hoverState: value.hex
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('textColor', 'desktop', 'hoverState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('textColor', 'desktop', 'hoverState', atts)
       });
     },
     onClickReset: () => {
       updateAttribute('textColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'hoverState', attributesDefaults)
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'defaultState', attributesDefaults),
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'hoverState', attributesDefaults)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'textColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'defaultState', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('textColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_12__.ColorPicker, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Link Color', 'athemes-blocks'),
     value: linkColor,
     hover: true,
@@ -3270,36 +3295,36 @@ const Edit = props => {
       updateAttribute('linkColor', {
         value: {
           defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts)
       });
     },
     hoverStateOnChangeComplete: value => {
       updateAttribute('linkColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts),
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts),
           hoverState: value.hex
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
       });
     },
     onClickReset: () => {
       updateAttribute('linkColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'hoverState', attributesDefaults)
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults),
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'hoverState', attributesDefaults)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_20__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_21__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -3307,7 +3332,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('border'),
     onToggle: () => onTogglePanelBodyHandler('border')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_border_border__WEBPACK_IMPORTED_MODULE_13__.Border, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_border_border__WEBPACK_IMPORTED_MODULE_14__.Border, {
     label: "",
     settingId: "border",
     attributes: atts,
@@ -3351,18 +3376,18 @@ const Edit = props => {
     }
 
     // Animation.
-    blockProps = (0,_utils_block_animations__WEBPACK_IMPORTED_MODULE_19__.blockPropsWithAnimation)(blockProps, attributes);
+    blockProps = (0,_utils_block_animations__WEBPACK_IMPORTED_MODULE_20__.blockPropsWithAnimation)(blockProps, attributes);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Tag, {
       ...blockProps,
       ref: (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__.useMergeRefs)([blockProps.ref, blockRef])
-    }, !hasInnerBlocks && !selectedLayout && !isChildOfFlexContainer ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layout_selector__WEBPACK_IMPORTED_MODULE_21__["default"], {
+    }, !hasInnerBlocks && !selectedLayout && !isChildOfFlexContainer ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layout_selector__WEBPACK_IMPORTED_MODULE_22__["default"], {
       onSelect: handleLayoutSelect
     }) : containerWidth === 'full-width' && contentWidth === 'boxed' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       class: "at-block-flex-container__inner-blocks-wrapper"
     }, innerBlocks) : innerBlocks);
   })());
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_17__.withDynamicCSS)((0,_block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_15__.withTabsNavigation)((0,_block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_16__.withAdvancedTab)((0,_block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_18__.withPersistentPanelToggle)(Edit), attributesDefaults)), attributesDefaults));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_18__.withDynamicCSS)((0,_block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_16__.withTabsNavigation)((0,_block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_19__.withPersistentPanelToggle)((0,_block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_17__.withAdvancedTab)(Edit, attributesDefaults))), attributesDefaults));
 
 /***/ }),
 
@@ -3397,7 +3422,40 @@ const LAYOUTS = [{
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3432,7 +3490,73 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3469,7 +3593,106 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3508,7 +3731,139 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3547,7 +3902,139 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3590,7 +4077,205 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -3639,6 +4324,38 @@ const LAYOUTS = [{
         value: 100,
         unit: '%'
       }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
     }
   }], ['athemes-blocks/flex-container', {
     customWidth: {
@@ -3653,6 +4370,38 @@ const LAYOUTS = [{
       mobile: {
         value: 100,
         unit: '%'
+      }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
       }
     }
   }]],
@@ -3706,6 +4455,38 @@ const LAYOUTS = [{
         value: 100,
         unit: '%'
       }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
     }
   }], ['athemes-blocks/flex-container', {
     customWidth: {
@@ -3721,6 +4502,38 @@ const LAYOUTS = [{
         value: 100,
         unit: '%'
       }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
     }
   }], ['athemes-blocks/flex-container', {
     customWidth: {
@@ -3735,6 +4548,38 @@ const LAYOUTS = [{
       mobile: {
         value: 100,
         unit: '%'
+      }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
       }
     }
   }]],
@@ -3786,6 +4631,38 @@ const LAYOUTS = [{
         value: 100,
         unit: '%'
       }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
     }
   }], ['athemes-blocks/flex-container', {
     customWidth: {
@@ -3800,6 +4677,38 @@ const LAYOUTS = [{
       mobile: {
         value: 100,
         unit: '%'
+      }
+    },
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
       }
     }
   }]],
@@ -3839,7 +4748,106 @@ const LAYOUTS = [{
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "columns-icon__column"
   })),
-  template: [['athemes-blocks/flex-container'], ['athemes-blocks/flex-container'], ['athemes-blocks/flex-container']],
+  template: [['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }], ['athemes-blocks/flex-container', {
+    padding: {
+      desktop: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      tablet: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      },
+      mobile: {
+        value: {
+          top: '',
+          right: 15,
+          bottom: '',
+          left: 15
+        },
+        unit: 'px',
+        connect: false
+      }
+    }
+  }]],
   attributes: {
     direction: {
       desktop: {
@@ -7154,38 +8162,6 @@ const rotateLeft = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpre
 
 /***/ }),
 
-/***/ "./node_modules/@wordpress/icons/build-module/library/settings.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/@wordpress/icons/build-module/library/settings.js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
-
-/**
- * WordPress dependencies
- */
-
-const settings = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
-  xmlns: "http://www.w3.org/2000/svg",
-  viewBox: "0 0 24 24"
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
-  d: "m19 7.5h-7.628c-.3089-.87389-1.1423-1.5-2.122-1.5-.97966 0-1.81309.62611-2.12197 1.5h-2.12803v1.5h2.12803c.30888.87389 1.14231 1.5 2.12197 1.5.9797 0 1.8131-.62611 2.122-1.5h7.628z"
-}), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
-  d: "m19 15h-2.128c-.3089-.8739-1.1423-1.5-2.122-1.5s-1.8131.6261-2.122 1.5h-7.628v1.5h7.628c.3089.8739 1.1423 1.5 2.122 1.5s1.8131-.6261 2.122-1.5h2.128z"
-}));
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (settings);
-//# sourceMappingURL=settings.js.map
-
-/***/ }),
-
 /***/ "./node_modules/colord/index.mjs":
 /*!***************************************!*\
   !*** ./node_modules/colord/index.mjs ***!
@@ -8745,7 +9721,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./assets/js/src/blocks/FlexContainer/save.jsx");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./assets/js/src/blocks/FlexContainer/block.json");
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/icon/index.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/settings.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/grid.js");
 
 
 

@@ -100,7 +100,7 @@ export function Dimensions( props ) {
     useEffect( () => {
         onChange( valueToReturn );
     }, [ valueToReturn ] );
-
+console.log(inputNumberValues);
     return(
         <BaseControl className="atblocks-control-dimensions">
             <div className="atblocks-component-header">
