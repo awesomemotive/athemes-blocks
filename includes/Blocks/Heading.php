@@ -23,6 +23,7 @@ class Heading extends BlockBase {
      */
     public function __construct() {
         $this->id = 'Heading';
+        $this->slug = 'heading';
         
         parent::__construct();
     }

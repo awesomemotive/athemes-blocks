@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AThemes_Blocks\Blocks\BlockCss;
+use AThemes_Blocks\Blocks\Helper\Attributes;
 
 abstract class BlockBase {
 

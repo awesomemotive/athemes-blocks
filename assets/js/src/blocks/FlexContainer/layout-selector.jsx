@@ -1,5 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import { InnerBlocks } from '@wordpress/block-editor';
 import { Icon } from '@wordpress/icons';
 import { grid } from '@wordpress/icons';
 

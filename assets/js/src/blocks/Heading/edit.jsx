@@ -1,305 +1,335 @@
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
-import { useSelect } from "@wordpress/data";
-import { store as viewportStore } from '@wordpress/viewport';
-import { Panel, PanelBody, BaseControl, SelectControl } from '@wordpress/components';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { RichText } from '@wordpress/block-editor';
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useSelect, useDispatch } from "@wordpress/data";
+import { Panel, PanelBody } from '@wordpress/components';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
+import { useMergeRefs } from '@wordpress/compose';
+
+import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
 import { Select } from '../../block-editor/controls/select/select';
+import { TextInput } from '../../block-editor/controls/text-input/text-input';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
 import { Typography } from '../../block-editor/controls/typography/typography';
-import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
+import { Border } from '../../block-editor/controls/border/border';
 import { createAttributeUpdater } from '../../utils/block-attributes';
-import { TabsNavigation } from '../../block-editor/controls/tabs/tabs-navigation';
+import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
+import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persistent-panel-toggle';
 
-import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../utils/settings';
-import { applyPreviewCSS, getControlCSS } from '../../utils/css';
+import { blockPropsWithAnimation } from '../../utils/block-animations';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
 const attributesDefaults = HeadingBlockData.attributes;
 
-function Edit( props ) {
-	const { attributes, setAttributes, clientId } = props;
+const Edit = (props) => {
+	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
 	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
-
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
-	const [ updateCss, setUpdateCss ] = useState(false);
+	const {
+
+		// General.
+        htmlTag,
+
+        // Style.
+        alignment,
+        typography,
+        color,
+		linkColor,
+
+        // Advanced.
+        hideOnDesktop,
+		hideOnTablet,
+		hideOnMobile,
+    } = useMemo(() => {
+		return {
+
+			// General.
+			htmlTag: getSettingValue('htmlTag', 'desktop', atts),
+
+			// Style.
+			alignment: getSettingValue('alignment', 'desktop', atts),
+			typography: getSettingValue('typography', 'desktop', atts),
+			color: getSettingValue('color', 'desktop', atts),
+			linkColor: getSettingValue('linkColor', 'desktop', atts),
+			// Advanced.
+			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
+			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
+			hideOnMobile: getSettingValue('hideOnMobile', 'desktop', atts),
+			
+		};
+	}, [atts, currentDevice]);
 
 	// Save the Client ID to attributes.
 	useEffect(() => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
 
-	// Watch for changes in the updateCss state and apply the CSS.
+	// Prevent the default click event handler for the block if the html tag is 'a'.
+	const blockRef = useRef(null);
+
 	useEffect(() => {
-		if ( updateCss ) {
-			if ( updateCss.type === 'all' ) {
-				updateCss.settings.forEach( setting => {
-					const cssData = {
-						css: setting.css,
-						settingId: setting.settingId,
-						innerSettingId: setting?.innerSettingId ? setting.innerSettingId : null
-					};
-					const css = getControlCSS( cssData, clientId, atts );
-
-					applyPreviewCSS( css, clientId, setting.settingId, setting.innerSettingId );
-				});
-			} else if ( updateCss.type === 'inner-control' ) {
-				const cssData = {
-					css: attributesDefaults[updateCss.settingId].default?.innerSettings[updateCss.innerSettingId]?.css,
-					settingId: updateCss.settingId,
-					innerSettingId: updateCss.innerSettingId
-				};
-				const css = getControlCSS( cssData, clientId, atts );
-
-				applyPreviewCSS( css, clientId, updateCss.settingId, updateCss.innerSettingId );
-			} else {
-				const settingId = updateCss?.settingId;
-				const cssData = {
-					css: attributesDefaults[settingId]?.css,
-					settingId: settingId
-				};
-				const css = getControlCSS( cssData, clientId, atts );
-
-				applyPreviewCSS( css, clientId, settingId );
-			}
+		if ( blockRef === null ) {
+			return;
 		}
-	}, [ updateCss ]);
+		
+		if (htmlTag === 'a' && blockRef.current) {
+			const handleClick = (event) => {
+				event.preventDefault();
+			};
 
-	// Render the CSS for the first load.
-	useEffect(() => {
-		const allSettings = Object.keys( attributesDefaults );
-		const allSettingsStyles = [];
-
-		allSettings.forEach(settingId => {
-			const isInnerSetting = attributesDefaults[settingId]?.default?.innerSettings;
-
-			if ( isInnerSetting ) {
-				const allInnerSettings = Object.keys( attributesDefaults[settingId].default.innerSettings );
-
-				allInnerSettings.forEach(innerSettingId => {
-					allSettingsStyles.push({
-						type: 'inner-setting',
-						settingId: settingId,
-						innerSettingId: innerSettingId,
-						value: getInnerSettingValue( settingId, innerSettingId, currentDevice, atts ),
-						css: attributesDefaults[settingId].default.innerSettings[innerSettingId].css
-					});
-				});
-			} else {
-				allSettingsStyles.push({
-					type: 'setting',
-					settingId: settingId,
-					value: getSettingValue( settingId, currentDevice, atts ),
-					css: attributesDefaults[settingId].css
-				});
+			if ( blockRef.current ) {
+				blockRef.current.addEventListener('click', handleClick);
 			}
-		});
 
-		setUpdateCss({
-			type: 'all',
-			settings: allSettingsStyles
-		});
-	}, []);
+			return () => {
+				if ( blockRef.current ) {
+					blockRef.current.removeEventListener('click', handleClick);
+				}
+			};
+		}
+	}, [htmlTag]);
 
 	return (
 		<>
 			<InspectorControls>
-				<TabsNavigation
-					value="general"
-					options={[
-						{ label: __( 'General', 'botiga-pro' ), value: 'general' },
-						{ label: __( 'Style', 'botiga-pro' ), value: 'style' },
-						{ label: __( 'Advanced', 'botiga-pro' ), value: 'advanced' },
-					]}
-				/>
+				{
+					currentTab === 'general' && (
+						<Panel>
+							<PanelBody 
+								title={ __( 'Heading', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'heading' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'heading' ) }
+							>
+								<Select
+									label={ __( 'HTML Tag', 'athemes-blocks' ) }
+									options={[
+										{ label: __( 'H1', 'athemes-blocks' ), value: 'h1' },
+										{ label: __( 'H2', 'athemes-blocks' ), value: 'h2' },
+										{ label: __( 'H3', 'athemes-blocks' ), value: 'h3' },
+										{ label: __( 'H4', 'athemes-blocks' ), value: 'h4' },
+										{ label: __( 'H5', 'athemes-blocks' ), value: 'h5' },
+										{ label: __( 'H6', 'athemes-blocks' ), value: 'h6' },
+										{ label: __( 'Div', 'athemes-blocks' ), value: 'div' },
+										{ label: __( 'Span', 'athemes-blocks' ), value: 'span' },
+										{ label: __( 'P', 'athemes-blocks' ), value: 'p' },
+									]}
+									value={ htmlTag }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'htmlTag', {
+											value: value,
+										}, 'desktop' );
 
-				{currentTab === 'general' && (
-					<Panel>
-						<PanelBody title={ __( 'General', 'botiga-pro' ) }>
-							<RadioButtons 
-								label={ __( 'Alignment', 'athemes-blocks' ) }
-								defaultValue={ getSettingValue( 'alignment', currentDevice, atts ) }
-								options={[
-									{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
-									{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-									{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
-								]}
-								responsive={ true }
-								reset={true}
-								onChange={ ( value ) => {
-									updateAttribute( 'alignment', {
-										value: value
-									}, currentDevice );
+										setUpdateCss( { settingId: 'htmlTag', value: value } );										
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'htmlTag', {
+											value: getSettingDefaultValue( 'htmlTag', 'desktop', attributesDefaults )
+										}, 'desktop' );
 
-									setUpdateCss( { settingId: 'alignment', value: value } );
-								} }
-								onClickReset={ () => {
-									updateAttribute( 'alignment', {
-										value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults )
-									}, currentDevice );
-									
-									setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
-								} }
-							/>
+										setUpdateCss( { settingId: 'htmlTag', value: getSettingDefaultValue( 'htmlTag', 'desktop', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+						</Panel>
+					)
+				}
+				{
+					currentTab === 'style' && (
+						<Panel>
+							<PanelBody 
+								title={ __( 'Heading', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'heading' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'heading' ) }
+							>
+								<RadioButtons 
+									label={ __( 'Alignment', 'athemes-blocks' ) }
+									defaultValue={ alignment }
+									options={[
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Justified', 'athemes-blocks' ), value: 'justify' },
+									]}
+									responsive={true}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'alignment', {
+											value: value
+										}, currentDevice );
 
-							<Select
-								label={ __( 'Font family', 'athemes-blocks' ) }
-								options={[
-									{ label: __( 'Arial', 'athemes-blocks' ), value: 'Arial' },
-									{ label: __( 'Helvetica', 'athemes-blocks' ), value: 'Helvetica' },
-									{ label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
-								]}
-								value={ getSettingValue( 'fontFamily', currentDevice, atts ) }
-								responsive={ true }
-								reset={true}
-								onChange={ ( value ) => {
-									updateAttribute( 'fontFamily', {
-										value: value
-									}, currentDevice );
-									
-									setUpdateCss( { settingId: 'fontFamily', value: value } );
-								} }
-								onClickReset={ () => {
-									updateAttribute( 'fontFamily', {
-										value: getSettingDefaultValue( 'fontFamily', currentDevice, attributesDefaults )
-									}, currentDevice );
+										setUpdateCss( { settingId: 'alignment', value: value } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'alignment', {
+											value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults )
+										}, currentDevice );
+										
+										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+								<Typography
+									label={ __( 'Typography', 'athemes-blocks' ) }
+									settingId="typography"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+								/>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ color }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'color', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'color', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
 
-									setUpdateCss( { settingId: 'fontFamily', value: getSettingDefaultValue( 'fontFamily', currentDevice, attributesDefaults ) } );
-								} }
-							/>
+										setUpdateCss( { settingId: 'color', value: getColorPickerSettingValue( 'color', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'color', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'color', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'color', value: getColorPickerSettingValue( 'color', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'color', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'color', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'color', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'color', value: getColorPickerSettingDefaultValue( 'color', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Link', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'link' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'link' ) }
+							>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ linkColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
 
-							<SwitchToggle
-								label={ __( 'Show border', 'athemes-blocks' ) }
-								value={ getSettingValue( 'showBorder', currentDevice, atts ) }
-								responsive={ true }
-								reset={true}
-								onChange={ ( value ) => {
-									updateAttribute( 'showBorder', {
-										value: value
-									}, currentDevice );
-								} }
-								onClickReset={ () => {
-									updateAttribute( 'showBorder', {
-										value: getSettingDefaultValue( 'showBorder', currentDevice, attributesDefaults )
-									}, currentDevice );
-								} }
-							/>
-
-							<ColorPicker
-								label={ __( 'Text color', 'athemes-blocks' ) }
-								value={ getSettingValue( 'textColor', currentDevice, atts ) }
-								hover={true}
-								responsive={true}
-								reset={true}
-								defaultStateOnChangeComplete={ ( value ) => {
-									updateAttribute( 'textColor', {
-										value: {
-											defaultState: value.hex,
-											hoverState: getColorPickerSettingValue( 'textColor', currentDevice, 'hoverState', atts )
-										}
-									}, currentDevice );
-
-									setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', currentDevice, 'defaultState', atts ) } );
-								} }
-								hoverStateOnChangeComplete={ ( value ) => {
-									updateAttribute( 'textColor', {
-										value: {
-											defaultState: getColorPickerSettingValue( 'textColor', currentDevice, 'defaultState', atts ),
-											hoverState: value.hex	
-										}
-									}, currentDevice );
-									
-									setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', currentDevice, 'hoverState', atts ) } );
-								} }
-								onClickReset={ () => {
-									updateAttribute( 'textColor', {
-										value: {
-											defaultState: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'defaultState', attributesDefaults ),
-											hoverState: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'hoverState', attributesDefaults )	
-										}
-									}, currentDevice );
-									
-									setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingDefaultValue( 'textColor', currentDevice, 'defaultState', attributesDefaults ) } );
-								} }
-							/>
-
-							<Typography
-								label={ __( 'Typography', 'athemes-blocks' ) }
-								settingId="textTypography"
-								attributes={ atts }
-								setAttributes={ setAttributes }
-								attributesDefaults={ attributesDefaults }
-								setUpdateCss={ setUpdateCss }
-								subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
-							/>
-
-							<Dimensions
-								label={ __( 'Padding', 'athemes-blocks' ) }
-								directions={[
-									{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
-									{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
-									{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
-									{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
-								]}
-								value={ getDimensionsSettingValue( 'padding', currentDevice, atts ) }
-								defaultUnit={ getSettingUnit( 'padding', currentDevice, atts ) }
-								directionsValue={ getDimensionsSettingDirectionsValue( 'padding', currentDevice, atts ) }
-								connect={getDimensionsSettingConnectValue( 'padding', currentDevice, atts )}
-								responsive={ true }
-								units={['px', 'em', 'rem']}
-								reset={true}
-								onChange={ ( value ) => {
-									updateAttribute( 'padding', {
-										value: value.value,
-										unit: getSettingUnit( 'padding', currentDevice, atts ),
-										connect: getDimensionsSettingConnectValue( 'padding', currentDevice, atts )
-									}, currentDevice );
-
-									setUpdateCss( { settingId: 'padding', value: value.value } );
-								} }
-								onChangeUnit={ ( value ) => {
-									updateAttribute( 'padding', {
-										value: getSettingValue( 'padding', currentDevice, atts ),
-										unit: value,
-										connect: getDimensionsSettingConnectValue( 'padding', currentDevice, atts )
-									}, currentDevice );
-									
-									setUpdateCss( { settingId: 'padding', value: getSettingValue( 'padding', currentDevice, atts ) } );
-								} }
-								onClickReset={ () => {
-									updateAttribute( 'padding', getDimensionsSettingDefaultValue( 'padding', currentDevice, attributesDefaults ), currentDevice );
-
-									setUpdateCss( { settingId: 'padding', value: getDimensionsSettingDefaultValue( 'padding', currentDevice, attributesDefaults ) } );
-								} }
-							/>
-						</PanelBody>
-					</Panel>
-				)}
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'linkColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+						</Panel>
+					)
+				}
 			</InspectorControls>
 			
-			<div className="at-block" { ...useBlockProps() }>
-				<RichText
-					tagName="h1"
-					value={ content }
-					onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
-					placeholder={ __( 'Type your heading here...', 'text-domain' ) }
-				/>
-			</div>
+			{(() => {
+				const Tag = htmlTag;
+				let blockPropsClassName = `at-block at-block-heading`;
+
+				let blockProps = useBlockProps({
+					className: blockPropsClassName
+				});
+
+				if (hideOnDesktop) {
+					blockProps.className += ' atb-hide-desktop';
+				}
+
+				if (hideOnTablet) {
+					blockProps.className += ' atb-hide-tablet';
+				}
+
+				if (hideOnMobile) {
+					blockProps.className += ' atb-hide-mobile';
+				}
+
+				// Animation.
+				blockProps = blockPropsWithAnimation(blockProps, attributes);
+				
+				return (
+					htmlTag === 'div' ? (
+						<RichText
+							{ ...blockProps }
+							ref={useMergeRefs([blockProps.ref, blockRef])}
+							tagName={ htmlTag }
+							value={ content }
+							onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+							placeholder={ __( 'Type your heading here...', 'athemes-blocks' ) }
+						/>
+					) : (
+						<div { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
+							<RichText
+								tagName={ htmlTag }
+								value={ content }
+								onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+								placeholder={ __( 'Type your heading here...', 'athemes-blocks' ) }
+							/>
+						</div>
+					)
+				);
+			})()}
 		</>
 	);
-}
+};
 
 export default withDynamicCSS(
-	withAdvancedTab(Edit, attributesDefaults),
+	withTabsNavigation(
+		withPersistentPanelToggle(	
+			withAdvancedTab(Edit, attributesDefaults)
+		)
+	),
 	attributesDefaults
 );

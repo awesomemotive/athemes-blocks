@@ -1,5 +1,5 @@
 import { createReduxStore, register } from '@wordpress/data';
-
+console.log(333);
 // Defaults.
 const DEFAULT_STATE = {
     currentTab: 'general',
@@ -64,6 +64,9 @@ if ( ! window.__PERSISTENT_TABS_STORE_IS_REGISTERED__ ) {
     register(store);
 
     window.__PERSISTENT_TABS_STORE_IS_REGISTERED__ = true;
+    window.__PERSISTENT_TABS_STORE__ = store;
+} else {
+    store = window.__PERSISTENT_TABS_STORE__;
 }
 
 export { store };

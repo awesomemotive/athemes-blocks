@@ -7,6 +7,7 @@ import { SwitchToggle } from '../../../block-editor/controls/switch-toggle/switc
 import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
 import { Animation } from '../../../block-editor/controls/animation/animation';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
+import { Border } from '../../../block-editor/controls/border/border';
 
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getColorPickerSettingValue, getColorPickerSettingDefaultValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getInnerSettingValue } from '../../../utils/settings';
 

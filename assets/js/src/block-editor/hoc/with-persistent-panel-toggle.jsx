@@ -3,8 +3,8 @@ import { store as persistentTabsStore } from '../store/persistent-tabs-store';
 
 export const withPersistentPanelToggle = (WrappedComponent) => {
     return (props) => {
-        const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
-        const lastPanelOpened = useSelect((select) => select('persistent-tabs-store').getLastPanelOpened());
+        const currentTab = useSelect((select) => select('persistent-tabs-store')?.getCurrentTab() || 'general');
+        const lastPanelOpened = useSelect((select) => select('persistent-tabs-store')?.getLastPanelOpened() || null);
         const { setLastPanelOpened } = useDispatch(persistentTabsStore);
 
         const onTogglePanelBodyHandler = (panelId) => {
