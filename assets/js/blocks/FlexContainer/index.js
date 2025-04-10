@@ -1700,6 +1700,42 @@ function RangeSlider(props) {
   if (valueUnit === '%' || valueUnit === 'vw' || valueUnit === 'vh') {
     max = 100;
   }
+
+  // Some controls needs to have different min/max values for each unit.
+  // This is the object data structure accepted: 
+  // {
+  //     px: 150,
+  //     em: 10,
+  //     rem: 10,
+  // }
+  if (typeof max === 'object' && max !== null) {
+    if (max.px && valueUnit === 'px') {
+      max = max.px;
+    }
+    if (max.em && valueUnit === 'em') {
+      max = max.em;
+    }
+    if (max.rem && valueUnit === 'rem') {
+      max = max.rem;
+    }
+  }
+  if (typeof min === 'object' && min !== null) {
+    if (min.px && valueUnit === 'px') {
+      min = min.px;
+    }
+    if (min.em && valueUnit === 'em') {
+      min = min.em;
+    }
+    if (min.rem && valueUnit === 'rem') {
+      min = min.rem;
+    }
+  }
+
+  // Step.
+  let step = 1;
+  if (valueUnit === 'em' || valueUnit === 'rem') {
+    step = 0.1;
+  }
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     setValue(defaultValue);
     setValueUnit(defaultUnit);
@@ -1725,6 +1761,7 @@ function RangeSlider(props) {
     label: "",
     max: max,
     min: min,
+    step: step,
     onBlur: () => {},
     onChange: onChange,
     onFocus: () => {},

@@ -34,6 +34,15 @@ $wrapper_classes = array(
     'at-block-heading' 
 );
 
+// Font size.
+if ( 
+    Settings::get_inner_setting( 'typography', 'fontSize', $attributes, $atts_defaults, 'desktop' ) > 0 ||
+    Settings::get_inner_setting( 'typography', 'fontSize', $attributes, $atts_defaults, 'tablet' ) > 0 ||
+    Settings::get_inner_setting( 'typography', 'fontSize', $attributes, $atts_defaults, 'mobile' ) > 0
+) {
+    $wrapper_classes[] = 'atb-has-font-size';
+}
+
 // Visibility classes
 if ( ! empty( $hideOnDesktop ) ) {
     $wrapper_classes[] = 'atb-hide-desktop';

@@ -14,14 +14,26 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+use AThemes_Blocks\Services\GoogleFontsService;
+
 class BlockEditorAssets {
+
+    /**
+     * Google Fonts Service instance.
+     * 
+     * @var GoogleFontsService
+     */
+    protected $google_fonts_service;
 
     /**
      * Constructor.
      * 
      */
     public function __construct() {
+        $this->google_fonts_service = new GoogleFontsService();
+
         add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_google_fonts' ) );
     }
 
     /**
@@ -44,5 +56,18 @@ class BlockEditorAssets {
             ATHEMES_BLOCKS_VERSION,
             true
         );
+    }
+
+    /**
+     * Enqueue Google Fonts.
+     * 
+     * @return void
+     */
+    public function localize_block_editor_with_google_fonts(): void {
+        wp_localize_script(
+			'athemes-blocks-block-editor',
+			'athemesBlocksGoogleFonts',
+			$this->google_fonts_service->get_fonts_for_editor()
+		);
     }
 }

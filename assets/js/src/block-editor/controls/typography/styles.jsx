@@ -24,6 +24,7 @@ const styles = {
     popover: css`
         .components-popover__content {
             width: 100%;
+            max-width: 237px;
             padding: 10px;
         }
     `,

@@ -11,6 +11,7 @@ import { RangeSlider } from '../range-slider/range-slider';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
 import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
+import { FontFamilySelect } from '../font-family/font-family';
 
 import { createInnerControlAttributeUpdater } from '../../../utils/block-attributes';
 
@@ -21,6 +22,17 @@ import { styles } from './styles';
 export function Typography( props ) {
     const { label, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+
+    const [ fontWeightOptions, setFontWeightOptions ] = useState([]);
+
+    const googleFontsData = window.athemesBlocksGoogleFonts;
+    const fontFamilyOptions = googleFontsData.items.map( ( font ) => {
+        return {
+            label: font.family,
+            value: font.family,
+        };
+    } );
+
     const { 
         fontSize, 
         fontFamily, 
@@ -33,6 +45,23 @@ export function Typography( props ) {
     } = attributes[settingId].innerSettings;
 
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
+
+    useEffect( () => {
+        console.log(fontFamily.default['desktop'].value);
+        if ( ! fontFamily.default['desktop'].value || fontFamily.default['desktop'].value === 'default' ) {
+            return;
+        }
+
+        const selectedFontFamily = googleFontsData.items.find( ( font ) => font.family === fontFamily.default['desktop'].value );
+        const fontWeightOptions = selectedFontFamily.variants.map( ( variant ) => {
+            return {
+                label: variant,
+                value: variant,
+            };
+        } );
+
+        setFontWeightOptions( fontWeightOptions );
+    }, [ fontFamily.default['desktop'].value ] );
 
     // Popover State (default)
     const [ isDefaultVisible, setIsDefaultVisible ] = useState( false );
@@ -60,38 +89,66 @@ export function Typography( props ) {
                         >
                             {
                                 ( subFields && subFields.includes('fontFamily') ) && (
-                                    <Select
-                                        label={ __( 'Font family', 'athemes-blocks' ) }
-                                        options={[
-                                            { label: __( 'Default', 'athemes-blocks' ), value: 'default' },
-                                            { label: __( 'Arial', 'athemes-blocks' ), value: 'Arial' },
-                                            { label: __( 'Helvetica', 'athemes-blocks' ), value: 'Helvetica' },
-                                            { label: __( 'Times New Roman', 'athemes-blocks' ), value: 'Times New Roman' },
-                                        ]}
-                                        value={ fontFamily.default[currentDevice].value }
-                                        responsive={false}
-                                        reset={true}
-                                        onChange={ ( value ) => {
-                                            updateInnerControlAttribute( 'fontFamily', value, currentDevice );
-                                            
-                                            setUpdateCss( {
-                                                type: 'inner-control',
-                                                settingId: settingId,
-                                                innerSettingId: 'fontFamily',
-                                                value: value,
-                                            } );
-                                        } }
-                                        onClickReset={ () => {
-                                            updateInnerControlAttribute( 'fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice );
+                                    <>
+                                        <FontFamilySelect
+                                            label={ __( 'Font family', 'athemes-blocks' ) }
+                                            options={ fontFamilyOptions }
+                                            defaultValue={ fontFamily.default[currentDevice].value }
+                                            responsive={false}
+                                            reset={true}
+                                            googleFontsData={ googleFontsData }
+                                            onChange={ ( value ) => {
+                                                updateInnerControlAttribute( 'fontFamily', value, currentDevice );
+                                                
+                                                setUpdateCss( {
+                                                    type: 'inner-control',
+                                                    settingId: settingId,
+                                                    innerSettingId: 'fontFamily',
+                                                    value: value,
+                                                } );
+                                            } }
+                                            onFilterValueChange={ ( value ) => {
+                                                console.log(value);
+                                            } }
+                                            onClickReset={ () => {
+                                                updateInnerControlAttribute( 'fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice );
 
-                                            setUpdateCss( {
-                                                type: 'inner-control',
-                                                settingId: settingId,
-                                                innerSettingId: 'fontFamily',
-                                                value: getInnerSettingDefaultValue( settingId, 'fontFamily', currentDevice, attributesDefaults ),
-                                            } );
-                                        } }
-                                    />
+                                                setUpdateCss( {
+                                                    type: 'inner-control',
+                                                    settingId: settingId,
+                                                    innerSettingId: 'fontFamily',
+                                                    value: getInnerSettingDefaultValue( settingId, 'fontFamily', currentDevice, attributesDefaults ),
+                                                } );
+                                            } }
+                                        />
+                                        <Select
+                                            label={ __( 'Weight', 'athemes-blocks' ) }
+                                            options={ fontWeightOptions }
+                                            value={ fontWeight.default[currentDevice].value }
+                                            responsive={ false }
+                                            reset={true}
+                                            onChange={ ( value ) => {
+                                                updateInnerControlAttribute( 'fontWeight', value, currentDevice );
+                                                
+                                                setUpdateCss( {
+                                                    type: 'inner-control',
+                                                    settingId: settingId,
+                                                    innerSettingId: 'fontWeight',
+                                                    value: value,
+                                                } );
+                                            } }
+                                            onClickReset={ () => {
+                                                updateInnerControlAttribute( 'fontWeight', attributesDefaults[settingId].default.innerSettings.fontWeight.default[currentDevice].value, currentDevice );
+
+                                                setUpdateCss( {
+                                                    type: 'inner-control',
+                                                    settingId: settingId,
+                                                    innerSettingId: 'fontWeight',
+                                                    value: getInnerSettingDefaultValue( settingId, 'fontWeight', currentDevice, attributesDefaults ),
+                                                } );
+                                            } }
+                                        />
+                                    </>
                                 )
                             }
 
@@ -101,8 +158,16 @@ export function Typography( props ) {
                                         label={ __( 'Font size', 'athemes-blocks' ) }
                                         defaultValue={ fontSize.default[currentDevice].value }
                                         defaultUnit={ fontSize.default[currentDevice].unit }
-                                        min={ 10 }
-                                        max={ 200 }
+                                        min={ {
+                                            px: 10,
+                                            em: 0.1,
+                                            rem: 0.1,
+                                        } }
+                                        max={ {
+                                            px: 200,
+                                            em: 10,
+                                            rem: 10,
+                                        } }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}
@@ -149,7 +214,7 @@ export function Typography( props ) {
                                 )
                             }
                             
-                            {
+                            {/* {
                                 ( subFields && subFields.includes('fontWeight') ) && (
                                     <Select
                                         label={ __( 'Weight', 'athemes-blocks' ) }
@@ -190,7 +255,7 @@ export function Typography( props ) {
                                         } }
                                     />                                    
                                 )
-                            }
+                            } */}
 
                             {
                                 ( subFields && subFields.includes('fontStyle') ) && (
@@ -310,8 +375,16 @@ export function Typography( props ) {
                                         label={ __( 'Line Height', 'athemes-blocks' ) }
                                         defaultValue={ lineHeight.default[currentDevice].value }
                                         defaultUnit={ lineHeight.default[currentDevice].unit }
-                                        min={ 1 }
-                                        max={ 150 }
+                                        min={ {
+                                            px: 1,
+                                            em: 0.1,
+                                            rem: 0.1,
+                                        } }
+                                        max={ {
+                                            px: 150,
+                                            em: 10,
+                                            rem: 10,
+                                        } }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}
@@ -364,8 +437,16 @@ export function Typography( props ) {
                                         label={ __( 'Letter Spacing', 'athemes-blocks' ) }
                                         defaultValue={ letterSpacing.default[currentDevice].value }
                                         defaultUnit={ letterSpacing.default[currentDevice].unit }
-                                        min={ 1 }
-                                        max={ 10 }
+                                        min={ {
+                                            px: -30,
+                                            em: -10,
+                                            rem: -10,
+                                        } }
+                                        max={ {
+                                            px: 30,
+                                            em: 10,
+                                            rem: 10,
+                                        } }
                                         responsive={ true }
                                         reset={ true }
                                         units={['px', 'em', 'rem']}

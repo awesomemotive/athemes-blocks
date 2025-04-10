@@ -1,3 +1,21 @@
+/* Spacing between blocks */
+:root :where(.is-layout-flow) > .at-block:last-child {
+    margin-block-end: 0;
+}
+
+:root :where(.is-layout-flow) > *.at-block {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.at-block {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+/* Animation */
 [data-atb-animation] {
     opacity: 0;
 }

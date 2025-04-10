@@ -20,6 +20,7 @@ import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation'
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
 import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persistent-panel-toggle';
+import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
@@ -56,10 +57,10 @@ const Edit = (props) => {
 			htmlTag: getSettingValue('htmlTag', 'desktop', atts),
 
 			// Style.
-			alignment: getSettingValue('alignment', 'desktop', atts),
-			typography: getSettingValue('typography', 'desktop', atts),
+			alignment: getSettingValue('alignment', currentDevice, atts),
 			color: getSettingValue('color', 'desktop', atts),
 			linkColor: getSettingValue('linkColor', 'desktop', atts),
+			
 			// Advanced.
 			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
 			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
@@ -284,6 +285,12 @@ const Edit = (props) => {
 					className: blockPropsClassName
 				});
 
+				// Font size.
+				const hasFontSize = getInnerSettingValue('typography', 'fontSize', currentDevice, atts) > 0;
+				if (hasFontSize) {
+					blockProps.className += ` atb-has-font-size`;
+				}
+
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
 				}
@@ -328,7 +335,10 @@ const Edit = (props) => {
 export default withDynamicCSS(
 	withTabsNavigation(
 		withPersistentPanelToggle(	
-			withAdvancedTab(Edit, attributesDefaults)
+			withAdvancedTab(
+				withGoogleFonts(Edit),
+				attributesDefaults
+			)
 		)
 	),
 	attributesDefaults

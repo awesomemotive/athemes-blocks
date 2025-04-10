@@ -59,7 +59,138 @@ return array_merge(
             ),
         ),
     ),
-    Attributes::get_typography_attributes(),
+    Attributes::get_typography_attributes(
+        array(
+            'fontFamily' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'font-family',
+                )
+            ),
+            'fontSize' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'font-size',
+                )
+            ),
+            'fontWeight' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'font-weight',
+                )
+            ),
+            'fontStyle' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'font-style',
+                )
+            ),
+            'textTransform' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'text-transform',
+                )
+            ),
+            'textDecoration' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'text-decoration',
+                )
+            ),
+            'lineHeight' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'line-height',
+                )
+            ),
+            'letterSpacing' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} h1',
+                        '{{WRAPPER}} h2',
+                        '{{WRAPPER}} h3',
+                        '{{WRAPPER}} h4',
+                        '{{WRAPPER}} h5',
+                        '{{WRAPPER}} h6',
+                        '{{WRAPPER}} p',
+                        '{{WRAPPER}} span',
+                        '{{WRAPPER}} div',
+                    ),
+                    'property' => 'letter-spacing',
+                )
+            ),
+        )
+    ),
     array(
         'color' => array(
             'type' => 'object',

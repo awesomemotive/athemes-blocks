@@ -32,8 +32,8 @@ class Attributes {
      * 
      * @return array
      */
-    public static function get_typography_attributes() {
-        return array(
+    public static function get_typography_attributes( $attributesToReplace = array() ) {
+        $attributes = array(
             'typography' => array(
                 'type' => 'object',
                 'default' => array(
@@ -203,8 +203,24 @@ class Attributes {
                 ),
             ),
         );
-        
+
+        if ( ! empty( $attributesToReplace ) ) {
+            foreach ( $attributesToReplace as $key => $value ) {
+                if ( isset( $attributes['typography']['default']['innerSettings'][$key] ) ) {
+                    if ( isset( $value['default'] ) ) {
+                        $attributes['typography']['default']['innerSettings'][$key]['default'] = $value['default'];
+                    }
+                    
+                    if ( isset( $value['css'] ) ) {
+                        $attributes['typography']['default']['innerSettings'][$key]['css'] = $value['css'];
+                    }
+                }
+            }
+        }
+
+        return $attributes;
     }
+    
     /**
      * Get block advanced panel attributes.
      * 
