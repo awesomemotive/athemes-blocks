@@ -8,6 +8,10 @@
  * @returns {string} - The value of the setting.
  */
 export function getSettingValue( settingId, device, attributes ) {
+    if ( ! device ) {
+        return attributes[settingId]?.value;
+    }
+
     return attributes[settingId]?.[device]?.value;
 }
 
@@ -34,6 +38,10 @@ export function getSettingUnit( settingId, device, attributes ) {
  * @returns {string} - The default value of the setting.
  */
 export function getSettingDefaultValue( settingId, device, attributesDefaults ) {
+    if ( ! device ) {
+        return attributesDefaults[settingId]?.default;
+    }
+
     return attributesDefaults[settingId]?.default?.[device]?.value;
 }
 
@@ -155,6 +163,10 @@ export function getInnerSettingValue( settingId, innerSettingId, device, attribu
  * @returns {string} - The default value of the setting.
  */
 export function getInnerSettingDefaultValue( settingId, innerSettingId, device, attributesDefaults ) {
+    if ( ! device ) {
+        return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default;
+    }
+
     return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.value;
 }
 

@@ -15,8 +15,8 @@ class Attributes {
      * 
      * @return array
      */
-    public static function get_block_core_attributes() {
-        return array(
+    public static function get_block_core_attributes( $attributes_to_replace = array() ) {
+        $attributes = array(
             'clientId' => array(
                 'type' => 'string',
             ),
@@ -25,6 +25,16 @@ class Attributes {
                 'default' => '',
             ),
         );
+
+        if ( ! empty( $attributes_to_replace ) ) {
+            foreach ( $attributes_to_replace as $key => $value ) {
+                if ( isset( $attributes[$key] ) ) {
+                    $attributes[$key] = $value;
+                }
+            }
+        }
+
+        return $attributes;
     }
 
     /**
@@ -32,9 +42,9 @@ class Attributes {
      * 
      * @return array
      */
-    public static function get_typography_attributes( $attributesToReplace = array() ) {
+    public static function get_typography_attributes( $setting_id, $attributes_to_replace = array() ) {
         $attributes = array(
-            'typography' => array(
+            $setting_id => array(
                 'type' => 'object',
                 'default' => array(
                     'innerSettings' => array(
@@ -204,15 +214,176 @@ class Attributes {
             ),
         );
 
-        if ( ! empty( $attributesToReplace ) ) {
-            foreach ( $attributesToReplace as $key => $value ) {
-                if ( isset( $attributes['typography']['default']['innerSettings'][$key] ) ) {
+        if ( ! empty( $attributes_to_replace ) ) {
+            foreach ( $attributes_to_replace as $key => $value ) {
+                if ( isset( $attributes[$setting_id]['default']['innerSettings'][$key] ) ) {
                     if ( isset( $value['default'] ) ) {
-                        $attributes['typography']['default']['innerSettings'][$key]['default'] = $value['default'];
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['default'] = $value['default'];
                     }
                     
                     if ( isset( $value['css'] ) ) {
-                        $attributes['typography']['default']['innerSettings'][$key]['css'] = $value['css'];
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['css'] = $value['css'];
+                    }
+                }
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Get typography attributes.
+     * 
+     * @return array
+     */
+    public static function get_border_attributes( $setting_id, $attributes_to_replace = array() ) {
+        $attributes = array(
+            $setting_id => array(
+                'type' => 'object',
+                'default' => array(
+                    'innerSettings' => array(
+                        'borderStyle' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => 'default'
+                                ),
+                                'tablet' => array(
+                                    'value' => 'default'
+                                ),
+                                'mobile' => array(
+                                    'value' => 'default'
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'border-style',
+                            )
+                        ),
+                        'borderWidth' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'border-{{DIRECTION}}-width',
+                            )
+                        ),
+                        'borderRadius' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'top' => '',
+                                        'right' => '',
+                                        'bottom' => '',
+                                        'left' => '',
+                                    ),
+                                    'unit' => 'px',
+                                    'connect' => true,
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'border-{{DIRECTION}}-radius',
+                            )
+                        ),
+                        'borderColor' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}' => '{{VALUE}}',
+                                    '{{WRAPPER}}:hover' => '{{HOVER}}',
+                                ),
+                                'property' => 'border-color',
+                            )
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        if ( ! empty( $attributes_to_replace ) ) {
+            foreach ( $attributes_to_replace as $key => $value ) {
+                if ( isset( $attributes[$setting_id]['default']['innerSettings'][$key] ) ) {
+                    if ( isset( $value['default'] ) ) {
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['default'] = $value['default'];
+                    }
+                    
+                    if ( isset( $value['css'] ) ) {
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['css'] = $value['css'];
                     }
                 }
             }

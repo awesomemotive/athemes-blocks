@@ -60,6 +60,7 @@ return array_merge(
         ),
     ),
     Attributes::get_typography_attributes(
+        'typography',
         array(
             'fontFamily' => array(
                 'css' => array(

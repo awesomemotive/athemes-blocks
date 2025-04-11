@@ -73,6 +73,7 @@ class PluginLoader {
         $blocks = array(
             'FlexContainer',
             'Heading',
+            'Button',
         );
 
         foreach ( $blocks as $block ) {

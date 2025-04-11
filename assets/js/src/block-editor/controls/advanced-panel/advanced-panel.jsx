@@ -17,8 +17,6 @@ const AdvancedPanel = (props) => {
     const atts = attributes;
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 
-    console.log(atts.padding);
-
     return (
         <Panel>
             <PanelBody 

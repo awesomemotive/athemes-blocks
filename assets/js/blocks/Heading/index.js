@@ -446,7 +446,6 @@ const AdvancedPanel = props => {
   } = props;
   const atts = attributes;
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
-  console.log(atts.padding);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Layout', 'botiga-pro'),
     initialOpen: false,
@@ -3773,12 +3772,12 @@ const createInnerControlAttributeUpdater = (settingId, attributes, setAttributes
     }
     setAttributes({
       [settingId]: {
+        ...attributes[settingId],
         innerSettings: {
+          ...attributes[settingId].innerSettings,
           [innerSettingId]: {
             ...attributes[settingId].innerSettings[innerSettingId],
-            ...{
-              default: value
-            }
+            default: value
           }
         }
       }
@@ -4126,6 +4125,9 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {string} - The value of the setting.
  */
 function getSettingValue(settingId, device, attributes) {
+  if (!device) {
+    return attributes[settingId]?.value;
+  }
   return attributes[settingId]?.[device]?.value;
 }
 
@@ -4152,6 +4154,9 @@ function getSettingUnit(settingId, device, attributes) {
  * @returns {string} - The default value of the setting.
  */
 function getSettingDefaultValue(settingId, device, attributesDefaults) {
+  if (!device) {
+    return attributesDefaults[settingId]?.default;
+  }
   return attributesDefaults[settingId]?.default?.[device]?.value;
 }
 
@@ -4273,6 +4278,9 @@ function getInnerSettingValue(settingId, innerSettingId, device, attributes) {
  * @returns {string} - The default value of the setting.
  */
 function getInnerSettingDefaultValue(settingId, innerSettingId, device, attributesDefaults) {
+  if (!device) {
+    return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default;
+  }
   return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.value;
 }
 

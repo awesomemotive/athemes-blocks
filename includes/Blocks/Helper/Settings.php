@@ -22,6 +22,10 @@ class Settings {
      * @return mixed
      */
     public static function get_setting( $name, $attributes, $atts_defaults = array(), $device = 'desktop' ) {
+        if ( ! $device && isset( $attributes[$name] ) ) {
+            return $attributes[$name];
+        }
+        
         if ( isset( $attributes[$name][$device]['value'] ) ) {
             return $attributes[$name][$device]['value'];
         }
@@ -44,6 +48,10 @@ class Settings {
      * @return mixed
      */
     public static function get_inner_setting( $name, $inner_name, $attributes, $atts_defaults, $device = 'desktop' ) {
+        if ( ! $device && isset( $attributes[$name]['innerSettings'][$inner_name]['default'] ) ) {
+            return $attributes[$name]['innerSettings'][$inner_name]['default'];
+        }
+
         if ( isset( $attributes[$name]['innerSettings'][$inner_name]['default'][$device]['value'] ) ) {
             return $attributes[$name]['innerSettings'][$inner_name]['default'][$device]['value'];
         }

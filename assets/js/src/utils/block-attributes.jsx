@@ -106,10 +106,12 @@ export const createInnerControlAttributeUpdater = (settingId, attributes, setAtt
 
         setAttributes({
             [settingId]: {
+                ...attributes[settingId],
                 innerSettings: {
+                    ...attributes[settingId].innerSettings,
                     [innerSettingId]: {
                         ...attributes[settingId].innerSettings[innerSettingId],
-                        ...{ default: value }
+                        default: value
                     }
                 }
             }

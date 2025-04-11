@@ -1,0 +1,15 @@
+.at-block-button {
+    box-sizing: border-box;
+    display: flex;
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+
+    a.at-block-button__button {
+        text-decoration: none;
+    }
+}
