@@ -47,7 +47,6 @@ export function Typography( props ) {
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
     useEffect( () => {
-        console.log(fontFamily.default['desktop'].value);
         if ( ! fontFamily.default['desktop'].value || fontFamily.default['desktop'].value === 'default' ) {
             return;
         }
@@ -61,6 +60,22 @@ export function Typography( props ) {
         } );
 
         setFontWeightOptions( fontWeightOptions );
+
+        // We need to update the font weight attribute when the font family changes.
+        // This is needed because the font weight options are dynamic and depend on the font family.
+        if (fontWeightOptions.length > 0) {
+            const currentWeight = fontWeight.default[currentDevice].value;
+            const newWeight = fontWeightOptions.find( ( weight ) => weight.value === currentWeight )?.value || fontWeightOptions[0].value;
+            
+            updateInnerControlAttribute('fontWeight', newWeight, currentDevice);
+            
+            setUpdateCss({
+                type: 'inner-control',
+                settingId: settingId,
+                innerSettingId: 'fontWeight',
+                value: newWeight,
+            });
+        }
     }, [ fontFamily.default['desktop'].value ] );
 
     // Popover State (default)
@@ -108,7 +123,7 @@ export function Typography( props ) {
                                                 } );
                                             } }
                                             onFilterValueChange={ ( value ) => {
-                                                console.log(value);
+                                                console.log(value, 123123);
                                             } }
                                             onClickReset={ () => {
                                                 updateInnerControlAttribute( 'fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice );

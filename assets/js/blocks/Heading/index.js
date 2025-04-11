@@ -2317,7 +2317,6 @@ function Typography(props) {
   } = attributes[settingId].innerSettings;
   const updateInnerControlAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_12__.createInnerControlAttributeUpdater)(settingId, attributes, setAttributes);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
-    console.log(fontFamily.default['desktop'].value);
     if (!fontFamily.default['desktop'].value || fontFamily.default['desktop'].value === 'default') {
       return;
     }
@@ -2329,6 +2328,20 @@ function Typography(props) {
       };
     });
     setFontWeightOptions(fontWeightOptions);
+
+    // We need to update the font weight attribute when the font family changes.
+    // This is needed because the font weight options are dynamic and depend on the font family.
+    if (fontWeightOptions.length > 0) {
+      const currentWeight = fontWeight.default[currentDevice].value;
+      const newWeight = fontWeightOptions.find(weight => weight.value === currentWeight)?.value || fontWeightOptions[0].value;
+      updateInnerControlAttribute('fontWeight', newWeight, currentDevice);
+      setUpdateCss({
+        type: 'inner-control',
+        settingId: settingId,
+        innerSettingId: 'fontWeight',
+        value: newWeight
+      });
+    }
   }, [fontFamily.default['desktop'].value]);
 
   // Popover State (default)
@@ -2369,7 +2382,7 @@ function Typography(props) {
       });
     },
     onFilterValueChange: value => {
-      console.log(value);
+      console.log(value, 123123);
     },
     onClickReset: () => {
       updateInnerControlAttribute('fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice);
