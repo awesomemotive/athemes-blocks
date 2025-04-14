@@ -85,8 +85,12 @@ return array_merge(
         //     ),
         // ),
         'icon' => array(
-            'type' => 'string',
-            'default' => 'arrow-right',
+            'type' => 'object',
+            'default' => array(
+                'library' => 'font-awesome',
+                'category' => 'regular',
+                'icon' => 'bxl500px',
+            ),
         ),
         'buttonId' => array(
             'type' => 'string',

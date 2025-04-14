@@ -34,6 +34,7 @@ class BlockEditorAssets {
 
         add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_google_fonts' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_icon_libraries' ) );
     }
 
     /**
@@ -69,5 +70,24 @@ class BlockEditorAssets {
 			'athemesBlocksGoogleFonts',
 			$this->google_fonts_service->get_fonts_for_editor()
 		);
+    }
+
+    /**
+     * Localize block editor with icon libraries.
+     * 
+     * @return void
+     */
+    public function localize_block_editor_with_icon_libraries(): void {
+        wp_localize_script(
+            'athemes-blocks-block-editor',
+            'athemesBlocksIconBoxLibrary',
+            include( ATHEMES_BLOCKS_PATH . 'includes/Data/box-icons.php' )
+        );
+
+        wp_localize_script(
+            'athemes-blocks-block-editor',
+            'athemesBlocksFontAwesomeLibrary',
+            include( ATHEMES_BLOCKS_PATH . 'includes/Data/font-awesome.php' )
+        );
     }
 }

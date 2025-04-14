@@ -3,6 +3,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
 
 import { BaseControl, TextControl, SelectControl, Button, Modal } from '@wordpress/components';
+import { Icon } from '@wordpress/icons';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 import { Dimensions } from '../dimensions/dimensions';
@@ -15,15 +16,17 @@ import { getInnerSettingDefaultValue, getInnerSettingDefaultUnit } from '../../.
 
 export function IconLibrary( props ) {
     const { label, value, responsive, reset, onChange, onClickReset } = props;
+    console.log(333333, value);
+    const { library, category, icon } = value;
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
-console.log(333333, value);
+
     useEffect( () => {
         if ( value ) {
-            setSelectedIcon( value );
+            setSelectedIcon( icon );
 
-            if ( value.includes( 'fa-' ) ) {
+            if ( library === 'font-awesome' ) {
                 setSelectedCategory( 'font-awesome' );
-            } else if ( value.includes( 'bx-' ) ) {
+            } else if ( library === 'box-icons' ) {
                 setSelectedCategory( 'box-icons' );
             }
         }
@@ -62,36 +65,21 @@ console.log(333333, value);
     const [ selectedIcon, setSelectedIcon ] = useState( null );
 
     const icons = {
-        'font-awesome': [
-            {
-                label: 'Chevron Right',
-                value: 'fa-chevron-right',
-            },
-            {
-                label: 'Chevron Left',
-                value: 'fa-chevron-left',
-            },
-        ],
-        'box-icons': [
-            {
-                label: 'Arrow Right',
-                value: 'bx-right-arrow-alt',
-            },
-            {
-                label: 'Arrow Left',
-                value: 'bx-left-arrow-alt',
-            },
-        ]
+        'font-awesome': window?.athemesBlocksFontAwesomeLibrary,
+        'box-icons': window?.athemesBlocksIconBoxLibrary,
     }
 
-    const allIcons = Object.values( icons ).flat();
+    const allIcons = {
+        ...window?.athemesBlocksFontAwesomeLibrary,
+        ...window?.athemesBlocksIconBoxLibrary,
+    }
+
+    console.log(allIcons);
 
     // On change.
-    useEffect( () => {
-        onChange( selectedIcon );
-    }, [ selectedIcon ] );
-
-    console.log(icons, selectedCategory);
+    // useEffect( () => {
+    //     onChange( selectedIcon );
+    // }, [ selectedIcon ] );
 
     return(
         <BaseControl>
@@ -140,28 +128,50 @@ console.log(333333, value);
                                 <div className="atblocks-icon-library__icons-grid">
                                     {
                                         selectedCategory === 'all' && (
-                                            allIcons.map( ( icon ) => (
+                                            Object.entries(allIcons).map( ( [iconSlug, iconSvgString] ) => (
                                                 <Button
-                                                    key={ icon.value }
+                                                    key={ iconSlug }
                                                     className="atblocks-icon-library__icon"
-                                                    onClick={ () => setSelectedIcon( icon.value ) }
-                                                    variant={ selectedIcon === icon.value ? 'primary' : 'secondary' }
+                                                    onClick={ () => setSelectedIcon( iconSlug ) }
+                                                    variant={ selectedIcon === iconSlug ? 'primary' : 'secondary' }
                                                 >
-                                                    { icon.label }
+                                                    {
+                                                        <div 
+                                                            style={
+                                                                {
+                                                                    width: 24,
+                                                                    height: 24,
+                                                                }
+                                                            }
+                                                            dataIconName={ iconSlug } 
+                                                            dangerouslySetInnerHTML={{ __html: iconSvgString }} 
+                                                        />
+                                                    }
                                                 </Button>
                                             ) )
                                         )
                                     }
                                     {
                                         selectedCategory !== 'all' && (
-                                            icons[selectedCategory].map( ( icon ) => (
+                                            Object.entries(icons[selectedCategory]).map( ( [iconSlug, iconSvgString] ) => (
                                                 <Button
-                                                    key={ icon.value }
+                                                    key={ iconSlug }
                                                     className="atblocks-icon-library__icon"
-                                                    onClick={ () => setSelectedIcon( icon.value ) }
-                                                    variant={ selectedIcon === icon.value ? 'primary' : 'secondary' }
+                                                    onClick={ () => setSelectedIcon( iconSlug ) }
+                                                    variant={ selectedIcon === iconSlug ? 'primary' : 'secondary' }
                                                 >
-                                                    { icon.label }
+                                                    {
+                                                        <div 
+                                                            style={
+                                                                {
+                                                                    width: 24,
+                                                                    height: 24,
+                                                                }
+                                                            }
+                                                            dataIconName={ iconSlug } 
+                                                            dangerouslySetInnerHTML={{ __html: iconSvgString }} 
+                                                        />
+                                                    }
                                                 </Button>
                                             ) )
                                         )

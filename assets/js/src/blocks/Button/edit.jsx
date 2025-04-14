@@ -179,12 +179,12 @@ const Edit = (props) => {
 											value={ icon }
 											responsive={false}
 											reset={true}
-											onChange={ ( value ) => {
-												setAttributes({ icon: value });
-											} }
-											onClickReset={ () => {
-												setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
-											} }
+											// onChange={ ( value ) => {
+											// 	setAttributes({ icon: value });
+											// } }
+											// onClickReset={ () => {
+											// 	setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
+											// } }
 										/>
 									)
 								}

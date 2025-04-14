@@ -1774,6 +1774,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function IconLibrary(props) {
   const {
     label,
@@ -1783,14 +1784,19 @@ function IconLibrary(props) {
     onChange,
     onClickReset
   } = props;
-  const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
   console.log(333333, value);
+  const {
+    library,
+    category,
+    icon
+  } = value;
+  const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     if (value) {
-      setSelectedIcon(value);
-      if (value.includes('fa-')) {
+      setSelectedIcon(icon);
+      if (library === 'font-awesome') {
         setSelectedCategory('font-awesome');
-      } else if (value.includes('bx-')) {
+      } else if (library === 'box-icons') {
         setSelectedCategory('box-icons');
       }
     }
@@ -1821,28 +1827,20 @@ function IconLibrary(props) {
   // Icons.
   const [selectedIcon, setSelectedIcon] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null);
   const icons = {
-    'font-awesome': [{
-      label: 'Chevron Right',
-      value: 'fa-chevron-right'
-    }, {
-      label: 'Chevron Left',
-      value: 'fa-chevron-left'
-    }],
-    'box-icons': [{
-      label: 'Arrow Right',
-      value: 'bx-right-arrow-alt'
-    }, {
-      label: 'Arrow Left',
-      value: 'bx-left-arrow-alt'
-    }]
+    'font-awesome': window?.athemesBlocksFontAwesomeLibrary,
+    'box-icons': window?.athemesBlocksIconBoxLibrary
   };
-  const allIcons = Object.values(icons).flat();
+  const allIcons = {
+    ...window?.athemesBlocksFontAwesomeLibrary,
+    ...window?.athemesBlocksIconBoxLibrary
+  };
+  console.log(allIcons);
 
   // On change.
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
-    onChange(selectedIcon);
-  }, [selectedIcon]);
-  console.log(icons, selectedCategory);
+  // useEffect( () => {
+  //     onChange( selectedIcon );
+  // }, [ selectedIcon ] );
+
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.BaseControl, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "atblocks-component-header"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -1866,17 +1864,35 @@ function IconLibrary(props) {
     className: "atblocks-icon-library__icons"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "atblocks-icon-library__icons-grid"
-  }, selectedCategory === 'all' && allIcons.map(icon => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
-    key: icon.value,
+  }, selectedCategory === 'all' && Object.entries(allIcons).map(([iconSlug, iconSvgString]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    key: iconSlug,
     className: "atblocks-icon-library__icon",
-    onClick: () => setSelectedIcon(icon.value),
-    variant: selectedIcon === icon.value ? 'primary' : 'secondary'
-  }, icon.label)), selectedCategory !== 'all' && icons[selectedCategory].map(icon => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
-    key: icon.value,
+    onClick: () => setSelectedIcon(iconSlug),
+    variant: selectedIcon === iconSlug ? 'primary' : 'secondary'
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      width: 24,
+      height: 24
+    },
+    dataIconName: iconSlug,
+    dangerouslySetInnerHTML: {
+      __html: iconSvgString
+    }
+  }))), selectedCategory !== 'all' && Object.entries(icons[selectedCategory]).map(([iconSlug, iconSvgString]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    key: iconSlug,
     className: "atblocks-icon-library__icon",
-    onClick: () => setSelectedIcon(icon.value),
-    variant: selectedIcon === icon.value ? 'primary' : 'secondary'
-  }, icon.label)))))));
+    onClick: () => setSelectedIcon(iconSlug),
+    variant: selectedIcon === iconSlug ? 'primary' : 'secondary'
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      width: 24,
+      height: 24
+    },
+    dataIconName: iconSlug,
+    dangerouslySetInnerHTML: {
+      __html: iconSvgString
+    }
+  }))))))));
 }
 
 /***/ }),
@@ -3649,17 +3665,13 @@ const Edit = props => {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Icon Library', 'athemes-blocks'),
     value: icon,
     responsive: false,
-    reset: true,
-    onChange: value => {
-      setAttributes({
-        icon: value
-      });
-    },
-    onClickReset: () => {
-      setAttributes({
-        icon: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_26__.getSettingDefaultValue)('icon', '', attributesDefaults)
-      });
-    }
+    reset: true
+    // onChange={ ( value ) => {
+    // 	setAttributes({ icon: value });
+    // } }
+    // onClickReset={ () => {
+    // 	setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
+    // } }
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_11__.TextInput, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Button ID', 'athemes-blocks'),
     value: buttonId,
