@@ -1217,7 +1217,6 @@ function ColorPicker(props) {
     defaultState,
     hoverState
   } = value;
-  console.log(value);
   const colorObjectDefaultState = (0,colord__WEBPACK_IMPORTED_MODULE_6__.colord)(defaultState);
   const colorObjectHoverState = (0,colord__WEBPACK_IMPORTED_MODULE_6__.colord)(hoverState);
 

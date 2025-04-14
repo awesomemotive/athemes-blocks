@@ -9,7 +9,7 @@ import { colord } from 'colord';
 export function ColorPicker( props ) {
     const { label, value, hover, responsive, reset, onChange, onClickReset, defaultStateOnChangeComplete, hoverStateOnChangeComplete } = props;
     const { defaultState, hoverState } = value;
-console.log(value);
+
     const colorObjectDefaultState = colord( defaultState );
     const colorObjectHoverState = colord( hoverState );
 

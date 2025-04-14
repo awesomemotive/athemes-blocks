@@ -17,6 +17,7 @@ import { Typography } from '../../block-editor/controls/typography/typography';
 import { Border } from '../../block-editor/controls/border/border';
 import { Link } from '../../block-editor/controls/link/link';
 import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
+import { IconLibrary } from '../../block-editor/controls/icon-library/icon-library';
 
 import { createAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
@@ -44,6 +45,8 @@ const Edit = (props) => {
 		layout,
 		enableIcon,
 		buttonId,
+		icon,
+
         // Style.
 		alignment,
 		color,
@@ -61,6 +64,7 @@ const Edit = (props) => {
 			layout: atts.layout,
 			enableIcon: atts.enableIcon,
 			buttonId: atts.buttonId,
+			icon: atts.icon,
 
 			// Style.
 			alignment: getSettingValue('alignment', currentDevice, atts),
@@ -168,6 +172,22 @@ const Edit = (props) => {
 										setAttributes({ enableIcon: getSettingDefaultValue( 'enableIcon', '', attributesDefaults ) });
 									} }
 								/>
+								{
+									enableIcon && (
+										<IconLibrary
+											label={ __( 'Icon Library', 'athemes-blocks' ) }
+											value={ icon }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ icon: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
+											} }
+										/>
+									)
+								}
 								<TextInput
 									label={ __( 'Button ID', 'athemes-blocks' ) }
 									value={ buttonId }

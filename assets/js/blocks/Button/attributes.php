@@ -55,34 +55,38 @@ return array_merge(
             'type' => 'boolean',
             'default' => false,
         ),
+        // 'icon' => array(
+        //     'type' => 'object',
+        //     'default' => array(
+        //         'innerSettings' => array(
+        //             'icon' => array(
+        //                 'default' => 'arrow-right',
+        //             ),
+        //             'iconPosition' => array(
+        //                 'default' => 'before',
+        //             ),
+        //             'iconGap' => array(
+        //                 'default' => array(
+        //                     'desktop' => array(
+        //                         'value' => 4,
+        //                         'unit' => 'px',
+        //                     ),
+        //                     'tablet' => array(
+        //                         'value' => 4,
+        //                         'unit' => 'px',
+        //                     ),
+        //                     'mobile' => array(
+        //                         'value' => 4,
+        //                         'unit' => 'px',
+        //                     ),
+        //                 )
+        //             ),
+        //         ),
+        //     ),
+        // ),
         'icon' => array(
-            'type' => 'object',
-            'default' => array(
-                'innerSettings' => array(
-                    'icon' => array(
-                        'default' => 'arrow-right',
-                    ),
-                    'iconPosition' => array(
-                        'default' => 'before',
-                    ),
-                    'iconGap' => array(
-                        'default' => array(
-                            'desktop' => array(
-                                'value' => 4,
-                                'unit' => 'px',
-                            ),
-                            'tablet' => array(
-                                'value' => 4,
-                                'unit' => 'px',
-                            ),
-                            'mobile' => array(
-                                'value' => 4,
-                                'unit' => 'px',
-                            ),
-                        )
-                    ),
-                ),
-            ),
+            'type' => 'string',
+            'default' => 'arrow-right',
         ),
         'buttonId' => array(
             'type' => 'string',
