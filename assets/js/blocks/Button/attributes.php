@@ -88,8 +88,8 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'library' => 'font-awesome',
-                'category' => 'regular',
-                'icon' => 'bxl500px',
+                'type' => 'regular',
+                'icon' => '500px-brands',
             ),
         ),
         'buttonId' => array(

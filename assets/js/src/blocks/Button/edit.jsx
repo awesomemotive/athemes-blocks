@@ -172,6 +172,7 @@ const Edit = (props) => {
 										setAttributes({ enableIcon: getSettingDefaultValue( 'enableIcon', '', attributesDefaults ) });
 									} }
 								/>
+
 								{
 									enableIcon && (
 										<IconLibrary
@@ -179,12 +180,16 @@ const Edit = (props) => {
 											value={ icon }
 											responsive={false}
 											reset={true}
-											// onChange={ ( value ) => {
-											// 	setAttributes({ icon: value });
-											// } }
-											// onClickReset={ () => {
-											// 	setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
-											// } }
+											onChange={ ( value ) => {
+												setAttributes({ icon: {
+													library: value.library,
+													type: value.type,
+													icon: value.icon
+												} });
+											} }
+											onClickReset={ () => {
+												setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
+											} }
 										/>
 									)
 								}

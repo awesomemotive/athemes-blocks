@@ -23,8 +23,7 @@ export function Link( props ) {
         linkTarget,
         linkNoFollow,
     } = attributes[settingId].innerSettings;
-    console.log(attributes);
-    console.log(linkUrl, linkTarget, linkNoFollow);
+
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
     return(

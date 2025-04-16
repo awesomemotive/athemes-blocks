@@ -1,5 +1,5 @@
 import { createReduxStore, register } from '@wordpress/data';
-console.log(333);
+
 // Defaults.
 const DEFAULT_STATE = {
     currentTab: 'general',

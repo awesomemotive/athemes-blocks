@@ -41,7 +41,6 @@ const AdvancedPanel = (props) => {
                     units={['px', '%', 'em', 'rem', 'vh', 'vw']}
                     reset={true}
                     onChange={ ( value ) => {
-                        console.log(value);
                         updateAttribute( 'padding', {
                             value: value.value,
                             unit: getSettingUnit( 'padding', currentDevice, atts ),

@@ -474,7 +474,6 @@ const AdvancedPanel = props => {
     units: ['px', '%', 'em', 'rem', 'vh', 'vw'],
     reset: true,
     onChange: value => {
-      console.log(value);
       updateAttribute('padding', {
         value: value.value,
         unit: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_11__.getSettingUnit)('padding', currentDevice, atts),
@@ -1418,7 +1417,6 @@ function Dimensions(props) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     onChange(valueToReturn);
   }, [valueToReturn]);
-  console.log(inputNumberValues);
   return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "atblocks-control-dimensions"
   }, (0,_emotion_react__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
@@ -2269,7 +2267,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
 
-console.log(333);
+
 // Defaults.
 const DEFAULT_STATE = {
   currentTab: 'general',

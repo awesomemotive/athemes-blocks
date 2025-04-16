@@ -66,7 +66,6 @@ export function FontFamilySelect( props ) {
 
     // Load the selected font on mount
     useEffect(() => {
-        console.log(defaultValue);
         if (defaultValue) {
             loadGoogleFont(defaultValue);
         }

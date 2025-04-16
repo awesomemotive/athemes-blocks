@@ -123,7 +123,7 @@ export function Typography( props ) {
                                                 } );
                                             } }
                                             onFilterValueChange={ ( value ) => {
-                                                console.log(value, 123123);
+
                                             } }
                                             onClickReset={ () => {
                                                 updateInnerControlAttribute( 'fontFamily', attributesDefaults[settingId].default.innerSettings.fontFamily.default[currentDevice].value, currentDevice );
