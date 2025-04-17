@@ -16,21 +16,6 @@ const styles = {
             gap: 10px;
         }
     `,
-    iconsGrid: css`
-        > div {
-            // display: grid;
-            // grid-template-columns: repeat( 10, 1fr );
-            // gap: 20px;
-            // max-height: 500px;
-            // overflow-y: auto;
-
-            // .atblocks-icon-library__icons-grid-row {
-            //     display: grid;
-            //     grid-template-columns: repeat( 10, 1fr );
-            //     gap: 20px;
-            // }
-        }
-    `,
     icon: css`
         display: inline-flex;
         align-items: center;
@@ -43,6 +28,25 @@ const styles = {
         svg {
             width: 22px;
             height: 22px;
+        }
+    `,
+    iconPreview: css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border: 1px solid #ededed;
+        border-radius: 4px;
+        padding: 15px 0px;
+        box-sizing: content-box;
+
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .atblocks-icon-library__icon-preview-placeholder {
+            font-size: 1.4rem;
         }
     `,
 };

@@ -91,12 +91,25 @@ export const createInnerControlAttributeUpdater = (settingId, attributes, setAtt
 
         // Update the attribute for all devices
         if (valueIsObject) {
+            // setAttributes({
+            //     [settingId]: {
+            //         ...attributes[settingId].innerSettings,
+            //         [innerSettingId]: {
+            //             ...attributes[settingId].innerSettings[innerSettingId].default[device].value,
+            //             ...value
+            //         }
+            //     }
+            // });
+
             setAttributes({
                 [settingId]: {
-                    ...attributes[settingId].innerSettings,
-                    [innerSettingId]: {
-                        ...attributes[settingId].innerSettings[innerSettingId].default[device].value,
-                        ...value
+                    ...attributes[settingId],
+                    innerSettings: {
+                        ...attributes[settingId].innerSettings,
+                        [innerSettingId]: {
+                            ...attributes[settingId].innerSettings[innerSettingId],
+                            default: value
+                        }
                     }
                 }
             });

@@ -149,6 +149,10 @@ export function getDimensionsSettingDefaultValue( settingId, device, attributesD
  * @returns {string} - The value of the setting.
  */
 export function getInnerSettingValue( settingId, innerSettingId, device, attributes ) {
+    if ( ! device ) {
+        return attributes[settingId]?.innerSettings?.[innerSettingId]?.default;
+    }
+
     return attributes[settingId]?.innerSettings?.[innerSettingId]?.default?.[device]?.value;
 }
 
@@ -182,4 +186,12 @@ export function getInnerSettingDefaultValue( settingId, innerSettingId, device, 
  */
 export function getInnerSettingDefaultUnit( settingId, innerSettingId, device, attributesDefaults ) {
     return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.unit;
+}
+
+export function getPresetResponsiveAttributeValueObject( value ) {
+    return {
+        desktop: value,
+        tablet: value,
+        mobile: value,
+    };
 }

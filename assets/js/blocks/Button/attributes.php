@@ -55,41 +55,43 @@ return array_merge(
             'type' => 'boolean',
             'default' => false,
         ),
-        // 'icon' => array(
-        //     'type' => 'object',
-        //     'default' => array(
-        //         'innerSettings' => array(
-        //             'icon' => array(
-        //                 'default' => 'arrow-right',
-        //             ),
-        //             'iconPosition' => array(
-        //                 'default' => 'before',
-        //             ),
-        //             'iconGap' => array(
-        //                 'default' => array(
-        //                     'desktop' => array(
-        //                         'value' => 4,
-        //                         'unit' => 'px',
-        //                     ),
-        //                     'tablet' => array(
-        //                         'value' => 4,
-        //                         'unit' => 'px',
-        //                     ),
-        //                     'mobile' => array(
-        //                         'value' => 4,
-        //                         'unit' => 'px',
-        //                     ),
-        //                 )
-        //             ),
-        //         ),
-        //     ),
-        // ),
         'icon' => array(
             'type' => 'object',
             'default' => array(
-                'library' => 'font-awesome',
-                'type' => 'regular',
-                'icon' => '500px-brands',
+                'innerSettings' => array(
+                    'iconData' => array(
+                        'default' => array(
+                            'library' => '',
+                            'type' => '',
+                            'icon' => '',
+                        ),
+                    ),
+                    'iconPosition' => array(
+                        'default' => 'before',
+                    ),
+                    'iconGap' => array(
+                        'default' => array(
+                            'desktop' => array(
+                                'value' => 10,
+                                'unit' => 'px',
+                            ),
+                            'tablet' => array(
+                                'value' => 10,
+                                'unit' => 'px',
+                            ),
+                            'mobile' => array(
+                                'value' => 10,
+                                'unit' => 'px',
+                            ),
+                        ),
+                        'css' => array(
+                            'selectors' => array(
+                                '{{WRAPPER}} .at-block-button__wrapper'
+                            ),
+                            'property' => 'gap',
+                        ),
+                    ),
+                ),
             ),
         ),
         'buttonId' => array(
@@ -129,7 +131,7 @@ return array_merge(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-family',
                 )
@@ -137,7 +139,7 @@ return array_merge(
             'fontSize' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-size',
                 )
@@ -145,7 +147,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-weight',
                 )
@@ -153,7 +155,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-style',
                 )
@@ -161,7 +163,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'text-transform',
                 )
@@ -169,7 +171,7 @@ return array_merge(
             'textDecoration' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'text-decoration',
                 )
@@ -177,7 +179,7 @@ return array_merge(
             'lineHeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'line-height',
                 )
@@ -185,7 +187,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'letter-spacing',
                 )
@@ -217,10 +219,44 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} > a' => '{{VALUE}}',
-                    '{{WRAPPER}} > a:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-button__wrapper > a' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-button__wrapper > a:hover' => '{{HOVER}}',
                 ),
                 'property' => 'color',
+            ),
+        ),
+    ),
+
+    // Style - Icon -----------------------------
+    array(
+        'iconColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-button__wrapper > a > svg' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-button__wrapper > a:hover > svg' => '{{HOVER}}',
+                ),
+                'property' => 'fill',
             ),
         ),
     ),
@@ -251,8 +287,8 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} > a' => '{{VALUE}}',
-                    '{{WRAPPER}} > a:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-button__wrapper' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-button__wrapper:hover' => '{{HOVER}}',
                 ),
                 'property' => 'background-color',
             ),
@@ -266,7 +302,7 @@ return array_merge(
             'borderStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper'
                     ),
                     'property' => 'border-style',
                 )
@@ -274,7 +310,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -282,7 +318,7 @@ return array_merge(
             'borderRadius' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a'
+                        '{{WRAPPER}} .at-block-button__wrapper'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -290,8 +326,8 @@ return array_merge(
             'borderColor' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} > a' => '{{VALUE}}',
-                        '{{WRAPPER}} > a:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-button__wrapper' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-button__wrapper:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )
@@ -337,7 +373,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} > a',
+                    '{{WRAPPER}} .at-block-button__wrapper',
                 ),
                 'property' => 'padding-{{DIRECTION}}',
             ),

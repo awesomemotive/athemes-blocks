@@ -2,6 +2,13 @@
     box-sizing: border-box;
     display: flex;
 
+    &__wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
     &__button {
         display: inline-flex;
         align-items: center;
@@ -11,5 +18,14 @@
 
     a.at-block-button__button {
         text-decoration: none;
+    }
+
+    &--has-icon {
+        .at-block-button__icon {
+            svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
     }
 }

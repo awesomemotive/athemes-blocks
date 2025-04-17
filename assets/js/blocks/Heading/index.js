@@ -3753,12 +3753,25 @@ const createInnerControlAttributeUpdater = (settingId, attributes, setAttributes
 
     // Update the attribute for all devices
     if (valueIsObject) {
+      // setAttributes({
+      //     [settingId]: {
+      //         ...attributes[settingId].innerSettings,
+      //         [innerSettingId]: {
+      //             ...attributes[settingId].innerSettings[innerSettingId].default[device].value,
+      //             ...value
+      //         }
+      //     }
+      // });
+
       setAttributes({
         [settingId]: {
-          ...attributes[settingId].innerSettings,
-          [innerSettingId]: {
-            ...attributes[settingId].innerSettings[innerSettingId].default[device].value,
-            ...value
+          ...attributes[settingId],
+          innerSettings: {
+            ...attributes[settingId].innerSettings,
+            [innerSettingId]: {
+              ...attributes[settingId].innerSettings[innerSettingId],
+              default: value
+            }
           }
         }
       });
@@ -4104,6 +4117,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getInnerSettingDefaultUnit: () => (/* binding */ getInnerSettingDefaultUnit),
 /* harmony export */   getInnerSettingDefaultValue: () => (/* binding */ getInnerSettingDefaultValue),
 /* harmony export */   getInnerSettingValue: () => (/* binding */ getInnerSettingValue),
+/* harmony export */   getPresetResponsiveAttributeValueObject: () => (/* binding */ getPresetResponsiveAttributeValueObject),
 /* harmony export */   getSettingDefaultUnit: () => (/* binding */ getSettingDefaultUnit),
 /* harmony export */   getSettingDefaultValue: () => (/* binding */ getSettingDefaultValue),
 /* harmony export */   getSettingUnit: () => (/* binding */ getSettingUnit),
@@ -4258,6 +4272,9 @@ function getDimensionsSettingDefaultValue(settingId, device, attributesDefaults)
  * @returns {string} - The value of the setting.
  */
 function getInnerSettingValue(settingId, innerSettingId, device, attributes) {
+  if (!device) {
+    return attributes[settingId]?.innerSettings?.[innerSettingId]?.default;
+  }
   return attributes[settingId]?.innerSettings?.[innerSettingId]?.default?.[device]?.value;
 }
 
@@ -4290,6 +4307,13 @@ function getInnerSettingDefaultValue(settingId, innerSettingId, device, attribut
  */
 function getInnerSettingDefaultUnit(settingId, innerSettingId, device, attributesDefaults) {
   return attributesDefaults[settingId]?.default.innerSettings?.[innerSettingId]?.default?.[device]?.unit;
+}
+function getPresetResponsiveAttributeValueObject(value) {
+  return {
+    desktop: value,
+    tablet: value,
+    mobile: value
+  };
 }
 
 /***/ }),

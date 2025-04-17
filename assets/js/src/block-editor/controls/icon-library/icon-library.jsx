@@ -19,14 +19,43 @@ import { getInnerSettingDefaultValue, getInnerSettingDefaultUnit } from '../../.
 
 import { styles } from './styles';
 
+/**
+ * Icon Library Control
+ * 
+ * This control is used to select an icon from a library.
+ * 
+ * This control do expect this data strcutrue for the 'value' prop:
+ * 
+ * {
+ *     library: 'all' | 'font-awesome' | 'box-icons',
+ *     type: 'regular' | 'solid',
+ *     icon: 'icon-name',
+ * }
+ * 
+ */
 export function IconLibrary( props ) {
     const { label, value, responsive, reset, onChange, onClickReset } = props;
 
+    if ( value === undefined || value === null || value === '' ) {
+        value = {
+            library: 'all',
+            type: '',
+            icon: '',
+        }
+    }
+
     const [ selectedIcon, setSelectedIcon ] = useState( value.icon );
-    const [ selectedLibrary, setSelectedLibrary ] = useState( value.library );
+    const [ selectedLibrary, setSelectedLibrary ] = useState( value.library === '' ? 'all' : value.library );
     const [ selectedType, setSelectedType ] = useState( value.type );
 
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+
+    // Update local state when value prop changes.
+    useEffect( () => {
+        setSelectedIcon(value.icon);
+        setSelectedLibrary(value.library === '' ? 'all' : value.library);
+        setSelectedType(value.type);
+    }, [value.icon] );
 
     // Icons.
     const icons = {
@@ -55,9 +84,8 @@ export function IconLibrary( props ) {
         }
     ];
 
-    // Virtualized list configuration
+    // Virtualized list.
     const COLUMN_COUNT = 8;
-    const ROW_HEIGHT = 116;
 
     const getIconsForLibrary = (library) => {
         if (selectedLibrary === 'all') {
@@ -85,7 +113,7 @@ export function IconLibrary( props ) {
                 <Button
                     className="atblocks-icon-library__icon"
                     css={styles.icon}
-                    onClick={() => setSelectedIcon(iconSlug)}
+                    onClick={() => selectIconOnClickHandler(iconSlug)}
                     variant={selectedIcon === iconSlug ? 'primary' : 'secondary'}
                 >
                     <div 
@@ -104,6 +132,12 @@ export function IconLibrary( props ) {
         );
     };
 
+    // Select icon handler.
+    const selectIconOnClickHandler = (iconSlug) => {
+        setSelectedIcon(iconSlug);
+        setIsModalOpen(false);
+    }
+
     // Modal.
     const [ isModalOpen, setIsModalOpen ] = useState( false );
 
@@ -115,9 +149,7 @@ export function IconLibrary( props ) {
         setIsModalOpen( false );
     };
 
-    
-
-    // On change.
+    // On Change.
     useEffect( () => {
         onChange( {
             library: selectedLibrary,
@@ -125,7 +157,7 @@ export function IconLibrary( props ) {
             icon: selectedIcon
         } );
     }, [ selectedIcon ] );
-    
+
     return(
         <BaseControl>
             <div className="atblocks-component-header">
@@ -145,9 +177,22 @@ export function IconLibrary( props ) {
             </div>
             
             <Button
+                className="atblocks-icon-library__icon-preview"
                 onClick={ openModal }
+                css={styles.iconPreview}
             >
-                { __( 'Select Icon', 'athemes-blocks' ) }
+                {
+                    selectedIcon === '' ? (
+                        <div className="atblocks-icon-library__icon-preview-placeholder">
+                            +
+                        </div>
+                    ) : (
+                        <div 
+                            dataIconName={selectedIcon} 
+                            dangerouslySetInnerHTML={{ __html: allIcons[selectedIcon] }} 
+                        />
+                    )
+                }
             </Button>
             {
                 isModalOpen && (
@@ -177,7 +222,7 @@ export function IconLibrary( props ) {
                                 <Grid
                                     cellRenderer={cellRenderer}
                                     columnCount={COLUMN_COUNT}
-                                    rowCount={Math.ceil(getIconsForLibrary(selectedLibrary).length / COLUMN_COUNT)}
+                                    rowCount={Math.ceil( getIconsForLibrary(selectedLibrary).length / COLUMN_COUNT )}
                                     width={Math.ceil( ( COLUMN_COUNT * 100 ) + 15 )}
                                     height={500}
                                     columnWidth={100}

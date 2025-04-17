@@ -17,9 +17,9 @@ import { Typography } from '../../block-editor/controls/typography/typography';
 import { Border } from '../../block-editor/controls/border/border';
 import { Link } from '../../block-editor/controls/link/link';
 import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
-import { IconLibrary } from '../../block-editor/controls/icon-library/icon-library';
+import { Icon } from '../../block-editor/controls/icon/icon';
 
-import { createAttributeUpdater } from '../../utils/block-attributes';
+import { createAttributeUpdater, createInnerControlAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
@@ -27,17 +27,22 @@ import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persisten
 import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 
-import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue } from '../../utils/settings';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getPresetResponsiveAttributeValueObject } from '../../utils/settings';
 
 const attributesDefaults = ButtonBlockData.attributes;
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
-	const { content } = attributes;
+	let { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+
+	const allIcons = {
+        ...window?.athemesBlocksFontAwesomeLibrary,
+        ...window?.athemesBlocksIconBoxLibrary,
+    }
 
 	const {
 
@@ -45,11 +50,11 @@ const Edit = (props) => {
 		layout,
 		enableIcon,
 		buttonId,
-		icon,
 
         // Style.
 		alignment,
 		color,
+		iconColor,
 		buttonBackgroundColor,
 		buttonPadding,
 
@@ -69,6 +74,7 @@ const Edit = (props) => {
 			// Style.
 			alignment: getSettingValue('alignment', currentDevice, atts),
 			color: getSettingValue('color', 'desktop', atts),
+			iconColor: getSettingValue('iconColor', 'desktop', atts),
 			buttonBackgroundColor: getSettingValue('buttonBackgroundColor', 'desktop', atts),
 			buttonPadding: getSettingValue('buttonPadding', currentDevice, atts),
 
@@ -130,7 +136,6 @@ const Edit = (props) => {
 										{ label: __( 'Squared', 'athemes-blocks' ), value: 'squared' },
 										{ label: __( 'Rounded', 'athemes-blocks' ), value: 'rounded' },
 										{ label: __( 'With Icon', 'athemes-blocks' ), value: 'with-icon' },
-										{ label: __( 'Default Outline', 'athemes-blocks' ), value: 'default-outline' },
 										{ label: __( 'Squared Outline', 'athemes-blocks' ), value: 'squared-outline' },
 										{ label: __( 'Rounded Outline', 'athemes-blocks' ), value: 'rounded-outline' },
 										{ label: __( 'With Icon Outline', 'athemes-blocks' ), value: 'with-icon-outline' },
@@ -138,7 +143,182 @@ const Edit = (props) => {
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ layout: value });
+										if ( value === 'default' ) {
+											setAttributes({ 
+												layout: value,
+											});
+										}
+
+										if ( value === 'squared' || value === 'with-icon' ) {
+											setAttributes({ 
+												layout: value,
+												enableIcon: false,
+												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
+													value: {
+														defaultState: '#212121',
+														hoverState: '#757575',
+													},
+												}),
+												buttonBorder: {
+													innerSettings: {
+														...atts.buttonBorder.innerSettings,
+														borderStyle: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: 'none',
+															})
+														},
+														borderRadius: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: {
+																	top: 0,
+																	right: 0,
+																	bottom: 0,
+																	left: 0,
+																},
+																unit: 'px',
+															})
+														}
+													}
+												}
+											});
+
+											setUpdateCss( {
+												type: 'inner-control',
+												settingId: 'buttonBorder',
+												innerSettingId: 'borderRadius',
+												value: {
+													default: getPresetResponsiveAttributeValueObject({
+														value: {
+															top: 0,
+															right: 0,
+															bottom: 0,
+															left: 0,
+														},
+														unit: 'px',
+													})
+												},
+											} );
+										}
+
+										if ( value === 'rounded' ) {
+											setAttributes({ 
+												layout: value,
+												enableIcon: false,
+												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
+													value: {
+														defaultState: '#212121',
+														hoverState: '#757575',
+													},
+												}),
+												buttonBorder: {
+													innerSettings: {
+														...atts.buttonBorder.innerSettings,
+														borderStyle: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: 'none',
+															})
+														},
+														borderRadius: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: {
+																	top: 35,
+																	right: 35,
+																	bottom: 35,
+																	left: 35,
+																},
+																unit: 'px',
+															})
+														}
+													}
+												}
+											});
+
+											// Update css.
+											setUpdateCss( {
+												type: 'inner-control',
+												settingId: 'buttonBorder',
+												innerSettingId: 'borderRadius',
+												value: {
+													default: getPresetResponsiveAttributeValueObject({
+														value: {
+															top: 35,
+															right: 35,
+															bottom: 35,
+															left: 35,
+														},
+														unit: 'px',
+													})
+												},
+											} );
+										}
+
+										if ( value === 'with-icon' ) {
+											setAttributes({ 
+												layout: value,
+												enableIcon: true,
+												icon: {
+													innerSettings: {
+														...atts.icon.innerSettings,
+														iconData: {
+															default: {
+																library: 'all',
+																type: '',
+																icon: 'bx-check-regular',
+															},
+														},
+														iconPosition: {
+															default: 'after',
+														},
+													},
+												}
+											});
+										}
+
+										if ( value === 'squared-outline' ) {
+											setAttributes({ 
+												layout: value,
+												enableIcon: false,
+												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
+													value: {
+														defaultState: 'transparent',
+														hoverState: '#212121',
+													},
+												}),
+												buttonBorder: {
+													innerSettings: {
+														...atts.buttonBorder.innerSettings,
+														borderStyle: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: 'solid',
+															})
+														},
+														borderWidth: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: {
+																	top: 1,
+																	right: 1,
+																	bottom: 1,
+																	left: 1,
+																},
+																unit: 'px',
+															})
+														},
+														borderRadius: {
+															default: getPresetResponsiveAttributeValueObject({
+																value: {
+																	top: 0,
+																	right: 0,
+																	bottom: 0,
+																	left: 0,
+																},
+																unit: 'px',
+															})
+														}
+													}
+												}
+											});
+										}
+										
 									} }
 									onClickReset={ () => {
 										setAttributes({ layout: getSettingDefaultValue( 'layout', false, attributesDefaults ) });
@@ -172,24 +352,16 @@ const Edit = (props) => {
 										setAttributes({ enableIcon: getSettingDefaultValue( 'enableIcon', '', attributesDefaults ) });
 									} }
 								/>
-
 								{
 									enableIcon && (
-										<IconLibrary
-											label={ __( 'Icon Library', 'athemes-blocks' ) }
-											value={ icon }
-											responsive={false}
-											reset={true}
-											onChange={ ( value ) => {
-												setAttributes({ icon: {
-													library: value.library,
-													type: value.type,
-													icon: value.icon
-												} });
-											} }
-											onClickReset={ () => {
-												setAttributes({ icon: getSettingDefaultValue( 'icon', '', attributesDefaults ) });
-											} }
+										<Icon
+											label=""
+											settingId="icon"
+											attributes={ atts }
+											setAttributes={ setAttributes }
+											attributesDefaults={ attributesDefaults }
+											setUpdateCss={ setUpdateCss }
+											subFields={['iconData', 'iconPosition', 'iconGap']}
 										/>
 									)
 								}
@@ -297,6 +469,54 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
+							{
+								enableIcon && (
+									<PanelBody 
+										title={ __( 'Icon', 'botiga-pro' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'icon' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'icon' ) }
+									>
+										<ColorPicker
+											label={ __( 'Color', 'athemes-blocks' ) }
+											value={ iconColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'iconColor', {
+													value: {
+														defaultState: value.hex,
+														hoverState: getColorPickerSettingValue( 'iconColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'iconColor', value: getColorPickerSettingValue( 'iconColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'iconColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'iconColor', 'desktop', 'defaultState', atts ),
+														hoverState: value.hex	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'iconColor', value: getColorPickerSettingValue( 'iconColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'iconColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'iconColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'iconColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'iconColor', value: getColorPickerSettingDefaultValue( 'iconColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Background', 'botiga-pro' ) } 
 								initialOpen={false}
@@ -411,6 +631,24 @@ const Edit = (props) => {
 			{(() => {
 				let blockPropsClassName = `at-block at-block-button`;
 
+				// Icon.
+				const { icon } = getInnerSettingValue( 'icon', 'iconData', '', atts );
+				const iconPosition = getInnerSettingValue( 'icon', 'iconPosition', '', atts );
+				const IconHTML = () => {
+					return (
+						<div className="at-block-button__icon">
+							<div 
+								dataIconName={ icon } 
+								dangerouslySetInnerHTML={{ __html: allIcons[icon] }} 
+							/>
+						</div>
+					)
+				}
+
+				if ( icon ) {
+					blockPropsClassName += ` at-block-button--has-icon`;
+				}
+
 				let blockProps = useBlockProps({
 					className: blockPropsClassName
 				});
@@ -429,16 +667,28 @@ const Edit = (props) => {
 
 				// Animation.
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
-				
+
 				return (
 					<div { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
-						<RichText
-							tagName={ 'a' }
-							className="at-block-button__button"
-							value={ content }
-							onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
-							placeholder={ __( 'Type your text here...', 'athemes-blocks' ) }
-						/>
+						<div className="at-block-button__wrapper">
+							{
+								enableIcon && icon && iconPosition === 'before' && (
+									<IconHTML />
+								)
+							}
+							<RichText
+								tagName={ 'a' }
+								className="at-block-button__button"
+								value={ content }
+								onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+								placeholder={ __( 'Type your text here...', 'athemes-blocks' ) }
+							/>
+							{
+								enableIcon && icon && iconPosition === 'after' && (
+									<IconHTML />
+								)
+							}
+						</div>
 					</div>
 				);
 			})()}
