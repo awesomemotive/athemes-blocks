@@ -57,7 +57,7 @@ if ( ! empty( $hideOnMobile ) ) {
 }
 
 // Animation.
-$animation_markup_data = Functions::addAnimationMarkup( $wrapper_attributes, $attributes, $atts_defaults );
+$animation_markup_data = Functions::add_animation_markup( $wrapper_attributes, $attributes, $atts_defaults );
 $wrapper_classes = array_merge( $wrapper_classes, $animation_markup_data['classes'] );
 $wrapper_attributes = array_merge( $wrapper_attributes, $animation_markup_data['wrapper_attributes'] );
 

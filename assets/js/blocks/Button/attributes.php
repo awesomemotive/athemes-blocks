@@ -20,7 +20,7 @@ return array_merge(
         array(
             'content' => array(
                 'type' => 'string',
-                'default' => __( 'Click here', 'athemes-blocks' ),
+                'default' => '',
             ),
         )
     ),
@@ -131,6 +131,7 @@ return array_merge(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-family',
@@ -139,7 +140,7 @@ return array_merge(
             'fontSize' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper > a'
+                        '{{WRAPPER}} .at-block-button__wrapper'
                     ),
                     'property' => 'font-size',
                 )
@@ -147,6 +148,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-weight',
@@ -155,6 +157,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'font-style',
@@ -163,6 +166,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'text-transform',
@@ -171,6 +175,7 @@ return array_merge(
             'textDecoration' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'text-decoration',
@@ -179,6 +184,7 @@ return array_merge(
             'lineHeight' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'line-height',
@@ -187,6 +193,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
+                        '{{WRAPPER}} .at-block-button__wrapper',
                         '{{WRAPPER}} .at-block-button__wrapper > a'
                     ),
                     'property' => 'letter-spacing',
@@ -200,8 +207,8 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
+                        'defaultState' => '#FFF',
+                        'hoverState' => '#FFF'
                     )
                 ),
                 'tablet' => array(
@@ -219,8 +226,10 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
+                    '{{WRAPPER}} .at-block-button__wrapper' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-button__wrapper:hover' => '{{HOVER}}',
                     '{{WRAPPER}} .at-block-button__wrapper > a' => '{{VALUE}}',
-                    '{{WRAPPER}} .at-block-button__wrapper > a:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-button__wrapper:hover > a' => '{{HOVER}}',
                 ),
                 'property' => 'color',
             ),
@@ -253,8 +262,8 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-button__wrapper > a > svg' => '{{VALUE}}',
-                    '{{WRAPPER}} .at-block-button__wrapper > a:hover > svg' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-button__wrapper > .at-block-button__icon svg' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-button__wrapper:hover > .at-block-button__icon svg' => '{{HOVER}}',
                 ),
                 'property' => 'fill',
             ),
@@ -268,8 +277,8 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
+                        'defaultState' => '#212121',
+                        'hoverState' => '#757575'
                     )
                 ),
                 'tablet' => array(
@@ -300,6 +309,17 @@ return array_merge(
         'buttonBorder',
         array(
             'borderStyle' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'none',
+                    ),
+                    'tablet' => array(
+                        'value' => 'none',
+                    ),
+                    'mobile' => array(
+                        'value' => 'none',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-button__wrapper'
@@ -316,6 +336,35 @@ return array_merge(
                 )
             ),
             'borderRadius' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => array(
+                            'top' => 4,
+                            'right' => 4,
+                            'bottom' => 4,
+                            'left' => 4,
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'tablet' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'mobile' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-button__wrapper'
@@ -342,10 +391,10 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'top' => '',
-                        'right' => '',
-                        'bottom' => '',
-                        'left' => '',
+                        'top' => 13,
+                        'right' => 25,
+                        'bottom' => 13,
+                        'left' => 25,
                     ),
                     'connect' => true,
                     'unit' => 'px',

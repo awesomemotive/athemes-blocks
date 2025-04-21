@@ -1,0 +1,9 @@
+.at-block-button {
+    &__wrapper {
+       > a {
+            box-shadow: none !important;
+            text-decoration: none;
+            outline: none;
+       }
+    }
+}

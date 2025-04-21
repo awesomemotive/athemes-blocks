@@ -47,6 +47,7 @@ export function IconLibrary( props ) {
     const [ selectedIcon, setSelectedIcon ] = useState( value.icon );
     const [ selectedLibrary, setSelectedLibrary ] = useState( value.library === '' ? 'all' : value.library );
     const [ selectedType, setSelectedType ] = useState( value.type );
+    const [ searchTerm, setSearchTerm ] = useState( '' );
 
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 
@@ -88,11 +89,21 @@ export function IconLibrary( props ) {
     const COLUMN_COUNT = 8;
 
     const getIconsForLibrary = (library) => {
+        let filteredIcons;
+        
         if (selectedLibrary === 'all') {
-            return Object.entries(allIcons);
+            filteredIcons = Object.entries(allIcons);
+        } else {
+            filteredIcons = Object.entries(icons[library]);
         }
 
-        return Object.entries(icons[library]);
+        if (searchTerm) {
+            filteredIcons = filteredIcons.filter(([iconSlug]) => 
+                iconSlug.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        return filteredIcons;
     };
 
     const cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
@@ -111,10 +122,9 @@ export function IconLibrary( props ) {
                 justifyContent: 'center',
             }}>
                 <Button
-                    className="atblocks-icon-library__icon"
+                    className={ `atblocks-icon-library__icon ${ selectedIcon === iconSlug ? 'is-selected' : '' }` }
                     css={styles.icon}
                     onClick={() => selectIconOnClickHandler(iconSlug)}
-                    variant={selectedIcon === iconSlug ? 'primary' : 'secondary'}
                 >
                     <div 
                         style={{
@@ -136,6 +146,7 @@ export function IconLibrary( props ) {
     const selectIconOnClickHandler = (iconSlug) => {
         setSelectedIcon(iconSlug);
         setIsModalOpen(false);
+        setSearchTerm( '' );
     }
 
     // Modal.
@@ -147,6 +158,7 @@ export function IconLibrary( props ) {
 
     const onCloseModal = () => {
         setIsModalOpen( false );
+        setSearchTerm( '' );
     };
 
     // On Change.
@@ -209,8 +221,9 @@ export function IconLibrary( props ) {
                                         libraries.map( ( library ) => (
                                             <Button
                                                 key={ library.value }
-                                                variant={ selectedLibrary === library.value ? 'primary' : 'secondary' }
+                                                className={ `${ selectedLibrary === library.value ? 'is-selected' : '' }` }
                                                 onClick={ () => setSelectedLibrary( library.value ) }
+                                                css={ styles.categoryButton }
                                             >
                                                 { library.label }
                                             </Button>
@@ -219,12 +232,20 @@ export function IconLibrary( props ) {
                                 </div>
                             </div>
                             <div className="atblocks-icon-library__right-column">
+                                <div className="atblocks-icon-library__search" css={ styles.search }>
+                                    <TextControl
+                                        placeholder={__('Search by icon name...', 'athemes-blocks')}
+                                        value={searchTerm}
+                                        onChange={(value) => setSearchTerm(value)}
+                                    />
+                                </div>
                                 <Grid
+                                    className="atblocks-icon-library__grid"
                                     cellRenderer={cellRenderer}
                                     columnCount={COLUMN_COUNT}
                                     rowCount={Math.ceil( getIconsForLibrary(selectedLibrary).length / COLUMN_COUNT )}
                                     width={Math.ceil( ( COLUMN_COUNT * 100 ) + 15 )}
-                                    height={500}
+                                    height={380}
                                     columnWidth={100}
                                     rowHeight={100}
                                     scrollToRow={selectedIcon ? Math.floor( getIconsForLibrary(selectedLibrary).findIndex( ( [ slug ] ) => slug === selectedIcon ) / COLUMN_COUNT ) : null}

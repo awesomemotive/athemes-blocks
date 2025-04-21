@@ -18,7 +18,7 @@ import { Border } from '../../block-editor/controls/border/border';
 import { Link } from '../../block-editor/controls/link/link';
 import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
 import { Icon } from '../../block-editor/controls/icon/icon';
-
+import { RadioImages } from '../../block-editor/controls/radio-images/radio-images';
 import { createAttributeUpdater, createInnerControlAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
@@ -29,10 +29,13 @@ import { blockPropsWithAnimation } from '../../utils/block-animations';
 
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue, getDimensionsSettingDefaultValue, getPresetResponsiveAttributeValueObject } from '../../utils/settings';
 
+import buttonPresets from './presets';
+import buttonPresetsImages from './presets-images';
+
 const attributesDefaults = ButtonBlockData.attributes;
 
 const Edit = (props) => {
-	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
+	const { attributes, setAttributes, clientId, setUpdateCss, setUpdatePresetCss, isPanelOpened, onTogglePanelBodyHandler } = props;
 	let { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
@@ -128,200 +131,37 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'presets' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'presets' ) }
 							>
-								<RadioButtons 
+								<RadioImages 
 									label={ __( 'Layout', 'athemes-blocks' ) }
 									defaultValue={ layout }
 									options={[
-										{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
-										{ label: __( 'Squared', 'athemes-blocks' ), value: 'squared' },
-										{ label: __( 'Rounded', 'athemes-blocks' ), value: 'rounded' },
-										{ label: __( 'With Icon', 'athemes-blocks' ), value: 'with-icon' },
-										{ label: __( 'Squared Outline', 'athemes-blocks' ), value: 'squared-outline' },
-										{ label: __( 'Rounded Outline', 'athemes-blocks' ), value: 'rounded-outline' },
-										{ label: __( 'With Icon Outline', 'athemes-blocks' ), value: 'with-icon-outline' },
+										{ label: __( 'Default', 'athemes-blocks' ), value: 'default', image: buttonPresetsImages.default },
+										{ label: __( 'Squared', 'athemes-blocks' ), value: 'squared', image: buttonPresetsImages.squared },
+										{ label: __( 'Rounded', 'athemes-blocks' ), value: 'rounded', image: buttonPresetsImages.rounded },
+										{ label: __( 'With Icon', 'athemes-blocks' ), value: 'with-icon', image: buttonPresetsImages.withIcon },
+										{ label: __( 'Squared Outline', 'athemes-blocks' ), value: 'squared-outline', image: buttonPresetsImages.squaredOutline },
+										{ label: __( 'Rounded Outline', 'athemes-blocks' ), value: 'rounded-outline', image: buttonPresetsImages.roundedOutline },
+										{ label: __( 'With Icon Outline', 'athemes-blocks' ), value: 'with-icon-outline', image: buttonPresetsImages.withIconOutline },
 									]}
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										if ( value === 'default' ) {
-											setAttributes({ 
-												layout: value,
-											});
-										}
+										const presetSettings = buttonPresets[value];
 
-										if ( value === 'squared' || value === 'with-icon' ) {
-											setAttributes({ 
-												layout: value,
-												enableIcon: false,
-												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
-													value: {
-														defaultState: '#212121',
-														hoverState: '#757575',
-													},
-												}),
-												buttonBorder: {
-													innerSettings: {
-														...atts.buttonBorder.innerSettings,
-														borderStyle: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: 'none',
-															})
-														},
-														borderRadius: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: {
-																	top: 0,
-																	right: 0,
-																	bottom: 0,
-																	left: 0,
-																},
-																unit: 'px',
-															})
-														}
-													}
-												}
-											});
+										setAttributes({ 
+											...presetSettings,
+										});
 
-											setUpdateCss( {
-												type: 'inner-control',
-												settingId: 'buttonBorder',
-												innerSettingId: 'borderRadius',
-												value: {
-													default: getPresetResponsiveAttributeValueObject({
-														value: {
-															top: 0,
-															right: 0,
-															bottom: 0,
-															left: 0,
-														},
-														unit: 'px',
-													})
-												},
-											} );
-										}
-
-										if ( value === 'rounded' ) {
-											setAttributes({ 
-												layout: value,
-												enableIcon: false,
-												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
-													value: {
-														defaultState: '#212121',
-														hoverState: '#757575',
-													},
-												}),
-												buttonBorder: {
-													innerSettings: {
-														...atts.buttonBorder.innerSettings,
-														borderStyle: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: 'none',
-															})
-														},
-														borderRadius: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: {
-																	top: 35,
-																	right: 35,
-																	bottom: 35,
-																	left: 35,
-																},
-																unit: 'px',
-															})
-														}
-													}
-												}
-											});
-
-											// Update css.
-											setUpdateCss( {
-												type: 'inner-control',
-												settingId: 'buttonBorder',
-												innerSettingId: 'borderRadius',
-												value: {
-													default: getPresetResponsiveAttributeValueObject({
-														value: {
-															top: 35,
-															right: 35,
-															bottom: 35,
-															left: 35,
-														},
-														unit: 'px',
-													})
-												},
-											} );
-										}
-
-										if ( value === 'with-icon' ) {
-											setAttributes({ 
-												layout: value,
-												enableIcon: true,
-												icon: {
-													innerSettings: {
-														...atts.icon.innerSettings,
-														iconData: {
-															default: {
-																library: 'all',
-																type: '',
-																icon: 'bx-check-regular',
-															},
-														},
-														iconPosition: {
-															default: 'after',
-														},
-													},
-												}
-											});
-										}
-
-										if ( value === 'squared-outline' ) {
-											setAttributes({ 
-												layout: value,
-												enableIcon: false,
-												buttonBackgroundColor: getPresetResponsiveAttributeValueObject({
-													value: {
-														defaultState: 'transparent',
-														hoverState: '#212121',
-													},
-												}),
-												buttonBorder: {
-													innerSettings: {
-														...atts.buttonBorder.innerSettings,
-														borderStyle: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: 'solid',
-															})
-														},
-														borderWidth: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: {
-																	top: 1,
-																	right: 1,
-																	bottom: 1,
-																	left: 1,
-																},
-																unit: 'px',
-															})
-														},
-														borderRadius: {
-															default: getPresetResponsiveAttributeValueObject({
-																value: {
-																	top: 0,
-																	right: 0,
-																	bottom: 0,
-																	left: 0,
-																},
-																unit: 'px',
-															})
-														}
-													}
-												}
-											});
-										}
-										
+										setUpdatePresetCss(presetSettings);
 									} }
 									onClickReset={ () => {
-										setAttributes({ layout: getSettingDefaultValue( 'layout', false, attributesDefaults ) });
+										const presetSettings = buttonPresets['default'];
+
+										setAttributes({ 
+											...presetSettings,
+										});
+										
+										setUpdatePresetCss(presetSettings);
 									} }
 								/>
 							</PanelBody>
@@ -397,6 +237,7 @@ const Edit = (props) => {
 										{ label: __( 'Left', 'athemes-blocks' ), value: 'flex-start' },
 										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
 										{ label: __( 'Right', 'athemes-blocks' ), value: 'flex-end' },
+										{ label: __( 'Full Width', 'athemes-blocks' ), value: 'full-width' },
 									]}
 									responsive={true}
 									reset={true}
@@ -645,6 +486,7 @@ const Edit = (props) => {
 					)
 				}
 
+				// Icon.
 				if ( icon ) {
 					blockPropsClassName += ` at-block-button--has-icon`;
 				}
@@ -652,6 +494,11 @@ const Edit = (props) => {
 				let blockProps = useBlockProps({
 					className: blockPropsClassName
 				});
+
+				// Alignment.
+				if ( alignment === 'full-width' ) {
+					blockProps.className += ' at-block-button--full-width';
+				}
 
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
@@ -678,7 +525,6 @@ const Edit = (props) => {
 							}
 							<RichText
 								tagName={ 'a' }
-								className="at-block-button__button"
 								value={ content }
 								onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
 								placeholder={ __( 'Type your text here...', 'athemes-blocks' ) }

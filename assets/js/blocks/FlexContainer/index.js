@@ -2091,8 +2091,40 @@ const withDynamicCSS = (WrappedComponent, attributesDefaults) => {
       clientId
     } = props;
     const [updateCss, setUpdateCss] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const [updatePresetCss, setUpdatePresetCss] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
 
-    // Watch for changes in the updateCss state and apply the CSS
+    // Update preset CSS.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      if (updatePresetCss) {
+        // Update the CSS for the preset.
+        Object.keys(updatePresetCss).forEach(settingId => {
+          const settingValue = updatePresetCss[settingId];
+          const hasCss = attributesDefaults[settingId]?.css;
+          const hasInnerSettings = updatePresetCss[settingId]?.innerSettings !== undefined;
+          if (hasInnerSettings) {
+            Object.keys(settingValue.innerSettings).forEach(innerSettingId => {
+              const cssData = {
+                css: attributesDefaults[settingId].default.innerSettings[innerSettingId].css,
+                settingId: settingId,
+                innerSettingId: innerSettingId
+              };
+              const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_2__.getControlCSS)(cssData, clientId, attributes);
+              (0,_utils_css__WEBPACK_IMPORTED_MODULE_2__.applyPreviewCSS)(css, clientId, settingId, innerSettingId);
+            });
+          } else {
+            const cssData = {
+              css: attributesDefaults[settingId].css,
+              settingId: settingId,
+              innerSettingId: null
+            };
+            const css = (0,_utils_css__WEBPACK_IMPORTED_MODULE_2__.getControlCSS)(cssData, clientId, attributes);
+            (0,_utils_css__WEBPACK_IMPORTED_MODULE_2__.applyPreviewCSS)(css, clientId, settingId);
+          }
+        });
+      }
+    }, [updatePresetCss]);
+
+    // Watch for changes in the updateCss state and apply the CSS.
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
       if (updateCss) {
         if (updateCss.type === 'all') {
@@ -2156,7 +2188,8 @@ const withDynamicCSS = (WrappedComponent, attributesDefaults) => {
     }, []);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(WrappedComponent, {
       ...props,
-      setUpdateCss: setUpdateCss
+      setUpdateCss: setUpdateCss,
+      setUpdatePresetCss: setUpdatePresetCss
     });
   };
 };
