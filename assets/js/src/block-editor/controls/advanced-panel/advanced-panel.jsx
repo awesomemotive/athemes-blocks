@@ -179,7 +179,7 @@ const AdvancedPanel = (props) => {
                 )
             }
             {
-                ['athemes-blocks/heading'].includes(blockName) === true && (
+                ['athemes-blocks/heading', 'athemes-blocks/text'].includes(blockName) === true && (
                     <PanelBody 
                         title={ __( 'Border', 'botiga-pro' ) } 
                         initialOpen={false}

@@ -629,7 +629,7 @@ const AdvancedPanel = props => {
         value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_11__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
-  })), ['athemes-blocks/heading'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  })), ['athemes-blocks/heading', 'athemes-blocks/text'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border', 'botiga-pro'),
     initialOpen: false,
     opened: isPanelOpened('border'),
@@ -2140,52 +2140,6 @@ function TabsNavigation(props) {
 
 /***/ }),
 
-/***/ "./assets/js/src/block-editor/controls/text-input/text-input.jsx":
-/*!***********************************************************************!*\
-  !*** ./assets/js/src/block-editor/controls/text-input/text-input.jsx ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../controls-auxiliary/device-switcher/device-switcher-control */ "./assets/js/src/block-editor/controls-auxiliary/device-switcher/device-switcher-control.jsx");
-/* harmony import */ var _controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../controls-auxiliary/reset-values/reset-values-control */ "./assets/js/src/block-editor/controls-auxiliary/reset-values/reset-values-control.jsx");
-
-
-
-
-
-function TextInput(props) {
-  const {
-    label,
-    value,
-    responsive,
-    reset,
-    onChange,
-    onClickReset
-  } = props;
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "atblocks-component-header"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "atblocks-component-header__title"
-  }, label), responsive && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_controls_auxiliary_device_switcher_device_switcher_control__WEBPACK_IMPORTED_MODULE_3__.DeviceSwitcher, null), reset && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_controls_auxiliary_reset_values_reset_values_control__WEBPACK_IMPORTED_MODULE_4__.ResetValues, {
-    onClick: onClickReset
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    value: value,
-    onChange: onChange
-  }));
-}
-
-/***/ }),
-
 /***/ "./assets/js/src/block-editor/controls/typography/styles.jsx":
 /*!*******************************************************************!*\
   !*** ./assets/js/src/block-editor/controls/typography/styles.jsx ***!
@@ -3225,28 +3179,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _block_editor_store_persistent_tabs_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../block-editor/store/persistent-tabs-store */ "./assets/js/src/block-editor/store/persistent-tabs-store.jsx");
-/* harmony import */ var _block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../block-editor/controls/radio-buttons/radio-buttons */ "./assets/js/src/block-editor/controls/radio-buttons/radio-buttons.jsx");
-/* harmony import */ var _block_editor_controls_range_slider_range_slider__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../block-editor/controls/range-slider/range-slider */ "./assets/js/src/block-editor/controls/range-slider/range-slider.jsx");
-/* harmony import */ var _block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../block-editor/controls/select/select */ "./assets/js/src/block-editor/controls/select/select.jsx");
-/* harmony import */ var _block_editor_controls_text_input_text_input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../block-editor/controls/text-input/text-input */ "./assets/js/src/block-editor/controls/text-input/text-input.jsx");
-/* harmony import */ var _block_editor_controls_switch_toggle_switch_toggle__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../block-editor/controls/switch-toggle/switch-toggle */ "./assets/js/src/block-editor/controls/switch-toggle/switch-toggle.jsx");
-/* harmony import */ var _block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../block-editor/controls/color-picker/color-picker */ "./assets/js/src/block-editor/controls/color-picker/color-picker.jsx");
-/* harmony import */ var _block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../block-editor/controls/typography/typography */ "./assets/js/src/block-editor/controls/typography/typography.jsx");
-/* harmony import */ var _block_editor_controls_border_border__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../block-editor/controls/border/border */ "./assets/js/src/block-editor/controls/border/border.jsx");
-/* harmony import */ var _utils_block_attributes__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../utils/block-attributes */ "./assets/js/src/utils/block-attributes.jsx");
-/* harmony import */ var _block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../block-editor/hoc/with-tabs-navigation */ "./assets/js/src/block-editor/hoc/with-tabs-navigation.jsx");
-/* harmony import */ var _block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../block-editor/hoc/with-advanced-tab */ "./assets/js/src/block-editor/hoc/with-advanced-tab.jsx");
-/* harmony import */ var _block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../block-editor/hoc/with-dynamic-css */ "./assets/js/src/block-editor/hoc/with-dynamic-css.jsx");
-/* harmony import */ var _block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../block-editor/hoc/with-persistent-panel-toggle */ "./assets/js/src/block-editor/hoc/with-persistent-panel-toggle.jsx");
-/* harmony import */ var _block_editor_hoc_with_google_fonts__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../block-editor/hoc/with-google-fonts */ "./assets/js/src/block-editor/hoc/with-google-fonts.jsx");
-/* harmony import */ var _utils_block_animations__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../../utils/block-animations */ "./assets/js/src/utils/block-animations.jsx");
-/* harmony import */ var _utils_settings__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../../utils/settings */ "./assets/js/src/utils/settings.jsx");
-
-
-
-
-
+/* harmony import */ var _block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../block-editor/controls/radio-buttons/radio-buttons */ "./assets/js/src/block-editor/controls/radio-buttons/radio-buttons.jsx");
+/* harmony import */ var _block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../block-editor/controls/select/select */ "./assets/js/src/block-editor/controls/select/select.jsx");
+/* harmony import */ var _block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../block-editor/controls/color-picker/color-picker */ "./assets/js/src/block-editor/controls/color-picker/color-picker.jsx");
+/* harmony import */ var _block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../block-editor/controls/typography/typography */ "./assets/js/src/block-editor/controls/typography/typography.jsx");
+/* harmony import */ var _utils_block_attributes__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/block-attributes */ "./assets/js/src/utils/block-attributes.jsx");
+/* harmony import */ var _block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../block-editor/hoc/with-tabs-navigation */ "./assets/js/src/block-editor/hoc/with-tabs-navigation.jsx");
+/* harmony import */ var _block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../block-editor/hoc/with-advanced-tab */ "./assets/js/src/block-editor/hoc/with-advanced-tab.jsx");
+/* harmony import */ var _block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../block-editor/hoc/with-dynamic-css */ "./assets/js/src/block-editor/hoc/with-dynamic-css.jsx");
+/* harmony import */ var _block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../block-editor/hoc/with-persistent-panel-toggle */ "./assets/js/src/block-editor/hoc/with-persistent-panel-toggle.jsx");
+/* harmony import */ var _block_editor_hoc_with_google_fonts__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../block-editor/hoc/with-google-fonts */ "./assets/js/src/block-editor/hoc/with-google-fonts.jsx");
+/* harmony import */ var _utils_block_animations__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../utils/block-animations */ "./assets/js/src/utils/block-animations.jsx");
+/* harmony import */ var _utils_settings__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../utils/settings */ "./assets/js/src/utils/settings.jsx");
 
 
 
@@ -3280,7 +3224,7 @@ const Edit = props => {
     content
   } = attributes;
   const atts = attributes;
-  const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_16__.createAttributeUpdater)(attributes, setAttributes);
+  const updateAttribute = (0,_utils_block_attributes__WEBPACK_IMPORTED_MODULE_11__.createAttributeUpdater)(attributes, setAttributes);
   const currentDevice = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
   const currentTab = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('persistent-tabs-store').getCurrentTab());
   const {
@@ -3298,15 +3242,15 @@ const Edit = props => {
   } = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
     return {
       // General.
-      htmlTag: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('htmlTag', 'desktop', atts),
+      htmlTag: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('htmlTag', 'desktop', atts),
       // Style.
-      alignment: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('alignment', currentDevice, atts),
-      color: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('color', 'desktop', atts),
-      linkColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('linkColor', 'desktop', atts),
+      alignment: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('alignment', currentDevice, atts),
+      color: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('color', 'desktop', atts),
+      linkColor: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('linkColor', 'desktop', atts),
       // Advanced.
-      hideOnDesktop: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('hideOnDesktop', 'desktop', atts),
-      hideOnTablet: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('hideOnTablet', 'desktop', atts),
-      hideOnMobile: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingValue)('hideOnMobile', 'desktop', atts)
+      hideOnDesktop: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('hideOnDesktop', 'desktop', atts),
+      hideOnTablet: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('hideOnTablet', 'desktop', atts),
+      hideOnMobile: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingValue)('hideOnMobile', 'desktop', atts)
     };
   }, [atts, currentDevice]);
 
@@ -3342,7 +3286,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('heading'),
     onToggle: () => onTogglePanelBodyHandler('heading')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_10__.Select, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_select_select__WEBPACK_IMPORTED_MODULE_8__.Select, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('HTML Tag', 'athemes-blocks'),
     options: [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('H1', 'athemes-blocks'),
@@ -3386,11 +3330,11 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('htmlTag', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
       }, 'desktop');
       setUpdateCss({
         settingId: 'htmlTag',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingDefaultValue)('htmlTag', 'desktop', attributesDefaults)
       });
     }
   }))), currentTab === 'style' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -3398,7 +3342,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('heading'),
     onToggle: () => onTogglePanelBodyHandler('heading')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_8__.RadioButtons, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_radio_buttons_radio_buttons__WEBPACK_IMPORTED_MODULE_7__.RadioButtons, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alignment', 'athemes-blocks'),
     defaultValue: alignment,
     options: [{
@@ -3427,14 +3371,14 @@ const Edit = props => {
     },
     onClickReset: () => {
       updateAttribute('alignment', {
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
       }, currentDevice);
       setUpdateCss({
         settingId: 'alignment',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getSettingDefaultValue)('alignment', currentDevice, attributesDefaults)
       });
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_14__.Typography, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_typography_typography__WEBPACK_IMPORTED_MODULE_10__.Typography, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Typography', 'athemes-blocks'),
     settingId: "typography",
     attributes: atts,
@@ -3442,7 +3386,7 @@ const Edit = props => {
     attributesDefaults: attributesDefaults,
     setUpdateCss: setUpdateCss,
     subFields: ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__.ColorPicker, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_9__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Color', 'athemes-blocks'),
     value: color,
     hover: true,
@@ -3452,36 +3396,36 @@ const Edit = props => {
       updateAttribute('color', {
         value: {
           defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('color', 'desktop', 'hoverState', atts)
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('color', 'desktop', 'hoverState', atts)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'color',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('color', 'desktop', 'defaultState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('color', 'desktop', 'defaultState', atts)
       });
     },
     hoverStateOnChangeComplete: value => {
       updateAttribute('color', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('color', 'desktop', 'defaultState', atts),
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('color', 'desktop', 'defaultState', atts),
           hoverState: value.hex
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'color',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('color', 'desktop', 'hoverState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('color', 'desktop', 'hoverState', atts)
       });
     },
     onClickReset: () => {
       updateAttribute('color', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('color', 'desktop', 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('color', 'desktop', 'hoverState', attributesDefaults)
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('color', 'desktop', 'defaultState', attributesDefaults),
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('color', 'desktop', 'hoverState', attributesDefaults)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'color',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('color', 'desktop', 'defaultState', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('color', 'desktop', 'defaultState', attributesDefaults)
       });
     }
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -3489,7 +3433,7 @@ const Edit = props => {
     initialOpen: false,
     opened: isPanelOpened('link'),
     onToggle: () => onTogglePanelBodyHandler('link')
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_13__.ColorPicker, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_editor_controls_color_picker_color_picker__WEBPACK_IMPORTED_MODULE_9__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Color', 'athemes-blocks'),
     value: linkColor,
     hover: true,
@@ -3499,36 +3443,36 @@ const Edit = props => {
       updateAttribute('linkColor', {
         value: {
           defaultState: value.hex,
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts)
       });
     },
     hoverStateOnChangeComplete: value => {
       updateAttribute('linkColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts),
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('linkColor', 'desktop', 'defaultState', atts),
           hoverState: value.hex
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingValue)('linkColor', 'desktop', 'hoverState', atts)
       });
     },
     onClickReset: () => {
       updateAttribute('linkColor', {
         value: {
-          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults),
-          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'hoverState', attributesDefaults)
+          defaultState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults),
+          hoverState: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'hoverState', attributesDefaults)
         }
       }, 'desktop');
       setUpdateCss({
         settingId: 'linkColor',
-        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults)
+        value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getColorPickerSettingDefaultValue)('linkColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
   })))), (() => {
@@ -3539,7 +3483,7 @@ const Edit = props => {
     });
 
     // Font size.
-    const hasFontSize = (0,_utils_settings__WEBPACK_IMPORTED_MODULE_23__.getInnerSettingValue)('typography', 'fontSize', currentDevice, atts) > 0;
+    const hasFontSize = (0,_utils_settings__WEBPACK_IMPORTED_MODULE_18__.getInnerSettingValue)('typography', 'fontSize', currentDevice, atts) > 0;
     if (hasFontSize) {
       blockProps.className += ` atb-has-font-size`;
     }
@@ -3554,7 +3498,7 @@ const Edit = props => {
     }
 
     // Animation.
-    blockProps = (0,_utils_block_animations__WEBPACK_IMPORTED_MODULE_22__.blockPropsWithAnimation)(blockProps, attributes);
+    blockProps = (0,_utils_block_animations__WEBPACK_IMPORTED_MODULE_17__.blockPropsWithAnimation)(blockProps, attributes);
     return htmlTag === 'div' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.RichText, {
       ...blockProps,
       ref: (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__.useMergeRefs)([blockProps.ref, blockRef]),
@@ -3577,7 +3521,7 @@ const Edit = props => {
     }));
   })());
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_19__.withDynamicCSS)((0,_block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_17__.withTabsNavigation)((0,_block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_20__.withPersistentPanelToggle)((0,_block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_18__.withAdvancedTab)((0,_block_editor_hoc_with_google_fonts__WEBPACK_IMPORTED_MODULE_21__.withGoogleFonts)(Edit), attributesDefaults))), attributesDefaults));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_block_editor_hoc_with_dynamic_css__WEBPACK_IMPORTED_MODULE_14__.withDynamicCSS)((0,_block_editor_hoc_with_tabs_navigation__WEBPACK_IMPORTED_MODULE_12__.withTabsNavigation)((0,_block_editor_hoc_with_persistent_panel_toggle__WEBPACK_IMPORTED_MODULE_15__.withPersistentPanelToggle)((0,_block_editor_hoc_with_advanced_tab__WEBPACK_IMPORTED_MODULE_13__.withAdvancedTab)((0,_block_editor_hoc_with_google_fonts__WEBPACK_IMPORTED_MODULE_16__.withGoogleFonts)(Edit), attributesDefaults))), attributesDefaults));
 
 /***/ }),
 

@@ -28,7 +28,7 @@ class BlocksCommonScripts {
      * Enqueue scripts.
      * 
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts(): void {
         wp_enqueue_script( 'athemes-blocks-entrance-effects', ATHEMES_BLOCKS_URL . 'assets/js/animation/entrance-effects.js', array(), ATHEMES_BLOCKS_VERSION, true );
     }
 }

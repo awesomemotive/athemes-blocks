@@ -35,7 +35,7 @@ class BlocksCommonCss {
 	 * 
 	 * @return void
 	 */
-	public function enqueue_common_css_file() {
+	public function enqueue_common_css_file(): void {
 		wp_enqueue_style( 'athemes-blocks-common', ATHEMES_BLOCKS_URL . 'assets/css/blocks-common.css', array(), ATHEMES_BLOCKS_VERSION );
 	}
 	
@@ -44,7 +44,7 @@ class BlocksCommonCss {
 	 * 
 	 * @return void
 	 */
-	public function enqueue_frontend_common_inline_css() {
+	public function enqueue_frontend_common_inline_css(): void {
 		wp_add_inline_style( 'athemes-blocks-common', $this->get_inline_styles() );
 	}
 
@@ -53,7 +53,7 @@ class BlocksCommonCss {
 	 * 
 	 * @return void
 	 */
-	public function enqueue_block_editor_common_inline_css() {
+	public function enqueue_block_editor_common_inline_css(): void {
 		wp_add_inline_style( 'wp-block-editor', $this->get_inline_styles() );
 	}
 
@@ -62,7 +62,7 @@ class BlocksCommonCss {
 	 * 
 	 * @return string The CSS styles to be added inline.
 	 */
-	private function get_inline_styles() {
+	private function get_inline_styles(): string {
 		$breakpoints = array(
 			'desktop-min' => 1025,
 			'tablet-min' => 768,

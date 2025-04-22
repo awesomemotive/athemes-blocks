@@ -5,10 +5,16 @@ import { Panel, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
 
+import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
+
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
+import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
 import { Select } from '../../block-editor/controls/select/select';
+import { TextInput } from '../../block-editor/controls/text-input/text-input';
+import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
 import { Typography } from '../../block-editor/controls/typography/typography';
+import { Border } from '../../block-editor/controls/border/border';
 import { createAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
@@ -19,7 +25,7 @@ import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
-const attributesDefaults = HeadingBlockData.attributes;
+const attributesDefaults = TextBlockData.attributes;
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
@@ -33,12 +39,16 @@ const Edit = (props) => {
 
 		// General.
         htmlTag,
+		dropCap,
+		columns,
+		columnsGap,
 
         // Style.
         alignment,
         typography,
         color,
 		linkColor,
+		dropCapColor,
 
         // Advanced.
         hideOnDesktop,
@@ -48,12 +58,16 @@ const Edit = (props) => {
 		return {
 
 			// General.
-			htmlTag: getSettingValue('htmlTag', 'desktop', atts),
+			htmlTag: atts.htmlTag,
+			dropCap: atts.dropCap,
+			columns: getSettingValue('columns', currentDevice, atts),
+			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
 
 			// Style.
 			alignment: getSettingValue('alignment', currentDevice, atts),
 			color: getSettingValue('color', 'desktop', atts),
 			linkColor: getSettingValue('linkColor', 'desktop', atts),
+			dropCapColor: getSettingValue('dropCapColor', 'desktop', atts),
 			
 			// Advanced.
 			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
@@ -100,42 +114,113 @@ const Edit = (props) => {
 					currentTab === 'general' && (
 						<Panel>
 							<PanelBody 
-								title={ __( 'Heading', 'botiga-pro' ) } 
+								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'heading' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'heading' ) }
+								opened={ isPanelOpened( 'content' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
 								<Select
 									label={ __( 'HTML Tag', 'athemes-blocks' ) }
 									options={[
-										{ label: __( 'H1', 'athemes-blocks' ), value: 'h1' },
-										{ label: __( 'H2', 'athemes-blocks' ), value: 'h2' },
-										{ label: __( 'H3', 'athemes-blocks' ), value: 'h3' },
-										{ label: __( 'H4', 'athemes-blocks' ), value: 'h4' },
-										{ label: __( 'H5', 'athemes-blocks' ), value: 'h5' },
-										{ label: __( 'H6', 'athemes-blocks' ), value: 'h6' },
-										{ label: __( 'Div', 'athemes-blocks' ), value: 'div' },
-										{ label: __( 'Span', 'athemes-blocks' ), value: 'span' },
-										{ label: __( 'P', 'athemes-blocks' ), value: 'p' },
+										{ label: __( 'div', 'athemes-blocks' ), value: 'div' },
+										{ label: __( 'span', 'athemes-blocks' ), value: 'span' },
+										{ label: __( 'p', 'athemes-blocks' ), value: 'p' },
 									]}
 									value={ htmlTag }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										updateAttribute( 'htmlTag', {
-											value: value,
-										}, 'desktop' );
+										setAttributes({ htmlTag: value });
 
 										setUpdateCss( { settingId: 'htmlTag', value: value } );										
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'htmlTag', {
-											value: getSettingDefaultValue( 'htmlTag', 'desktop', attributesDefaults )
-										}, 'desktop' );
+										setAttributes({ htmlTag: getSettingDefaultValue( 'htmlTag', '', attributesDefaults ) });
 
-										setUpdateCss( { settingId: 'htmlTag', value: getSettingDefaultValue( 'htmlTag', 'desktop', attributesDefaults ) } );
+										setUpdateCss( { settingId: 'htmlTag', value: getSettingDefaultValue( 'htmlTag', '', attributesDefaults ) } );
 									} }
 								/>
+								<SwitchToggle
+									label={ __( 'Drop Cap', 'athemes-blocks' ) }
+									value={ dropCap }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ dropCap: value });
+									} }
+									onClickReset={ () => {
+										setAttributes( { dropCap: getSettingDefaultValue( 'dropCap', '', attributesDefaults ) } );
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Columns', 'athemes-blocks' ) }
+									defaultValue={ columns }
+									defaultUnit={ getSettingUnit( 'columns', currentDevice, atts ) }
+									min={ 1 }
+									max={ 10 }
+									responsive={ true }
+									reset={ true }
+									units={false}
+									onChange={ ( value ) => {
+										updateAttribute( 'columns', {
+											value: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'columns', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'columns', {
+											value: columns,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'columns', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'columns', {
+											value: getSettingDefaultValue( 'columns', currentDevice, attributesDefaults ),
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'columns', value: getSettingDefaultValue( 'columns', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+								{
+									columns > 1 && (
+										<RangeSlider 
+											label={ __( 'Columns Gap', 'athemes-blocks' ) }
+											defaultValue={ columnsGap }
+											defaultUnit={ getSettingUnit( 'columnsGap', currentDevice, atts ) }
+											min={ 0 }
+											max={ 200 }
+											responsive={ true }
+											reset={ true }
+											units={['px', '%', 'vw']}
+											onChange={ ( value ) => {
+												updateAttribute( 'columnsGap', {
+													value: value,
+													unit: getSettingUnit( 'columnsGap', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'columnsGap', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'columnsGap', {
+													value: columnsGap,
+													unit: value,
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'columnsGap', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'columnsGap', {
+													value: getSettingDefaultValue( 'columnsGap', currentDevice, attributesDefaults ),
+													unit: getSettingDefaultUnit( 'columnsGap', currentDevice, attributesDefaults )
+												}, currentDevice );							
+
+												setUpdateCss( { settingId: 'columnsGap', value: getSettingDefaultValue( 'columnsGap', currentDevice, attributesDefaults ) } );								
+											} }
+										/>
+									)
+								}
 							</PanelBody>
 						</Panel>
 					)
@@ -144,10 +229,10 @@ const Edit = (props) => {
 					currentTab === 'style' && (
 						<Panel>
 							<PanelBody 
-								title={ __( 'Heading', 'botiga-pro' ) } 
+								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'heading' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'heading' ) }
+								opened={ isPanelOpened( 'content' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
 								<RadioButtons 
 									label={ __( 'Alignment', 'athemes-blocks' ) }
@@ -175,6 +260,13 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
 									} }
 								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Text', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'text' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'text' ) }
+							>
 								<Typography
 									label={ __( 'Typography', 'athemes-blocks' ) }
 									settingId="typography"
@@ -223,7 +315,7 @@ const Edit = (props) => {
 								/>
 							</PanelBody>
 							<PanelBody 
-								title={ __( 'Link', 'botiga-pro' ) } 
+								title={ __( 'Link', 'athemes-blocks' ) } 
 								initialOpen={false}
 								opened={ isPanelOpened( 'link' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'link' ) }
@@ -266,6 +358,44 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
+							{
+								dropCap && (
+									<PanelBody 
+										title={ __( 'Drop Cap', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'dropCap' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'dropCap' ) }
+									>
+										<ColorPicker
+											label={ __( 'Color', 'athemes-blocks' ) }
+											value={ dropCapColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'dropCapColor', {
+													value: {
+														defaultState: value.hex,
+														hoverState: getColorPickerSettingValue( 'dropCapColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'dropCapColor', value: getColorPickerSettingValue( 'dropCapColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'dropCapColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'dropCapColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'dropCapColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'dropCapColor', value: getColorPickerSettingDefaultValue( 'dropCapColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 						</Panel>
 					)
 				}
@@ -273,7 +403,7 @@ const Edit = (props) => {
 			
 			{(() => {
 				const Tag = htmlTag;
-				let blockPropsClassName = `at-block at-block-heading`;
+				let blockPropsClassName = `at-block at-block-text`;
 
 				let blockProps = useBlockProps({
 					className: blockPropsClassName
@@ -283,6 +413,11 @@ const Edit = (props) => {
 				const hasFontSize = getInnerSettingValue('typography', 'fontSize', currentDevice, atts) > 0;
 				if (hasFontSize) {
 					blockProps.className += ` atb-has-font-size`;
+				}
+
+				// Drop cap.
+				if (dropCap) {
+					blockProps.className += ` at-block-text--has-drop-cap`;
 				}
 
 				if (hideOnDesktop) {
@@ -301,25 +436,15 @@ const Edit = (props) => {
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
 				
 				return (
-					htmlTag === 'div' ? (
-						<RichText
-							{ ...blockProps }
-							ref={useMergeRefs([blockProps.ref, blockRef])}
-							tagName={ htmlTag }
-							value={ content }
-							onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
-							placeholder={ __( 'Type your heading here...', 'athemes-blocks' ) }
-						/>
-					) : (
-						<div { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
-							<RichText
-								tagName={ htmlTag }
-								value={ content }
-								onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
-								placeholder={ __( 'Type your heading here...', 'athemes-blocks' ) }
-							/>
-						</div>
-					)
+					<RichText
+						{ ...blockProps }
+						ref={useMergeRefs([blockProps.ref, blockRef])}
+						tagName={ htmlTag }
+						value={ content }
+						multiline={false}
+						onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
+						placeholder={ __( 'Type your content here...', 'athemes-blocks' ) }
+					/>
 				);
 			})()}
 		</>

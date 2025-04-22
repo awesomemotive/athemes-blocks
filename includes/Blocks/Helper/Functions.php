@@ -6,14 +6,18 @@
  * @package aThemes Blocks
  */
 
-namespace aThemes_Blocks\Blocks\Helper;
+namespace AThemes_Blocks\Blocks\Helper;
 
 class Functions {
 
     /**
      * Add animation markup to the wrapper attributes.
      * 
-     * @param array $wrapper_attributes The wrapper attributes.
+     * @param array<string, mixed> $wrapper_attributes The wrapper attributes.
+     * @param array<string, mixed> $attributes The attributes.
+     * @param array<string, mixed> $atts_defaults The default attributes.
+     * 
+     * @return array<string, mixed>
      */
     public static function add_animation_markup( $wrapper_attributes, $attributes, $atts_defaults ) {
         $html_classes = array();
@@ -49,7 +53,7 @@ class Functions {
     /**
      * Get the icon SVG.
      * 
-     * @param array $icon_data The icon data.
+     * @param array<string, mixed> $icon_data The icon data.
      * @return string The icon SVG.
      */
     public static function get_icon_svg( $icon_data ) {
@@ -80,6 +84,10 @@ class Functions {
         
         // Get the icon name.
         $icon_name = $icon_data['icon'];
+
+        if ( empty( $icons_list[$icon_name] ) ) {
+            return '';
+        }
 
         return $icons_list[$icon_name];
     }

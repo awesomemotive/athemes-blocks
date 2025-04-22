@@ -15,9 +15,9 @@ class GoogleFontsService {
 	/**
 	 * Google Fonts data.
 	 *
-	 * @var array
+	 * @var array<string, array<string>>
 	 */
-	private $fonts_data;
+	private array $fonts_data;
 
 	/**
 	 * Constructor
@@ -29,9 +29,9 @@ class GoogleFontsService {
 	/**
 	 * Get fonts data from JSON file.
 	 *
-	 * @return array
+	 * @return array<string, array<string>>
 	 */
-	private function get_fonts_data() {
+	private function get_fonts_data(): array {
 		$fonts_file = ATHEMES_BLOCKS_PATH . 'includes/Data/google-fonts-alphabetical.json';
 		
 		if ( ! file_exists( $fonts_file ) ) {
@@ -45,9 +45,9 @@ class GoogleFontsService {
 	/**
 	 * Get fonts data for wp_localize_script.
 	 *
-	 * @return array
+	 * @return array<string, array<string>>
 	 */
-	public function get_fonts_for_editor() {
+	public function get_fonts_for_editor(): array {
 		return $this->fonts_data;
 	}
 
@@ -57,7 +57,7 @@ class GoogleFontsService {
 	 * @param string $font_family Font family value from block attributes.
 	 * @return string
 	 */
-	public function get_font_family_css( $font_family ) {
+	public function get_font_family_css( string $font_family ): string {
 		if ( empty( $font_family ) ) {
 			return '';
 		}
@@ -77,9 +77,9 @@ class GoogleFontsService {
 	 *
 	 * @param string $block_slug Block slug to search in.
 	 * @param string $post_content Post content to search in.
-	 * @return array
+	 * @return array<string, array<string>>
 	 */
-	public function find_google_fonts_in_content( $block_slug, $post_content ) {
+	public function find_google_fonts_in_content( string $block_slug, string $post_content ): array {
 		$block_slug = "athemes-blocks/$block_slug";
 
 		$font_data = array();
@@ -122,10 +122,10 @@ class GoogleFontsService {
 	/**
 	 * Get Google Fonts URL for enqueueing.
 	 *
-	 * @param array $font_data Array of font data with families and weights.
+	 * @param array<string, array<string>> $font_data Array of font data with families and weights.
 	 * @return string
 	 */
-	public function get_google_fonts_url( $font_data ) {
+	public function get_google_fonts_url( array $font_data ): string {
 		if ( empty( $font_data ) ) {
 			return '';
 		}
@@ -133,6 +133,7 @@ class GoogleFontsService {
 		$font_families = array();
 		
 		foreach ( $font_data as $font_name => $weights ) {
+			
 			// If no weights specified, get all available weights
 			if ( empty( $weights ) ) {
 				$font_data = array_filter( $this->fonts_data['items'], function( $item ) use ( $font_name ) {
@@ -148,10 +149,6 @@ class GoogleFontsService {
 			// Format weights to match the old API pattern (e.g., 100,400,700)
 			$formatted_weights = implode( ',', $weights );
 			$font_families[] = $font_name . ':' . $formatted_weights;
-		}
-
-		if ( empty( $font_families ) ) {
-			return '';
 		}
 
 		// Join font families with | and add display=swap

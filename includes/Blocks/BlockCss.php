@@ -54,7 +54,15 @@ class BlockCss {
         return sprintf( '<style>%s</style>', $custom_css );
     }
 
-    public function get_block_css( $attributes, $block_id, $default_attributes ): string {
+    /**
+     * Get the block CSS.
+     * 
+     * @param array<string, mixed> $attributes Block attributes.
+     * @param string $block_id Block ID.
+     * @param array<string, mixed> $default_attributes Default block attributes.
+     * @return string The block CSS.
+     */
+    public function get_block_css( array $attributes, string $block_id, array $default_attributes ): string {
         $css = '';
         $media_queries = array(
             'desktop' => '',

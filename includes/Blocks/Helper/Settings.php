@@ -6,7 +6,7 @@
  * @package aThemes Blocks
  */
 
-namespace aThemes_Blocks\Blocks\Helper;
+namespace AThemes_Blocks\Blocks\Helper;
 
 class Settings {
 
@@ -15,8 +15,8 @@ class Settings {
      * This function will return the 'desktop' setting value.
      * 
      * @param string $name
-     * @param array $attributes
-     * @param array $detaults
+     * @param array<string, mixed> $attributes
+     * @param array<string, mixed> $atts_defaults
      * @param string $device
      * 
      * @return mixed
@@ -43,7 +43,8 @@ class Settings {
      * @param string $name
      * @param string $inner_name
      * @param string $device
-     * @param array $attributes
+     * @param array<string, mixed> $attributes
+     * @param array<string, mixed> $atts_defaults
      * 
      * @return mixed
      */

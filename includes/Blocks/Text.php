@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Heading block.
+ * The Text block.
  * 
  * @package aThemes_Blocks
  */
@@ -15,15 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AThemes_Blocks\Blocks\BlockBaseText;
 
-class Heading extends BlockBaseText {
+class Text extends BlockBaseText {
 
     /**
      * Constructor.
      *
      */
     public function __construct() {
-        $this->id = 'Heading';
-        $this->slug = 'heading';
+        $this->id = 'Text';
+        $this->slug = 'text';
 
         parent::__construct();
 

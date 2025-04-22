@@ -6,14 +6,15 @@
  * @package aThemes Blocks
  */
 
-namespace aThemes_Blocks\Blocks\Helper;
+namespace AThemes_Blocks\Blocks\Helper;
 
 class Attributes {
 
     /**
      * Get block core attributes.
      * 
-     * @return array
+     * @param array<string, mixed> $attributes_to_replace
+     * @return array<string, mixed>
      */
     public static function get_block_core_attributes( $attributes_to_replace = array() ) {
         $attributes = array(
@@ -40,7 +41,9 @@ class Attributes {
     /**
      * Get typography attributes.
      * 
-     * @return array
+     * @param string $setting_id
+     * @param array<string, mixed> $attributes_to_replace
+     * @return array<string, mixed>
      */
     public static function get_typography_attributes( $setting_id, $attributes_to_replace = array() ) {
         $attributes = array(
@@ -232,9 +235,11 @@ class Attributes {
     }
 
     /**
-     * Get typography attributes.
+     * Get border attributes.
      * 
-     * @return array
+     * @param string $setting_id
+     * @param array<string, mixed> $attributes_to_replace
+     * @return array<string, mixed>
      */
     public static function get_border_attributes( $setting_id, $attributes_to_replace = array() ) {
         $attributes = array(
@@ -395,7 +400,7 @@ class Attributes {
     /**
      * Get block advanced panel attributes.
      * 
-     * @return array
+     * @return array<string, mixed>
      */
     public static function get_block_advanced_panel_attributes() {
         return array(
