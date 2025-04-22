@@ -80,7 +80,7 @@ abstract class BlockBase {
         }
 
         $attributes = $block['attrs'];
-        $block_id = $attributes['clientId'];
+        $block_id = $attributes['clientId'] ?? '';
         $default_attributes = require ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/attributes.php';
 
         $css = new BlockCss( $attributes, $block_id, $default_attributes );

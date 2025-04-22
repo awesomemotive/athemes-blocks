@@ -1,0 +1,16 @@
+.at-block-icon {
+    display: flex;
+    box-sizing: border-box;
+
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1em;
+
+        svg {
+            width: 1em;
+            height: 1em;
+        }
+    }
+}

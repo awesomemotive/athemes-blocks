@@ -629,7 +629,7 @@ const AdvancedPanel = props => {
         value: (0,_utils_settings__WEBPACK_IMPORTED_MODULE_11__.getColorPickerSettingDefaultValue)('backgroundColor', 'desktop', 'defaultState', attributesDefaults)
       });
     }
-  })), ['athemes-blocks/heading', 'athemes-blocks/text'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  })), ['athemes-blocks/heading', 'athemes-blocks/text', 'athemes-blocks/icon'].includes(blockName) === true && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border', 'botiga-pro'),
     initialOpen: false,
     opened: isPanelOpened('border'),
