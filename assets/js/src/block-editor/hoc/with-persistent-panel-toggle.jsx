@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { store as persistentTabsStore } from '../store/persistent-tabs-store';
 
@@ -7,6 +8,8 @@ export const withPersistentPanelToggle = (WrappedComponent) => {
         const lastPanelOpened = useSelect((select) => select('persistent-tabs-store')?.getLastPanelOpened() || null);
         const { setLastPanelOpened } = useDispatch(persistentTabsStore);
 
+        const isAnyPanelOpened = lastPanelOpened?.startsWith(currentTab + '-') || false;
+
         const onTogglePanelBodyHandler = (panelId) => {
             if (lastPanelOpened === `${currentTab}-${panelId}`) {
                 setLastPanelOpened(null);
@@ -15,7 +18,11 @@ export const withPersistentPanelToggle = (WrappedComponent) => {
             }
         };
 
-        const isPanelOpened = (panelId) => {
+        const isPanelOpened = (panelId, openFirstPanel = false) => {
+            if (openFirstPanel && ! isAnyPanelOpened) {
+                return true;
+            }
+            
             return lastPanelOpened === `${currentTab}-${panelId}`;
         };
 
@@ -24,6 +31,7 @@ export const withPersistentPanelToggle = (WrappedComponent) => {
                 {...props} 
                 isPanelOpened={isPanelOpened}
                 onTogglePanelBodyHandler={onTogglePanelBodyHandler}
+                isAnyPanelOpened={isAnyPanelOpened}
             />
         );
     };

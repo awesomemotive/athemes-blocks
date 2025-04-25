@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { Panel, PanelBody } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
 import { Dimensions } from '../dimensions/dimensions';
@@ -22,7 +23,7 @@ const AdvancedPanel = (props) => {
             <PanelBody 
                 title={ __( 'Layout', 'botiga-pro' ) } 
                 initialOpen={false}
-                opened={ isPanelOpened( 'layout' ) }
+                opened={ isPanelOpened( 'layout', true ) }
                 onToggle={ () => onTogglePanelBodyHandler( 'layout' ) }
             >
                 <Dimensions

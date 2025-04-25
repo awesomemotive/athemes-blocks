@@ -23,6 +23,7 @@ $atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Icon/attri
 $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 $htmlTag = 'div';
+
 $icon = Settings::get_inner_setting( 'icon', 'iconData', $attributes, $atts_defaults, '' );
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );

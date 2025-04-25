@@ -49,15 +49,19 @@ class Settings {
      * @return mixed
      */
     public static function get_inner_setting( $name, $inner_name, $attributes, $atts_defaults, $device = 'desktop' ) {
-        if ( ! $device && isset( $attributes[$name]['innerSettings'][$inner_name]['default'] ) ) {
-            return $attributes[$name]['innerSettings'][$inner_name]['default'];
+        if ( ! $device ) {
+            if ( isset( $attributes[$name]['innerSettings'][$inner_name]['default'] ) ) {
+                return $attributes[$name]['innerSettings'][$inner_name]['default'];
+            }
+
+            return $atts_defaults[$name]['default']['innerSettings'][$inner_name]['default'];
         }
 
         if ( isset( $attributes[$name]['innerSettings'][$inner_name]['default'][$device]['value'] ) ) {
             return $attributes[$name]['innerSettings'][$inner_name]['default'][$device]['value'];
         }
 
-        if ( empty( $atts_defaults[$name]['default']['innerSettings'][$inner_name]['default'][$device]['value'] ) ) {
+        if ( isset( $atts_defaults[$name]['default']['innerSettings'][$inner_name]['default'][$device]['value'] ) && empty( $atts_defaults[$name]['default']['innerSettings'][$inner_name]['default'][$device]['value'] ) ) {
             return '';
         }
 

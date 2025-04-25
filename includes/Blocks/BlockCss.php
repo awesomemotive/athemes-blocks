@@ -85,9 +85,9 @@ class BlockCss {
             if ( isset( $attributes[$attribute_name]['innerSettings'] ) ) {
                 $inner_settings_attributes = $attributes[$attribute_name]['innerSettings'];
                 $block_id = $block_id;
-                $default_attributes = $attribute_settings['default']['innerSettings'];
+                $inner_default_attributes = $attribute_settings['default']['innerSettings'];
 
-                $css .= self::get_block_css( $inner_settings_attributes, $block_id, $default_attributes );
+                $css .= self::get_block_css( $inner_settings_attributes, $block_id, $inner_default_attributes );
                 continue;
             }
 
@@ -107,8 +107,6 @@ class BlockCss {
                     
                     $attribute_data = $default_attributes[$attribute_name]['default'];
                 }
-
-                // var_dump($attribute_data);
 
                 foreach ( $attribute_data as $device => $value ) {
                     if ( empty( $value['value'] ) || $value['value'] === 'default' ) {

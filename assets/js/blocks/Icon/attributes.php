@@ -26,34 +26,9 @@ return array_merge(
                 'innerSettings' => array(
                     'iconData' => array(
                         'default' => array(
-                            'library' => '',
-                            'type' => '',
-                            'icon' => '',
-                        ),
-                    ),
-                    'iconPosition' => array(
-                        'default' => 'before',
-                    ),
-                    'iconGap' => array(
-                        'default' => array(
-                            'desktop' => array(
-                                'value' => 10,
-                                'unit' => 'px',
-                            ),
-                            'tablet' => array(
-                                'value' => 10,
-                                'unit' => 'px',
-                            ),
-                            'mobile' => array(
-                                'value' => 10,
-                                'unit' => 'px',
-                            ),
-                        ),
-                        'css' => array(
-                            'selectors' => array(
-                                '{{WRAPPER}} .at-block-button__wrapper'
-                            ),
-                            'property' => 'gap',
+                            'library' => 'box-icons',
+                            'type' => 'regular',
+                            'icon' => 'bx-star-regular',
                         ),
                     ),
                 ),
@@ -132,7 +107,7 @@ return array_merge(
         'size' => array(
             'default' => array(
                 'desktop' => array(
-                    'value' => 20,
+                    'value' => 60,
                     'unit' => 'px',
                 ),
                 'tablet' => array(

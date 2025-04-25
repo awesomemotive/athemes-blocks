@@ -109,9 +109,10 @@ const Edit = (props) => {
 					currentTab === 'general' && (
 						<Panel>
 							<PanelBody 
+								className="panel-id-content"
 								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'content' ) }
+								opened={ isPanelOpened( 'content', true ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
 								<Icon
@@ -140,9 +141,10 @@ const Edit = (props) => {
 					currentTab === 'style' && (
 						<Panel>
 							<PanelBody 
+								className="panel-id-content"
 								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'content' ) }
+								opened={ isPanelOpened( 'content', true ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
 								<RadioButtons 
