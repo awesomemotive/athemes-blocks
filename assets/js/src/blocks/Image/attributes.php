@@ -27,6 +27,9 @@ return array_merge(
                     'image' => array(
                         'default' => '',
                     ),
+                    'disableLazyLoad' => array(
+                        'default' => false,
+                    ),
                     'size' => array(
                         'default' => 'large',
                     ),
@@ -83,40 +86,46 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => '',
+                    'value' => 100,
+                    'unit' => '%',
                 ),
                 'tablet' => array(
                     'value' => '',
+                    'unit' => '%',
                 ),
                 'mobile' => array(
                     'value' => '',
+                    'unit' => '%',
                 ),
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__image',
+                    '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
                 ),
-                'property' => 'width',
+                'property' => '--atb-image-width',
             ),
         ),
         'maxWidth' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => '',
+                    'value' => 100,
+                    'unit' => '%',
                 ),
                 'tablet' => array(
                     'value' => '',
+                    'unit' => '%',
                 ),
                 'mobile' => array(
                     'value' => '',
+                    'unit' => '%',
                 ),
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__image',
+                    '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
                 ),
-                'property' => 'max-width',
+                'property' => '--atb-image-max-width',
             ),
         ),
         'height' => array(
@@ -124,19 +133,22 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => '',
+                    'unit' => 'px',
                 ),
                 'tablet' => array(
                     'value' => '',
+                    'unit' => 'px',
                 ),
                 'mobile' => array(
                     'value' => '',
+                    'unit' => 'px',
                 ),
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__image',
+                    '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
                 ),
-                'property' => 'height',
+                'property' => '--atb-image-height',
             ),
         ),
         'hoverAnimation' => array(

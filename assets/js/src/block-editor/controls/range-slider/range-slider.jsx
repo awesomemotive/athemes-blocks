@@ -51,6 +51,18 @@ export function RangeSlider( props ) {
         if ( min.rem && valueUnit === 'rem' ) {
             min = min.rem;
         }
+
+        if ( min.vw && valueUnit === 'vw' ) {
+            min = min.vw || 1;
+        }
+
+        if ( min.vh && valueUnit === 'vh' ) {
+            min = min.vh || 1;
+        }
+
+        if ( min.percent && valueUnit === '%' ) {
+            min = min.percent || 1;
+        }
     }
 
     // Step.

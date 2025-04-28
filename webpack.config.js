@@ -121,6 +121,7 @@ module.exports = [
 
     // Global JS Compilation Configuration
     {
+        mode: 'development',
         entry: {
             'at-blocks-block-editor': path.resolve(__dirname, 'assets/js/src/block-editor/block-editor.jsx'),
         },
@@ -128,6 +129,7 @@ module.exports = [
             path: path.resolve(__dirname, 'assets/js/block-editor/'),
             filename: '[name].js',
         },
+        devtool: 'source-map',
         module: {
             rules: [
                 {
@@ -144,6 +146,7 @@ module.exports = [
         },
     },
     {
+        mode: 'development',
         entry: {
             'entrance-effects': path.resolve(__dirname, 'assets/js/src/animation/entrance-effects.js'),
         },
@@ -151,6 +154,7 @@ module.exports = [
             path: path.resolve(__dirname, 'assets/js/animation/'),
             filename: '[name].js',
         },
+        devtool: 'source-map',
         module: {
             rules: [
                 {
@@ -169,12 +173,14 @@ module.exports = [
 
     // Global SCSS Compilation Configuration
     {
+        mode: 'development',
         entry: {
             'Is': path.resolve(__dirname, 'assets/sass/block-editor.scss'),
         },
         output: {
             path: path.resolve(__dirname, 'assets/css/'),
         },
+        devtool: 'source-map',
         module: {
             rules: [
                 {
@@ -195,12 +201,14 @@ module.exports = [
         ]
     },
     {
+        mode: 'development',
         entry: {
             'Is': path.resolve(__dirname, 'assets/sass/blocks-common.scss'),
         },
         output: {
             path: path.resolve(__dirname, 'assets/css/'),
         },
+        devtool: 'source-map',
         module: {
             rules: [
                 {

@@ -1,3 +1,11 @@
 .at-block-image {
     box-sizing: border-box;
+
+    &__image {
+        img {
+            width: var(--atb-image-width, 100%);
+            max-width: var(--atb-image-max-width, 100%);
+            height: var(--atb-image-height, auto);
+        }
+    }
 }
