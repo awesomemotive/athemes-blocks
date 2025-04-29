@@ -17,19 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
 
-$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Image/attributes.php' );
+$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Icon/attributes.php' );
 
 // Extract the settings values.
 $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 $htmlTag = 'div';
-$image = Settings::get_inner_setting( 'image', 'image', $attributes, $atts_defaults, '' );
-$image_id = $image ? $image['id'] : '';
-$disableLazyLoad = Settings::get_inner_setting( 'image', 'disableLazyLoad', $attributes, $atts_defaults, '' );
-$imageSize = Settings::get_inner_setting( 'image', 'size', $attributes, $atts_defaults, '' );
-$caption = Settings::get_inner_setting( 'image', 'caption', $attributes, $atts_defaults, '' );
-$captionText = Settings::get_inner_setting( 'image', 'captionText', $attributes, $atts_defaults, '' );
 
+$icon = Settings::get_inner_setting( 'icon', 'iconData', $attributes, $atts_defaults, '' );
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );
 $hideOnMobile = Settings::get_setting( 'hideOnMobile', $attributes, $atts_defaults );
@@ -38,7 +33,7 @@ $wrapper_attributes = array();
 $wrapper_classes = array( 
     'at-block', 
     'at-block-' . $clientId, 
-    'at-block-image' 
+    'at-block-icon' 
 );
 
 // Link.
@@ -59,24 +54,24 @@ if ( ! empty( $link ) ) {
     }
 }
 
-// Image and caption.
-$image_output = '';
-if ( ! empty( $image ) ) {
-    $image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
-
-    $caption_output = '';
-    if ( $caption !== 'none' ) {
-        $caption_output = sprintf(
-            '<div class="at-block-image__caption"><p class="at-block-image__caption-text">%s</p></div>',
-            $caption === 'attachment' ? $image['caption'] : $captionText
-        );
-    }
-
-    $image_output = sprintf(
-        '<div class="at-block-image__image-wrapper">%1$s%2$s</div>',
-        wp_get_attachment_image( $image_id, 'full', false, array( 'class' => 'at-block-image__image', 'alt' => $image_alt, 'loading' => $disableLazyLoad ? 'eager' : 'lazy' ) ),
-        $caption_output
+// Icon.
+$icon_output = '';
+if ( ! empty( $icon ) ) {
+    $wrapper_classes[] = 'at-block-icon--has-icon';
+    
+    $icon_output = sprintf(
+        '<div class="at-block-icon__icon">%s</div>',
+        Functions::get_icon_svg( $icon )
     );
+}
+
+// Size.
+if ( 
+    Settings::get_setting( 'size', $attributes, $atts_defaults, 'desktop' ) > 0 ||
+    Settings::get_setting( 'size', $attributes, $atts_defaults, 'tablet' ) > 0 ||
+    Settings::get_setting( 'size', $attributes, $atts_defaults, 'mobile' ) > 0
+) {
+    $wrapper_classes[] = 'atb-has-font-size';
 }
 
 // Visibility classes
@@ -105,5 +100,5 @@ echo sprintf(
     '<%1$s %2$s>%3$s</%1$s>',
     $htmlTag,
     get_block_wrapper_attributes( $wrapper_attributes ),
-    $image_output
+    $icon_output
 );

@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { useRefEffect } from '@wordpress/compose';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
@@ -14,8 +15,9 @@ import { Typography } from '../../block-editor/controls/typography/typography';
 import { Icon } from '../../block-editor/controls/icon/icon';
 import { Link } from '../../block-editor/controls/link/link';
 import { ImageUpload } from '../../block-editor/controls/image-upload/image-upload';
+import { Border } from '../../block-editor/controls/border/border';
 
-import { createAttributeUpdater } from '../../utils/block-attributes';
+import { createAttributeUpdater, createInnerControlAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
@@ -32,43 +34,44 @@ const Edit = (props) => {
 	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
+	const updateImageInnerControlAttribute = createInnerControlAttributeUpdater('image', attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
 	const {
-
 		// General.
 		image,
 
-        // Style.
-        alignment,
+		// Style.
+		alignment,
 		width,
 		maxWidth,
 		height,
-		hoverAnimation,
+		// hoverAnimation,
 		caption,
+		captionText,
 		captionAlignment,
 		captionTextColor,
 		captionBackgroundColor,
 		captionSpacing,
 
-        // Advanced.
-        hideOnDesktop,
+		// Advanced.
+		hideOnDesktop,
 		hideOnTablet,
 		hideOnMobile,
-    } = useMemo(() => {
+	} = useMemo(() => {
 		return {
-
 			// General.
 			image: getInnerSettingValue('image', 'image', '', atts),
-		
+			
 			// Style.
 			alignment: getSettingValue('alignment', currentDevice, atts),
 			width: getSettingValue('width', currentDevice, atts),
 			maxWidth: getSettingValue('maxWidth', currentDevice, atts),
 			height: getSettingValue('height', currentDevice, atts),
-			hoverAnimation: atts.hoverAnimation,
-			caption: atts.image.innerSettings.caption.default,
+			// hoverAnimation: getSettingValue('hoverAnimation', currentDevice, atts),
+			caption: atts.image.innerSettings?.caption?.default,
+			captionText: atts.image.innerSettings?.captionText?.default,
 			captionAlignment: getSettingValue('captionAlignment', currentDevice, atts),
 			captionTextColor: getSettingValue('captionTextColor', 'desktop', atts),
 			captionBackgroundColor: getSettingValue('captionBackgroundColor', 'desktop', atts),
@@ -78,7 +81,6 @@ const Edit = (props) => {
 			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
 			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
 			hideOnMobile: getSettingValue('hideOnMobile', 'desktop', atts),
-			
 		};
 	}, [atts, currentDevice]);
 
@@ -87,43 +89,35 @@ const Edit = (props) => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
 
-	// Prevent the default click event handler for the block if the html tag is 'a'.
-	const blockRef = useRef(null);
+	let blockPropsClassName = `at-block at-block-image`;
 
-	useEffect(() => {
-		if ( blockRef === null ) {
+	let blockProps = useBlockProps({
+		className: blockPropsClassName
+	});
+
+	// Prevent the default click event handler for the block if the html tag is 'a'.
+	const ref = useRefEffect( ( node ) => {
+		if (node === null) {
 			return;
 		}
-		
-		if (blockRef.current) {
-			const handleClick = (event) => {
-				event.preventDefault();
-			};
 
-			if ( blockRef.current ) {
-				blockRef.current.addEventListener('click', handleClick);
-			}
+		const handleClick = (event) => {
+			event.preventDefault();
+		};
 
-			return () => {
-				if ( blockRef.current ) {
-					blockRef.current.removeEventListener('click', handleClick);
-				}
-			};
+		if (node) {
+			node.addEventListener('click', handleClick);
 		}
+
+		return () => {
+			if (node) {
+				node.removeEventListener('click', handleClick);
+			}
+		};
 	}, []);
 
-	const mediaPlaceholder = <MediaPlaceholder
-		onSelect = {
-			( el ) => {
-				setAttributes( { image: el.url } );
-			}
-		}
-		allowedTypes = { [ 'image' ] }
-		multiple = { false }
-		labels = { { title: 'The Image' } }
-	>
-		"extra content"
-	</MediaPlaceholder>;
+	// Merge the refs.
+	const mergedRefs = useMergeRefs([blockProps.ref, ref]);
 
 	return (
 		<>
@@ -339,30 +333,47 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'height', value: getSettingDefaultValue( 'height', currentDevice, attributesDefaults ) } );
 									} }
 								/>
-								<Select
+								<Border
+									label={ __( 'Border', 'athemes-blocks' ) }
+									settingId="imageBorder"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+								/>
+								{/* <Select
 									label={ __( 'Hover Animation', 'athemes-blocks' ) }
 									options={[
 										{ label: __( 'None', 'athemes-blocks' ), value: 'none' },
-										{ label: __( 'Fade In', 'athemes-blocks' ), value: 'fade-in' },
+										{ label: __( 'Fade In', 'athemes-blocks' ), value: 'fadeIn' },
 										{ label: __( 'Slide In', 'athemes-blocks' ), value: 'slide-in' },
 										{ label: __( 'Zoom In', 'athemes-blocks' ), value: 'zoom-in' },
-										{ label: __( 'Rotate In', 'athemes-blocks' ), value: 'rotate-in' },
-										{ label: __( 'Flip In', 'athemes-blocks' ), value: 'flip-in' },
+										{ label: __( 'Rotate In', 'athemes-blocks' ), value: 'rotateIn' },
+										{ label: __( 'Flip In', 'athemes-blocks' ), value: 'flipIn' },
 										{ label: __( 'Slide In', 'athemes-blocks' ), value: 'slide-in' },
 									]}
 									value={ hoverAnimation }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ hoverAnimation: value });
+										updateAttribute( 'hoverAnimation', {
+											value: value
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'hoverAnimation', value: value } );
 									} }
 									onClickReset={ () => {
-										setAttributes({ hoverAnimation: getSettingDefaultValue( 'hoverAnimation', '', attributesDefaults ) });
+										updateAttribute( 'hoverAnimation', {
+											value: getSettingDefaultValue( 'hoverAnimation', currentDevice, attributesDefaults )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'hoverAnimation', value: getSettingDefaultValue( 'hoverAnimation', currentDevice, attributesDefaults ) } );
 									} }
-								/>
+								/> */}
 							</PanelBody>
 							{
-								caption && (
+								caption !== 'none' && (
 									<PanelBody 
 										className="panel-id-caption"
 										title={ __( 'Caption', 'athemes-blocks' ) } 
@@ -374,9 +385,9 @@ const Edit = (props) => {
 											label={ __( 'Alignment', 'athemes-blocks' ) }
 											defaultValue={ captionAlignment }
 											options={[
-												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
 												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
 											]}
 											responsive={true}
 											reset={true}
@@ -412,7 +423,7 @@ const Edit = (props) => {
 												setUpdateCss( { settingId: 'captionTextColor', value: getColorPickerSettingValue( 'captionTextColor', 'desktop', 'defaultState', atts ) } );
 											} }
 											hoverStateOnChangeComplete={ ( value ) => {
-												updateAttribute( 'color', {
+												updateAttribute( 'captionTextColor', {
 													value: {
 														defaultState: getColorPickerSettingValue( 'captionTextColor', 'desktop', 'defaultState', atts ),
 														hoverState: value.hex	
@@ -449,7 +460,7 @@ const Edit = (props) => {
 												setUpdateCss( { settingId: 'captionBackgroundColor', value: getColorPickerSettingValue( 'captionBackgroundColor', 'desktop', 'defaultState', atts ) } );
 											} }
 											hoverStateOnChangeComplete={ ( value ) => {
-												updateAttribute( 'color', {
+												updateAttribute( 'captionBackgroundColor', {
 													value: {
 														defaultState: getColorPickerSettingValue( 'captionBackgroundColor', 'desktop', 'defaultState', atts ),
 														hoverState: value.hex	
@@ -468,6 +479,15 @@ const Edit = (props) => {
 												
 												setUpdateCss( { settingId: 'captionBackgroundColor', value: getColorPickerSettingDefaultValue( 'captionBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
 											} }
+										/>
+										<Border
+											label={ __( 'Border', 'athemes-blocks' ) }
+											settingId="captionBorder"
+											attributes={ atts }
+											setAttributes={ setAttributes }
+											attributesDefaults={ attributesDefaults }
+											setUpdateCss={ setUpdateCss }
+											subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
 										/>
 										<Typography
 											label={ __( 'Typography', 'athemes-blocks' ) }
@@ -521,19 +541,13 @@ const Edit = (props) => {
 			</InspectorControls>
 			
 			{(() => {
-				let blockPropsClassName = `at-block at-block-image`;
-
-				let blockProps = useBlockProps({
-					className: blockPropsClassName
-				});
-
 				// Block HTML tag.
 				let Tag = 'div';
 
 				// Link.
-				const linkUrl = getInnerSettingValue( 'link', 'linkUrl', '', atts );
-				const linkTarget = getInnerSettingValue( 'link', 'linkTarget', '', atts );
-				const linkNoFollow = getInnerSettingValue( 'link', 'linkNoFollow', '', atts );
+				const linkUrl = getInnerSettingValue('link', 'linkUrl', '', atts);
+				const linkTarget = getInnerSettingValue('link', 'linkTarget', '', atts);
+				const linkNoFollow = getInnerSettingValue('link', 'linkNoFollow', '', atts);
 
 				if (linkUrl) {
 					Tag = 'a';
@@ -549,14 +563,28 @@ const Edit = (props) => {
 				}
 
 				// Image.
-				const image = getInnerSettingValue( 'image', 'image', '', atts );
-				const ImageHTML = () => {
-					return (
-						<div className="at-block-image__image">
-							<img src={ image.url } alt={ image.alt } />
-						</div>
-					)
+				const image = getInnerSettingValue('image', 'image', '', atts);
+				const imageSize = getInnerSettingValue('image', 'size', '', atts);
+
+				let imageUrlToDisplay = '';
+				let imageWidth = 0;
+				let imageHeight = 0;
+
+				if ( image.sizes && image.sizes[imageSize] ) {
+					imageUrlToDisplay = image.sizes[imageSize].url;
+					imageWidth = image.sizes[imageSize].width;
+					imageHeight = image.sizes[imageSize].height;
+				} else if ( image.media_details && image.media_details.sizes[imageSize] ) {
+					imageUrlToDisplay = image.media_details.sizes[imageSize].source_url;
+					imageWidth = image.media_details.sizes[imageSize].width;
+					imageHeight = image.media_details.sizes[imageSize].height;
+				} else {
+					imageUrlToDisplay = image.url;
+					imageWidth = image.width;
+					imageHeight = image.height;
 				}
+
+				const hasImage = image ? true : false;
 
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
@@ -573,12 +601,53 @@ const Edit = (props) => {
 				// Animation.
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
 				
+				// Display the media placeholder if there is no image.
+				if ( ! hasImage ) {
+					return (
+						<div {...blockProps}>
+							<MediaPlaceholder
+								onSelect={(media) => {
+									updateImageInnerControlAttribute('image', media);
+								}}
+								allowedTypes={['image']}
+								multiple={false}
+								labels={{ title: __('Select Image', 'athemes-blocks') }}
+							/>
+						</div>
+					);
+				}
+				
+				// Display the image.
 				return (
-					<>
-						<Tag { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
-							<ImageHTML />
-						</Tag>
-					</>
+					<Tag {...blockProps} ref={mergedRefs}>
+						<div className="at-block-image__image-wrapper">
+							<img src={imageUrlToDisplay} className={ `at-block-image__image` } width={imageWidth} height={imageHeight} alt={image.alt} />
+							{
+								caption !== 'none' && (
+									<div className="at-block-image__caption">
+										{
+											caption === 'attachment' && (
+												<p className="at-block-image__caption-text">
+													{image.caption}
+												</p>
+											)
+										}
+										{
+											caption === 'custom' && (
+												<RichText
+													tagName="p"
+													className="at-block-image__caption-text"
+													placeholder={ __( 'Type the caption here...', 'athemes-blocks' ) }
+													value={captionText}
+													onChange={ ( newText ) => updateImageInnerControlAttribute('captionText', newText) }
+												/>
+											)
+										}		
+									</div>
+								)
+							}
+						</div>
+					</Tag>
 				);
 			})()}
 		</>

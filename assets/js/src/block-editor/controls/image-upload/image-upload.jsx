@@ -19,6 +19,8 @@ import { createInnerControlAttributeUpdater } from '../../../utils/block-attribu
 
 import { getInnerSettingDefaultValue, getInnerSettingDefaultUnit, getInnerSettingValue } from '../../../utils/settings';
 
+import { getImageSizeLabel } from '../../../utils/helpers';
+
 import { styles } from './styles';
 
 export function ImageUpload( props ) {
@@ -36,6 +38,29 @@ export function ImageUpload( props ) {
 
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
+    const [ imageSizes, setImageSizes ] = useState( [] );
+    const [ imageSizeOptions, setImageSizeOptions ] = useState( [] );
+
+    useEffect( () => {
+        if ( image.default.sizes ) {
+            setImageSizes( image.default.sizes );
+        } else if ( image.default.media_details ) {
+            setImageSizes( image.default.media_details.sizes );
+        }
+    }, [ image ] );
+
+    useEffect( () => {
+        const availableSizes = [];
+
+        if ( imageSizes ) {
+            Object.keys( imageSizes ).forEach( ( size ) => {
+                availableSizes.push({ label: getImageSizeLabel( size ), value: size });
+            } );
+
+            setImageSizeOptions( availableSizes );
+        }
+    }, [ imageSizes ] );
+    
     // Remove Image.
     const removeImageOnClickHandler = () => {
         updateInnerControlAttribute( 'image', '' );
@@ -119,13 +144,7 @@ export function ImageUpload( props ) {
                 ( subFields && subFields.includes('size') ) && (
                     <Select
                         label={ __( 'Size', 'athemes-blocks' ) }
-                        options={[
-                            { label: __( 'Default', 'athemes-blocks' ), value: 'default' },
-                            { label: __( 'Full', 'athemes-blocks' ), value: 'full' },
-                            { label: __( 'Large', 'athemes-blocks' ), value: 'large' },
-                            { label: __( 'Medium', 'athemes-blocks' ), value: 'medium' },
-                            { label: __( 'Small', 'athemes-blocks' ), value: 'small' },
-                        ]}
+                        options={ imageSizeOptions }
                         value={ size.default }
                         responsive={false}
                         reset={true}
@@ -140,8 +159,13 @@ export function ImageUpload( props ) {
             }
             {
                 ( subFields && subFields.includes('caption') ) && (
-                    <SwitchToggle
-                        label={ __( 'Show caption', 'athemes-blocks' ) }
+                    <Select
+                        label={ __( 'Caption', 'athemes-blocks' ) }
+                        options={ [
+                            { label: __( 'None', 'athemes-blocks' ), value: 'none' },
+                            { label: __( 'Attachment caption', 'athemes-blocks' ), value: 'attachment' },
+                            { label: __( 'Custom caption', 'athemes-blocks' ), value: 'custom' },
+                        ] }
                         value={ caption.default }
                         responsive={false}
                         reset={true}
@@ -155,7 +179,7 @@ export function ImageUpload( props ) {
                 )
             }
             {
-                ( subFields && subFields.includes('captionText') && caption.default ) && (
+                ( subFields && subFields.includes('captionText') && caption.default === 'custom' ) && (
                     <TextInput
                         label={ __( 'Caption', 'athemes-blocks' ) }
                         value={ captionText.default }

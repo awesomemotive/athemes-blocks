@@ -34,7 +34,7 @@ return array_merge(
                         'default' => 'large',
                     ),
                     'caption' => array(
-                        'default' => '',
+                        'default' => 'none',
                     ),
                     'captionText' => array(
                         'default' => '',
@@ -151,26 +151,33 @@ return array_merge(
                 'property' => '--atb-image-height',
             ),
         ),
-        'hoverAnimation' => array(
-            'type' => 'string',
-            'default' => '',
-        ),
     ),
+    // array(
+    //     'hoverAnimation' => array(
+    //         'type' => 'object',
+    //         'default' => array(
+    //             'desktop' => array(
+    //                 'value' => '',
+    //             ),
+    //             'tablet' => array(
+    //                 'value' => '',
+    //             ),
+    //             'mobile' => array(
+    //                 'value' => '',
+    //             ),
+    //         ),
+    //         'css' => array(
+    //             'selectors' => array(
+    //                 '{{WRAPPER}} .at-block-image__image:hover' => '{{VALUE}} 250ms ease-in-out forwards',
+    //             ),
+    //             'property' => 'animation',
+    //         ),
+    //     ),
+    // ),
     Attributes::get_border_attributes(
         'imageBorder',
         array(
             'borderStyle' => array(
-                'default' => array(
-                    'desktop' => array(
-                        'value' => 'none',
-                    ),
-                    'tablet' => array(
-                        'value' => 'none',
-                    ),
-                    'mobile' => array(
-                        'value' => 'none',
-                    ),
-                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-image__image'
@@ -187,35 +194,6 @@ return array_merge(
                 )
             ),
             'borderRadius' => array(
-                'default' => array(
-                    'desktop' => array(
-                        'value' => array(
-                            'top' => 4,
-                            'right' => 4,
-                            'bottom' => 4,
-                            'left' => 4,
-                        ),
-                        'unit' => 'px',
-                    ),
-                    'tablet' => array(
-                        'value' => array(
-                            'top' => '',
-                            'right' => '',
-                            'bottom' => '',
-                            'left' => '',
-                        ),
-                        'unit' => 'px',
-                    ),
-                    'mobile' => array(
-                        'value' => array(
-                            'top' => '',
-                            'right' => '',
-                            'bottom' => '',
-                            'left' => '',
-                        ),
-                        'unit' => 'px',
-                    ),
-                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-image__image'
@@ -233,46 +211,6 @@ return array_merge(
                 )
             ),
         )
-    ),
-    array(
-        'imageBoxShadow' => array(
-            'type' => 'object',
-            'default' => array(
-                'desktop' => array(
-                    'value' => array(
-                        'horizontal' => 0,
-                        'vertical' => 0,
-                        'blur' => 0,
-                        'spread' => 0,
-                        'color' => '',
-                    ),
-                ),
-                'tablet' => array(
-                    'value' => array(
-                        'horizontal' => 0,
-                        'vertical' => 0,
-                        'blur' => 0,
-                        'spread' => 0,
-                        'color' => '',
-                    ),
-                ),
-                'mobile' => array(
-                    'value' => array(
-                        'horizontal' => 0,
-                        'vertical' => 0,
-                        'blur' => 0,
-                        'spread' => 0,
-                        'color' => '',
-                    ),
-                ),
-            ),
-            'css' => array(
-                'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__image',
-                ),
-                'property' => 'box-shadow',
-            ),
-        ),
     ),
 
     // Style - Caption -----------------------------
@@ -321,7 +259,8 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__caption' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-image__caption-text' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-image__caption-text:hover' => '{{HOVER}}',
                 ),
                 'property' => 'color',
             ),
@@ -350,11 +289,79 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-image__caption',
+                    '{{WRAPPER}} .at-block-image__caption' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-image__caption:hover' => '{{HOVER}}',
                 ),
                 'property' => 'background-color',
             ),
         ),
+    ),
+    Attributes::get_border_attributes(
+        'captionBorder',
+        array(
+            'borderStyle' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-image__caption'
+                    ),
+                    'property' => 'border-style',
+                )
+            ),
+            'borderWidth' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-image__caption'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-width',
+                )
+            ),
+            'borderRadius' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => array(
+                            'top' => 4,
+                            'right' => 4,
+                            'bottom' => 4,
+                            'left' => 4,
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'tablet' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'mobile' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-image__caption'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-radius',
+                )
+            ),
+            'borderColor' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-image__caption' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-image__caption:hover' => '{{HOVER}}',
+                    ),
+                    'property' => 'border-color',
+                )
+            ),
+        )
     ),
     Attributes::get_typography_attributes(
         'captionTypography',
