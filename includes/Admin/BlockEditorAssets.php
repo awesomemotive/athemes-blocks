@@ -33,6 +33,7 @@ class BlockEditorAssets {
         $this->google_fonts_service = new GoogleFontsService();
 
         add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_general_data' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_google_fonts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_icon_libraries' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_available_image_sizes' ) );
@@ -61,7 +62,22 @@ class BlockEditorAssets {
     }
 
     /**
-     * Enqueue Google Fonts.
+     * Localize block editor with general data.
+     * 
+     * @return void
+     */
+    public function localize_block_editor_with_general_data(): void {
+        wp_localize_script(
+            'athemes-blocks-block-editor',
+            'athemesBlocksGeneralData',
+            array(
+                'testimonialsAmount' => apply_filters( 'atblocks_testimonials_max_amount', 40 ),
+            )
+        );
+    }
+
+    /**
+     * Localize block editor with Google Fonts.
      * 
      * @return void
      */

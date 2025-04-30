@@ -77,6 +77,7 @@ class PluginLoader {
             'Button',
             'Icon',
             'Image',
+            'Testimonials',
         );
 
         foreach ( $blocks as $block ) {

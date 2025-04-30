@@ -26,6 +26,7 @@ import { styles } from './styles';
 export function ImageUpload( props ) {
     const { label, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
     const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+
     const { 
         image, 
         disableLazyLoad,
