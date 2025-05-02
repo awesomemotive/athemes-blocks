@@ -5,6 +5,8 @@ import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
+import Swiper from 'swiper';
+import 'swiper/css/bundle';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
@@ -38,6 +40,8 @@ const Edit = (props) => {
 	const updateImageInnerControlAttribute = createInnerControlAttributeUpdater('image', attributes, setAttributes);
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+	const swiperRef = useRef(null);
+	const swiperInstanceRef = useRef(null);
 
 	const {
 		// General.
@@ -149,6 +153,66 @@ const Edit = (props) => {
 
 	// Merge the refs.
 	const mergedRefs = useMergeRefs([blockProps.ref, ref]);
+
+	// Initialize Swiper
+	useEffect(() => {
+		if (!swiperRef.current) return;
+
+		const swiperOptions = {
+			slidesPerView: columns,
+			spaceBetween: columnsGap,
+			loop: carouselLoop,
+			autoplay: carouselAutoplay ? {
+				delay: carouselAutoplaySpeed,
+				disableOnInteraction: false,
+				pauseOnMouseEnter: carouselPauseOnHover
+			} : false,
+			speed: carouselTransitionDuration,
+			navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			} : false,
+			pagination: carouselNavigation === 'dots' || carouselNavigation === 'both' ? {
+				el: '.swiper-pagination',
+				clickable: true,
+			} : false,
+			draggable: false,
+			allowTouchMove: false,
+		};
+
+		swiperInstanceRef.current = new Swiper(swiperRef.current, swiperOptions);
+		
+		const blockIframe = document.querySelector(`iframe[name="editor-canvas"]`);
+		
+
+		const nextSliderHandler = () => {
+			swiperInstanceRef.current.slideNext();
+		}
+
+		const prevSliderHandler = () => {
+			swiperInstanceRef.current.slidePrev();
+		}
+
+		blockIframe.contentWindow.document.querySelector('.swiper-button-next').addEventListener('click', nextSliderHandler);
+		blockIframe.contentWindow.document.querySelector('.swiper-button-prev').addEventListener('click', prevSliderHandler);
+
+		return () => {
+			if (swiperInstanceRef.current) {
+				swiperInstanceRef.current.destroy();
+				swiperInstanceRef.current = null;
+			}
+
+			blockIframe.contentWindow.document.querySelector('.swiper-button-next').removeEventListener('click', nextSliderHandler);
+			blockIframe.contentWindow.document.querySelector('.swiper-button-prev').removeEventListener('click', prevSliderHandler);
+		};
+	}, []);
+
+	// Refresh Swiper when relevant attributes change
+	useEffect(() => {
+		if (swiperInstanceRef.current) {
+			swiperInstanceRef.current.update();
+		}
+	}, [columns, columnsGap, carouselLoop, carouselAutoplay, carouselAutoplaySpeed, carouselPauseOnHover, carouselTransitionDuration, carouselNavigation]);
 
 	return (
 		<>
@@ -1044,8 +1108,38 @@ const Edit = (props) => {
 				
 				// Display the image.
 				return (
-					<Tag {...blockProps} ref={mergedRefs}>
-						asdasd
+					<Tag {...blockProps}>
+						<div class="swiper" ref={swiperRef}>
+							<div class="swiper-wrapper">
+								{
+									Array.from({ length: testimonialsAmount }, (_, index) => (
+										<div class="atblocks-testimonials__item swiper-slide">
+											<RichText
+												tagName="div"
+												className="atblocks-testimonials__item-text"
+												value=""
+												placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
+											/>
+											<RichText
+												tagName="div"
+												className="atblocks-testimonials__item-name"
+												value=""
+												placeholder={ __( 'Name', 'athemes-blocks' ) }
+											/>
+											<RichText
+												tagName="div"
+												className="atblocks-testimonials__item-company"
+												value=""
+												placeholder={ __( 'Company', 'athemes-blocks' ) }
+											/>
+										</div>
+									))
+								}
+							</div>
+							<div class="swiper-button-next">next</div>
+							<div class="swiper-button-prev">prev</div>
+							<div class="swiper-pagination">...</div>
+						</div>
 					</Tag>
 				);
 			})()}
