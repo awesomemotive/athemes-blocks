@@ -1,11 +1,13 @@
 import { __ } from '@wordpress/i18n';
 import { useRefEffect } from '@wordpress/compose';
-import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useEffect, useMemo, useRef, useState, useCallback } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css/bundle';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
@@ -50,6 +52,7 @@ const Edit = (props) => {
 		testimonialsAmountMax,
 		columns,
 		columnsGap,
+		contentGap,
 		imagePosition,
 		imageStyle,
 		imageSize,
@@ -70,8 +73,12 @@ const Edit = (props) => {
 		arrowSize,
 		arrowBorderSize,
 		arrowBorderRadius,
-		dotsVerticalSpacing,
+		arrowOffset,
 		navigationColor,
+		navigationBackgroundColor,
+		navigationBorderColor,
+		dotsColor,
+		dotsOffset,
 		cardBackgroundColor,
 		cardPadding,
 
@@ -82,7 +89,7 @@ const Edit = (props) => {
 	} = useMemo(() => {
 		return {
 			// General.
-			alignment: getSettingValue('alignment', currentDevice, atts),
+			alignment: atts.alignment,
 			testimonialsAmount: atts.testimonialsAmount,
 			testimonialsAmountMax: athemesBlocksGeneralData ? athemesBlocksGeneralData.testimonialsAmount : 40,
 			columns: getSettingValue('columns', currentDevice, atts),
@@ -98,18 +105,23 @@ const Edit = (props) => {
 			carouselNavigation: atts.carouselNavigation,
 
 			// Style.
-			contentColor: atts.contentColor,
-			contentBottomSpacing: getSettingValue('contentBottomSpacing', currentDevice, atts),
-			nameColor: atts.nameColor,
-			nameBottomSpacing: getSettingValue('nameBottomSpacing', currentDevice, atts),
-			companyColor: atts.companyColor,
+			contentColor: getSettingValue('contentColor', 'desktop', atts),
+			contentBottomSpacing: getSettingValue('contentBottomSpacing', 'desktop', atts),
+			nameColor: getSettingValue('nameColor', 'desktop', atts),
+			nameBottomSpacing: getSettingValue('nameBottomSpacing', 'desktop', atts),
+			companyColor: getSettingValue('companyColor', 'desktop', atts),
 			arrowSize: getSettingValue('arrowSize', 'desktop', atts),
 			arrowBorderSize: getSettingValue('arrowBorderSize', 'desktop', atts),
 			arrowBorderRadius: getSettingValue('arrowBorderRadius', 'desktop', atts),
-			dotsVerticalSpacing: getSettingValue('dotsVerticalSpacing', currentDevice, atts),
+			arrowOffset: getSettingValue('arrowOffset', 'desktop', atts),
 			navigationColor: getSettingValue('navigationColor', 'desktop', atts),
+			navigationBackgroundColor: getSettingValue('navigationBackgroundColor', 'desktop', atts),
+			navigationBorderColor: getSettingValue('navigationBorderColor', 'desktop', atts),
+			dotsColor: getSettingValue('dotsColor', 'desktop', atts),
+			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),
 			cardBackgroundColor: getSettingValue('cardBackgroundColor', 'desktop', atts),
 			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
+			contentGap: getSettingValue('contentGap', currentDevice, atts),
 			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
 
 			// Advanced.
@@ -154,65 +166,71 @@ const Edit = (props) => {
 	// Merge the refs.
 	const mergedRefs = useMergeRefs([blockProps.ref, ref]);
 
-	// Initialize Swiper
+	// Swiper Options.
+	const swiperOptions = {
+		slidesPerView: columns,
+		spaceBetween: columnsGap,
+		loop: carouselLoop,
+		autoplay: carouselAutoplay ? {
+			delay: carouselAutoplaySpeed,
+			disableOnInteraction: false,
+			pauseOnMouseEnter: carouselPauseOnHover
+		} : false,
+		speed: carouselTransitionDuration,
+		navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
+			enabled: true,
+			nextEl: 'at-block-nav--next',
+			prevEl: 'at-block-nav--prev',
+		} : false,
+		pagination: ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
+			type: 'bullets',
+			bulletClass: 'at-block-bullets--bullet',
+			bulletActiveClass: 'at-block-bullets--bullet-active',
+			clickable: true,
+		} : false,
+		draggable: false,
+		allowTouchMove: false,
+		autoHeight: false,
+	};
+
+	// Swiper Navigation.
+	const swiperNavigationPrevHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		swiperRef.current.swiper.slidePrev();
+	};
+	
+	const swiperNavigationNextHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		swiperRef.current.swiper.slideNext();
+	};
+
+	// Swiper Pause on Hover.
+	const swiperPauseMouseEnterHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		if ( carouselPauseOnHover && carouselAutoplay ) {
+			console.log('PAUSE!');
+			swiperRef.current.swiper.autoplay.stop();
+		}
+	};
+
+	const swiperPauseMouseLeaveHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		if ( carouselPauseOnHover && carouselAutoplay ) {
+			console.log('RESUME!');
+			swiperRef.current.swiper.autoplay.start();
+		}
+	};
+
+	// Refresh the swiper every time a attribute change.
 	useEffect(() => {
-		if (!swiperRef.current) return;
-
-		const swiperOptions = {
-			slidesPerView: columns,
-			spaceBetween: columnsGap,
-			loop: carouselLoop,
-			autoplay: carouselAutoplay ? {
-				delay: carouselAutoplaySpeed,
-				disableOnInteraction: false,
-				pauseOnMouseEnter: carouselPauseOnHover
-			} : false,
-			speed: carouselTransitionDuration,
-			navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev',
-			} : false,
-			pagination: carouselNavigation === 'dots' || carouselNavigation === 'both' ? {
-				el: '.swiper-pagination',
-				clickable: true,
-			} : false,
-			draggable: false,
-			allowTouchMove: false,
-		};
-
-		swiperInstanceRef.current = new Swiper(swiperRef.current, swiperOptions);
-		
-		const blockIframe = document.querySelector(`iframe[name="editor-canvas"]`);
-		
-
-		const nextSliderHandler = () => {
-			swiperInstanceRef.current.slideNext();
+		if ( swiperRef.current ) {
+			swiperRef.current.swiper.update();
 		}
-
-		const prevSliderHandler = () => {
-			swiperInstanceRef.current.slidePrev();
-		}
-
-		blockIframe.contentWindow.document.querySelector('.swiper-button-next').addEventListener('click', nextSliderHandler);
-		blockIframe.contentWindow.document.querySelector('.swiper-button-prev').addEventListener('click', prevSliderHandler);
-
-		return () => {
-			if (swiperInstanceRef.current) {
-				swiperInstanceRef.current.destroy();
-				swiperInstanceRef.current = null;
-			}
-
-			blockIframe.contentWindow.document.querySelector('.swiper-button-next').removeEventListener('click', nextSliderHandler);
-			blockIframe.contentWindow.document.querySelector('.swiper-button-prev').removeEventListener('click', prevSliderHandler);
-		};
-	}, []);
-
-	// Refresh Swiper when relevant attributes change
-	useEffect(() => {
-		if (swiperInstanceRef.current) {
-			swiperInstanceRef.current.update();
-		}
-	}, [columns, columnsGap, carouselLoop, carouselAutoplay, carouselAutoplaySpeed, carouselPauseOnHover, carouselTransitionDuration, carouselNavigation]);
+	}, [atts]);
 
 	return (
 		<>
@@ -230,25 +248,17 @@ const Edit = (props) => {
 									label={ __( 'Alignment', 'athemes-blocks' ) }
 									defaultValue={ alignment }
 									options={[
-										{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
 										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
 									]}
 									responsive={true}
 									reset={true}
 									onChange={ ( value ) => {
-										updateAttribute( 'alignment', {
-											value: value
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'alignment', value: value } );
+										setAttributes({ alignment: value });
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'alignment', {
-											value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults )
-										}, currentDevice );
-										
-										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
+										setAttributes({ alignment: attributesDefaults.alignment.default.value });										
 									} }
 								/>
 								<RangeSlider 
@@ -338,6 +348,44 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'columnsGap', value: getSettingDefaultValue( 'columnsGap', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
+								<RangeSlider 
+									label={ __( 'Content Gap', 'athemes-blocks' ) }
+									defaultValue={ contentGap }
+									defaultUnit={ getSettingUnit( 'contentGap', currentDevice, atts ) }
+									min={ 1 }
+									max={ {
+										px: 150,
+										em: 20,
+										rem: 20
+									} }
+									responsive={false}
+									reset={true}
+									units={['px', 'em', 'rem']}
+									onChange={ ( value ) => {
+										updateAttribute( 'contentGap', {
+											value: value,
+											unit: getSettingUnit( 'contentGap', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'contentGap', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'contentGap', {
+											value: contentGap,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'contentGap', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'contentGap', {
+											value: getSettingDefaultValue( 'contentGap', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'contentGap', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'contentGap', value: getSettingDefaultValue( 'contentGap', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Image', 'athemes-blocks' ) } 
@@ -384,6 +432,7 @@ const Edit = (props) => {
 										{ label: __( 'Normal', 'athemes-blocks' ), value: 'normal' },
 										{ label: __( 'Circle', 'athemes-blocks' ), value: 'circle' },
 										{ label: __( 'Square', 'athemes-blocks' ), value: 'square' },
+										{ label: __( 'Rounded', 'athemes-blocks' ), value: 'rounded' },
 									]}
 									responsive={false}
 									reset={true}
@@ -425,7 +474,7 @@ const Edit = (props) => {
 										vh: 1,
 									} }
 									max={ {
-										px: 2100,
+										px: 600,
 										em: 100,
 										rem: 100,
 										percent: 100,
@@ -836,7 +885,7 @@ const Edit = (props) => {
 									label={ __( 'Arrow Border Size', 'athemes-blocks' ) }
 									defaultValue={ arrowBorderSize }
 									defaultUnit={ getSettingUnit( 'arrowBorderSize', 'desktop', atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ 10 }
 									responsive={false}
 									reset={true}
@@ -901,47 +950,43 @@ const Edit = (props) => {
 									} }
 								/>
 								<RangeSlider 
-									label={ __( 'Dots Vertical Spacing', 'athemes-blocks' ) }
-									defaultValue={ dotsVerticalSpacing }
-									defaultUnit={ getSettingUnit( 'dotsVerticalSpacing', currentDevice, atts ) }
-									min={ 1 }
-									max={ {
-										px: 150,
-										em: 20,
-										rem: 20
-									} }
+									label={ __( 'Arrow Offset', 'athemes-blocks' ) }
+									defaultValue={ arrowOffset }
+									defaultUnit={ getSettingUnit( 'arrowOffset', 'desktop', atts ) }
+									min={ 0 }
+									max={ 100 }
 									responsive={false}
 									reset={true}
-									units={['px', 'em', 'rem']}
+									units={['px']}
 									onChange={ ( value ) => {
-										updateAttribute( 'dotsVerticalSpacing', {
+										updateAttribute( 'arrowOffset', {
 											value: value,
-											unit: getSettingUnit( 'dotsVerticalSpacing', currentDevice, atts )
-										}, currentDevice );
+											unit: getSettingUnit( 'arrowOffset', 'desktop', atts )
+										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'dotsVerticalSpacing', value: value } );
+										setUpdateCss( { settingId: 'arrowOffset', value: value } );
 									} }
 									onChangeUnit={ ( value ) => {
-										updateAttribute( 'dotsVerticalSpacing', {
-											value: dotsVerticalSpacing,
+										updateAttribute( 'arrowOffset', {
+											value: arrowOffset,
 											unit: value,
-										}, currentDevice );
+										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'dotsVerticalSpacing', value: value } );								
+										setUpdateCss( { settingId: 'arrowOffset', value: value } );								
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'dotsVerticalSpacing', {
-											value: getSettingDefaultValue( 'dotsVerticalSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'dotsVerticalSpacing', currentDevice, attributesDefaults )
-										}, currentDevice );							
+										updateAttribute( 'arrowOffset', {
+											value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ),
+											unit: getSettingDefaultUnit( 'arrowOffset', 'desktop', attributesDefaults )
+										}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'dotsVerticalSpacing', value: getSettingDefaultValue( 'dotsVerticalSpacing', currentDevice, attributesDefaults ) } );								
+										setUpdateCss( { settingId: 'arrowOffset', value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ) } );								
 									} }
 								/>
 								<ColorPicker
-									label={ __( 'Color', 'athemes-blocks' ) }
+									label={ __( 'Arrow Color', 'athemes-blocks' ) }
 									value={ navigationColor }
-									hover={false}
+									hover={true}
 									responsive={false}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
@@ -973,6 +1018,151 @@ const Edit = (props) => {
 										}, 'desktop' );
 										
 										setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<ColorPicker
+									label={ __( 'Arrow Background Color', 'athemes-blocks' ) }
+									value={ navigationBackgroundColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'navigationBackgroundColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'navigationBackgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'navigationBackgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<ColorPicker
+									label={ __( 'Arrow Border Color', 'athemes-blocks' ) }
+									value={ navigationBorderColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'navigationBorderColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'navigationBorderColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'navigationBorderColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Dots Offset', 'athemes-blocks' ) }
+									defaultValue={ dotsOffset }
+									defaultUnit={ getSettingUnit( 'dotsOffset', 'desktop', atts ) }
+									min={ 0 }
+									max={ 100 }
+									responsive={false}
+									reset={true}
+									units={['px']}
+									onChange={ ( value ) => {
+										updateAttribute( 'dotsOffset', {
+											value: value,
+											unit: getSettingUnit( 'dotsOffset', 'desktop', atts )
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'dotsOffset', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'dotsOffset', {
+											value: dotsOffset,
+											unit: value,
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'dotsOffset', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'dotsOffset', {
+											value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ),
+											unit: getSettingDefaultUnit( 'dotsOffset', 'desktop', attributesDefaults )
+										}, 'desktop' );							
+
+										setUpdateCss( { settingId: 'dotsOffset', value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ) } );								
+									} }
+								/>
+								<ColorPicker
+									label={ __( 'Dots Color', 'athemes-blocks' ) }
+									value={ dotsColor }
+									hover={false}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'dotsColor', {
+											value: {
+												defaultState: value.hex,
+												hoverState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'dotsColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ),
+												hoverState: value.hex	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'dotsColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
 								/>
 							</PanelBody>
@@ -1091,6 +1281,16 @@ const Edit = (props) => {
 				// Block HTML tag.
 				let Tag = 'div';
 
+				// Alignment.
+				blockProps.className += ` at-block-testimonials--${alignment}`;				
+
+				// Image Position.
+				blockProps.className += ` at-block-testimonials--image-${imagePosition}`;
+
+				// Image Style.
+				blockProps.className += ` at-block-testimonials--image-style-${imageStyle}`;
+
+				// Reponsive display.
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
 				}
@@ -1108,37 +1308,161 @@ const Edit = (props) => {
 				
 				// Display the image.
 				return (
-					<Tag {...blockProps}>
-						<div class="swiper" ref={swiperRef}>
-							<div class="swiper-wrapper">
+					<Tag {...blockProps}>				
+						<div 
+							onMouseEnter={ swiperPauseMouseEnterHandler }
+							onMouseLeave={ swiperPauseMouseLeaveHandler }
+						>
+							<Swiper
+								ref={ swiperRef }
+								modules={[Pagination, Navigation, Autoplay]} 
+								className="at-block-testimonials__swiper" 
+								{ ...swiperOptions } 
+							>
 								{
-									Array.from({ length: testimonialsAmount }, (_, index) => (
-										<div class="atblocks-testimonials__item swiper-slide">
-											<RichText
-												tagName="div"
-												className="atblocks-testimonials__item-text"
-												value=""
-												placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
-											/>
-											<RichText
-												tagName="div"
-												className="atblocks-testimonials__item-name"
-												value=""
-												placeholder={ __( 'Name', 'athemes-blocks' ) }
-											/>
-											<RichText
-												tagName="div"
-												className="atblocks-testimonials__item-company"
-												value=""
-												placeholder={ __( 'Company', 'athemes-blocks' ) }
-											/>
-										</div>
-									))
+									Array.from({ length: testimonialsAmount }, (_, index) => {
+
+										// Image.
+										const image = getInnerSettingValue( `image${index + 1}`, 'image', '', atts );
+
+										let imageUrlToDisplay = '';
+										let imageWidth = 0;
+										let imageHeight = 0;
+
+										if ( image.sizes && image.sizes[imageSize] ) {
+											imageUrlToDisplay = image.sizes[imageSize].url;
+											imageWidth = image.sizes[imageSize].width;
+											imageHeight = image.sizes[imageSize].height;
+										} else if ( image.media_details && image.media_details.sizes[imageSize] ) {
+											imageUrlToDisplay = image.media_details.sizes[imageSize].source_url;
+											imageWidth = image.media_details.sizes[imageSize].width;
+											imageHeight = image.media_details.sizes[imageSize].height;
+										} else {
+											imageUrlToDisplay = imageUrlToDisplay;
+											imageWidth = image.width;
+											imageHeight = image.height;
+										}
+
+										const hasImage = image && imageUrlToDisplay ? true : false;
+
+										// Other content.
+										const testimonialText = atts[`testimonialText${index + 1}`];
+										const name = atts[`name${index + 1}`];
+										const company = atts[`company${index + 1}`];
+
+										return (
+											<SwiperSlide className="at-block-testimonials__item swiper-slide">
+												<div className="at-block-testimonials__item-inner">
+													{
+														(imagePosition === 'top' || imagePosition === 'left' || imagePosition === 'right') && (
+															<>
+																{
+																	hasImage && (
+																		<div className="at-block-testimonials__item-image-wrapper">
+																			<div className="at-block-testimonials__item-image">
+																				<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
+																			</div>
+																		</div>
+																	)
+																}
+																<div className="at-block-testimonials__item-content">
+																	<RichText
+																		tagName="div"
+																		className="at-block-testimonials__item-text"
+																		placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
+																		value={ testimonialText }
+																		onChange={ ( value ) => {
+																			setAttributes( { [`testimonialText${index + 1}`]: value } );
+																		} }
+																	/>
+																	<div>
+																		<RichText
+																			tagName="div"
+																			className="at-block-testimonials__item-name"
+																			value={ name }
+																			placeholder={ __( 'Name', 'athemes-blocks' ) }
+																			onChange={ ( value ) => {
+																				setAttributes( { [`name${index + 1}`]: value } );
+																			} }
+																		/>
+																		<RichText
+																			tagName="div"
+																			className="at-block-testimonials__item-company"
+																			value={ company }
+																			placeholder={ __( 'Company', 'athemes-blocks' ) }
+																			onChange={ ( value ) => {
+																				setAttributes( { [`company${index + 1}`]: value } );
+																			} }
+																		/>
+																	</div>
+																</div>
+															</>
+														)
+													}
+													{
+														imagePosition === 'bottom' && (
+															<>
+																<RichText
+																	tagName="div"
+																	className="at-block-testimonials__item-text"
+																	placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
+																	value={ testimonialText }
+																	onChange={ ( value ) => {
+																		setAttributes( { [`testimonialText${index + 1}`]: value } );
+																	} }
+																/>
+																<div className="at-block-testimonials__item-content">
+																	{
+																		hasImage && (
+																			<div>
+																				<div className="at-block-testimonials__item-image-wrapper">
+																					<div className="at-block-testimonials__item-image">
+																						<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
+																					</div>
+																				</div>
+																			</div>
+																		)
+																	}
+																	<div>
+																		<RichText
+																			tagName="div"
+																			className="at-block-testimonials__item-name"
+																			value={ name }
+																			placeholder={ __( 'Name', 'athemes-blocks' ) }
+																			onChange={ ( value ) => {
+																				setAttributes( { [`name${index + 1}`]: value } );
+																			} }
+																		/>
+																		<RichText
+																			tagName="div"
+																			className="at-block-testimonials__item-company"
+																			value={ company }
+																			placeholder={ __( 'Company', 'athemes-blocks' ) }
+																			onChange={ ( value ) => {
+																				setAttributes( { [`company${index + 1}`]: value } );
+																			} }
+																		/>
+																	</div>
+																</div>
+															</>														
+														)
+													}
+													
+												</div>
+											</SwiperSlide>
+										);
+									})
 								}
-							</div>
-							<div class="swiper-button-next">next</div>
-							<div class="swiper-button-prev">prev</div>
-							<div class="swiper-pagination">...</div>
+
+								{
+									( ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+										<>
+											<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
+											<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
+										</>
+									)
+								}
+							</Swiper>
 						</div>
 					</Tag>
 				);

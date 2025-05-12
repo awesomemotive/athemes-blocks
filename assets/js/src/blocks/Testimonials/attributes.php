@@ -59,24 +59,8 @@ return array_merge(
     // General - Content -----------------------------
     array(
         'alignment' => array(
-            'type' => 'object',
-            'default' => array(
-                'desktop' => array(
-                    'value' => 'center',
-                ),
-                'tablet' => array(
-                    'value' => '',
-                ),
-                'mobile' => array(
-                    'value' => '',
-                ),
-            ),
-            'css' => array(
-                'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__wrapper',
-                ),
-                'property' => 'justify-content',
-            ),
+            'type' => 'string',
+            'default' => 'center',
         ),
         'testimonialsAmount' => array(
             'type' => 'number',
@@ -119,6 +103,29 @@ return array_merge(
                 'property' => 'margin-right',
             ),
         ),
+        'contentGap' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 20,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--at-block-testimonials-content-gap',
+            ),
+        ),
     ),
   
     // General - Images -----------------------------
@@ -152,6 +159,12 @@ return array_merge(
                     'unit' => 'px',
                 ),
             ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-testimonials__item-image'
+                ),
+                'property' => '--at-block-testimonials-image-width',
+            ),
         ),
     ),
 
@@ -163,11 +176,11 @@ return array_merge(
         ),
         'carouselAutoplay' => array(
             'type' => 'boolean',
-            'default' => true,
+            'default' => false,
         ),
         'carouselAutoplaySpeed' => array(
             'type' => 'number',
-            'default' => 3000,
+            'default' => 5000,
         ),
         'carouselLoop' => array(
             'type' => 'boolean',
@@ -209,8 +222,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__content',
-                    '{{WRAPPER}} .at-block-testimonials__content:hover',
+                    '{{WRAPPER}} .at-block-testimonials__item-text',
                 ),
                 'property' => 'color',
             ),
@@ -222,7 +234,7 @@ return array_merge(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'font-family',
                 )
@@ -230,7 +242,7 @@ return array_merge(
             'fontSize' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'font-size',
                 )
@@ -238,7 +250,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'font-weight',
                 )
@@ -246,7 +258,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'font-style',
                 )
@@ -254,7 +266,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'text-transform',
                 )
@@ -262,15 +274,29 @@ return array_merge(
             'textDecoration' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'text-decoration',
                 )
             ),
             'lineHeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'line-height',
                 )
@@ -278,7 +304,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__content'
+                        '{{WRAPPER}} .at-block-testimonials__item-text'
                     ),
                     'property' => 'letter-spacing',
                 )
@@ -290,7 +316,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 25,
+                    'value' => '',
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -304,7 +330,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__content'
+                    '{{WRAPPER}} .at-block-testimonials__item-text'
                 ),
                 'property' => 'margin-bottom',
             ),
@@ -337,7 +363,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__name'
+                    '{{WRAPPER}} .at-block-testimonials__item-name'
                 ),
                 'property' => 'color',
             ),
@@ -349,7 +375,7 @@ return array_merge(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'font-family',
                 )
@@ -357,7 +383,7 @@ return array_merge(
             'fontSize' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'font-size',
                 )
@@ -365,7 +391,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'font-weight',
                 )
@@ -373,7 +399,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'font-style',
                 )
@@ -381,7 +407,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'text-transform',
                 )
@@ -389,15 +415,29 @@ return array_merge(
             'textDecoration' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'text-decoration',
                 )
             ),
             'lineHeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'line-height',
                 )
@@ -405,7 +445,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__name'
+                        '{{WRAPPER}} .at-block-testimonials__item-name'
                     ),
                     'property' => 'letter-spacing',
                 )
@@ -417,7 +457,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 10,
+                    'value' => '',
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -431,7 +471,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__name'
+                    '{{WRAPPER}} .at-block-testimonials__item-name'
                 ),
                 'property' => 'margin-bottom',
             ),
@@ -464,7 +504,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__company'
+                    '{{WRAPPER}} .at-block-testimonials__item-company'
                 ),
                 'property' => 'color',
             ),
@@ -476,7 +516,7 @@ return array_merge(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'font-family',
                 )
@@ -484,7 +524,7 @@ return array_merge(
             'fontSize' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'font-size',
                 )
@@ -492,7 +532,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'font-weight',
                 )
@@ -500,7 +540,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'font-style',
                 )
@@ -508,7 +548,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'text-transform',
                 )
@@ -516,15 +556,29 @@ return array_merge(
             'textDecoration' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'text-decoration',
                 )
             ),
             'lineHeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'line-height',
                 )
@@ -532,7 +586,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__company'
+                        '{{WRAPPER}} .at-block-testimonials__item-company'
                     ),
                     'property' => 'letter-spacing',
                 )
@@ -546,7 +600,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 24,
+                    'value' => 50,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -560,16 +614,16 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__nav-arrow'
+                    '{{WRAPPER}} .at-block-nav',
                 ),
-                'property' => 'font-size',
+                'property' => '--at-block-nav-arrow-size',
             ),
         ),
         'arrowBorderSize' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 2,
+                    'value' => '',
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -583,16 +637,16 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__nav-arrow'
+                    '{{WRAPPER}} .at-block-nav'
                 ),
-                'property' => 'border-width',
+                'property' => '--at-block-nav-arrow-border-width',
             ),
         ),
         'arrowBorderRadius' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 50,
+                    'value' => '',
                     'unit' => '%',
                 ),
                 'tablet' => array(
@@ -606,16 +660,16 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__nav-arrow'
+                    '{{WRAPPER}} .at-block-nav'
                 ),
-                'property' => 'border-radius',
+                'property' => '--at-block-nav-arrow-border-radius',
             ),
         ),
-        'dotsVerticalSpacing' => array(
+        'arrowOffset' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 10,
+                    'value' => '',
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -629,9 +683,9 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__dots'
+                    '{{WRAPPER}} .at-block-nav'
                 ),
-                'property' => 'margin-top',
+                'property' => '--at-block-nav-arrow-offset',
             ),
         ),
         'navigationColor' => array(
@@ -658,9 +712,119 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__nav-arrow'
+                    '{{WRAPPER}} .at-block-nav'
                 ),
-                'property' => 'color',
+                'property' => '--at-block-nav-color',
+            ),
+        ),
+        'navigationBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-background-color',
+            ),
+        ),
+        'navigationBorderColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-border-color',
+            ),
+        ),
+        'dotsOffset' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .swiper-pagination-bullets'
+                ),
+                'property' => '--at-block-dots-offset',
+            ),
+        ),
+        'dotsColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-bullets--bullet' => '{{VALUE}}',
+                ),
+                'property' => '--at-block-dots-color',
             ),
         ),
     ),
@@ -691,7 +855,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__wrapper'
+                    '{{WRAPPER}} .at-block-testimonials__item-inner'
                 ),
                 'property' => 'background-color',
             ),
@@ -705,7 +869,7 @@ return array_merge(
             'borderStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__wrapper'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-style',
                 )
@@ -713,7 +877,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__wrapper'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -721,7 +885,7 @@ return array_merge(
             'borderRadius' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__wrapper'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -729,8 +893,8 @@ return array_merge(
             'borderColor' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__wrapper' => '{{VALUE}}',
-                        '{{WRAPPER}} .at-block-testimonials__wrapper:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-testimonials__item-inner' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-testimonials__item-inner:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )
@@ -744,23 +908,38 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 20,
+                    'value' => array(
+                        'top' => 50,
+                        'right' => 50,
+                        'bottom' => 30,
+                        'left' => 50,
+                    ),
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => '',
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => '',
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
                     'unit' => 'px',
                 ),
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__item'
+                    '{{WRAPPER}} .at-block-testimonials__item-inner'
                 ),
-                'property' => 'padding',
+                'property' => 'padding-{{DIRECTION}}',
             ),
         ),
     ),

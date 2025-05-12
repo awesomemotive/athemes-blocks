@@ -132,7 +132,7 @@ const AdvancedPanel = (props) => {
                 />
             </PanelBody>
             {
-                ['athemes-blocks/flex-container'].includes(blockName) === false && (
+                ['athemes-blocks/flex-container', 'athemes-blocks/testimonials'].includes(blockName) === false && (
                     <PanelBody 
                         title={__('Background', 'athemes-blocks')} 
                         initialOpen={false}
