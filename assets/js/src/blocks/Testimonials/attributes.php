@@ -88,19 +88,13 @@ return array_merge(
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => '',
+                    'value' => 20,
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => '',
+                    'value' => 20,
                     'unit' => 'px',
                 ),
-            ),
-            'css' => array(
-                'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__item'
-                ),
-                'property' => 'margin-right',
             ),
         ),
         'contentGap' => array(
@@ -185,6 +179,10 @@ return array_merge(
         'carouselLoop' => array(
             'type' => 'boolean',
             'default' => true,
+        ),
+        'carouselAutoHeight' => array(
+            'type' => 'boolean',
+            'default' => false,
         ),
         'carouselTransitionDuration' => array(
             'type' => 'number',
@@ -779,7 +777,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => '',
+                    'value' => 25,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -855,7 +853,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-testimonials__item-inner'
+                    '{{WRAPPER}}'
                 ),
                 'property' => 'background-color',
             ),
@@ -869,7 +867,7 @@ return array_merge(
             'borderStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__item-inner'
+                        '{{WRAPPER}}'
                     ),
                     'property' => 'border-style',
                 )
@@ -877,7 +875,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__item-inner'
+                        '{{WRAPPER}}'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -885,7 +883,7 @@ return array_merge(
             'borderRadius' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__item-inner'
+                        '{{WRAPPER}}'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -893,8 +891,8 @@ return array_merge(
             'borderColor' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-testimonials__item-inner' => '{{VALUE}}',
-                        '{{WRAPPER}} .at-block-testimonials__item-inner:hover' => '{{HOVER}}',
+                        '{{WRAPPER}}' => '{{VALUE}}',
+                        '{{WRAPPER}}:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )

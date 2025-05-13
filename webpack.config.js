@@ -78,6 +78,10 @@ const copyPatterns = blockFolders.flatMap((folder) => [
     {
         from: path.join(blocksDir, folder, 'attributes.php'),
         to: path.join(__dirname, 'assets/js/blocks/', folder, 'attributes.php'),
+    },
+    {
+        from: path.join(blocksDir, folder, 'view.js'),
+        to: path.join(__dirname, 'assets/js/blocks/', folder, 'view.js'),
     }
 ]);
 
@@ -286,5 +290,91 @@ module.exports = [
             
     //     ],
     // }
+
+    // Modularized Swiper Configuration (Development)
+    {
+        mode: 'development',
+        entry: {
+            'modularized-swiper': path.resolve(__dirname, 'assets/js/src/vendor/modularized-swiper.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/vendor/swiper/'),
+            filename: '[name].js',
+        },
+        devtool: 'source-map',
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@wordpress/babel-preset-default'],
+                        },
+                    },
+                },
+            ],
+        },
+    },
+
+    // Modularized Swiper Configuration (Production)
+    {
+        mode: 'production',
+        entry: {
+            'modularized-swiper': path.resolve(__dirname, 'assets/js/src/vendor/modularized-swiper.js'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/vendor/swiper/'),
+            filename: '[name].min.js',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@wordpress/babel-preset-default'],
+                        },
+                    },
+                },
+            ],
+        },
+    },
+
+    // Swiper SCSS Compilation Configuration
+    {
+        mode: 'development',
+        entry: {
+            'swiper-core': path.resolve(__dirname, 'node_modules/swiper/swiper.scss'),
+            'swiper-autoplay': path.resolve(__dirname, 'node_modules/swiper/modules/autoplay.scss'),
+            'swiper-navigation': path.resolve(__dirname, 'node_modules/swiper/modules/navigation.scss'),
+            'swiper-pagination': path.resolve(__dirname, 'node_modules/swiper/modules/pagination.scss'),
+        },
+        output: {
+            path: path.resolve(__dirname, 'assets/vendor/swiper/css/'),
+        },
+        devtool: 'source-map',
+        module: {
+            rules: [
+                {
+                    test: /\.scss$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+            ],
+        },
+        plugins: [
+            new FixStyleOnlyEntriesPlugin(),
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+            }),
+        ]
+    },
 ];
 

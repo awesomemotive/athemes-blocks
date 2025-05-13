@@ -61,6 +61,7 @@ const Edit = (props) => {
 		carouselAutoplay,
 		carouselAutoplaySpeed,
 		carouselLoop,
+		carouselAutoHeight,
 		carouselTransitionDuration,
 		carouselNavigation,
 		
@@ -101,6 +102,7 @@ const Edit = (props) => {
 			carouselAutoplay: atts.carouselAutoplay,
 			carouselAutoplaySpeed: atts.carouselAutoplaySpeed,
 			carouselLoop: atts.carouselLoop,
+			carouselAutoHeight: atts.carouselAutoHeight,
 			carouselTransitionDuration: atts.carouselTransitionDuration,
 			carouselNavigation: atts.carouselNavigation,
 
@@ -190,7 +192,7 @@ const Edit = (props) => {
 		} : false,
 		draggable: false,
 		allowTouchMove: false,
-		autoHeight: false,
+		autoHeight: carouselAutoHeight,
 	};
 
 	// Swiper Navigation.
@@ -229,6 +231,13 @@ const Edit = (props) => {
 	useEffect(() => {
 		if ( swiperRef.current ) {
 			swiperRef.current.swiper.update();
+
+			// Handle autoplay state changes
+			if (carouselAutoplay) {
+				swiperRef.current.swiper.autoplay.start();
+			} else {
+				swiperRef.current.swiper.autoplay.stop();
+			}
 		}
 	}, [atts]);
 
@@ -252,7 +261,7 @@ const Edit = (props) => {
 										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
 										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
 									]}
-									responsive={true}
+									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
 										setAttributes({ alignment: value });
@@ -358,7 +367,7 @@ const Edit = (props) => {
 										em: 20,
 										rem: 20
 									} }
-									responsive={false}
+									responsive={true}
 									reset={true}
 									units={['px', 'em', 'rem']}
 									onChange={ ( value ) => {
@@ -569,6 +578,18 @@ const Edit = (props) => {
 									} }
 									onClickReset={ () => {
 										setAttributes({ carouselLoop: getSettingDefaultValue( 'carouselLoop', '', attributesDefaults ) });
+									} }
+								/>
+								<SwitchToggle
+									label={ __( 'Auto Height', 'athemes-blocks' ) }
+									value={ carouselAutoHeight }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ carouselAutoHeight: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ carouselAutoHeight: getSettingDefaultValue( 'carouselAutoHeight', '', attributesDefaults ) });
 									} }
 								/>
 								<RangeSlider 
@@ -1312,7 +1333,7 @@ const Edit = (props) => {
 						<div 
 							onMouseEnter={ swiperPauseMouseEnterHandler }
 							onMouseLeave={ swiperPauseMouseLeaveHandler }
-						>
+						>	
 							<Swiper
 								ref={ swiperRef }
 								modules={[Pagination, Navigation, Autoplay]} 
@@ -1371,6 +1392,7 @@ const Edit = (props) => {
 																		className="at-block-testimonials__item-text"
 																		placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
 																		value={ testimonialText }
+																		allowedFormats={['core/bold', 'core/italic']}
 																		onChange={ ( value ) => {
 																			setAttributes( { [`testimonialText${index + 1}`]: value } );
 																		} }
@@ -1381,6 +1403,7 @@ const Edit = (props) => {
 																			className="at-block-testimonials__item-name"
 																			value={ name }
 																			placeholder={ __( 'Name', 'athemes-blocks' ) }
+																			allowedFormats={['core/bold', 'core/italic']}
 																			onChange={ ( value ) => {
 																				setAttributes( { [`name${index + 1}`]: value } );
 																			} }
@@ -1390,6 +1413,7 @@ const Edit = (props) => {
 																			className="at-block-testimonials__item-company"
 																			value={ company }
 																			placeholder={ __( 'Company', 'athemes-blocks' ) }
+																			allowedFormats={['core/bold', 'core/italic']}
 																			onChange={ ( value ) => {
 																				setAttributes( { [`company${index + 1}`]: value } );
 																			} }
@@ -1407,6 +1431,7 @@ const Edit = (props) => {
 																	className="at-block-testimonials__item-text"
 																	placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
 																	value={ testimonialText }
+																	allowedFormats={['core/bold', 'core/italic']}
 																	onChange={ ( value ) => {
 																		setAttributes( { [`testimonialText${index + 1}`]: value } );
 																	} }
@@ -1429,6 +1454,7 @@ const Edit = (props) => {
 																			className="at-block-testimonials__item-name"
 																			value={ name }
 																			placeholder={ __( 'Name', 'athemes-blocks' ) }
+																			allowedFormats={['core/bold', 'core/italic']}
 																			onChange={ ( value ) => {
 																				setAttributes( { [`name${index + 1}`]: value } );
 																			} }
@@ -1438,6 +1464,7 @@ const Edit = (props) => {
 																			className="at-block-testimonials__item-company"
 																			value={ company }
 																			placeholder={ __( 'Company', 'athemes-blocks' ) }
+																			allowedFormats={['core/bold', 'core/italic']}
 																			onChange={ ( value ) => {
 																				setAttributes( { [`company${index + 1}`]: value } );
 																			} }

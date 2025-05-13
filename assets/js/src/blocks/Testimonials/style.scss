@@ -23,7 +23,7 @@
     // Image.
     &__item-image {
         display: flex;
-        max-width: var(--at-block-testimonials-image-width, 100px);
+        width: var(--at-block-testimonials-image-width, 100px);
         overflow: hidden;
 
         img {
