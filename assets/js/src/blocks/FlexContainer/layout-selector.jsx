@@ -67,6 +67,20 @@ const LAYOUTS = [
         </div>,
         template: [
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 50,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 50,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -101,6 +115,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 50,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 50,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -158,6 +186,20 @@ const LAYOUTS = [
         </div>,
         template: [
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -192,6 +234,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -226,6 +282,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 33.33,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -284,6 +354,20 @@ const LAYOUTS = [
         </div>,
         template: [
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -318,6 +402,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -352,6 +450,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -386,6 +498,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -444,6 +570,20 @@ const LAYOUTS = [
         </div>,
         template: [
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -478,6 +618,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -512,6 +666,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -546,6 +714,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 25,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -606,6 +788,20 @@ const LAYOUTS = [
         </div>,
         template: [
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -640,6 +836,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -674,6 +884,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -708,6 +932,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -742,6 +980,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {
@@ -776,6 +1028,20 @@ const LAYOUTS = [
                 }
             }],
             ['athemes-blocks/flex-container', {
+                customWidth: {
+                    desktop: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    tablet: {
+                        value: 16.66,
+                        unit: '%'
+                    },
+                    mobile: {
+                        value: 100,
+                        unit: '%'
+                    }
+                },
                 padding: {
                     desktop: { 
                         value: {

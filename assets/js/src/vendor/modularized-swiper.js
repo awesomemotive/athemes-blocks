@@ -6,4 +6,4 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 Swiper.use([Autoplay, Pagination, Navigation]);
 
 // Make Swiper available globally.
-window.Swiper = Swiper; 
+window.Swiper = Swiper;

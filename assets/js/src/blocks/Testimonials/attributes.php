@@ -908,9 +908,9 @@ return array_merge(
                 'desktop' => array(
                     'value' => array(
                         'top' => 50,
-                        'right' => 50,
-                        'bottom' => 30,
-                        'left' => 50,
+                        'right' => 80,
+                        'bottom' => 80,
+                        'left' => 80,
                     ),
                     'unit' => 'px',
                 ),

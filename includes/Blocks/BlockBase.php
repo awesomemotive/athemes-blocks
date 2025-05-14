@@ -84,7 +84,22 @@ abstract class BlockBase {
         $default_attributes = require ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/attributes.php';
 
         $css = new BlockCss( $attributes, $block_id, $default_attributes );
+        $style_tag = $css->get_block_style_tag();
 
-        return $css->get_block_style_tag() . $block_content;
+        // Insert the style tag inside the block content.
+        if ( ! empty( $style_tag ) ) {
+            $wrapper_class = 'at-block-' . $block_id;
+            $wrapper_pos = strpos( $block_content, $wrapper_class );
+            
+            if ( $wrapper_pos !== false ) {
+                $closing_bracket_pos = strpos( $block_content, '>', $wrapper_pos );
+
+                if ( $closing_bracket_pos !== false ) {
+                    $block_content = substr_replace( $block_content, $style_tag, $closing_bracket_pos + 1, 0 );
+                }
+            }
+        }
+
+        return $block_content;
     }
 }

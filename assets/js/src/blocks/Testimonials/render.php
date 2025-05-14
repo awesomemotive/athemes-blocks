@@ -8,6 +8,7 @@
 
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Settings.php' );
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Functions.php' );
+include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Swiper.php' );
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
+use aThemes_Blocks\Blocks\Helper\Swiper;
 
 $atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Testimonials/attributes.php' );
 
@@ -23,20 +25,22 @@ $atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Testimonia
 $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 $htmlTag = 'div';
-$alignment = $attributes['alignment'] ?? $atts_defaults['alignment']['default'];
-$testimonialsAmount = $attributes['testimonialsAmount'] ?? $atts_defaults['testimonialsAmount']['default'];
-$columns = $attributes['columns'] ?? $atts_defaults['columns']['default'];
-$columnsGap = $attributes['columnsGap'] ?? $atts_defaults['columnsGap']['default'];
-$carouselLoop = $attributes['carouselLoop'] ?? $atts_defaults['carouselLoop']['default'];
-$carouselAutoplay = $attributes['carouselAutoplay'] ?? $atts_defaults['carouselAutoplay']['default'];
-$carouselAutoplaySpeed = $attributes['carouselAutoplaySpeed'] ?? $atts_defaults['carouselAutoplaySpeed']['default'];
-$carouselPauseOnHover = $attributes['carouselPauseOnHover'] ?? $atts_defaults['carouselPauseOnHover']['default'];
-$carouselTransitionDuration = $attributes['carouselTransitionDuration'] ?? $atts_defaults['carouselTransitionDuration']['default'];
-$carouselNavigation = $attributes['carouselNavigation'] ?? $atts_defaults['carouselNavigation']['default'];
-$carouselAutoHeight = $attributes['carouselAutoHeight'] ?? $atts_defaults['carouselAutoHeight']['default'];
-$imagePosition = $attributes['imagePosition'] ?? $atts_defaults['imagePosition']['default'];
-$imageStyle = $attributes['imageStyle'] ?? $atts_defaults['imageStyle']['default'];
-$imageSize = $attributes['imageSize'] ?? $atts_defaults['imageSize']['default'];
+$alignment = isset( $attributes['alignment'] ) ? $attributes['alignment'] : $atts_defaults['alignment']['default'];
+$testimonialsAmount = isset( $attributes['testimonialsAmount'] ) ? $attributes['testimonialsAmount'] : $atts_defaults['testimonialsAmount']['default'];
+$columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
+$columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'tablet' );
+$columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
+$columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults );
+$carouselLoop = isset( $attributes['carouselLoop'] ) ? $attributes['carouselLoop'] : $atts_defaults['carouselLoop']['default'];
+$carouselAutoplay = isset( $attributes['carouselAutoplay'] ) ? $attributes['carouselAutoplay'] : $atts_defaults['carouselAutoplay']['default'];
+$carouselAutoplaySpeed = isset( $attributes['carouselAutoplaySpeed'] ) ? $attributes['carouselAutoplaySpeed'] : $atts_defaults['carouselAutoplaySpeed']['default'];
+$carouselPauseOnHover = isset( $attributes['carouselPauseOnHover'] ) ? $attributes['carouselPauseOnHover'] : $atts_defaults['carouselPauseOnHover']['default'];
+$carouselTransitionDuration = isset( $attributes['carouselTransitionDuration'] ) ? $attributes['carouselTransitionDuration'] : $atts_defaults['carouselTransitionDuration']['default'];
+$carouselNavigation = isset( $attributes['carouselNavigation'] ) ? $attributes['carouselNavigation'] : $atts_defaults['carouselNavigation']['default'];
+$carouselAutoHeight = isset( $attributes['carouselAutoHeight'] ) ? $attributes['carouselAutoHeight'] : $atts_defaults['carouselAutoHeight']['default'];
+$imagePosition = isset( $attributes['imagePosition'] ) ? $attributes['imagePosition'] : $atts_defaults['imagePosition']['default'];
+$imageStyle = isset( $attributes['imageStyle'] ) ? $attributes['imageStyle'] : $atts_defaults['imageStyle']['default'];
+$imageSize = isset( $attributes['imageSize'] ) ? $attributes['imageSize'] : $atts_defaults['imageSize']['default'];
 
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );
@@ -46,125 +50,118 @@ $wrapper_attributes = array();
 $wrapper_classes = array( 
     'at-block', 
     'at-block-' . $clientId, 
-    'at-block-image' 
+    'at-block-testimonials' 
 );
 
-// Enqueue swiper styles.
-wp_enqueue_style( 'swiper-core' );
-wp_enqueue_style( 'swiper-pagination' );
-wp_enqueue_style( 'swiper-navigation' );
-
-// Enqueue swiper script.
-wp_enqueue_script( 'athemes-blocks-modularized-swiper' );
-
 // Slides output.
-$slides_output = '';
+$slider_items = array();
 for ( $i = 0; $i < $testimonialsAmount; $i++ ) {
+
     // Image.
     $image = Settings::get_inner_setting( 'image' . ($i + 1), 'image', $attributes, $atts_defaults, '' );
     $image_id = $image['id'] ?? '';
-
-    $image_output = '';
-    if ( $image_id ) {
-        $image_output = wp_get_attachment_image( $image_id, $imageSize, false, array( 'class' => 'at-block-testimonials__item-image' ) );
-    }
-    
     $has_image = $image_id ? true : false;
-
+    $image_output = $has_image ? wp_get_attachment_image( $image_id, $imageSize, false, array( 'class' => 'at-block-testimonials__item-image' ) ) : '';
+    
     // Other content.
     $testimonialText = $attributes["testimonialText" . ($i + 1)] ?? '';
     $name = $attributes["name" . ($i + 1)] ?? '';
     $company = $attributes["company" . ($i + 1)] ?? '';
 
-    $slides_output .= "
-        <div class='at-block-testimonials__item swiper-slide'>
-            <div class='at-block-testimonials__item-inner'>";
+    // Mount slide item content output.
+    $slide_item_content_output = '';
 
     if ( $imagePosition === 'top' || $imagePosition === 'left' || $imagePosition === 'right' ) {
-        $slides_output .= ( $has_image ? $image_output : '' ) ."
-                    <div class='at-block-testimonials__item-content'>
-                        <div class='at-block-testimonials__item-text'>
-                            {$testimonialText}
-                        </div>
+        $slide_item_content_output .= "
+            <div class='at-block-testimonials__item-inner'>
+                ". ( $has_image ? $image_output : '' ) ."
+                <div class='at-block-testimonials__item-content'>
+                    <div class='at-block-testimonials__item-text'>
+                        {$testimonialText}
+                    </div>
+                    <div>
                         <div class='at-block-testimonials__item-name'>
                             {$name}
                         </div>
                         <div class='at-block-testimonials__item-company'>
                             {$company}
                         </div>
-                    </div>";
+                    </div>
+                </div>
+            </div>
+        ";
     }
 
     if ( $imagePosition === 'bottom' ) {
-        $slides_output .= "
-            <div class='at-block-testimonials__item-text'>
-                {$testimonialText}
-            </div>
-            <div class='at-block-testimonials__item-content'>
-                ". ( $has_image ? $image_output : '' ) ."
-                <div>
-                    <div class='at-block-testimonials__item-name'>
-                        {$name}
-                    </div>
-                    <div class='at-block-testimonials__item-company'>
-                        {$company}
+        $slide_item_content_output .= "
+            <div class='at-block-testimonials__item-inner'>
+                <div class='at-block-testimonials__item-text'>
+                    {$testimonialText}
+                </div>
+                <div class='at-block-testimonials__item-content'>
+                    ". ( $has_image ? $image_output : '' ) ."
+                    <div>
+                        <div class='at-block-testimonials__item-name'>
+                            {$name}
+                        </div>
+                        <div class='at-block-testimonials__item-company'>
+                            {$company}
+                        </div>
                     </div>
                 </div>
-            </div>";
+            </div>
+        ";
     }
 
-    $slides_output .= "</div></div>";
+    // Push slide item content output to the slider items array.
+    $slider_items[$i] = $slide_item_content_output;
 }
 
-// Navigation outpit.
-$navigation_output = '';
-if ( ( $testimonialsAmount > 1 && $testimonialsAmount > $columns['desktop']['value'] ) && ( $carouselNavigation === 'arrows' || $carouselNavigation === 'both' ) ) {
-    $navigation_output = "
-        <div class='at-block-nav at-block-nav--next'></div>
-        <div class='at-block-nav at-block-nav--prev'></div>
-        <div class='swiper-pagination'></div>";
-}
-
-// Swiper output.
-$swiper_output = '';
-$swiper_output .= '<div class="at-block-testimonials swiper" data-swiper-options=\'' . json_encode([
+// Carousel.
+$swiper_options = array(
     'spaceBetween' => Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, 'desktop' ),
-    'loop' => $attributes['carouselLoop'] ?? false,
-    'autoplay' => ($attributes['carouselAutoplay'] ?? false) ? [
-        'delay' => $attributes['carouselAutoplaySpeed'] ?? 3000,
+    'loop' => $carouselLoop,
+    'autoplay' => ($carouselAutoplay) ? [
+        'delay' => $carouselAutoplaySpeed,
         'disableOnInteraction' => false,
-        'pauseOnMouseEnter' => $attributes['carouselPauseOnHover'] ?? false
+        'pauseOnMouseEnter' => $carouselPauseOnHover
     ] : false,
-    'speed' => $attributes['carouselTransitionDuration'] ?? 300,
-    'navigation' => ($testimonialsAmount > 1 && $testimonialsAmount > $columns['desktop']['value']) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? [
+    'speed' => $carouselTransitionDuration,
+    'navigation' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? array(
         'enabled' => true,
         'nextEl' => 'at-block-nav--next',
         'prevEl' => 'at-block-nav--prev',
-    ] : false,
-    'pagination' => ($testimonialsAmount > 1 && $testimonialsAmount > $columns['desktop']['value']) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? [
+     ) : false,
+    'pagination' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? array(
+        'enabled' => true,
+        'el' => '.swiper-pagination',
         'type' => 'bullets',
         'bulletClass' => 'at-block-bullets--bullet',
         'bulletActiveClass' => 'at-block-bullets--bullet-active',
         'clickable' => true,
-    ] : false,
-    'autoHeight' => $attributes['carouselAutoHeight'] ?? false,
+     ) : false,
+    'autoHeight' => $carouselAutoHeight,
     'breakpoints' => array(
         1024 => array(
-            'slidesPerView' => Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' ),
+            'slidesPerView' => $columnsDesktop,
         ),
         768 => array(
-            'slidesPerView' => Settings::get_setting( 'columns', $attributes, $atts_defaults, 'tablet' ),
+            'slidesPerView' => $columnsTablet,
         ),
         480 => array(
-            'slidesPerView' => Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' ),
+            'slidesPerView' => $columnsMobile,
         ),
     )
-]) . '\'>';
-$swiper_output .= '<div class="swiper-wrapper">';
-$swiper_output .= $slides_output;
-$swiper_output .= '</div>';
-$swiper_output .= $navigation_output;
-$swiper_output .= '</div>';
+);
+
+$swiper_markup_options = array(
+    'slider_items' => $slider_items,
+    'swiper_class' => 'at-block-testimonials__swiper',
+    'swiper_slide_class' => 'at-block-testimonials__item',
+);
+
+$slider = new Swiper( $swiper_options, $swiper_markup_options );
+$slider_output = $slider->get_html_output();
 
 // Alignment.
 $wrapper_classes[] = 'at-block-testimonials--' . $alignment;
@@ -201,5 +198,5 @@ echo sprintf(
     '<%1$s %2$s>%3$s</%1$s>',
     $htmlTag,
     get_block_wrapper_attributes( $wrapper_attributes ),
-    $swiper_output
+    $slider_output
 );
