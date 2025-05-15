@@ -11,7 +11,7 @@ for (let i = 0; i < testimonialBlocks.length; i++) {
     const swiper = new Swiper(block, swiperOptions);
 
     // Custom Navigation.
-    if (swiper.navigation) {
+    if (swiper.slides.length > 1 && swiper.navigation) {
         const nextNavButton = block.querySelector('.at-block-nav--next');
         const prevNavButton = block.querySelector('.at-block-nav--prev');
 

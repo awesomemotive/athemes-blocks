@@ -66,24 +66,33 @@ const entries = blockFolders.reduce((acc, folder) => {
 }, {});
 
 // Generate copy patterns for block.json files.
-const copyPatterns = blockFolders.flatMap((folder) => [
-    {
-        from: path.join(blocksDir, folder, 'block.json'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'block.json'),
-    },
-    {
-        from: path.join(blocksDir, folder, 'render.php'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'render.php'),
-    },
-    {
-        from: path.join(blocksDir, folder, 'attributes.php'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'attributes.php'),
-    },
-    {
-        from: path.join(blocksDir, folder, 'view.js'),
-        to: path.join(__dirname, 'assets/js/blocks/', folder, 'view.js'),
+const copyPatterns = blockFolders.flatMap((folder) => {
+    const patterns = [
+        {
+            from: path.join(blocksDir, folder, 'block.json'),
+            to: path.join(__dirname, 'assets/js/blocks/', folder, 'block.json'),
+        },
+        {
+            from: path.join(blocksDir, folder, 'render.php'),
+            to: path.join(__dirname, 'assets/js/blocks/', folder, 'render.php'),
+        },
+        {
+            from: path.join(blocksDir, folder, 'attributes.php'),
+            to: path.join(__dirname, 'assets/js/blocks/', folder, 'attributes.php'),
+        }
+    ];
+
+    // Only add view.js if it exists
+    const viewJsPath = path.join(blocksDir, folder, 'view.js');
+    if (fs.existsSync(viewJsPath)) {
+        patterns.push({
+            from: viewJsPath,
+            to: path.join(__dirname, 'assets/js/blocks/', folder, 'view.js'),
+        });
     }
-]);
+
+    return patterns;
+});
 
 const deleteFileTask = () => {
     const filePath = path.resolve(__dirname, 'build/style-container.css');

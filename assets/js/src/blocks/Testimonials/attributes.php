@@ -853,7 +853,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}}'
+                    '{{WRAPPER}} .at-block-testimonials__item-inner'
                 ),
                 'property' => 'background-color',
             ),
@@ -867,7 +867,7 @@ return array_merge(
             'borderStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}}'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-style',
                 )
@@ -875,7 +875,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}}'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -883,7 +883,7 @@ return array_merge(
             'borderRadius' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}}'
+                        '{{WRAPPER}} .at-block-testimonials__item-inner'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -891,8 +891,8 @@ return array_merge(
             'borderColor' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}}' => '{{VALUE}}',
-                        '{{WRAPPER}}:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-testimonials__item-inner' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-testimonials__item-inner:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )
@@ -938,6 +938,47 @@ return array_merge(
                     '{{WRAPPER}} .at-block-testimonials__item-inner'
                 ),
                 'property' => 'padding-{{DIRECTION}}',
+            ),
+        ),
+        'cardMargin' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-testimonials__item-inner'
+                ),
+                'property' => 'margin-{{DIRECTION}}',
             ),
         ),
     ),

@@ -82,7 +82,7 @@ const Edit = (props) => {
 		dotsOffset,
 		cardBackgroundColor,
 		cardPadding,
-
+		cardMargin,
 		// Advanced.
 		hideOnDesktop,
 		hideOnTablet,
@@ -125,7 +125,7 @@ const Edit = (props) => {
 			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
 			contentGap: getSettingValue('contentGap', currentDevice, atts),
 			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
-
+			cardMargin: getDimensionsSettingValue('cardMargin', currentDevice, atts),
 			// Advanced.
 			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
 			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
@@ -1290,6 +1290,45 @@ const Edit = (props) => {
 										updateAttribute( 'cardPadding', getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ), currentDevice );
 
 										setUpdateCss( { settingId: 'cardPadding', value: getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+								<Dimensions
+									label={ __( 'Margin', 'athemes-blocks' ) }
+									directions={[
+										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+									]}
+									value={ cardMargin }
+									defaultUnit={ getSettingUnit('cardMargin', currentDevice, atts) }
+									directionsValue={ getDimensionsSettingDirectionsValue('cardMargin', currentDevice, atts) }
+									connect={ getDimensionsSettingConnectValue('cardMargin', currentDevice, atts) }
+									responsive={ true }
+									units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'cardMargin', {
+											value: value.value,
+											unit: getSettingUnit( 'cardMargin', currentDevice, atts ),
+											connect: getDimensionsSettingConnectValue( 'cardMargin', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: value.value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'cardMargin', {
+											value: getSettingValue( 'cardMargin', currentDevice, atts ),
+											unit: value,
+											connect: getDimensionsSettingConnectValue( 'cardMargin', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: getSettingValue( 'cardMargin', currentDevice, atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'cardMargin', getDimensionsSettingDefaultValue( 'cardMargin', currentDevice, attributesDefaults ), currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: getDimensionsSettingDefaultValue( 'cardMargin', currentDevice, attributesDefaults ) } );
 									} }
 								/>
 							</PanelBody>
