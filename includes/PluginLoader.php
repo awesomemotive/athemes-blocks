@@ -78,6 +78,7 @@ class PluginLoader {
             'Icon',
             'Image',
             'Testimonials',
+            'PostGrid',
         );
 
         foreach ( $blocks as $block ) {

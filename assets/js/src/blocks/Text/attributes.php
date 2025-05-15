@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Attributes for the Flex Container block.
+ * Attributes for the Text block.
  * 
  * @package aThemes_Blocks
  */
