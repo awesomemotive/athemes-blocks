@@ -44,6 +44,35 @@
         }
     }
 
+    // Layout Flex.
+    &--layout-flex {
+        display: flex;
+
+        > .block-editor-inner-blocks > .block-editor-block-list__layout,
+        > .at-block-flex-container__inner-blocks-wrapper > .block-editor-inner-blocks > .block-editor-block-list__layout {
+            display: flex;
+        }
+    }
+
+    // Layout Grid.
+    &--layout-grid {
+        > .at-block-flex-container__inner-blocks-wrapper {
+            display: block !important;
+        }
+
+        > .block-editor-inner-blocks > .block-editor-block-list__layout,
+        > .at-block-flex-container__inner-blocks-wrapper > .block-editor-inner-blocks > .block-editor-block-list__layout {
+            display: grid;
+            grid-template-columns: repeat(var(--atb-layout-grid-columns, 3), 1fr);
+            gap: var(--atb-container-columns-gap, 15px);
+
+            > .at-block-flex-container {
+                max-width: 100% !important;
+                min-height: 0 !important;
+            }
+        }
+    }
+
     // Container Full width.
     &--container-full-width {
 

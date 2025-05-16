@@ -99,11 +99,13 @@ const Edit = (props) => {
 
 		// General - Layout settings.
 		layout,
+		layoutGridColumns,
 		direction,
 		columnsGap,
 		rowsGap,
 		childrenWidth,
 		alignItems,
+		justifyItems,
 		justifyContent,
 		wrap,
 		alignContent,
@@ -133,11 +135,13 @@ const Edit = (props) => {
 
 			// General - Layout settings.
 			layout: getSettingValue('layout', 'desktop', atts),
+			layoutGridColumns: getSettingValue('layoutGridColumns', currentDevice, atts),
 			direction: getSettingValue('direction', currentDevice, atts),
 			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
 			rowsGap: getSettingValue('rowsGap', currentDevice, atts),
 			childrenWidth: getSettingValue('childrenWidth', 'desktop', atts),
 			alignItems: getSettingValue('alignItems', currentDevice, atts),
+			justifyItems: getSettingValue('justifyItems', currentDevice, atts),
 			justifyContent: getSettingValue('justifyContent', currentDevice, atts),
 			wrap: getSettingValue('wrap', currentDevice, atts),
 			alignContent: getSettingValue('alignContent', currentDevice, atts),
@@ -328,7 +332,7 @@ const Edit = (props) => {
 									)
 								}
 								{
-									containerWidth === 'custom' && (
+									( containerWidth === 'custom' && layout !== 'grid' ) && (
 										<RangeSlider 
 											label={ __( 'Custom Width', 'athemes-blocks' ) }
 											defaultValue={ customWidth }
@@ -508,11 +512,11 @@ const Edit = (props) => {
 									defaultValue={ layout }
 									options={[
 										{ label: __( 'Flex', 'athemes-blocks' ), value: 'flex' },
-										// { label: __( 'Grid', 'athemes-blocks' ), value: 'grid' },
+										{ label: __( 'Grid', 'athemes-blocks' ), value: 'grid' },
 									]}
 									responsive={false}
 									reset={true}
-									hidden={ true }
+									hidden={false}
 									onChange={ ( value ) => {
 										updateAttribute( 'layout', {
 											value: value
@@ -528,32 +532,71 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'layout', value: getSettingDefaultValue( 'layout', currentDevice, attributesDefaults ) } );
 									} }
 								/>
-								<RadioButtons 
-									label={ __( 'Direction', 'athemes-blocks' ) }
-									defaultValue={ direction }
-									options={[
-										{ label: __( 'Row', 'athemes-blocks' ), value: 'row' },
-										{ label: __( 'Column', 'athemes-blocks' ), value: 'column' },
-										{ label: __( 'Row Reverse', 'athemes-blocks' ), value: 'row-reverse' },
-										{ label: __( 'Column Reverse', 'athemes-blocks' ), value: 'column-reverse' },
-									]}
-									responsive={true}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'direction', {
-											value: value
-										}, currentDevice );
+								{
+									layout === 'grid' && (
+										<RangeSlider 
+											label={ __( 'Grid Columns', 'athemes-blocks' ) }
+											defaultValue={ layoutGridColumns }
+											defaultUnit={ getSettingUnit( 'layoutGridColumns', currentDevice, atts ) }
+											min={ 1 }
+											max={ 12 }
+											responsive={ true }
+											reset={ true }
+											units={false}
+											onChange={ ( value ) => {
+												updateAttribute( 'layoutGridColumns', {
+													value: value,
+												}, currentDevice );
 
-										setUpdateCss( { settingId: 'direction', value: value } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'direction', {
-											value: getSettingDefaultValue( 'direction', currentDevice, attributesDefaults )
-										}, currentDevice );
-										
-										setUpdateCss( { settingId: 'direction', value: getSettingDefaultValue( 'direction', currentDevice, attributesDefaults ) } );
-									} }
-								/>
+												setUpdateCss( { settingId: 'layoutGridColumns', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'layoutGridColumns', {
+													value: layoutGridColumns,
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'layoutGridColumns', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'layoutGridColumns', {
+													value: getSettingDefaultValue( 'layoutGridColumns', currentDevice, attributesDefaults ),
+												}, currentDevice );							
+
+												setUpdateCss( { settingId: 'layoutGridColumns', value: getSettingDefaultValue( 'layoutGridColumns', currentDevice, attributesDefaults ) } );
+											} }
+										/>		
+									)
+								}
+								{
+									layout === 'flex' && (
+										<RadioButtons 
+											label={ __( 'Direction', 'athemes-blocks' ) }
+											defaultValue={ direction }
+											options={[
+												{ label: __( 'Row', 'athemes-blocks' ), value: 'row' },
+												{ label: __( 'Column', 'athemes-blocks' ), value: 'column' },
+												{ label: __( 'Row Reverse', 'athemes-blocks' ), value: 'row-reverse' },
+												{ label: __( 'Column Reverse', 'athemes-blocks' ), value: 'column-reverse' },
+											]}
+											responsive={true}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'direction', {
+													value: value
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'direction', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'direction', {
+													value: getSettingDefaultValue( 'direction', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'direction', value: getSettingDefaultValue( 'direction', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
 								<RangeSlider 
 									label={ __( 'Columns Gap', 'athemes-blocks' ) }
 									defaultValue={ columnsGap }
@@ -622,30 +665,34 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'rowsGap', value: getSettingDefaultValue( 'rowsGap', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
-								<RadioButtons 
-									label={ __( 'Children Width', 'athemes-blocks' ) }
-									defaultValue={ childrenWidth }
-									options={[
-										{ label: __( 'Auto', 'athemes-blocks' ), value: 'auto' },
-										{ label: __( 'Equal', 'athemes-blocks' ), value: 'equal' },
-									]}
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'childrenWidth', {
-											value: value
-										}, currentDevice );
+								{
+									layout === 'flex' && (
+										<RadioButtons 
+											label={ __( 'Children Width', 'athemes-blocks' ) }
+											defaultValue={ childrenWidth }
+											options={[
+												{ label: __( 'Auto', 'athemes-blocks' ), value: 'auto' },
+												{ label: __( 'Equal', 'athemes-blocks' ), value: 'equal' },
+											]}
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'childrenWidth', {
+													value: value
+												}, currentDevice );
 
-										setUpdateCss( { settingId: 'childrenWidth', value: value } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'childrenWidth', {
-											value: getSettingDefaultValue( 'childrenWidth', currentDevice, attributesDefaults )
-										}, currentDevice );
-										
-										setUpdateCss( { settingId: 'childrenWidth', value: getSettingDefaultValue( 'childrenWidth', currentDevice, attributesDefaults ) } );
-									} }
-								/>
+												setUpdateCss( { settingId: 'childrenWidth', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'childrenWidth', {
+													value: getSettingDefaultValue( 'childrenWidth', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'childrenWidth', value: getSettingDefaultValue( 'childrenWidth', currentDevice, attributesDefaults ) } );
+											} }
+										/>		
+									)
+								}
 								<RadioButtons 
 									label={ __( 'Align Items', 'athemes-blocks' ) }
 									defaultValue={ alignItems }
@@ -672,61 +719,99 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'alignItems', value: getSettingDefaultValue( 'alignItems', currentDevice, attributesDefaults ) } );
 									} }
 								/>
-								<RadioButtons 
-									label={ __( 'Justify Content', 'athemes-blocks' ) }
-									defaultValue={ justifyContent }
-									options={[
-										{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
-										{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between' },
-										{ label: __( 'Space Around', 'athemes-blocks' ), value: 'space-around' },
-										{ label: __( 'Space Evenly', 'athemes-blocks' ), value: 'space-evenly' },
-									]}
-									responsive={true}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'justifyContent', {
-											value: value
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'justifyContent', value: value } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'justifyContent', {
-											value: getSettingDefaultValue( 'justifyContent', currentDevice, attributesDefaults )
-										}, currentDevice );
-										
-										setUpdateCss( { settingId: 'justifyContent', value: getSettingDefaultValue( 'justifyContent', currentDevice, attributesDefaults ) } );
-									} }
-								/>
-								<RadioButtons 
-									label={ __( 'Wrap', 'athemes-blocks' ) }
-									defaultValue={ wrap }
-									options={[
-										{ label: __( 'Wrap', 'athemes-blocks' ), value: 'wrap' },
-										{ label: __( 'No Wrap', 'athemes-blocks' ), value: 'nowrap' },
-										{ label: __( 'Wrap Reverse', 'athemes-blocks' ), value: 'wrap-reverse' },
-									]}
-									responsive={true}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'wrap', {
-											value: value
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'wrap', value: value } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'wrap', {
-											value: getSettingDefaultValue( 'wrap', currentDevice, attributesDefaults )
-										}, currentDevice );
-										
-										setUpdateCss( { settingId: 'wrap', value: getSettingDefaultValue( 'wrap', currentDevice, attributesDefaults ) } );
-									} }
-								/>
 								{
-									wrap !== 'nowrap' && (
+									layout === 'grid' && (
+										<RadioButtons 
+											label={ __( 'Justify Items', 'athemes-blocks' ) }
+											defaultValue={ justifyItems }
+											options={[
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'start' },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'end' },
+												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
+											]}
+											responsive={true}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'justifyItems', {
+													value: value
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'justifyItems', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'justifyItems', {
+													value: getSettingDefaultValue( 'justifyItems', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'justifyItems', value: getSettingDefaultValue( 'justifyItems', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
+								{
+									layout === 'flex' && (
+										<RadioButtons 
+											label={ __( 'Justify Content', 'athemes-blocks' ) }
+											defaultValue={ justifyContent }
+											options={[
+												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
+												{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between' },
+												{ label: __( 'Space Around', 'athemes-blocks' ), value: 'space-around' },
+												{ label: __( 'Space Evenly', 'athemes-blocks' ), value: 'space-evenly' },
+											]}
+											responsive={true}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'justifyContent', {
+													value: value
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'justifyContent', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'justifyContent', {
+													value: getSettingDefaultValue( 'justifyContent', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'justifyContent', value: getSettingDefaultValue( 'justifyContent', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
+								{
+									layout === 'flex' && (
+										<RadioButtons 
+											label={ __( 'Wrap', 'athemes-blocks' ) }
+											defaultValue={ wrap }
+											options={[
+												{ label: __( 'Wrap', 'athemes-blocks' ), value: 'wrap' },
+												{ label: __( 'No Wrap', 'athemes-blocks' ), value: 'nowrap' },
+												{ label: __( 'Wrap Reverse', 'athemes-blocks' ), value: 'wrap-reverse' },
+											]}
+											responsive={true}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'wrap', {
+													value: value
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'wrap', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'wrap', {
+													value: getSettingDefaultValue( 'wrap', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'wrap', value: getSettingDefaultValue( 'wrap', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
+								{
+									( wrap !== 'nowrap' && layout === 'flex' ) && (
 										<RadioButtons 
 											label={ __( 'Align Content', 'athemes-blocks' ) }
 											defaultValue={ alignContent }
@@ -923,6 +1008,9 @@ const Edit = (props) => {
 				let blockProps = useBlockProps({
 					className: blockPropsClassName
 				});
+
+				// Layout.
+				blockProps.className += ` at-block-flex-container--layout-${layout}`;
 
 				// Add link properties if the tag is 'a'.
 				if (htmlTag === 'a' && htmlTagLink) {

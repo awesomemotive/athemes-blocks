@@ -206,14 +206,25 @@ return array_merge(
                     'value' => 'flex',
                 ),
             ),
+        ),
+        'layoutGridColumns' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 3,
+                ),
+                'tablet' => array(
+                    'value' => 3,
+                ),
+                'mobile' => array(
+                    'value' => 3,
+                ),
+            ),
             'css' => array(
                 'selectors' => array(
                     '{{WRAPPER}}',
-                    '{{WRAPPER}} > .at-block-flex-container__inner-blocks-wrapper',
-                    '{{WRAPPER}} > .at-block-flex-container__inner-blocks-wrapper > .block-editor-inner-blocks > .block-editor-block-list__layout',
-                    '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
                 ),
-                'property' => 'display',
+                'property' => '--atb-layout-grid-columns',
             ),
         ),
         'direction' => array(
@@ -320,6 +331,29 @@ return array_merge(
                     '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
                 ),
                 'property' => 'align-items',
+            ),
+        ),
+        'justifyItems' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 'start',
+                ),
+                'tablet' => array(
+                    'value' => 'start',
+                ),
+                'mobile' => array(
+                    'value' => 'start',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}',
+                    '{{WRAPPER}} > .at-block-flex-container__inner-blocks-wrapper',
+                    '{{WRAPPER}} > .at-block-flex-container__inner-blocks-wrapper > .block-editor-inner-blocks > .block-editor-block-list__layout',
+                    '{{WRAPPER}} > .block-editor-inner-blocks > .block-editor-block-list__layout',
+                ),
+                'property' => 'justify-items',
             ),
         ),
         'justifyContent' => array(

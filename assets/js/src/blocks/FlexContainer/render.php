@@ -53,6 +53,8 @@ if ( $layout === 'flex' && $childrenWidth === 'equal' ) {
     $wrapper_classes[] = 'at-block-flex-container--children-w-auto';
 }
 
+$wrapper_classes[] = 'at-block-flex-container--layout-' . $layout;
+
 // Add link properties if the tag is 'a'.
 if ( $htmlTag === 'a' && ! empty( $htmlTagLink ) ) {
     $wrapper_attributes['href'] = $htmlTagLink;
