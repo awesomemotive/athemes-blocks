@@ -396,6 +396,176 @@ class Attributes {
 
         return $attributes;
     }
+
+    /**
+     * Get color advanced attributes.
+     * 
+     * @param string $setting_id
+     * @param array<string, mixed> $attributes_to_replace
+     * @return array<string, mixed>
+     */
+    public static function get_color_advanced_attributes( $setting_id, $attributes_to_replace = array() ) {
+        $attributes = array(
+            $setting_id => array(
+                'type' => 'object',
+                'default' => array(
+                    'innerSettings' => array(
+                        'type' => array(
+                            'default' => 'color',
+                        ),
+                        'color' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'color',
+                            )
+                        ),
+                        'gradient' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'defaultState' => '',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-image',
+                            )
+                        ),
+                       'backgroundImage' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => '',
+                                ),
+                                'tablet' => array(
+                                    'value' => '',
+                                ),
+                                'mobile' => array(
+                                    'value' => '',
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-image',
+                            )
+                        ),
+                        'backgroundImageAttachment' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => 'scroll'
+                                ),
+                                'tablet' => array(
+                                    'value' => 'scroll'
+                                ),
+                                'mobile' => array(
+                                    'value' => 'scroll'
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-attachment',
+                            )
+                        ),
+                        'backgroundImageRepeat' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => 'normal'
+                                ),
+                                'tablet' => array(
+                                    'value' => 'normal'
+                                ),
+                                'mobile' => array(
+                                    'value' => 'normal'
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-repeat',
+                            )
+                        ),
+                        'backgroundImageSize' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => 'cover'
+                                ),
+                                'tablet' => array(
+                                    'value' => 'cover'
+                                ),
+                                'mobile' => array(
+                                    'value' => 'cover'
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-size',
+                            )
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        if ( ! empty( $attributes_to_replace ) ) {
+            foreach ( $attributes_to_replace as $key => $value ) {
+                if ( isset( $attributes[$setting_id]['default']['innerSettings'][$key] ) ) {
+                    if ( isset( $value['default'] ) ) {
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['default'] = $value['default'];
+                    }
+                    
+                    if ( isset( $value['css'] ) ) {
+                        $attributes[$setting_id]['default']['innerSettings'][$key]['css'] = $value['css'];
+                    }
+                }
+            }
+        }
+
+        return $attributes;
+    }
     
     /**
      * Get block advanced panel attributes.

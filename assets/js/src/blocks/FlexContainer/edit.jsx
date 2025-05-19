@@ -14,6 +14,8 @@ import { TextInput } from '../../block-editor/controls/text-input/text-input';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
 import { Border } from '../../block-editor/controls/border/border';
+import { ColorPickerAdvanced } from '../../block-editor/controls/color-picker-advanced/color-picker-advanced';
+
 import { createAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
 import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
@@ -855,7 +857,15 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'background' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
 							>
-								<ColorPicker
+								<ColorPickerAdvanced
+									settingId="bgColor"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize']}
+								/>
+								{/* <ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ backgroundColor }
 									hover={false}
@@ -891,7 +901,7 @@ const Edit = (props) => {
 										
 										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
-								/>
+								/> */}
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Color', 'botiga-pro' ) } 

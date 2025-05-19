@@ -425,37 +425,23 @@ return array_merge(
                 'property' => 'align-content',
             ),
         ),
-
-        // Style - Background -----------------------------
-        'backgroundColor' => array(
-            'type' => 'object',
-            'default' => array(
-                'desktop' => array(
-                    'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
-                    )
-                ),
-                'tablet' => array(
-                    'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
-                    )
-                ),
-                'mobile' => array(
-                    'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
-                    )
+    ),
+    
+    // Style - Background -----------------------------
+    Attributes::get_color_advanced_attributes( 
+        'bgColor', 
+        array(
+            'color' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}}',
+                    ),
+                    'property' => 'background-color',
                 ),
             ),
-            'css' => array(
-                'selectors' => array(
-                    '{{WRAPPER}}' => '{{VALUE}}',
-                ),
-                'property' => 'background-color',
-            ),
-        ),
+        ) 
+    ),
+    array(
         'textColor' => array(
             'type' => 'object',
             'default' => array(

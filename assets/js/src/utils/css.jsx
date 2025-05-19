@@ -75,6 +75,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
     const isBorderRadius = property.indexOf('-radius') !== -1;
 
+    const isBackgroundImage = property === 'background-image';
+
     // Generate the CSS for each device.
     let css = '';
     for ( const device in sortedAttributeValue ) {
@@ -94,6 +96,12 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
             if ( isDimensions && valueIsObject ) {
                 if ( sortedAttributeValue[device].value.top === '' && sortedAttributeValue[device].value.right === '' && sortedAttributeValue[device].value.bottom === '' && sortedAttributeValue[device].value.left === '' ) {
+                    continue;
+                }
+            }
+
+            if ( isBackgroundImage ) {
+                if ( sortedAttributeValue[device].value === '' ) {
                     continue;
                 }
             }
@@ -167,6 +175,11 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
                                 css += `${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; }`;
                             });
+                        } else if ( isBackgroundImage ) {
+                            const image = sortedAttributeValue[device].value;
+                            const imageUrl = image && image.url ? image.url : '';
+
+                            css += `${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; }`;
                         } else {
                             css += `${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}${important ? '!important' : ''}; }`;
                         }
@@ -202,6 +215,11 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
                                 css += `@media (max-width: 1024px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; } }`;
                             });
+                        } else if ( isBackgroundImage ) {
+                            const image = sortedAttributeValue[device].value;
+                            const imageUrl = image && image.url ? image.url : '';
+
+                            css += `@media (max-width: 1024px) { ${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; } }`;
                         } else {
                             css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }
@@ -237,6 +255,11 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
                                 css += `@media (max-width: 767px) { ${selector} { ${replacedProperty}: ${directionValue}${unit}${important ? '!important' : ''}; } }`;
                             });
+                        } else if ( isBackgroundImage ) {
+                            const image = sortedAttributeValue[device].value;
+                            const imageUrl = image && image.url ? image.url : '';
+
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; } }`;
                         } else {
                             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }

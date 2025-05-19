@@ -40,12 +40,6 @@ export const withDynamicCSS = (WrappedComponent, attributesDefaults) => {
 
                         applyPreviewCSS(css, clientId, settingId);
                     }
-
-                    
-                    
-                    
-
-                    
                 });
             }
         }, [updatePresetCss]);
