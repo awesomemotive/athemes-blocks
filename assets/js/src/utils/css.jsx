@@ -77,6 +77,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
     const isBackgroundImage = property === 'background-image';
 
+    const isFocalPoint = property === 'background-position';
+
     // Generate the CSS for each device.
     let css = '';
     for ( const device in sortedAttributeValue ) {
@@ -105,6 +107,15 @@ export function getControlCSS( cssData, clientId, attributes ) {
                     continue;
                 }
             }
+
+            if ( isFocalPoint ) {
+                if ( sortedAttributeValue[device].value === '' ) {
+                    continue;
+                }
+            }
+
+            const focalPointValueX = ( sortedAttributeValue[device].value.x * 100 ) + '%';
+            const focalPointValueY = ( sortedAttributeValue[device].value.y * 100 ) + '%';
 
             const selectors_is_key_value_pair = selectors instanceof Object && selectors !== null && !Array.isArray(selectors);
 
@@ -149,8 +160,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'desktop' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }${important ? '!important' : ''}; }`;
-                            css += `${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }${important ? '!important' : ''}; }`;
+                            if ( sortedAttributeValue[device].value.defaultState !== '' ) {
+                                css += `${selector} { ${property}: ${ sortedAttributeValue[device].value.defaultState }${important ? '!important' : ''}; }`;
+                            }
+
+                            if ( sortedAttributeValue[device].value.hoverState !== '' ) {
+                                css += `${selector}:hover { ${property}: ${ sortedAttributeValue[device].value.hoverState }${important ? '!important' : ''}; }`;
+                            }
                         } else if ( isDimensions ) {
 
                             let replacedProperty = '';
@@ -180,6 +196,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             const imageUrl = image && image.url ? image.url : '';
 
                             css += `${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; }`;
+                        } else if ( isFocalPoint ) {
+                            css += `${selector} { ${property}: ${ focalPointValueX } ${ focalPointValueY }${important ? '!important' : ''}; }`;
                         } else {
                             css += `${selector} { ${property}: ${ sortedAttributeValue[device].value }${unit}${important ? '!important' : ''}; }`;
                         }
@@ -189,8 +207,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'tablet' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
-                            css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
+                            if ( sortedAttributeValue[device].value.defaultState !== '' ) {
+                                css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
+                            }
+
+                            if ( sortedAttributeValue[device].value.hoverState !== '' ) {
+                                css += `@media (max-width: 1024px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
+                            }
                         } else if ( isDimensions ) {
 
                             let replacedProperty = '';
@@ -220,6 +243,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             const imageUrl = image && image.url ? image.url : '';
 
                             css += `@media (max-width: 1024px) { ${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; } }`;
+                        } else if ( isFocalPoint ) {
+                            css += `@media (max-width: 1024px) { ${selector} { ${property}: ${ focalPointValueX } ${ focalPointValueY }${important ? '!important' : ''}; } }`;
                         } else {
                             css += `@media (max-width: 1024px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }
@@ -229,8 +254,13 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( device === 'mobile' ) {
                     selectors.forEach( selector => {
                         if ( isColorPicker ) {
-                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
-                            css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
+                            if ( sortedAttributeValue[device].value.defaultState !== '' ) {
+                                css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value.defaultState}${important ? '!important' : ''}; } }`;
+                            }
+
+                            if ( sortedAttributeValue[device].value.hoverState !== '' ) {
+                                css += `@media (max-width: 767px) { ${selector}:hover { ${property}: ${sortedAttributeValue[device].value.hoverState}${important ? '!important' : ''}; } }`;
+                            }
                         } else if ( isDimensions) {
 
                             let replacedProperty = '';
@@ -260,6 +290,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
                             const imageUrl = image && image.url ? image.url : '';
 
                             css += `@media (max-width: 767px) { ${selector} { ${property}: url(${imageUrl})${important ? '!important' : ''}; } }`;
+                        } else if ( isFocalPoint ) {
+                            css += `@media (max-width: 767px) { ${selector} { ${property}: ${ focalPointValueX } ${ focalPointValueY }${important ? '!important' : ''}; } }`;
                         } else {
                             css += `@media (max-width: 767px) { ${selector} { ${property}: ${sortedAttributeValue[device].value}${unit}${important ? '!important' : ''}; } }`;
                         }

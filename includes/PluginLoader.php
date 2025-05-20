@@ -17,6 +17,7 @@ use AThemes_Blocks\Admin\BlockEditorAssets;
 use AThemes_Blocks\BlocksCommonCss;
 use AThemes_Blocks\BlocksCommonScripts;
 use AThemes_Blocks\Blocks\Helper\Settings;
+use AThemes_Blocks\Integration\Themes\Sydney as SydneyIntegration;
 
 class PluginLoader {
 
@@ -32,6 +33,9 @@ class PluginLoader {
         // Load blocks.
         $this->load_blocks();
 
+        // Load integration.
+        $this->load_integration();
+
         // Load admin only stuff.
         $this->load_admin();
 
@@ -40,6 +44,17 @@ class PluginLoader {
 
         // Load blocks common scripts.
         $this->load_blocks_common_scripts();
+    }
+
+    /**
+     * Load integration.
+     * 
+     * @return void
+     */
+    public function load_integration(): void {
+
+        // Sydney.
+        new SydneyIntegration();
     }
 
     /**

@@ -109,7 +109,7 @@ class BlockCss {
                 }
 
                 foreach ( $attribute_data as $device => $value ) {
-                    if ( empty( $value['value'] ) || $value['value'] === 'default' ) {
+                    if ( $value['value'] === '' || $value['value'] === 'default' ) {
                         continue;
                     }
 
@@ -119,6 +119,8 @@ class BlockCss {
                     $is_color_picker = isset( $value['value']['defaultState'] ) || isset( $value['value']['hoverState'] );
                     $is_dimensions = isset( $value['value']['top'] ) || isset( $value['value']['right'] ) || isset( $value['value']['bottom'] ) || isset( $value['value']['left'] );
                     $is_border_radius = strpos( $property, '-radius' ) !== false;
+                    $is_background_image = strpos( $property, 'background-image' ) !== false && isset( $value['value']['url'] );
+                    $is_focal_point = strpos( $property, 'background-position' ) !== false;
 
                     if ( $is_color_picker && empty( $value['value']['defaultState'] ) && empty( $value['value']['hoverState'] ) ) {
                         continue;
@@ -127,6 +129,17 @@ class BlockCss {
                     if ( $is_dimensions && ( empty( $value['value']['top'] ) && empty( $value['value']['right'] ) && empty( $value['value']['bottom'] ) && empty( $value['value']['left'] ) ) ) {
                         continue;
                     }
+
+                    if ( $is_background_image && empty( $value['value'] ) ) {
+                        continue;
+                    }
+
+                    if ( $is_focal_point && empty( $value['value'] ) ) {
+                        continue;
+                    }
+
+                    $focal_point_value_x = isset( $value['value']['x'] ) ? ( $value['value']['x'] * 100 ) . '%' : '';
+                    $focal_point_value_y = isset( $value['value']['y'] ) ? ( $value['value']['y'] * 100 ) . '%' : '';
 
                     $is_associative_array_selectors = $selectors === array_values( $selectors ) ? false : true;
 
@@ -185,8 +198,23 @@ class BlockCss {
                                     }
     
                                     if ( $is_color_picker ) {
-                                        $responsive_values['desktop'][$selector][] = sprintf( '%s: %s', $property, $value['value']['defaultState'] );
-                                        $responsive_values['desktop']["$selector:hover"][] = sprintf( '%s: %s', $property, $value['value']['hoverState'] );
+                                        if ( $value['value']['defaultState'] !== '' ) {
+                                            $responsive_values['desktop'][$selector][] = sprintf( '%s: %s', $property, $value['value']['defaultState'] );
+                                        }
+
+                                        if ( $value['value']['hoverState'] !== '' ) {
+                                            $responsive_values['desktop']["$selector:hover"][] = sprintf( '%s: %s', $property, $value['value']['hoverState'] );
+                                        }
+                                    }
+
+                                    if ( $is_background_image ) {
+                                        $image_url = $value['value']['url'] ?? '';
+
+                                        $responsive_values['desktop'][$selector][] = sprintf( '%s: url(%s) %s', $property, $image_url, $important ? '!important' : '' );
+                                    }
+
+                                    if ( $is_focal_point ) {
+                                        $responsive_values['desktop'][$selector][] = sprintf( '%s: %s %s %s', $property, $focal_point_value_x, $focal_point_value_y, $important ? '!important' : '' );
                                     }
                                 } else {
                                     $responsive_values['desktop'][$selector][] = sprintf( '%s: %s%s', $property, $value['value'], $unit );
@@ -218,8 +246,23 @@ class BlockCss {
                                     }
     
                                     if ( $is_color_picker ) {
-                                        $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $value['value']['defaultState'], $important ? '!important' : '' );
-                                        $responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s %s', $property, $value['value']['hoverState'], $important ? '!important' : '' );
+                                        if ( $value['value']['defaultState'] !== '' ) {
+                                            $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $value['value']['defaultState'], $important ? '!important' : '' );
+                                        }
+
+                                        if ( $value['value']['hoverState'] !== '' ) {
+                                            $responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s %s', $property, $value['value']['hoverState'], $important ? '!important' : '' );
+                                        }
+                                    }
+
+                                    if ( $is_background_image ) {
+                                        $image_url = $value['value']['url'] ?? '';
+
+                                        $responsive_values[$device][$selector][] = sprintf( '%s: url(%s) %s', $property, $image_url, $important ? '!important' : '' );
+                                    }
+
+                                    if ( $is_focal_point ) {
+                                        $responsive_values[$device][$selector][] = sprintf( '%s: %s %s %s', $property, $focal_point_value_x, $focal_point_value_y, $important ? '!important' : '' );
                                     }
                                 } else {
                                     $responsive_values[$device][$selector][] = sprintf( '%s: %s%s %s', $property, $value['value'], $unit, $important ? '!important' : '' );

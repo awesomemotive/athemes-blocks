@@ -4,7 +4,8 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from "@wordpress/data";
 import { Icon } from '@wordpress/icons';
-import { BaseControl, TextControl, SelectControl, GradientPicker, Tooltip } from '@wordpress/components';
+import { BaseControl, TextControl, SelectControl, GradientPicker, Tooltip, FocalPointPicker } from '@wordpress/components';
+import { MediaUploadCheck, MediaUpload } from '@wordpress/block-editor';
 import { trash, edit, plus } from '@wordpress/icons';
 
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
@@ -14,7 +15,9 @@ import { Select } from '../select/select';
 import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
 import { RadioButtons } from '../../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
-import { MediaUploadCheck, MediaUpload } from '@wordpress/block-editor';
+import { FocalPointer } from '../../../block-editor/controls/focal-pointer/focal-pointer';
+import { SwitchToggle } from '../../../block-editor/controls/switch-toggle/switch-toggle';
+
 import { createInnerControlAttributeUpdater } from '../../../utils/block-attributes';
 
 import { getInnerSettingValue, getInnerSettingDefaultValue, getInnerSettingDefaultUnit } from '../../../utils/settings';
@@ -30,9 +33,12 @@ export function ColorPickerAdvanced( props ) {
         color, 
         gradient,
         backgroundImage,
+        backgroundImagePosition,
         backgroundImageAttachment,
         backgroundImageRepeat,
         backgroundImageSize,
+        backgroundImageOverlay,
+        backgroundImageOverlayColor
     } = attributes[settingId].innerSettings;
 
     const typeValue = type.default;
@@ -40,11 +46,14 @@ export function ColorPickerAdvanced( props ) {
     const gradientValue = gradient.default['desktop'].value;
 
     const backgroundImageValue = getInnerSettingValue( settingId, 'backgroundImage', 'desktop', attributes );
+    const backgroundImagePositionValue = getInnerSettingValue( settingId, 'backgroundImagePosition', currentDevice, attributes );
     const backgroundImageAttachmentValue = getInnerSettingValue( settingId, 'backgroundImageAttachment', currentDevice, attributes );
     const backgroundImageRepeatValue = getInnerSettingValue( settingId, 'backgroundImageRepeat', currentDevice, attributes );
     const backgroundImageSizeValue = getInnerSettingValue( settingId, 'backgroundImageSize', currentDevice, attributes );
+    const backgroundImageOverlayValue = getInnerSettingValue( settingId, 'backgroundImageOverlay', '', attributes );
+    const backgroundImageOverlayColorValue = backgroundImageOverlayColor.default['desktop'].value;
     const imageData = backgroundImageValue ? backgroundImageValue : {};
-    
+
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
     // Remove Image.
@@ -169,7 +178,6 @@ export function ColorPickerAdvanced( props ) {
                             allowedTypes={ [ "image" ] }
                             value={ backgroundImageValue }
                             render={ ( { open } ) => {
-                                console.log(imageData);
                                 const hasImage = imageData && imageData.url;
 
                                 return(
@@ -209,6 +217,40 @@ export function ColorPickerAdvanced( props ) {
                             } }
                         />
                     </MediaUploadCheck>
+                )
+            }
+            {
+                ( typeValue === 'image' && imageData && imageData.url && subFields && subFields.includes('backgroundImagePosition') ) && (
+                    <FocalPointer
+                        label={ __( 'Position', 'athemes-blocks' ) }
+                        url={ imageData.url }
+                        value={ backgroundImagePositionValue }
+                        responsive={true}
+                        reset={true}
+                        onChange={ ( value ) => {
+                            updateInnerControlAttribute( 'backgroundImagePosition', value, currentDevice );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImagePosition',
+                                value: value
+                            } );
+                        }}
+                        onDrag={() => {}}
+                        onDragEnd={() => {}}
+                        onDragStart={() => {}}
+                        onClickReset={ () => {
+                            updateInnerControlAttribute( 'backgroundImagePosition', getInnerSettingDefaultValue( settingId, 'backgroundImagePosition', currentDevice, attributesDefaults ), currentDevice );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImagePosition',
+                                value: getInnerSettingDefaultValue( settingId, 'backgroundImagePosition', currentDevice, attributesDefaults )
+                            } );
+                        } }
+                    />
                 )
             }
             {
@@ -312,6 +354,71 @@ export function ColorPickerAdvanced( props ) {
                                 innerSettingId: 'backgroundImageSize',
                                 value: getInnerSettingDefaultValue( settingId, 'backgroundImageSize', currentDevice, attributesDefaults )
                             } );
+                        } }
+                    />
+                )
+            }
+            {
+                ( typeValue === 'image' && subFields && subFields.includes('backgroundImageOverlay') ) && (
+                    <SwitchToggle
+                        label={ __( 'Overlay', 'athemes-blocks' ) }
+                        value={ backgroundImageOverlayValue }
+                        responsive={false}
+                        reset={true}
+                        onChange={ ( value ) => {
+                            updateInnerControlAttribute( 'backgroundImageOverlay', value );
+                        } }
+                        onClickReset={ () => {
+                            updateInnerControlAttribute( 'backgroundImageOverlay', getInnerSettingDefaultValue( settingId, 'backgroundImageOverlay', '', attributesDefaults ) );
+                        } }
+                    />
+                )
+            }
+            {
+                ( typeValue === 'image' && backgroundImageOverlayValue && subFields && subFields.includes('backgroundImageOverlayColor') ) && (
+                    <ColorPicker
+                        label={ __( 'Overlay Color', 'athemes-blocks' ) }
+                        value={ backgroundImageOverlayColorValue }
+                        responsive={false}
+                        reset={true}
+                        hover={false}
+                        defaultStateOnChangeComplete={ ( value ) => {
+                            updateInnerControlAttribute( 'backgroundImageOverlayColor', {
+                                defaultState: value.hex,
+                                hoverState: backgroundImageOverlayColorValue.hoverState
+                            }, 'desktop' );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImageOverlayColor',
+                                value: backgroundImageOverlayColorValue.defaultState
+                            } );                          
+                        } }
+                        hoverStateOnChangeComplete={ ( value ) => {
+                            updateInnerControlAttribute( 'backgroundImageOverlayColor', {
+                                defaultState: backgroundImageOverlayColorValue.defaultState,
+                                hoverState: value.hex
+                            }, 'desktop' );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImageOverlayColor',
+                                value: backgroundImageOverlayColorValue.hoverState
+                            } );                           
+                        } }
+                        onClickReset={ () => {
+                            updateInnerControlAttribute( 'backgroundImageOverlayColor', {
+                                value: getInnerSettingDefaultValue( settingId, 'backgroundImageOverlayColor', 'desktop', attributesDefaults ),
+                            }, 'desktop' ); 
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImageOverlayColor',
+                                value: getInnerSettingDefaultValue( settingId, 'backgroundImageOverlayColor', 'desktop', attributesDefaults ),
+                            } );                            
                         } }
                     />
                 )

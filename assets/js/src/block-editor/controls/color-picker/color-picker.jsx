@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { BaseControl, Button, Popover, ColorPicker as ColorPickerControl } from '@wordpress/components';
+import { BaseControl, Button, Popover, ColorPicker as ColorPickerControl, Tooltip } from '@wordpress/components';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
@@ -43,10 +43,11 @@ export function ColorPicker( props ) {
                 }
             </div>
             
-            <Button 
-                label=""
-                variant="secondary" 
-                onClick={ toggleDefaultVisible } 
+            <Tooltip text={ __( 'Default', 'athemes-blocks' ) }>
+                <Button 
+                    label=""
+                    variant="secondary" 
+                    onClick={ toggleDefaultVisible } 
                 style={ { 
                     backgroundColor: defaultState,
                     textIndent: '-99999px',
@@ -71,11 +72,13 @@ export function ColorPicker( props ) {
                     </Popover>
                 ) }
 
-            </Button>
+                </Button>
+            </Tooltip>
             {
                 hover && (
-                    <Button 
-                        label=""
+                    <Tooltip text={ __( 'Hover', 'athemes-blocks' ) }>
+                        <Button 
+                            label=""
                         variant="secondary" 
                         onClick={ toggleHoverVisible } 
                         style={ { 
@@ -100,7 +103,8 @@ export function ColorPicker( props ) {
                             </Popover>
                         ) }
                         
-                    </Button>
+                        </Button>
+                    </Tooltip>
                 )
             }
             

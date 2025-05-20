@@ -537,7 +537,7 @@ const Edit = (props) => {
 								{
 									layout === 'grid' && (
 										<RangeSlider 
-											label={ __( 'Grid Columns', 'athemes-blocks' ) }
+											label={ __( 'Columns', 'athemes-blocks' ) }
 											defaultValue={ layoutGridColumns }
 											defaultUnit={ getSettingUnit( 'layoutGridColumns', currentDevice, atts ) }
 											min={ 1 }
@@ -863,7 +863,7 @@ const Edit = (props) => {
 									setAttributes={ setAttributes }
 									attributesDefaults={ attributesDefaults }
 									setUpdateCss={ setUpdateCss }
-									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize']}
+									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImagePosition', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize', 'backgroundImageOverlay', 'backgroundImageOverlayColor']}
 								/>
 								{/* <ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
@@ -1029,6 +1029,12 @@ const Edit = (props) => {
 					if (htmlTagLinkOpenInNewWindow) {
 						blockProps.target = '_blank';
 					}
+				}
+
+				// Background Image Overlay.
+				const backgroundImageOverlayValue = getInnerSettingValue( 'bgColor', 'backgroundImageOverlay', '', atts );
+				if ( backgroundImageOverlayValue ) {
+					blockProps.className += ' has-background-image-overlay';
 				}
 
 				if (hasInnerBlocks) {

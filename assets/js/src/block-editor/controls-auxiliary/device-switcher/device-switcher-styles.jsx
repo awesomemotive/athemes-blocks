@@ -6,7 +6,7 @@ const styles = {
         align-items: center;
     `,
     button: css`
-        padding: 2px;
+        padding: 2px !important;
         box-shadow: none !important;
         height: auto;
 

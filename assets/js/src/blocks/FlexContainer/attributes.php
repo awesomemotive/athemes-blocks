@@ -64,15 +64,15 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 1140,
+                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_desktop', 1140 ),
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => 1024,
+                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_tablet', 1024 ),
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => 767,
+                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_mobile', 767 ),
                     'unit' => 'px',
                 ),
             ),

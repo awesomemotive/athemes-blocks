@@ -34,13 +34,13 @@ $htmlTagLinkOpenInNewWindow = Settings::get_setting( 'htmlTagLinkOpenInNewWindow
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );
 $hideOnMobile = Settings::get_setting( 'hideOnMobile', $attributes, $atts_defaults );
-$isChildOfFlexContainer = Settings::get_setting( 'isChildOfFlexContainer', $attributes, $atts_defaults );
+$backgroundImageOverlay = Settings::get_inner_setting( 'bgColor', 'backgroundImageOverlay', $attributes, $atts_defaults, '' );
 
 $wrapper_attributes = array();
 $wrapper_classes = array( 
     'at-block', 
-    'at-block-' . $clientId, 
-    'at-block-flex-container' 
+    'at-block-flex-container',
+    'at-block-' . $clientId
 );
 
 // Container width.
@@ -54,6 +54,11 @@ if ( $layout === 'flex' && $childrenWidth === 'equal' ) {
 }
 
 $wrapper_classes[] = 'at-block-flex-container--layout-' . $layout;
+
+// Background Image overlay.
+if ( $backgroundImageOverlay ) {
+    $wrapper_classes[] = 'has-background-image-overlay';
+}
 
 // Add link properties if the tag is 'a'.
 if ( $htmlTag === 'a' && ! empty( $htmlTagLink ) ) {
@@ -77,8 +82,9 @@ if ( ! empty( $hideOnMobile ) ) {
     $wrapper_classes[] = 'atb-hide-mobile';
 }
 
-if ( ! empty( $isChildOfFlexContainer ) ) {
-    $wrapper_classes[] = 'is-child-container';
+// Identify $content container blocks as children.
+if ( $content ) {
+    $content = str_replace( 'class="at-block at-block-flex-container', 'class="at-block at-block-flex-container is-child-container', $content );
 }
 
 // Animation.

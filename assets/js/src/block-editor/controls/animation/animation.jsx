@@ -25,6 +25,10 @@ export function Animation( props ) {
 
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
 
+    const entranceAnimationValue = entranceAnimation.default['desktop'].value;
+    const animationDurationValue = animationDuration.default['desktop'].value;
+    const animationDelayValue = animationDelay.default['desktop'].value;
+
     return(
         <BaseControl>
             <div className="atblocks-component-header">
@@ -44,11 +48,11 @@ export function Animation( props ) {
                             { label: __( 'Flip In', 'athemes-blocks' ), value: 'flip-in' },
                             { label: __( 'Slide In', 'athemes-blocks' ), value: 'slide-in' },
                         ]}
-                        value={ entranceAnimation.default[currentDevice].value }
-                        responsive={true}
+                        value={ entranceAnimationValue }
+                        responsive={false}
                         reset={true}
                         onChange={ ( value ) => {
-                            updateInnerControlAttribute( 'entranceAnimation', value, currentDevice );
+                            updateInnerControlAttribute( 'entranceAnimation', value, 'desktop' );
                             
                             setUpdateCss( {
                                 type: 'inner-control',
@@ -58,20 +62,20 @@ export function Animation( props ) {
                             } );
                         } }
                         onClickReset={ () => {
-                            updateInnerControlAttribute( 'entranceAnimation', attributesDefaults[settingId].default.innerSettings.entranceAnimation.default[currentDevice].value, currentDevice );
+                            updateInnerControlAttribute( 'entranceAnimation', attributesDefaults[settingId].default.innerSettings.entranceAnimation.default['desktop'].value, 'desktop' );
 
                             setUpdateCss( {
                                 type: 'inner-control',
                                 settingId: settingId,
                                 innerSettingId: 'entranceAnimation',
-                                value: getInnerSettingDefaultValue( settingId, 'entranceAnimation', currentDevice, attributesDefaults ),
+                                value: getInnerSettingDefaultValue( settingId, 'entranceAnimation', 'desktop', attributesDefaults ),
                             } );
                         } }
                     />
                 )
             }
             {
-                ( entranceAnimation.default[currentDevice].value !== 'default' && subFields && subFields.includes('animationDuration') ) && (
+                ( entranceAnimation.default['desktop'].value !== 'default' && subFields && subFields.includes('animationDuration') ) && (
                     <>
                         <Select
                             label={ __( 'Animation Duration', 'athemes-blocks' ) }
@@ -80,11 +84,11 @@ export function Animation( props ) {
                                 { label: __( 'Fast', 'athemes-blocks' ), value: 'fast' },
                                 { label: __( 'Slow', 'athemes-blocks' ), value: 'slow' },
                             ]}
-                            value={ animationDuration.default[currentDevice].value }
-                            responsive={true}
+                            value={ animationDurationValue }
+                            responsive={false}
                             reset={true}
                             onChange={ ( value ) => {
-                                updateInnerControlAttribute( 'animationDuration', value, currentDevice );
+                                updateInnerControlAttribute( 'animationDuration', value, 'desktop' );
                                 
                                 setUpdateCss( {
                                     type: 'inner-control',
@@ -94,30 +98,30 @@ export function Animation( props ) {
                                 } );
                             } }
                             onClickReset={ () => {
-                                updateInnerControlAttribute( 'animationDuration', attributesDefaults[settingId].default.innerSettings.animationDuration.default[currentDevice].value, currentDevice );
+                                updateInnerControlAttribute( 'animationDuration', attributesDefaults[settingId].default.innerSettings.animationDuration.default['desktop'].value, 'desktop' );
 
                                 setUpdateCss( {
                                     type: 'inner-control',
                                     settingId: settingId,
                                     innerSettingId: 'animationDuration',
-                                    value: getInnerSettingDefaultValue( settingId, 'animationDuration', currentDevice, attributesDefaults ),
+                                    value: getInnerSettingDefaultValue( settingId, 'animationDuration', 'desktop', attributesDefaults ),
                                 } );
                             } }
                         />
                         <RangeSlider 
                             label={ __( 'Animation Delay (ms)', 'athemes-blocks' ) }
-                            defaultValue={ animationDelay.default[currentDevice].value }
-                            defaultUnit={ animationDelay.default[currentDevice].unit }
+                            defaultValue={ animationDelayValue }
+                            defaultUnit={ animationDelay.default['desktop'].unit }
                             min={ 0 }
                             max={ 15000 }
-                            responsive={ true }
+                            responsive={ false }
                             reset={ true }
                             units={false}
                             onChange={ ( value ) => {
                                 updateInnerControlAttribute( 'animationDelay', {
                                     value: value,
-                                    unit: animationDelay.default[currentDevice].unit
-                                }, currentDevice );
+                                    unit: animationDelay.default['desktop'].unit
+                                }, 'desktop' );
 
                                 setUpdateCss( {
                                     type: 'inner-control',
@@ -128,9 +132,9 @@ export function Animation( props ) {
                             } }
                             onChangeUnit={ ( value ) => {
                                 updateInnerControlAttribute( 'animationDelay', {
-                                    value: fontSize.default[currentDevice].value,
+                                    value: animationDelayValue,
                                     unit: value
-                                }, currentDevice );
+                                }, 'desktop' );
 
                                 setUpdateCss( {
                                     type: 'inner-control',
@@ -141,15 +145,15 @@ export function Animation( props ) {
                             } }
                             onClickReset={ () => {
                                 updateInnerControlAttribute( 'animationDelay', {
-                                    value: getInnerSettingDefaultValue( settingId, 'animationDelay', currentDevice, attributesDefaults ),
-                                    unit: getInnerSettingDefaultUnit( settingId, 'animationDelay', currentDevice, attributesDefaults )
-                                }, currentDevice ); 
+                                    value: getInnerSettingDefaultValue( settingId, 'animationDelay', 'desktop', attributesDefaults ),
+                                    unit: getInnerSettingDefaultUnit( settingId, 'animationDelay', 'desktop', attributesDefaults )
+                                }, 'desktop' ); 
 
                                 setUpdateCss( {
                                     type: 'inner-control',
                                     settingId: settingId,
                                     innerSettingId: 'animationDelay',
-                                    value: getInnerSettingDefaultValue( settingId, 'animationDelay', currentDevice, attributesDefaults ),
+                                    value: getInnerSettingDefaultValue( settingId, 'animationDelay', 'desktop', attributesDefaults ),
                                 } );
                             } }
                         />

@@ -488,6 +488,34 @@ class Attributes {
                                 'property' => 'background-image',
                             )
                         ),
+                        'backgroundImagePosition' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'x' => 0.5,
+                                        'y' => 0.5,
+                                    ),
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'x' => 0.5,
+                                        'y' => 0.5,
+                                    ),
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'x' => 0.5,
+                                        'y' => 0.5,
+                                    ),
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => 'background-position',
+                            )
+                        ),
                         'backgroundImageAttachment' => array(
                             'default' => array(
                                 'desktop' => array(
@@ -510,13 +538,13 @@ class Attributes {
                         'backgroundImageRepeat' => array(
                             'default' => array(
                                 'desktop' => array(
-                                    'value' => 'normal'
+                                    'value' => 'repeat'
                                 ),
                                 'tablet' => array(
-                                    'value' => 'normal'
+                                    'value' => 'repeat'
                                 ),
                                 'mobile' => array(
-                                    'value' => 'normal'
+                                    'value' => 'repeat'
                                 ),
                             ),
                             'css' => array(
@@ -545,6 +573,37 @@ class Attributes {
                                 'property' => 'background-size',
                             )
                         ),
+                        'backgroundImageOverlay' => array(
+                            'default' => false,
+                        ),
+                        'backgroundImageOverlayColor' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => array(
+                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'tablet' => array(
+                                    'value' => array(
+                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'hoverState' => ''
+                                    )
+                                ),
+                                'mobile' => array(
+                                    'value' => array(
+                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'hoverState' => '' 
+                                    )
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => '--atb-background-image-overlay-color',
+                            )
+                        )
                     ),
                 ),
             ),
