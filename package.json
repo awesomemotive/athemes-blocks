@@ -10,12 +10,19 @@
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
 		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip",
+		"plugin-zip": "wp-scripts plugin-zip && mv athemes-blocks.zip ../athemes-blocks.zip",
 		"start": "wp-scripts start --webpack-src-dir=assets/js/src",
 		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M",
-		"generate-icons": "node generate-icons-php-files.js",
-		"zip": "node zip-plugin.js"
+		"generate-icons": "node generate-icons-php-files.js"
 	},
+	"files": [
+		"athemes-blocks.php",
+		"assets",
+		"includes",
+		"languages",
+		"vendor/autoload.php",
+		"vendor/composer"
+	],
 	"dependencies": {
 		"swiper": "^11.2.6"
 	},
