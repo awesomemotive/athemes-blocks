@@ -27,35 +27,32 @@ class Sydney {
         }
 
         // Setup athemes blocks filters.
-        add_filter( 'athemes_blocks_flex_container_content_box_width_desktop', array( $this, 'get_content_box_width_desktop' ) );
-        add_filter( 'athemes_blocks_flex_container_content_box_width_tablet', array( $this, 'get_content_box_width_tablet' ) );
-        add_filter( 'athemes_blocks_flex_container_content_box_width_mobile', array( $this, 'get_content_box_width_mobile' ) );
+        add_filter( 'athemes_blocks_flex_container_attributes_values', array( $this, 'set_flex_container_attributes_values' ) );
     }
 
     /**
-     * Get the content box width for the desktop.
+     * Set the flex container attributes values.
      * 
-     * @return int
+     * @param array<mixed> $attributes_values The attributes values.
+     * @return array<mixed> The filtered attributes values.
      */
-    public function get_content_box_width_desktop(): int {
-        return 1140;
-    }
+    public function set_flex_container_attributes_values( array $attributes_values ): array {
+        
+        // Content box width.
+        $attributes_values['contentBoxWidth']['desktop'] = 1140;
+        $attributes_values['contentBoxWidth']['tablet'] = 1024;
+        $attributes_values['contentBoxWidth']['mobile'] = 767;
 
-    /**
-     * Get the content box width for the tablet.
-     * 
-     * @return int
-     */
-    public function get_content_box_width_tablet(): int {
-        return 1024;
-    }
+        // Columns gap.
+        $attributes_values['columnsGap']['desktop'] = 15;
+        $attributes_values['columnsGap']['tablet'] = 15;
+        $attributes_values['columnsGap']['mobile'] = 15;
 
-    /**
-     * Get the content box width for the mobile.
-     * 
-     * @return int
-     */
-    public function get_content_box_width_mobile(): int {
-        return 767;
+        // Rows gap.
+        $attributes_values['rowsGap']['desktop'] = 15;
+        $attributes_values['rowsGap']['tablet'] = 15;
+        $attributes_values['rowsGap']['mobile'] = 15;
+        
+        return $attributes_values;
     }
 }

@@ -334,7 +334,7 @@ const Edit = (props) => {
 									)
 								}
 								{
-									( containerWidth === 'custom' && layout !== 'grid' ) && (
+									( containerWidth === 'custom' ) && (
 										<RangeSlider 
 											label={ __( 'Custom Width', 'athemes-blocks' ) }
 											defaultValue={ customWidth }
@@ -375,8 +375,11 @@ const Edit = (props) => {
 									label={ __( 'Minimum Height', 'athemes-blocks' ) }
 									defaultValue={ minHeight }
 									defaultUnit={ getSettingUnit( 'minHeight', currentDevice, atts ) }
-									min={ 10 }
-									max={ 200 }
+									min={ 0 }
+									max={{
+										px: 1000,
+										vh: 100,
+									}}
 									responsive={ true }
 									reset={ true }
 									units={['px', 'vh']}

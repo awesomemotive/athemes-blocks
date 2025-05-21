@@ -15,6 +15,32 @@ include_once ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Attributes.php';
 
 use AThemes_Blocks\Blocks\Helper\Attributes;
 
+/**
+ * Filter the attributes values.
+ * 
+ * @since 1.0.0
+ * 
+ * @param array $attributes_values The attributes values.
+ * @return array The filtered attributes values.
+ */
+$filterable_attributes_values = apply_filters( 'athemes_blocks_flex_container_attributes_values', array(
+    'contentBoxWidth' => array(
+        'desktop' => 1140,
+        'tablet' => 1024,
+        'mobile' => 767,
+    ),
+    'columnsGap' => array(
+        'desktop' => 15,
+        'tablet' => 15,
+        'mobile' => 15,
+    ),
+    'rowsGap' => array(
+        'desktop' => 15,
+        'tablet' => 15,
+        'mobile' => 15,
+    ),
+) );
+
 return array_merge(
     Attributes::get_block_core_attributes(),
     
@@ -64,15 +90,15 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_desktop', 1140 ),
+                    'value' => $filterable_attributes_values['contentBoxWidth']['desktop'],
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_tablet', 1024 ),
+                    'value' => $filterable_attributes_values['contentBoxWidth']['tablet'],
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => apply_filters( 'athemes_blocks_flex_container_content_box_width_mobile', 767 ),
+                    'value' => $filterable_attributes_values['contentBoxWidth']['mobile'],
                     'unit' => 'px',
                 ),
             ),
@@ -254,15 +280,15 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['columnsGap']['desktop'],
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['columnsGap']['tablet'],
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['columnsGap']['mobile'],
                     'unit' => 'px',
                 ),
             ),
@@ -277,15 +303,15 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['rowsGap']['desktop'],
                     'unit' => 'px',
                 ),
                 'tablet' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['rowsGap']['tablet'],
                     'unit' => 'px',
                 ),
                 'mobile' => array(
-                    'value' => 15,
+                    'value' => $filterable_attributes_values['rowsGap']['mobile'],
                     'unit' => 'px',
                 ),
             ),

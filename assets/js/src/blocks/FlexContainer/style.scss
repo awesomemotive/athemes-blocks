@@ -23,6 +23,11 @@
         margin-right: auto !important;
     }
 
+    &.at-block {
+        margin-top: revert;
+        margin-bottom: revert;
+    }
+
     &--container-full-width.at-block:not(.is-child-container) {
         margin-left: calc(50% - 50vw) !important;
         margin-right: calc(50% - 50vw) !important;
@@ -39,10 +44,12 @@
 
     // Layout Grid.
     &--layout-grid {
-        display: grid;
-        grid-template-columns: repeat(var(--atb-layout-grid-columns, 3), 1fr);
-        column-gap: var(--atb-container-columns-gap, 15px);
-        row-gap: var(--atb-container-rows-gap, 15px);
+        &:not(.at-block-flex-container--container-full-width) {
+            display: grid;
+            grid-template-columns: repeat(var(--atb-layout-grid-columns, 3), 1fr);
+            column-gap: var(--atb-container-columns-gap, 15px);
+            row-gap: var(--atb-container-rows-gap, 15px);
+        }
 
         > .at-block-flex-container__inner-blocks-wrapper {
             display: grid;
