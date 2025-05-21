@@ -13,7 +13,8 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start --webpack-src-dir=assets/js/src",
 		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M",
-		"generate-icons": "node generate-icons-php-files.js"
+		"generate-icons": "node generate-icons-php-files.js",
+		"zip": "node zip-plugin.js"
 	},
 	"dependencies": {
 		"swiper": "^11.2.6"
@@ -23,11 +24,13 @@
 		"@wordpress/hooks": "^4.20.0",
 		"@wordpress/icons": "^9.13.0",
 		"@wordpress/scripts": "^24.4.0",
+		"archiver": "^6.0.0",
 		"babel-loader": "^10.0.0",
 		"colord": "^2.9.3",
 		"copy-webpack-plugin": "^9.0.0",
 		"css-loader": "^7.1.2",
 		"mini-css-extract-plugin": "^2.9.2",
+		"minimatch": "^9.0.5",
 		"node-sass": "^7.0.3",
 		"react-virtualized": "^9.22.6",
 		"sass-loader": "^16.0.5",
