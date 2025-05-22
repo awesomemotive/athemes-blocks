@@ -5,6 +5,7 @@
 	"author": "aThemes",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
+		"production": "npm run generate-icons && npm run build",
 		"build": "wp-scripts build --webpack-src-dir=assets/js/src",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",

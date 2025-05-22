@@ -128,7 +128,7 @@ module.exports = [
                         output: path.join(__dirname, 'assets/js/blocks/', folder, 'editor.css'),
                     },
                 ])
-            ),                
+            ),            
         ],
     },
 
