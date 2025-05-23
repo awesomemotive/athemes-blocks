@@ -48,7 +48,7 @@ return array_merge(
             'type' => 'number',
             'default' => 0
         ),
-        'orderby' => array(
+        'orderBy' => array(
             'type' => 'string',
             'default' => 'date'
         ),
@@ -254,6 +254,7 @@ return array_merge(
                         'left' => 20,
                     ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
                 'tablet' => array(
                     'value' => array(
@@ -263,6 +264,7 @@ return array_merge(
                         'left' => '',
                     ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
                 'mobile' => array(
                     'value' => array(
@@ -272,6 +274,7 @@ return array_merge(
                         'left' => '',
                     ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
             ),
             'css' => array(
@@ -836,13 +839,13 @@ return array_merge(
             'borderStyle' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'tablet' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'mobile' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                 ),
                 'css' => array(
@@ -1009,13 +1012,13 @@ return array_merge(
             'borderStyle' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'tablet' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'mobile' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                 ),
                 'css' => array(
@@ -1105,7 +1108,7 @@ return array_merge(
     // --- Image --------------------------
     // ------------------------------------
     array(
-        'iamgeBottomSpacing' => array(
+        'imageBottomSpacing' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
@@ -1139,13 +1142,13 @@ return array_merge(
             'borderStyle' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'tablet' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                     'mobile' => array(
-                        'value' => 'none',
+                        'value' => 'default',
                     ),
                 ),
                 'css' => array(

@@ -38,7 +38,7 @@ abstract class BlockBase {
     public function __construct() {
         add_action( 'init', array( $this, 'register_block_type' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_attributes' ) );
-        add_action( 'render_block', array( $this, 'block_css' ), 10, 2 );
+        add_filter( 'render_block', array( $this, 'block_css' ), 10, 2 );
     }
 
     /**

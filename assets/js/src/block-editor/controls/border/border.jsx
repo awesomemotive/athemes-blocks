@@ -69,7 +69,7 @@ export function Border( props ) {
                             } );
                         } }
                         onClickReset={ () => {
-                            updateInnerControlAttribute( 'borderStyle', attributesDefaults[settingId].default.innerSettings.borderStyleValue, 'desktop' );
+                            updateInnerControlAttribute( 'borderStyle', attributesDefaults[settingId].default.innerSettings.borderStyle.default['desktop'].value, 'desktop' );
 
                             setUpdateCss( {
                                 type: 'inner-control',

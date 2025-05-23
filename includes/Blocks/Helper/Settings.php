@@ -22,10 +22,14 @@ class Settings {
      * @return mixed
      */
     public static function get_setting( $name, $attributes, $atts_defaults = array(), $device = 'desktop' ) {
-        if ( ! $device && isset( $attributes[$name] ) ) {
-            return $attributes[$name];
+        if ( ! $device ) {
+            if ( isset( $attributes[$name] ) ) {
+                return $attributes[$name];
+            }
+
+            return $atts_defaults[$name]['default'];
         }
-        
+
         if ( isset( $attributes[$name][$device]['value'] ) ) {
             return $attributes[$name][$device]['value'];
         }

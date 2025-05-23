@@ -5,4 +5,3 @@ parameters:
     paths: # the paths to scan
         - athemes-blocks.php
         - includes/
-    ignoreErrors:

@@ -1,10 +1,10 @@
-import { __ } from '@wordpress/i18n';
-import ServerSideRender from '@wordpress/server-side-render';
+import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
-import { Panel, PanelBody } from '@wordpress/components';
+import { Panel, PanelBody, Spinner } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
 
 import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
@@ -24,6 +24,7 @@ import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
 import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
 import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persistent-panel-toggle';
 import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
+import { withQueryPostTypesData } from '../../block-editor/hoc/with-query-post-types-data';
 
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 
@@ -31,7 +32,7 @@ import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefa
 const attributesDefaults = PostGridBlockData.attributes;
 
 const Edit = (props) => {
-	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
+	const { attributes, setAttributes, clientId, postTypes, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler, posts, isLoading } = props;
 	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
@@ -47,7 +48,7 @@ const Edit = (props) => {
 		postsPerPage,
 		excludeCurrentPost,
 		offsetStartingPoint,
-		orderby,
+		orderBy,
 		order,
 		pagination,
 		paginationPageLimit,
@@ -112,7 +113,7 @@ const Edit = (props) => {
 			postsPerPage: atts.postsPerPage,
 			excludeCurrentPost: atts.excludeCurrentPost,
 			offsetStartingPoint: atts.offsetStartingPoint,
-			orderby: atts.orderby,
+			orderBy: atts.orderBy,
 			order: atts.order,
 			pagination: atts.pagination,
 			paginationPageLimit: atts.paginationPageLimit,
@@ -201,6 +202,49 @@ const Edit = (props) => {
 		}
 	}, []);
 
+	// Get taxonomies for the selected post type.
+	const taxonomies = useSelect((select) => {
+		const { getTaxonomies } = select('core');
+		const taxonomies = getTaxonomies({ per_page: -1, post: postType }) || [];
+		const filteredTaxonomies = taxonomies.filter(taxonomy => taxonomy.types.includes(postType));
+		
+		if ( filteredTaxonomies.length === 0 ) {
+			return [{
+				value: 0,
+				label: sprintf( __( 'No taxonomies found for %s', 'athemes-blocks' ), postType ),
+			}];
+		}
+
+		return [
+			{ value: 'all', label: __( 'All', 'athemes-blocks' ) },
+			...filteredTaxonomies.map(taxonomy => ({
+				value: taxonomy.slug,
+				label: taxonomy.name,
+			}))
+		];
+	}, [postType]);
+
+	// Get taxonomy terms for the selected taxonomy.
+	const taxonomyTerms = useSelect((select) => {
+		const { getEntityRecords } = select('core');
+		const terms = getEntityRecords('taxonomy', taxonomy, { per_page: -1, type: postType }) || [];
+
+		if ( terms.length === 0 ) {
+			return [{
+				value: 0,
+				label: sprintf( __( 'No terms found for %s', 'athemes-blocks' ), taxonomy ),
+			}];
+		}
+
+		return [
+			{ value: 'all', label: __( 'All', 'athemes-blocks' ) },
+			...terms.map(term => ({
+				value: term.id,
+				label: term.name,
+			}))
+		];
+	}, [taxonomy, postType]);
+
 	return (
 		<>
 			<InspectorControls>
@@ -215,10 +259,7 @@ const Edit = (props) => {
 							>
 								<Select
 									label={ __( 'Post Type', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Post', 'athemes-blocks' ), value: 'post' },
-										{ label: __( 'Page', 'athemes-blocks' ), value: 'page' },
-									]}
+									options={postTypes}
 									value={ postType }
 									responsive={false}
 									reset={true}
@@ -231,10 +272,7 @@ const Edit = (props) => {
 								/>
 								<Select
 									label={ __( 'Taxonomy', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Category', 'athemes-blocks' ), value: 'category' },
-										{ label: __( 'Tag', 'athemes-blocks' ), value: 'tag' },
-									]}
+									options={taxonomies}
 									value={ taxonomy }
 									responsive={false}
 									reset={true}
@@ -247,9 +285,7 @@ const Edit = (props) => {
 								/>
 								<Select
 									label={ __( 'Taxonomy Term', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'All', 'athemes-blocks' ), value: 'all' },
-									]}
+									options={taxonomyTerms}
 									value={ taxonomyTerm }
 									responsive={false}
 									reset={true}
@@ -309,7 +345,7 @@ const Edit = (props) => {
 										{ label: __( 'Menu Order', 'athemes-blocks' ), value: 'menu_order' },
 										{ label: __( 'Random', 'athemes-blocks' ), value: 'rand' },
 									]}
-									value={ orderby }
+									value={ orderBy }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
@@ -665,7 +701,7 @@ const Edit = (props) => {
 									defaultValue={ columns }
 									defaultUnit={ getSettingUnit( 'columns', currentDevice, atts ) }
 									min={ 1 }
-									max={ columns }
+									max={ 6 }
 									responsive={true}
 									reset={true}
 									units={false}
@@ -1403,7 +1439,7 @@ const Edit = (props) => {
 										em: 20,
 										rem: 20
 									} }
-									responsive={false}
+									responsive={true}
 									reset={true}
 									units={['px', 'em', 'rem']}
 									onChange={ ( value ) => {
@@ -1475,27 +1511,193 @@ const Edit = (props) => {
 
 				// Animation.
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
-				
+
 				return (
-					<ServerSideRender
-						block={ 'athemes-blocks/post-grid' }
-						httpMethod="POST"
-						attributes=""
-					/>
+					<div { ...blockProps }>
+						{isLoading ? (
+							<div className="at-block-post-grid__loading">
+								<Spinner />
+							</div>
+						) : posts && posts.length > 0 ? (
+							<>
+								<div className="at-block-post-grid__items">
+									{posts.map((post) => (
+										<article key={post.id} className="at-block-post-grid__item">
+											{displayImage && post.featured_media && (
+												<div className="at-block-post-grid__image">
+													<img 
+														src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || ''} 
+														alt={post.title.rendered}
+													/>
+												</div>
+											)}
+											
+											<div className="at-block-post-grid__content">
+												{displayTitle && (
+													<RichText
+														tagName={titleTag}
+														className="at-block-post-grid__title"
+														value={post.title.rendered}
+														onChange={() => {}}
+														readOnly
+													/>
+												)}
+
+												{(displayAuthor || displayDate || displayComments || displayTaxnomy) && (
+													<div className="at-block-post-grid__meta">
+														{displayAuthor && (
+															<span className="at-block-post-grid__author">
+																{displayMetaIcon && <i className="fas fa-user"></i>}
+																{post._embedded?.author?.[0]?.name || __('Unknown', 'athemes-blocks')}
+															</span>
+														)}
+														
+														{displayDate && (
+															<span className="at-block-post-grid__date">
+																{displayMetaIcon && <i className="fas fa-calendar"></i>}
+																{new Date(post.date).toLocaleDateString()}
+															</span>
+														)}
+														
+														{displayComments && (
+															<span className="at-block-post-grid__comments">
+																{displayMetaIcon && <i className="fas fa-comments"></i>}
+																{post.comment_count || '0'}
+															</span>
+														)}
+														
+														{displayTaxnomy && taxonomy !== 'all' && (
+															<span className="at-block-post-grid__taxonomy">
+																{displayMetaIcon && <i className="fas fa-tags"></i>}
+																{post._embedded?.[`wp:term`]?.[0]?.map(term => term.name).join(', ') || ''}
+															</span>
+														)}
+													</div>
+												)}
+
+												{displayExcerpt && (
+													<div 
+														className="at-block-post-grid__excerpt"
+														dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+													/>
+												)}
+
+												{displayReadMore && (
+													<a 
+														href={post.link} 
+														className="at-block-post-grid__read-more"
+														target={readMoreOpenInNewTab ? '_blank' : undefined}
+														rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
+													>
+														{readMoreText}
+													</a>
+												)}
+											</div>
+										</article>
+									))}
+								</div>
+
+								{pagination && posts.length > 0 && (
+									<div className="at-block-post-grid__pagination">
+										{paginationType === 'numbers' ? (
+											<div className="at-block-post-grid__pagination-numbers">
+												<span className="at-block-post-grid__pagination-prev">{paginationPrevText}</span>
+												<span className="at-block-post-grid__pagination-current">1</span>
+												<span className="at-block-post-grid__pagination-next">{paginationNextText}</span>
+											</div>
+										) : (
+											<div className="at-block-post-grid__pagination-prev-next">
+												<span className="at-block-post-grid__pagination-prev">{paginationPrevText}</span>
+												<span className="at-block-post-grid__pagination-next">{paginationNextText}</span>
+											</div>
+										)}
+									</div>
+								)}
+							</>
+						) : (
+							<p className="at-block-post-grid__no-posts">
+								{__('No posts found.', 'athemes-blocks')}
+							</p>
+						)}
+					</div>
 				);
 			})()}
 		</>
 	);
 };
 
+const applyWithSelect = withSelect((select, props) => {
+	const { attributes } = props;
+	const {
+		postType,
+		taxonomy,
+		taxonomyTerm,
+		postsPerPage,
+		excludeCurrentPost,
+		offsetStartingPoint,
+		orderBy,
+		order,
+	} = attributes;
+
+	// Don't fetch if no post type is selected
+	if (!postType) {
+		return {
+			posts: [],
+			isLoading: false
+		};
+	}
+
+	const queryArgs = {
+		per_page: postsPerPage || 10,
+		orderby: orderBy || 'date',
+		// order: order || 'desc',
+		_embed: true, // This ensures we get featured images, authors, and terms
+	};
+
+	// Add taxonomy query if taxonomy and terms are set
+	if (taxonomy && taxonomy !== 'all' && taxonomyTerm && taxonomyTerm !== 'all') {
+		queryArgs[taxonomy] = taxonomyTerm;
+	}
+
+	// Exclude current post if enabled
+	if (excludeCurrentPost) {
+		const currentPostId = select('core/editor').getCurrentPostId();
+		if (currentPostId) {
+			queryArgs.exclude = [currentPostId];
+		}
+	}
+
+	// Add offset if set
+	if (offsetStartingPoint) {
+		queryArgs.offset = offsetStartingPoint;
+	}
+
+	// Get posts from the WordPress REST API
+	const posts = select('core').getEntityRecords('postType', postType, queryArgs);
+	
+	// Check if the data is still being fetched
+	const isLoading = select('core/data').isResolving('core', 'getEntityRecords', [
+		'postType',
+		postType,
+		queryArgs
+	]);
+
+	return {
+		posts: posts || [],
+		isLoading: isLoading || false
+	};
+});
+
 export default withDynamicCSS(
-	withTabsNavigation(
-		withPersistentPanelToggle(	
-			withAdvancedTab(
-				withGoogleFonts(Edit),
-				attributesDefaults
+	withQueryPostTypesData(
+		withTabsNavigation(
+			withPersistentPanelToggle(	
+				withAdvancedTab(
+					withGoogleFonts(applyWithSelect(Edit)),
+					attributesDefaults
+				)
 			)
-		)
+		),
 	),
 	attributesDefaults
 );
