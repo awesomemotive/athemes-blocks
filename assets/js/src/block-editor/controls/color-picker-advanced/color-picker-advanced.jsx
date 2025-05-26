@@ -12,7 +12,7 @@ import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 import { Dimensions } from '../dimensions/dimensions';
 import { Select } from '../select/select';
-import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
+import { ColorPickerPalette } from '../../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { RadioButtons } from '../../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
 import { FocalPointer } from '../../../block-editor/controls/focal-pointer/focal-pointer';
@@ -91,15 +91,15 @@ export function ColorPickerAdvanced( props ) {
             
             {
                 ( typeValue === 'color' && subFields && subFields.includes('color') ) && (
-                    <ColorPicker
+                    <ColorPickerPalette
                         label={ __( 'Color', 'athemes-blocks' ) }
                         value={ colorValue }
-                        hover={false}
+                        hover={true}
                         responsive={false}
                         reset={true}
                         defaultStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'color', {
-                                defaultState: value.hex,
+                                defaultState: value,
                                 hoverState: colorValue.hoverState
                             }, 'desktop' );
 
@@ -113,7 +113,7 @@ export function ColorPickerAdvanced( props ) {
                         hoverStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'color', {
                                 defaultState: colorValue.defaultState,
-                                hoverState: value.hex
+                                hoverState: value
                             }, 'desktop' );
 
                             setUpdateCss( {

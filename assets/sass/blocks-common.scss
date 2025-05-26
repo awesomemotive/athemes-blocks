@@ -118,3 +118,10 @@
 .atb-animation-duration-fast {
     animation-duration: 750ms;
 }
+
+/* Popover */
+.atblocks-popover {
+    .components-popover__content {
+        padding: 15px;
+    }
+}

@@ -37,6 +37,7 @@ class BlockEditorAssets {
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_google_fonts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_icon_libraries' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_available_image_sizes' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_color_palette' ) );
     }
 
     /**
@@ -140,6 +141,49 @@ class BlockEditorAssets {
             'athemes-blocks-block-editor',
             'athemesBlocksAvailableImageSizes',
             $image_sizes
+        );
+    }
+
+    /**
+     * Localize block editor with color palettes.
+     * 
+     * @return void
+     */
+    public function localize_block_editor_with_color_palette(): void {
+        
+        /**
+         * Filter the color palette.
+         * 
+         * @param array<mixed> $color_palette The color palette.
+         * @return array<mixed> The filtered color palette.
+         */
+        $color_palette = apply_filters( 'athemes_blocks_color_palette', array(
+            array(
+                'color' => '#f00',
+                'name' => 'Red'
+            ),
+            array(
+                'color' => '#fff',
+                'name' => 'White'
+            ),
+            array(
+                'color' => '#00f',
+                'name' => 'Blue'
+            ),
+            array(
+                'color' => '#000',
+                'name' => 'Black'
+            ),
+            array(
+                'color' => '#808080',
+                'name' => 'Gray'
+            )
+        ) );
+
+        wp_localize_script(
+            'athemes-blocks-block-editor',
+            'athemesBlocksColorPalette',
+            $color_palette
         );
     }
 }

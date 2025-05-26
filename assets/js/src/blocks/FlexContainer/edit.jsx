@@ -13,6 +13,7 @@ import { Select } from '../../block-editor/controls/select/select';
 import { TextInput } from '../../block-editor/controls/text-input/text-input';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
+import { ColorPickerPalette } from '../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Border } from '../../block-editor/controls/border/border';
 import { ColorPickerAdvanced } from '../../block-editor/controls/color-picker-advanced/color-picker-advanced';
 
@@ -868,43 +869,6 @@ const Edit = (props) => {
 									setUpdateCss={ setUpdateCss }
 									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImagePosition', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize', 'backgroundImageOverlay', 'backgroundImageOverlayColor']}
 								/>
-								{/* <ColorPicker
-									label={ __( 'Color', 'athemes-blocks' ) }
-									value={ backgroundColor }
-									hover={false}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'backgroundColor', {
-											value: {
-												defaultState: value.hex,
-												hoverState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
-
-										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'backgroundColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'backgroundColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/> */}
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Color', 'botiga-pro' ) } 
@@ -912,7 +876,7 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'color' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'color' ) }
 							>
-								<ColorPicker
+								<ColorPickerPalette
 									label={ __( 'Text Color', 'athemes-blocks' ) }
 									value={ textColor }
 									hover={true}
@@ -921,35 +885,32 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'textColor', {
 											value: {
-												defaultState: value.hex,
-												hoverState: getColorPickerSettingValue( 'textColor', 'desktop', 'hoverState', atts )
+												defaultState: value,
+												hoverState: textColor.hoverState
 											}
 										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', 'desktop', 'defaultState', atts ) } );
+										setUpdateCss( { settingId: 'textColor', value: textColor.defaultState } );                          
 									} }
 									hoverStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'textColor', {
 											value: {
-												defaultState: getColorPickerSettingValue( 'textColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												defaultState: textColor.defaultState,
+												hoverState: value
 											}
 										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingValue( 'textColor', 'desktop', 'hoverState', atts ) } );
+
+										setUpdateCss( { settingId: 'textColor', value: textColor.hoverState } );                           
 									} }
 									onClickReset={ () => {
 										updateAttribute( 'textColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'textColor', value: getColorPickerSettingDefaultValue( 'textColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											value: getSettingDefaultValue( 'textColor', 'desktop', attributesDefaults )
+										}, 'desktop' ); 
+
+										setUpdateCss( { settingId: 'textColor', value: getSettingDefaultValue( 'textColor', 'desktop', attributesDefaults ) } );                            
 									} }
 								/>
-								<ColorPicker
+								<ColorPickerPalette
 									label={ __( 'Link Color', 'athemes-blocks' ) }
 									value={ linkColor }
 									hover={true}
@@ -958,32 +919,29 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'linkColor', {
 											value: {
-												defaultState: value.hex,
-												hoverState: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts )
+												defaultState: value,
+												hoverState: linkColor.hoverState
 											}
 										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ) } );
+										setUpdateCss( { settingId: 'linkColor', value: linkColor.defaultState } );                          
 									} }
 									hoverStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'linkColor', {
 											value: {
-												defaultState: getColorPickerSettingValue( 'linkColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												defaultState: linkColor.defaultState,
+												hoverState: value
 											}
 										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingValue( 'linkColor', 'desktop', 'hoverState', atts ) } );
+
+										setUpdateCss( { settingId: 'linkColor', value: linkColor.hoverState } );                           
 									} }
 									onClickReset={ () => {
 										updateAttribute( 'linkColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'linkColor', value: getColorPickerSettingDefaultValue( 'linkColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											value: getSettingDefaultValue( 'linkColor', 'desktop', attributesDefaults )
+										}, 'desktop' ); 
+
+										setUpdateCss( { settingId: 'linkColor', value: getSettingDefaultValue( 'linkColor', 'desktop', attributesDefaults ) } );                            
 									} }
 								/>
 							</PanelBody>

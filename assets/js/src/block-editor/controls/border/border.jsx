@@ -8,6 +8,7 @@ import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-
 import { Dimensions } from '../dimensions/dimensions';
 import { Select } from '../select/select';
 import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
+import { ColorPickerPalette } from '../../../block-editor/controls/color-picker-palette/color-picker-palette';
 
 import { createInnerControlAttributeUpdater } from '../../../utils/block-attributes';
 
@@ -195,7 +196,7 @@ export function Border( props ) {
             }
             {
                 ( borderStyleValue !== 'none' && borderStyleValue !== 'default' && subFields && subFields.includes('borderColor') ) && (
-                    <ColorPicker
+                    <ColorPickerPalette
                         label={ __( 'Color', 'athemes-blocks' ) }
                         value={ borderColorValue }
                         hover={true}
@@ -203,7 +204,7 @@ export function Border( props ) {
                         reset={true}
                         defaultStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'borderColor', {
-                                defaultState: value.hex,
+                                defaultState: value,
                                 hoverState: borderColorValue.hoverState
                             }, 'desktop' );
 
@@ -217,7 +218,7 @@ export function Border( props ) {
                         hoverStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'borderColor', {
                                 defaultState: borderColorValue.defaultState,
-                                hoverState: value.hex
+                                hoverState: value
                             }, 'desktop' );
 
                             setUpdateCss( {
