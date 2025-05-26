@@ -150,36 +150,79 @@ class BlockEditorAssets {
      * @return void
      */
     public function localize_block_editor_with_color_palette(): void {
-        
+
+        // The default color palette from athemes blocks.
+        $default_color_palette = array(
+            array(
+                'name' => 'Default',
+                'colors' => array(
+                    array(
+                        'color' => '#212121',
+                        'name' => __( 'Black', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#757575',
+                        'name' => __( 'Dark Gray', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#212121',
+                        'name' => __( 'Black', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#212121',
+                        'name' => __( 'Black', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#212121',
+                        'name' => __( 'Black', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#f5f5f5',
+                        'name' => __( 'Light Gray', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#fff',
+                        'name' => __( 'White', 'athemes-blocks' )
+                    ),
+                    array(
+                        'color' => '#fff',
+                        'name' => __( 'White', 'athemes-blocks' )
+                    ),
+                )
+            ),
+        );
+
+        // Theme color palette.
+        $theme_color_palette = array();
+        $editor_color_palette = get_theme_support( 'editor-color-palette' );
+        if ( ! empty( $editor_color_palette[0] ) ) {
+            $theme_colors = array();
+
+            foreach ( $editor_color_palette[0] as $color ) {
+                $theme_colors[] = array(
+                    'name' => $color['name'],
+                    'color' => $color['color']
+                );
+            }
+
+            $theme_color_palette[] = array(
+                'name' => __( 'Theme Colors', 'athemes-blocks' ),
+                'colors' => $theme_colors
+            );
+        }
+
+        // Mount the color palette.
+        $color_palette = array_merge( $theme_color_palette, $default_color_palette );
+
         /**
          * Filter the color palette.
          * 
          * @param array<mixed> $color_palette The color palette.
          * @return array<mixed> The filtered color palette.
          */
-        $color_palette = apply_filters( 'athemes_blocks_color_palette', array(
-            array(
-                'color' => '#f00',
-                'name' => 'Red'
-            ),
-            array(
-                'color' => '#fff',
-                'name' => 'White'
-            ),
-            array(
-                'color' => '#00f',
-                'name' => 'Blue'
-            ),
-            array(
-                'color' => '#000',
-                'name' => 'Black'
-            ),
-            array(
-                'color' => '#808080',
-                'name' => 'Gray'
-            )
-        ) );
+        $color_palette = apply_filters('athemes_blocks_color_palette', $color_palette);
 
+        // Localize the color palette.
         wp_localize_script(
             'athemes-blocks-block-editor',
             'athemesBlocksColorPalette',

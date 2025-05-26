@@ -28,9 +28,6 @@ class Sydney {
 
         // Setup athemes blocks filters.
         add_filter( 'athemes_blocks_flex_container_attributes_values', array( $this, 'set_flex_container_attributes_values' ) );
-
-        // Setup athemes blocks filters.
-        add_filter( 'athemes_blocks_color_palette', array( $this, 'set_color_palette' ) );
     }
 
     /**
@@ -57,31 +54,5 @@ class Sydney {
         $attributes_values['rowsGap']['mobile'] = 15;
         
         return $attributes_values;
-    }
-
-    /**
-     * Set the color palette.
-     * 
-     * @param array<string, string> $color_palette The color palette.
-     * @return array<mixed> The filtered color palette.
-     */
-    public function set_color_palette( array $color_palette ): array {
-        if ( ! function_exists( 'sydney_get_global_color_defaults' ) ) {
-            return $color_palette;
-        }
-
-        $sydney_color_palette = sydney_get_global_color_defaults();
-        $color_palette = array();
-
-        foreach ( $sydney_color_palette as $key => $color ) {
-            $color = get_theme_mod( $key ) ? get_theme_mod( $key ) : $color;
-
-            $color_palette[] = array(
-                'color' => $color,
-                'name' => $key
-            );
-        }
-
-        return $color_palette;
     }
 }

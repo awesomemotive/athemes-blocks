@@ -94,7 +94,7 @@ export function ColorPickerAdvanced( props ) {
                     <ColorPickerPalette
                         label={ __( 'Color', 'athemes-blocks' ) }
                         value={ colorValue }
-                        hover={true}
+                        hover={false}
                         responsive={false}
                         reset={true}
                         defaultStateOnChangeComplete={ ( value ) => {
@@ -376,15 +376,15 @@ export function ColorPickerAdvanced( props ) {
             }
             {
                 ( typeValue === 'image' && backgroundImageOverlayValue && subFields && subFields.includes('backgroundImageOverlayColor') ) && (
-                    <ColorPicker
+                    <ColorPickerPalette
                         label={ __( 'Overlay Color', 'athemes-blocks' ) }
                         value={ backgroundImageOverlayColorValue }
+                        hover={false}
                         responsive={false}
                         reset={true}
-                        hover={false}
                         defaultStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'backgroundImageOverlayColor', {
-                                defaultState: value.hex,
+                                defaultState: value,
                                 hoverState: backgroundImageOverlayColorValue.hoverState
                             }, 'desktop' );
 
@@ -398,7 +398,7 @@ export function ColorPickerAdvanced( props ) {
                         hoverStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'backgroundImageOverlayColor', {
                                 defaultState: backgroundImageOverlayColorValue.defaultState,
-                                hoverState: value.hex
+                                hoverState: value
                             }, 'desktop' );
 
                             setUpdateCss( {
