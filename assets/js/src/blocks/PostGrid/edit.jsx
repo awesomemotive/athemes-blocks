@@ -64,10 +64,10 @@ const Edit = (props) => {
 		displayAuthor,
 		displayDate,
 		displayComments,
-		displayTaxnomy,
+		displayTaxonomy,
 		displayMetaIcon,
 		displayExcerpt,
-		excerptLength,
+		excerptMaxWords,
 		displayReadMore,
 		readMoreOpenInNewTab,
 		readMoreText,
@@ -77,6 +77,7 @@ const Edit = (props) => {
 		columnsGap,
 		rowsGap,
 		cardBackgroundColor,
+		cardBorder,
 		cardPadding,
 		titleColor,
 		titleTypography,
@@ -97,7 +98,6 @@ const Edit = (props) => {
 		paginationBorder,
 		paginationItemsGap,
 		imageBottomSpacing,
-		cardBorder,
 
         // Advanced.
         hideOnDesktop,
@@ -129,10 +129,10 @@ const Edit = (props) => {
 			displayAuthor: atts.displayAuthor,
 			displayDate: atts.displayDate,
 			displayComments: atts.displayComments,
-			displayTaxnomy: atts.displayTaxnomy,
+			displayTaxonomy: atts.displayTaxonomy,
 			displayMetaIcon: atts.displayMetaIcon,
 			displayExcerpt: atts.displayExcerpt,
-			excerptLength: atts.excerptLength,
+			excerptMaxWords: atts.excerptMaxWords,
 			displayReadMore: atts.displayReadMore,
 			readMoreOpenInNewTab: atts.readMoreOpenInNewTab,
 			readMoreText: atts.readMoreText,
@@ -464,57 +464,61 @@ const Edit = (props) => {
 										setAttributes({ displayImage: attributesDefaults.displayImage.default });
 									} }
 								/>
-								<Select
-									label={ __( 'Image Ratio', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Square', 'athemes-blocks' ), value: 'square' },
-										{ label: __( 'Landscape', 'athemes-blocks' ), value: 'landscape' },
-										{ label: __( 'Portrait', 'athemes-blocks' ), value: 'portrait' },
-									]}
-									value={ imageRatio }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ imageRatio: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ imageRatio: attributesDefaults.imageRatio.default });
-									} }
-								/>
-								<Select
-									label={ __( 'Image Size', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Small', 'athemes-blocks' ), value: 'small' },
-										{ label: __( 'Medium', 'athemes-blocks' ), value: 'medium' },
-										{ label: __( 'Large', 'athemes-blocks' ), value: 'large' },
-									]}
-									value={ imageSize }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ imageSize: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ imageSize: attributesDefaults.imageSize.default });
-									} }
-								/>
-								<Select
-									label={ __( 'Image Position', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
-										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-									]}
-									value={ imagePosition }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ imagePosition: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ imagePosition: attributesDefaults.imagePosition.default });
-									} }
-								/>
+								{
+									displayImage && (
+										<>
+											<Select
+												label={ __( 'Image Ratio', 'athemes-blocks' ) }
+												options={[
+													{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
+													{ label: '1:1', value: '1-1' },
+													{ label: '2:1', value: '2-1' },
+													{ label: '3:2', value: '3-2' },
+													{ label: '4:3', value: '4-3' },
+													{ label: '16:9', value: '16-9' },
+												]}
+												value={ imageRatio }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ imageRatio: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ imageRatio: attributesDefaults.imageRatio.default });
+												} }
+											/>
+											<Select
+												label={ __( 'Image Size', 'athemes-blocks' ) }
+												options={athemesBlocksAvailableImageSizes || []}
+												value={ imageSize }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ imageSize: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ imageSize: attributesDefaults.imageSize.default });
+												} }
+											/>
+											<Select
+												label={ __( 'Image Position', 'athemes-blocks' ) }
+												options={[
+													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+													{ label: __( 'Background', 'athemes-blocks' ), value: 'background' },
+												]}
+												value={ imagePosition }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ imagePosition: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ imagePosition: attributesDefaults.imagePosition.default });
+												} }
+											/>	
+										</>	
+									)
+								}
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Content', 'athemes-blocks' ) } 
@@ -592,14 +596,14 @@ const Edit = (props) => {
 								/>
 								<SwitchToggle
 									label={ __( 'Display Taxonomy', 'athemes-blocks' ) }
-									value={ displayTaxnomy }
+									value={ displayTaxonomy }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ displayTaxnomy: value });
+										setAttributes({ displayTaxonomy: value });
 									} }
 									onClickReset={ () => {
-										setAttributes({ displayTaxnomy: attributesDefaults.displayTaxnomy.default });
+										setAttributes({ displayTaxonomy: attributesDefaults.displayTaxonomy.default });
 									} }
 								/>
 								<SwitchToggle
@@ -628,16 +632,16 @@ const Edit = (props) => {
 								/>
 								<RangeSlider
 									label={ __( 'Excerpt Length', 'athemes-blocks' ) }
-									defaultValue={ excerptLength }
+									defaultValue={ excerptMaxWords }
 									min={ 1 }
 									max={ 100 }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ excerptLength: value });
+										setAttributes({ excerptMaxWords: value });
 									} }
 									onClickReset={ () => {
-										setAttributes({ excerptLength: attributesDefaults.excerptLength.default });
+										setAttributes({ excerptMaxWords: attributesDefaults.excerptMaxWords.default });
 									} }
 								/>
 							</PanelBody>
@@ -842,6 +846,15 @@ const Edit = (props) => {
 										
 										setUpdateCss( { settingId: 'cardBackgroundColor', value: getColorPickerSettingDefaultValue( 'cardBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
+								/>
+								<Border
+									label=""
+									settingId="cardBorder"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
 								/>
 								<Dimensions
 									label={ __( 'Padding', 'athemes-blocks' ) }
@@ -1163,9 +1176,9 @@ const Edit = (props) => {
 								onToggle={ () => onTogglePanelBodyHandler( 'read-more-button' ) }
 							>
 								<ColorPicker
-									label={ __( 'Color', 'athemes-blocks' ) }
+									label={ __( 'Text Color', 'athemes-blocks' ) }
 									value={ readMoreButtonColor }
-									hover={false}
+									hover={true}
 									responsive={false}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
@@ -1209,9 +1222,9 @@ const Edit = (props) => {
 									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
 								/>
 								<ColorPicker
-									label={ __( 'Color', 'athemes-blocks' ) }
+									label={ __( 'Background Color', 'athemes-blocks' ) }
 									value={ readMoreButtonBackgroundColor }
-									hover={false}
+									hover={true}
 									responsive={false}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
@@ -1468,34 +1481,27 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
-							<PanelBody 
-								title={ __( 'Border', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'border' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'border' ) }
-							>
-								<Border
-									label=""
-									settingId="cardBorder"
-									attributes={ atts }
-									setAttributes={ setAttributes }
-									attributesDefaults={ attributesDefaults }
-									setUpdateCss={ setUpdateCss }
-									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
-								/>
-							</PanelBody>
 						</Panel>
 					)
 				}
 			</InspectorControls>
 			
 			{(() => {
-				const Tag = 'div';
+				const TitleTag = titleTag;
 				let blockPropsClassName = `at-block at-block-post-grid`;
 
 				let blockProps = useBlockProps({
 					className: blockPropsClassName
 				});
+
+				// Image Ratio.
+				blockProps.className += ` atb-image-ratio-${imageRatio}`;
+
+				// Image Size.
+				blockProps.className += ` atb-image-size-${imageSize}`;
+
+				// Image Position.
+				blockProps.className += ` atb-image-position-${imagePosition}`;
 
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
@@ -1521,80 +1527,107 @@ const Edit = (props) => {
 						) : posts && posts.length > 0 ? (
 							<>
 								<div className="at-block-post-grid__items">
-									{posts.map((post) => (
-										<article key={post.id} className="at-block-post-grid__item">
-											{displayImage && post.featured_media && (
-												<div className="at-block-post-grid__image">
-													<img 
-														src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || ''} 
-														alt={post.title.rendered}
-													/>
-												</div>
-											)}
-											
-											<div className="at-block-post-grid__content">
-												{displayTitle && (
-													<RichText
-														tagName={titleTag}
-														className="at-block-post-grid__title"
-														value={post.title.rendered}
-														onChange={() => {}}
-														readOnly
-													/>
-												)}
+									{posts.map((post) => {
+										const postFeaturedMedia = post._embedded?.['wp:featuredmedia']?.[0];
+										const image = {
+											src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
+											width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
+											height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
+											alt: post.title.rendered
+										}
 
-												{(displayAuthor || displayDate || displayComments || displayTaxnomy) && (
-													<div className="at-block-post-grid__meta">
-														{displayAuthor && (
-															<span className="at-block-post-grid__author">
-																{displayMetaIcon && <i className="fas fa-user"></i>}
-																{post._embedded?.author?.[0]?.name || __('Unknown', 'athemes-blocks')}
-															</span>
-														)}
-														
-														{displayDate && (
-															<span className="at-block-post-grid__date">
-																{displayMetaIcon && <i className="fas fa-calendar"></i>}
-																{new Date(post.date).toLocaleDateString()}
-															</span>
-														)}
-														
-														{displayComments && (
-															<span className="at-block-post-grid__comments">
-																{displayMetaIcon && <i className="fas fa-comments"></i>}
-																{post.comment_count || '0'}
-															</span>
-														)}
-														
-														{displayTaxnomy && taxonomy !== 'all' && (
-															<span className="at-block-post-grid__taxonomy">
-																{displayMetaIcon && <i className="fas fa-tags"></i>}
-																{post._embedded?.[`wp:term`]?.[0]?.map(term => term.name).join(', ') || ''}
-															</span>
-														)}
+										return (
+											<div key={post.id} className="at-block-post-grid__item">
+												{ displayImage && postFeaturedMedia && image.src && (
+													<div className="at-block-post-grid__image">
+														<img 
+															src={image.src || postFeaturedMedia?.source_url}
+															className="at-block-post-grid__image-image"
+															width={image.width}
+															height={image.height}
+															alt={image.alt}
+														/>
 													</div>
 												)}
+												
+												<div className="at-block-post-grid__content">
+													{displayTitle && (
+														<TitleTag className="at-block-post-grid__title">{ post.title.rendered }</TitleTag>
+													)}
 
-												{displayExcerpt && (
-													<div 
-														className="at-block-post-grid__excerpt"
-														dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-													/>
-												)}
+													{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
+														<div className="at-block-post-grid__meta">
+															{displayAuthor && (
+																<span className="at-block-post-grid__author">
+																	{displayMetaIcon && (
+																		<div
+																			className="at-block-post-grid__meta-icon" 
+																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-user-circle-regular'] }} 
+																		/>
+																	)}
+																	{post._embedded?.author?.[0]?.name || ''}
+																</span>
+															)}
+															
+															{displayDate && (
+																<span className="at-block-post-grid__date">
+																	{displayMetaIcon && (
+																		<div
+																			className="at-block-post-grid__meta-icon" 
+																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-calendar-regular'] }} 
+																		/>
+																	)}
+																	{new Date(post.date).toLocaleDateString()}
+																</span>
+															)}
+															
+															{displayComments && (
+																<span className="at-block-post-grid__comments">
+																	{displayMetaIcon && (
+																		<div
+																			className="at-block-post-grid__meta-icon" 
+																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-chat-regular'] }} 
+																		/>
+																	)}
+																	{post._embedded?.replies?.[0]?.length || '0'}
+																</span>
+															)}
+															
+															{displayTaxonomy && taxonomy !== 'all' && (
+																<span className="at-block-post-grid__taxonomy">
+																	{displayMetaIcon && (
+																		<div
+																			className="at-block-post-grid__meta-icon" 
+																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-purchase-tag-alt-regular'] }} 
+																		/>
+																	)}
+																	{post._embedded?.[`wp:term`]?.[0]?.map(term => term.name).join(', ') || ''}
+																</span>
+															)}
+														</div>
+													)}
 
-												{displayReadMore && (
-													<a 
-														href={post.link} 
-														className="at-block-post-grid__read-more"
-														target={readMoreOpenInNewTab ? '_blank' : undefined}
-														rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
-													>
-														{readMoreText}
-													</a>
-												)}
+													{displayExcerpt && (
+														<div 
+															className="at-block-post-grid__excerpt"
+															dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.split(' ').slice(0, excerptMaxWords).join(' ') + (post.excerpt.rendered.split(' ').length > excerptMaxWords ? '...' : '') }}
+														/>
+													)}
+
+													{displayReadMore && (
+														<a 
+															href={post.link} 
+															className="at-block-post-grid__read-more"
+															target={readMoreOpenInNewTab ? '_blank' : undefined}
+															rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
+														>
+															{readMoreText}
+														</a>
+													)}
+												</div>
 											</div>
-										</article>
-									))}
+										)
+									})}
 								</div>
 
 								{pagination && posts.length > 0 && (

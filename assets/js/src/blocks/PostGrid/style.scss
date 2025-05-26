@@ -1,3 +1,134 @@
 .at-block-post-grid {
     box-sizing: border-box;
+
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(var(--atb-post-grid-columns, 3), 1fr);
+        column-gap: var(--atb-post-grid-columns-gap, 0px);
+        row-gap: var(--atb-post-grid-rows-gap, 0px);
+    }
+
+    &__item {
+        position: relative;
+    }
+
+    &__image {
+        .at-block-post-grid__image-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    // Title.
+    &__title {
+        margin-top: 0;
+    }
+
+    // Meta.
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 15px;
+    }
+
+    &__author,
+    &__date,
+    &__comments,
+    &__taxonomy {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+
+        .at-block-post-grid__meta-icon {
+            display: flex;
+            width: 1.1em;
+
+            svg {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    // Excerpt.
+    &__excerpt {
+        p {
+            margin: 0;
+        }
+    }
+
+    // Read more.
+    &__read-more {
+        display: inline-flex;
+    }
+
+    // Image Ratio.
+    &[class*="atb-image-ratio-"] {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+
+    &.atb-image-ratio-1-1 {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                aspect-ratio: 1 / 1;
+            }
+        }
+    }
+
+    &.atb-image-ratio-2-1 {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                aspect-ratio: 2 / 1;
+            }
+        }
+    }
+
+    &.atb-image-ratio-3-2 {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                aspect-ratio: 3 / 2;
+            }
+        }
+    }
+
+    &.atb-image-ratio-4-3 {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                aspect-ratio: 4 / 3;
+            }
+        }
+    }
+
+    &.atb-image-ratio-16-9 {
+        .at-block-post-grid__image {
+            .at-block-post-grid__image-image {
+                aspect-ratio: 16 / 9;
+            }
+        }
+    }
+
+    // Image Position.
+    &.atb-image-position-background {
+        .at-block-post-grid__image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+
+            .at-block-post-grid__image-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
 }
