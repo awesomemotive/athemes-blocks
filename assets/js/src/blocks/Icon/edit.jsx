@@ -10,6 +10,7 @@ import { RangeSlider } from '../../block-editor/controls/range-slider/range-slid
 import { Select } from '../../block-editor/controls/select/select';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
+import { ColorPickerPalette } from '../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Typography } from '../../block-editor/controls/typography/typography';
 import { Icon } from '../../block-editor/controls/icon/icon';
 import { Link } from '../../block-editor/controls/link/link';
@@ -172,41 +173,39 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
 									} }
 								/>
-								<ColorPicker
+								<ColorPickerPalette
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ color }
 									hover={true}
 									responsive={false}
 									reset={true}
+									enableAlpha={false}
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'color', {
 											value: {
-												defaultState: value.hex,
-												hoverState: getColorPickerSettingValue( 'color', 'desktop', 'hoverState', atts )
+												defaultState: value,
+												hoverState: color.hoverState
 											}
 										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'color', value: getColorPickerSettingValue( 'color', 'desktop', 'defaultState', atts ) } );
+										setUpdateCss( { settingId: 'color', value: color.defaultState } );                          
 									} }
 									hoverStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'color', {
 											value: {
-												defaultState: getColorPickerSettingValue( 'color', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												defaultState: color.defaultState,
+												hoverState: value
 											}
 										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'color', value: getColorPickerSettingValue( 'color', 'desktop', 'hoverState', atts ) } );
+
+										setUpdateCss( { settingId: 'color', value: color.hoverState } );                           
 									} }
 									onClickReset={ () => {
 										updateAttribute( 'color', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'color', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'color', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'color', value: getColorPickerSettingDefaultValue( 'color', 'desktop', 'defaultState', attributesDefaults ) } );
+											value: getSettingDefaultValue( 'color', 'desktop', attributesDefaults )
+										}, 'desktop' ); 
+
+										setUpdateCss( { settingId: 'color', value: getSettingDefaultValue( 'color', 'desktop', attributesDefaults ) } );                            
 									} }
 								/>
 								<RangeSlider 

@@ -6,6 +6,7 @@ import { useMemo } from '@wordpress/element';
 import { Dimensions } from '../dimensions/dimensions';
 import { SwitchToggle } from '../../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
+import { ColorPickerPalette } from '../../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Animation } from '../../../block-editor/controls/animation/animation';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
 import { Border } from '../../../block-editor/controls/border/border';
@@ -139,8 +140,8 @@ const AdvancedPanel = (props) => {
                         opened={ isPanelOpened( 'background' ) }
                         onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
                     >
-                        <ColorPicker
-                            label={ __( 'Color', 'athemes-blocks' ) }
+                        <ColorPickerPalette
+                            label={ __( 'Background Color', 'athemes-blocks' ) }
                             value={ getSettingValue('backgroundColor', 'desktop', atts) }
                             hover={true}
                             responsive={false}
@@ -148,32 +149,32 @@ const AdvancedPanel = (props) => {
                             defaultStateOnChangeComplete={ ( value ) => {
                                 updateAttribute( 'backgroundColor', {
                                     value: {
-                                        defaultState: value.hex,
+                                        defaultState: value,
                                         hoverState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts )
                                     }
                                 }, 'desktop' );
 
-                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ) } );
+                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ) } );                          
                             } }
                             hoverStateOnChangeComplete={ ( value ) => {
                                 updateAttribute( 'backgroundColor', {
                                     value: {
                                         defaultState: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'defaultState', atts ),
-                                        hoverState: value.hex	
+                                        hoverState: value
                                     }
                                 }, 'desktop' );
-                                
-                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts ) } );
+
+                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingValue( 'backgroundColor', 'desktop', 'hoverState', atts ) } );                           
                             } }
                             onClickReset={ () => {
                                 updateAttribute( 'backgroundColor', {
                                     value: {
                                         defaultState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-                                        hoverState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+                                        hoverState: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'hoverState', attributesDefaults )
                                     }
-                                }, 'desktop' );
-                                
-                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+                                }, 'desktop' ); 
+
+                                setUpdateCss( { settingId: 'backgroundColor', value: getColorPickerSettingDefaultValue( 'backgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );                            
                             } }
                         />
                     </PanelBody>

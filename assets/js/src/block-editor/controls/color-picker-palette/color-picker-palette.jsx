@@ -5,7 +5,7 @@ import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 export function ColorPickerPalette( props ) {
-    const { label, value, hover, responsive, reset, onChange, onClickReset, defaultStateOnChangeComplete, hoverStateOnChangeComplete } = props;
+    let { label, value, hover, responsive, reset, enableAlpha, onChange, onClickReset, defaultStateOnChangeComplete, hoverStateOnChangeComplete } = props;
     const { defaultState, hoverState } = value;
 
     // Popover State (default)
@@ -36,6 +36,11 @@ export function ColorPickerPalette( props ) {
         }
     ];
 
+    // Enable alpha.
+    if ( ! enableAlpha ) {
+        enableAlpha = true;
+    }
+    console.log(enableAlpha);
     return(
         <BaseControl>
             <div className="atblocks-component-header">
@@ -78,7 +83,7 @@ export function ColorPickerPalette( props ) {
                         onFocusOutside={ toggleDefaultVisible }>
                         <ColorPickerControl
                             colors={ colorPalette }
-                            enableAlpha={true}
+                            enableAlpha={enableAlpha}
                             onChange={ defaultStateOnChangeComplete }
                             value={ defaultState }
                         />
@@ -111,7 +116,7 @@ export function ColorPickerPalette( props ) {
                                 onFocusOutside={ toggleHoverVisible }>
                                 <ColorPickerControl
                                     colors={ colorPalette }
-                                    enableAlpha={true}
+                                    enableAlpha={enableAlpha}
                                     onChange={ hoverStateOnChangeComplete }
                                     value={ hoverState }
                                 />  

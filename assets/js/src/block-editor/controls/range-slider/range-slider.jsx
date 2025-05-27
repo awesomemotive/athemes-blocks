@@ -9,7 +9,7 @@ import { UnitSwitcher } from '../../controls-auxiliary/unit-switcher/unit-switch
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
 export function RangeSlider( props ) {
-    let { label, description, options, defaultValue, defaultUnit, min, max, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
+    let { label, description, options, defaultValue, defaultUnit, min, max, step, responsive, units, reset, onChange, onChangeUnit, onClickReset } = props;
     const [ value, setValue ] = useState( defaultValue );
     const [ valueUnit, setValueUnit ] = useState( defaultUnit );
 
@@ -66,7 +66,9 @@ export function RangeSlider( props ) {
     }
 
     // Step.
-    let step = 1;
+    if ( ! step ) {
+        step = 1;
+    }
 
     if ( valueUnit === 'em' || valueUnit === 'rem' ) {
         step = 0.1;

@@ -580,19 +580,19 @@ class Attributes {
                             'default' => array(
                                 'desktop' => array(
                                     'value' => array(
-                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'defaultState' => '#212121',
                                         'hoverState' => ''
                                     )
                                 ),
                                 'tablet' => array(
                                     'value' => array(
-                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'defaultState' => '#212121',
                                         'hoverState' => ''
                                     )
                                 ),
                                 'mobile' => array(
                                     'value' => array(
-                                        'defaultState' => 'rgba(0, 0, 0, 0.5)',
+                                        'defaultState' => '#212121',
                                         'hoverState' => '' 
                                     )
                                 ),
@@ -603,7 +603,29 @@ class Attributes {
                                 ),
                                 'property' => '--atb-background-image-overlay-color',
                             )
-                        )
+                        ),
+                        'backgroundImageOverlayOpacity' => array(
+                            'default' => array(
+                                'desktop' => array(
+                                    'value' => 0.5,
+                                    'unit' => '',
+                                ),
+                                'tablet' => array(
+                                    'value' => '',
+                                    'unit' => '',
+                                ),
+                                'mobile' => array(
+                                    'value' => '',
+                                    'unit' => '',
+                                ),
+                            ),
+                            'css' => array(
+                                'selectors' => array(
+                                    '{{WRAPPER}}',
+                                ),
+                                'property' => '--atb-background-image-overlay-opacity',
+                            )
+                        ),
                     ),
                 ),
             ),
@@ -741,6 +763,7 @@ class Attributes {
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}}' => '{{VALUE}}',
+                        '{{WRAPPER}}:hover' => '{{HOVER}}',
                     ),
                     'property' => 'background-color',
                 ),

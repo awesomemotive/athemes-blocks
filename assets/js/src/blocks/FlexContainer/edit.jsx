@@ -114,7 +114,6 @@ const Edit = (props) => {
 		alignContent,
 
 		// Style.
-		backgroundColor,
 		textColor,
 		linkColor,
 
@@ -150,7 +149,6 @@ const Edit = (props) => {
 			alignContent: getSettingValue('alignContent', currentDevice, atts),
 
 			// Style.
-			backgroundColor: getSettingValue('backgroundColor', 'desktop', atts),
 			textColor: getSettingValue('textColor', 'desktop', atts),
 			linkColor: getSettingValue('linkColor', 'desktop', atts),
 
@@ -166,17 +164,17 @@ const Edit = (props) => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
 
-	useEffect(() => {
-		if ( isChildOfFlexContainer ) {
-			setAttributes({
-				direction: {
-					desktop: { value: 'column' },
-					tablet: { value: 'column' },
-					mobile: { value: 'column' }
-				}
-			});
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if ( isChildOfFlexContainer ) {
+	// 		setAttributes({
+	// 			direction: {
+	// 				desktop: { value: 'column' },
+	// 				tablet: { value: 'column' },
+	// 				mobile: { value: 'column' }
+	// 			}
+	// 		});
+	// 	}
+	// }, []);
 
 	// Move renderAppender outside the render cycle.
 	const renderAppender = () => hasInnerBlocks ? <InnerBlocks.DefaultBlockAppender /> : <InnerBlocks.ButtonBlockAppender />;
@@ -867,7 +865,7 @@ const Edit = (props) => {
 									setAttributes={ setAttributes }
 									attributesDefaults={ attributesDefaults }
 									setUpdateCss={ setUpdateCss }
-									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImagePosition', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize', 'backgroundImageOverlay', 'backgroundImageOverlayColor']}
+									subFields={['color', 'gradient', 'backgroundImage', 'backgroundImagePosition', 'backgroundImageAttachment', 'backgroundImageRepeat', 'backgroundImageSize', 'backgroundImageOverlay', 'backgroundImageOverlayColor', 'backgroundImageOverlayOpacity']}
 								/>
 							</PanelBody>
 							<PanelBody 

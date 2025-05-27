@@ -138,7 +138,8 @@
             right: 0;
             bottom: 0;
             left: 0;
-            background-color: var(--atb-background-image-overlay-color, rgba(0, 0, 0, 0.5));
+            background-color: var(--atb-background-image-overlay-color, #212121);
+            opacity: var(--atb-background-image-overlay-opacity, 0.5);
             z-index: 0;
         }
     }

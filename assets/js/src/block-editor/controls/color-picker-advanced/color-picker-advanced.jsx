@@ -38,7 +38,8 @@ export function ColorPickerAdvanced( props ) {
         backgroundImageRepeat,
         backgroundImageSize,
         backgroundImageOverlay,
-        backgroundImageOverlayColor
+        backgroundImageOverlayColor,
+        backgroundImageOverlayOpacity
     } = attributes[settingId].innerSettings;
 
     const typeValue = type.default;
@@ -52,6 +53,8 @@ export function ColorPickerAdvanced( props ) {
     const backgroundImageSizeValue = getInnerSettingValue( settingId, 'backgroundImageSize', currentDevice, attributes );
     const backgroundImageOverlayValue = getInnerSettingValue( settingId, 'backgroundImageOverlay', '', attributes );
     const backgroundImageOverlayColorValue = backgroundImageOverlayColor.default['desktop'].value;
+    const backgroundImageOverlayOpacityValue = backgroundImageOverlayOpacity.default['desktop'].value;
+
     const imageData = backgroundImageValue ? backgroundImageValue : {};
 
     const updateInnerControlAttribute = createInnerControlAttributeUpdater( settingId, attributes, setAttributes);
@@ -382,6 +385,7 @@ export function ColorPickerAdvanced( props ) {
                         hover={false}
                         responsive={false}
                         reset={true}
+                        enableAlpha={false}
                         defaultStateOnChangeComplete={ ( value ) => {
                             updateInnerControlAttribute( 'backgroundImageOverlayColor', {
                                 defaultState: value,
@@ -419,6 +423,41 @@ export function ColorPickerAdvanced( props ) {
                                 innerSettingId: 'backgroundImageOverlayColor',
                                 value: getInnerSettingDefaultValue( settingId, 'backgroundImageOverlayColor', 'desktop', attributesDefaults ),
                             } );                            
+                        } }
+                    />
+                )
+            }
+            {
+                ( typeValue === 'image' && backgroundImageOverlayValue && subFields && subFields.includes('backgroundImageOverlayOpacity') ) && (
+                    <RangeSlider 
+                        label={ __( 'Overlay Opacity', 'athemes-blocks' ) }
+                        defaultValue={ backgroundImageOverlayOpacityValue }
+                        defaultUnit=""
+                        min={0}
+                        step={0.1}
+                        max={1}
+                        responsive={false}
+                        reset={true}
+                        units={false}
+                        onChange={ ( value ) => {
+                            updateInnerControlAttribute( 'backgroundImageOverlayOpacity', value, 'desktop' );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImageOverlayOpacity',
+                                value: value
+                            } );
+                        } }
+                        onClickReset={ () => {
+                            updateInnerControlAttribute( 'backgroundImageOverlayOpacity', getInnerSettingDefaultValue( settingId, 'backgroundImageOverlayOpacity', 'desktop', attributesDefaults ), 'desktop' );
+
+                            setUpdateCss( {
+                                type: 'inner-control',
+                                settingId: settingId,
+                                innerSettingId: 'backgroundImageOverlayOpacity',
+                                value: getInnerSettingDefaultValue( settingId, 'backgroundImageOverlayOpacity', 'desktop', attributesDefaults )
+                            } );								
                         } }
                     />
                 )
