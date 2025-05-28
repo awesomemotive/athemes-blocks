@@ -133,7 +133,7 @@
 
     // Always force the z-index to 0 in the editor to avoid losing the block mouse interaction.
     &:not(.is-child-container) {
-        z-index: 0 !important;
+        // z-index: 0 !important;
     }
 
     // Layout Selector

@@ -109,8 +109,8 @@ const AdvancedPanel = (props) => {
                     label={ __( 'Z-Index', 'athemes-blocks' ) }
                     defaultValue={ getSettingValue( 'zIndex', currentDevice, atts ) }
                     defaultUnit={ getSettingUnit( 'zIndex', currentDevice, atts ) }
-                    min={ -10 }
-                    max={ 10 }
+                    min={ 0 }
+                    max={ 15 }
                     responsive={ true }
                     reset={ true }
                     units={false}
