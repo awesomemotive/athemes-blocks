@@ -141,7 +141,7 @@ const AdvancedPanel = (props) => {
                         onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
                     >
                         <ColorPickerPalette
-                            label={ __( 'Background Color', 'athemes-blocks' ) }
+                            label={ __( 'Color', 'athemes-blocks' ) }
                             value={ getSettingValue('backgroundColor', 'desktop', atts) }
                             hover={true}
                             responsive={false}

@@ -586,13 +586,13 @@ class Attributes {
                                 ),
                                 'tablet' => array(
                                     'value' => array(
-                                        'defaultState' => '#212121',
+                                        'defaultState' => '',
                                         'hoverState' => ''
                                     )
                                 ),
                                 'mobile' => array(
                                     'value' => array(
-                                        'defaultState' => '#212121',
+                                        'defaultState' => '',
                                         'hoverState' => '' 
                                     )
                                 ),
@@ -998,10 +998,10 @@ class Attributes {
                         'value' => 0,
                     ),
                     'tablet' => array(
-                        'value' => 0,
+                        'value' => '',
                     ),
                     'mobile' => array(
-                        'value' => 0,
+                        'value' => '',
                     ),
                 ),
                 'css' => array(

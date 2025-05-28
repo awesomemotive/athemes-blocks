@@ -14,6 +14,7 @@ import { ColorPickerPalette } from '../../block-editor/controls/color-picker-pal
 import { Typography } from '../../block-editor/controls/typography/typography';
 import { Icon } from '../../block-editor/controls/icon/icon';
 import { Link } from '../../block-editor/controls/link/link';
+import { Border } from '../../block-editor/controls/border/border';
 
 import { createAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
@@ -49,6 +50,10 @@ const Edit = (props) => {
         color,
 		size,
 		rotate,
+		iconWrapperBackgroundColor,
+		iconWrapperWidth,
+		iconWrapperHeight,
+		iconWrapperBorder,
 
         // Advanced.
         hideOnDesktop,
@@ -64,6 +69,10 @@ const Edit = (props) => {
 			color: getSettingValue('color', 'desktop', atts),
 			size: getSettingValue('size', currentDevice, atts),
 			rotate: getSettingValue('rotate', currentDevice, atts),
+			iconWrapperBackgroundColor: getSettingValue('iconWrapperBackgroundColor', 'desktop', atts),
+			iconWrapperWidth: getSettingValue('iconWrapperWidth', 'desktop', atts),
+			iconWrapperHeight: getSettingValue('iconWrapperHeight', 'desktop', atts),
+			iconWrapperBorder: getSettingValue('iconWrapperBorder', 'desktop', atts),
 			
 			// Advanced.
 			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
@@ -110,7 +119,6 @@ const Edit = (props) => {
 					currentTab === 'general' && (
 						<Panel>
 							<PanelBody 
-								className="panel-id-content"
 								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
 								opened={ isPanelOpened( 'content', true ) }
@@ -142,11 +150,10 @@ const Edit = (props) => {
 					currentTab === 'style' && (
 						<Panel>
 							<PanelBody 
-								className="panel-id-content"
-								title={ __( 'Content', 'athemes-blocks' ) } 
+								title={ __( 'General', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'content', true ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
+								opened={ isPanelOpened( 'general', true ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'general' ) }
 							>
 								<RadioButtons 
 									label={ __( 'Alignment', 'athemes-blocks' ) }
@@ -275,6 +282,131 @@ const Edit = (props) => {
 
 										setUpdateCss( { settingId: 'rotate', value: getSettingDefaultValue( 'rotate', currentDevice, attributesDefaults ) } );								
 									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Icon Background', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'icon-background' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'icon-background' ) }
+							>
+								<ColorPickerPalette
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ iconWrapperBackgroundColor }
+									hover={true}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'iconWrapperBackgroundColor', {
+											value: {
+												defaultState: value,
+												hoverState: iconWrapperBackgroundColor.hoverState
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'iconWrapperBackgroundColor', value: iconWrapperBackgroundColor.defaultState } );                          
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'iconWrapperBackgroundColor', {
+											value: {
+												defaultState: iconWrapperBackgroundColor.defaultState,
+												hoverState: value
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'iconWrapperBackgroundColor', value: iconWrapperBackgroundColor.hoverState } );                           
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'iconWrapperBackgroundColor', {
+											value: getSettingDefaultValue( 'iconWrapperBackgroundColor', 'desktop', attributesDefaults )
+										}, 'desktop' ); 
+
+										setUpdateCss( { settingId: 'iconWrapperBackgroundColor', value: getSettingDefaultValue( 'iconWrapperBackgroundColor', 'desktop', attributesDefaults ) } );                            
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Width', 'athemes-blocks' ) }
+									defaultValue={ iconWrapperWidth }
+									defaultUnit={ getSettingUnit( 'iconWrapperWidth', currentDevice, atts ) }
+									min={ 1 }
+									max={ 500 }
+									responsive={ true }
+									reset={ true }
+									units={['px']}
+									onChange={ ( value ) => {
+										updateAttribute( 'iconWrapperWidth', {
+											value: value,
+											unit: getSettingUnit( 'iconWrapperWidth', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'iconWrapperWidth', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'iconWrapperWidth', {
+											value: iconWrapperWidth,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'iconWrapperWidth', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'iconWrapperWidth', {
+											value: getSettingDefaultValue( 'iconWrapperWidth', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'iconWrapperWidth', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'iconWrapperWidth', value: getSettingDefaultValue( 'iconWrapperWidth', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Height', 'athemes-blocks' ) }
+									defaultValue={ iconWrapperHeight }
+									defaultUnit={ getSettingUnit( 'iconWrapperHeight', currentDevice, atts ) }
+									min={ 1 }
+									max={ 500 }
+									responsive={ true }
+									reset={ true }
+									units={['px']}
+									onChange={ ( value ) => {
+										updateAttribute( 'iconWrapperHeight', {
+											value: value,
+											unit: getSettingUnit( 'iconWrapperHeight', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'iconWrapperHeight', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'iconWrapperHeight', {
+											value: iconWrapperHeight,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'iconWrapperHeight', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'iconWrapperHeight', {
+											value: getSettingDefaultValue( 'iconWrapperHeight', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'iconWrapperHeight', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'iconWrapperHeight', value: getSettingDefaultValue( 'iconWrapperHeight', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Icon Border', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'icon-border' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'icon-border' ) }
+							>
+								<Border
+									label=""
+									settingId="iconWrapperBorder"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
 								/>
 							</PanelBody>
 						</Panel>

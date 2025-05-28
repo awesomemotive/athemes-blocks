@@ -99,7 +99,7 @@ return array_merge(
             'css' => array(
                 'selectors' => array(
                     '{{WRAPPER}} .at-block-icon__icon svg' => '{{VALUE}}',
-                    '{{WRAPPER}}:hover .at-block-icon__icon svg' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-icon__icon:hover svg' => '{{HOVER}}',
                 ),
                 'property' => 'fill',
             ),
@@ -148,7 +148,118 @@ return array_merge(
                 'property' => 'transform',
             ),
         ),
+        'iconWrapperBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon' => '{{VALUE}};',
+                    '{{WRAPPER}} .at-block-icon__icon:hover' => '{{HOVER}};',
+                ),
+                'property' => 'background-color',
+            ),
+        ),
+        'iconWrapperWidth' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon' => '{{VALUE}}{{UNIT}};',
+                ),
+                'property' => 'width',
+            ),
+        ),
+        'iconWrapperHeight' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon' => '{{VALUE}}{{UNIT}};',
+                ),
+                'property' => 'height',
+            ),
+        ),
     ),
+    Attributes::get_border_attributes( 'iconWrapperBorder', array(
+        'borderStyle' => array(
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon',
+                ),
+                'property' => 'border-style',
+            ),
+        ),
+        'borderWidth' => array(
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon',
+                ),
+                'property' => 'border-{{DIRECTION}}-width',
+            ),
+        ),
+        'borderRadius' => array(
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon',
+                ),
+                'property' => 'border-{{DIRECTION}}-radius',
+            ),
+        ),
+        'borderColor' => array(
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-icon__icon' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-icon__icon:hover' => '{{HOVER}}',
+                ),
+                'property' => 'border-color',
+            ),
+        ),
+    ) ),
 
     // Advanced -----------------------------
     Attributes::get_block_advanced_panel_attributes(),
