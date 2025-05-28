@@ -415,7 +415,7 @@ const Edit = (props) => {
 											defaultStateOnChangeComplete={ ( value ) => {
 												updateAttribute( 'captionTextColor', {
 													value: {
-														defaultState: value.hex,
+														defaultState: value,
 														hoverState: getColorPickerSettingValue( 'captionTextColor', 'desktop', 'hoverState', atts )
 													}
 												}, 'desktop' );
@@ -426,7 +426,7 @@ const Edit = (props) => {
 												updateAttribute( 'captionTextColor', {
 													value: {
 														defaultState: getColorPickerSettingValue( 'captionTextColor', 'desktop', 'defaultState', atts ),
-														hoverState: value.hex	
+														hoverState: value	
 													}
 												}, 'desktop' );
 												
@@ -452,7 +452,7 @@ const Edit = (props) => {
 											defaultStateOnChangeComplete={ ( value ) => {
 												updateAttribute( 'captionBackgroundColor', {
 													value: {
-														defaultState: value.hex,
+														defaultState: value,
 														hoverState: getColorPickerSettingValue( 'captionBackgroundColor', 'desktop', 'hoverState', atts )
 													}
 												}, 'desktop' );
@@ -463,7 +463,7 @@ const Edit = (props) => {
 												updateAttribute( 'captionBackgroundColor', {
 													value: {
 														defaultState: getColorPickerSettingValue( 'captionBackgroundColor', 'desktop', 'defaultState', atts ),
-														hoverState: value.hex	
+														hoverState: value	
 													}
 												}, 'desktop' );
 												

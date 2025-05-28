@@ -646,7 +646,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'contentColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'contentColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -657,7 +657,7 @@ const Edit = (props) => {
 										updateAttribute( 'contentColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'contentColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -733,7 +733,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'nameColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'nameColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -744,7 +744,7 @@ const Edit = (props) => {
 										updateAttribute( 'nameColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'nameColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -820,7 +820,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'companyColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'companyColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -831,7 +831,7 @@ const Edit = (props) => {
 										updateAttribute( 'companyColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'companyColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1013,7 +1013,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'navigationColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1024,7 +1024,7 @@ const Edit = (props) => {
 										updateAttribute( 'navigationColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1050,7 +1050,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'navigationBackgroundColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1061,7 +1061,7 @@ const Edit = (props) => {
 										updateAttribute( 'navigationBackgroundColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1087,7 +1087,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'navigationBorderColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1098,7 +1098,7 @@ const Edit = (props) => {
 										updateAttribute( 'navigationBorderColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1158,7 +1158,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'dotsColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1169,7 +1169,7 @@ const Edit = (props) => {
 										updateAttribute( 'dotsColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1202,7 +1202,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'cardBackgroundColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1213,7 +1213,7 @@ const Edit = (props) => {
 										updateAttribute( 'cardBackgroundColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										

@@ -10,7 +10,6 @@ import { RangeSlider } from '../../block-editor/controls/range-slider/range-slid
 import { Select } from '../../block-editor/controls/select/select';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
-import { ColorPickerPalette } from '../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Typography } from '../../block-editor/controls/typography/typography';
 import { Icon } from '../../block-editor/controls/icon/icon';
 import { Link } from '../../block-editor/controls/link/link';
@@ -180,7 +179,7 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'alignment', value: getSettingDefaultValue( 'alignment', currentDevice, attributesDefaults ) } );
 									} }
 								/>
-								<ColorPickerPalette
+								<ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ color }
 									hover={true}
@@ -290,7 +289,7 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'icon-background' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'icon-background' ) }
 							>
-								<ColorPickerPalette
+								<ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ iconWrapperBackgroundColor }
 									hover={true}

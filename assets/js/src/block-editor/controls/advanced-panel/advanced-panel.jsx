@@ -6,7 +6,6 @@ import { useMemo } from '@wordpress/element';
 import { Dimensions } from '../dimensions/dimensions';
 import { SwitchToggle } from '../../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../../block-editor/controls/color-picker/color-picker';
-import { ColorPickerPalette } from '../../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Animation } from '../../../block-editor/controls/animation/animation';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
 import { Border } from '../../../block-editor/controls/border/border';
@@ -140,7 +139,7 @@ const AdvancedPanel = (props) => {
                         opened={ isPanelOpened( 'background' ) }
                         onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
                     >
-                        <ColorPickerPalette
+                        <ColorPicker
                             label={ __( 'Color', 'athemes-blocks' ) }
                             value={ getSettingValue('backgroundColor', 'desktop', atts) }
                             hover={true}

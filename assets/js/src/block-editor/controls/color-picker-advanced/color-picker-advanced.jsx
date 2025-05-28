@@ -12,7 +12,7 @@ import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 import { Dimensions } from '../dimensions/dimensions';
 import { Select } from '../select/select';
-import { ColorPickerPalette } from '../../../block-editor/controls/color-picker-palette/color-picker-palette';
+import { ColorPicker } from '../color-picker/color-picker';
 import { RadioButtons } from '../../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../../block-editor/controls/range-slider/range-slider';
 import { FocalPointer } from '../../../block-editor/controls/focal-pointer/focal-pointer';
@@ -94,7 +94,7 @@ export function ColorPickerAdvanced( props ) {
             
             {
                 ( typeValue === 'color' && subFields && subFields.includes('color') ) && (
-                    <ColorPickerPalette
+                    <ColorPicker
                         label={ __( 'Color', 'athemes-blocks' ) }
                         value={ colorValue }
                         hover={false}
@@ -379,7 +379,7 @@ export function ColorPickerAdvanced( props ) {
             }
             {
                 ( typeValue === 'image' && backgroundImageOverlayValue && subFields && subFields.includes('backgroundImageOverlayColor') ) && (
-                    <ColorPickerPalette
+                    <ColorPicker
                         label={ __( 'Overlay Color', 'athemes-blocks' ) }
                         value={ backgroundImageOverlayColorValue }
                         hover={false}

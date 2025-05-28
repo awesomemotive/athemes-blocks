@@ -1,17 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { BaseControl, Button, Popover, ColorPicker as ColorPickerControl, Tooltip } from '@wordpress/components';
+import { BaseControl, Button, Popover, ColorPalette as ColorPickerControl, Tooltip } from '@wordpress/components';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
 import { ResetValues } from '../../controls-auxiliary/reset-values/reset-values-control';
 
-import { colord } from 'colord';
-
 export function ColorPicker( props ) {
-    const { label, value, hover, responsive, reset, onChange, onClickReset, defaultStateOnChangeComplete, hoverStateOnChangeComplete } = props;
+    let { label, value, hover, responsive, reset, enableAlpha, onChange, onClickReset, defaultStateOnChangeComplete, hoverStateOnChangeComplete } = props;
     const { defaultState, hoverState } = value;
-
-    const colorObjectDefaultState = colord( defaultState );
-    const colorObjectHoverState = colord( hoverState );
 
     // Popover State (default)
     const [ isDefaultVisible, setIsDefaultVisible ] = useState( false );
@@ -24,6 +19,27 @@ export function ColorPicker( props ) {
     const toggleHoverVisible = () => {
         setIsHoverVisible( ( state ) => ! state );
     };
+
+    // Color Palette.
+    const colorPalette = athemesBlocksColorPalette || [
+        {
+            color: '#f00',
+            name: 'Red'
+        },
+        {
+            color: '#fff',
+            name: 'White'
+        },
+        {
+            color: '#00f',
+            name: 'Blue'
+        }
+    ];
+
+    // Enable alpha.
+    if ( ! enableAlpha ) {
+        enableAlpha = true;
+    }
 
     return(
         <BaseControl>
@@ -62,13 +78,15 @@ export function ColorPicker( props ) {
 
                 { isDefaultVisible && (
                     <Popover
+                        className="atblocks-popover"
                         onClick={ ( event ) => event.stopPropagation() }
                         onFocusOutside={ toggleDefaultVisible }>
                         <ColorPickerControl
-                            color={ colorObjectDefaultState }
-                            enableAlpha
-                            onChangeComplete={ defaultStateOnChangeComplete }
-                        />  
+                            colors={ colorPalette }
+                            enableAlpha={enableAlpha}
+                            onChange={ defaultStateOnChangeComplete }
+                            value={ defaultState }
+                        />
                     </Popover>
                 ) }
 
@@ -93,12 +111,14 @@ export function ColorPicker( props ) {
 
                         { isHoverVisible && (
                             <Popover
+                                className="atblocks-popover"
                                 onClick={ ( event ) => event.stopPropagation() }
                                 onFocusOutside={ toggleHoverVisible }>
                                 <ColorPickerControl
-                                    color={ colorObjectHoverState }
-                                    enableAlpha
-                                    onChangeComplete={ hoverStateOnChangeComplete }
+                                    colors={ colorPalette }
+                                    enableAlpha={enableAlpha}
+                                    onChange={ hoverStateOnChangeComplete }
+                                    value={ hoverState }
                                 />  
                             </Popover>
                         ) }

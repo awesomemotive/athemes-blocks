@@ -131,4 +131,39 @@
             }
         }
     }
+
+    // Pagination.
+    &__pagination {
+        display: flex;
+    }
+
+    &__pagination-numbers {
+        display: flex;
+        align-items: center;
+        gap: var(--atb-post-grid-pagination-items-gap, 5px);
+
+        .at-block-post-grid__pagination-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: var(--atb-post-grid-pagination-text-color, #212121);
+            cursor: pointer;
+
+            &--active {
+                background-color: var(--atb-post-grid-pagination-active-background-color, #212121);
+                color: var(--atb-post-grid-pagination-active-text-color, #FFF);
+            }
+
+            &--next {
+                color: var(--atb-post-grid-pagination-text-color, #212121);
+            }
+        }
+    }
+
+    &__pagination-button {
+        text-decoration: none;
+    }
 }

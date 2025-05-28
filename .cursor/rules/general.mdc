@@ -1,11 +1,11 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 ---
 description: WPForms Cursor General Rules
-globs: 
+globs:
 alwaysApply: true
 ---
 By default use git repository in plugins directory.

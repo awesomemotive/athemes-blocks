@@ -35,8 +35,6 @@ $order = Settings::get_setting( 'order', $attributes, $atts_defaults, false );
 $pagination = Settings::get_setting( 'pagination', $attributes, $atts_defaults, false );
 $paginationPageLimit = Settings::get_setting( 'paginationPageLimit', $attributes, $atts_defaults, false );
 $paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_defaults, false );
-$paginationPrevText = Settings::get_setting( 'paginationPrevText', $attributes, $atts_defaults, false );
-$paginationNextText = Settings::get_setting( 'paginationNextText', $attributes, $atts_defaults, false );
 
 $displayImage = Settings::get_setting( 'displayImage', $attributes, $atts_defaults, false );
 $imageRatio = Settings::get_setting( 'imageRatio', $attributes, $atts_defaults, false );
@@ -48,10 +46,10 @@ $titleTag = Settings::get_setting( 'titleTag', $attributes, $atts_defaults, fals
 $displayAuthor = Settings::get_setting( 'displayAuthor', $attributes, $atts_defaults, false );
 $displayDate = Settings::get_setting( 'displayDate', $attributes, $atts_defaults, false );
 $displayComments = Settings::get_setting( 'displayComments', $attributes, $atts_defaults, false );
-$displayTaxnomy = Settings::get_setting( 'displayTaxnomy', $attributes, $atts_defaults, false );
+$displayTaxonomy = Settings::get_setting( 'displayTaxonomy', $attributes, $atts_defaults, false );
 $displayMetaIcon = Settings::get_setting( 'displayMetaIcon', $attributes, $atts_defaults, false );
 $displayExcerpt = Settings::get_setting( 'displayExcerpt', $attributes, $atts_defaults, false );
-$excerptLength = Settings::get_setting( 'excerptLength', $attributes, $atts_defaults, false );
+$excerptMaxWords = Settings::get_setting( 'excerptMaxWords', $attributes, $atts_defaults, false );
 
 $displayReadMore = Settings::get_setting( 'displayReadMore', $attributes, $atts_defaults, false );
 $readMoreOpenInNewTab = Settings::get_setting( 'readMoreOpenInNewTab', $attributes, $atts_defaults, false );
@@ -159,7 +157,7 @@ if ( $query->have_posts() ) {
         }
         
         // Meta information
-        if ( ! empty( $displayAuthor ) || ! empty( $displayDate ) || ! empty( $displayComments ) || ! empty( $displayTaxnomy ) ) {
+        if ( ! empty( $displayAuthor ) || ! empty( $displayDate ) || ! empty( $displayComments ) || ! empty( $displayTaxonomy ) ) {
             $output .= '<div class="at-block-post-grid__meta">';
             
             // Author
@@ -193,7 +191,7 @@ if ( $query->have_posts() ) {
             }
             
             // Taxonomy
-            if ( ! empty( $displayTaxnomy ) && ! empty( $taxonomy ) ) {
+            if ( ! empty( $displayTaxonomy ) && ! empty( $taxonomy ) ) {
                 $terms = get_the_terms( get_the_ID(), $taxonomy );
                 if ( $terms && ! is_wp_error( $terms ) ) {
                     $output .= '<span class="at-block-post-grid__taxonomy">';
@@ -215,7 +213,7 @@ if ( $query->have_posts() ) {
         // Excerpt
         if ( ! empty( $displayExcerpt ) ) {
             $output .= '<div class="at-block-post-grid__excerpt">';
-            $output .= wp_trim_words( get_the_excerpt(), $excerptLength );
+            $output .= wp_trim_words( get_the_excerpt(), $excerptMaxWords );
             $output .= '</div>';
         }
         
@@ -246,13 +244,9 @@ if ( $query->have_posts() ) {
                 'format'    => '?paged=%#%',
                 'current'   => max( 1, get_query_var( 'paged' ) ),
                 'total'     => $query->max_num_pages,
-                'prev_text' => $paginationPrevText,
-                'next_text' => $paginationNextText,
             ) );
         } else {
             $output .= '<div class="at-block-post-grid__pagination-prev-next">';
-            $output .= get_previous_posts_link( $paginationPrevText );
-            $output .= get_next_posts_link( $paginationNextText, $query->max_num_pages );
             $output .= '</div>';
         }
         

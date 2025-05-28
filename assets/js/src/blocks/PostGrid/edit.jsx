@@ -17,6 +17,7 @@ import { ColorPicker } from '../../block-editor/controls/color-picker/color-pick
 import { Typography } from '../../block-editor/controls/typography/typography';
 import { Border } from '../../block-editor/controls/border/border';
 import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
+import { RadioImages } from '../../block-editor/controls/radio-images/radio-images';
 
 import { createAttributeUpdater } from '../../utils/block-attributes';
 import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
@@ -48,13 +49,13 @@ const Edit = (props) => {
 		postsPerPage,
 		excludeCurrentPost,
 		offsetStartingPoint,
+		offsetStartingPointValue,
 		orderBy,
 		order,
 		pagination,
 		paginationPageLimit,
 		paginationType,
-		paginationPrevText,
-		paginationNextText,
+		paginationAlignment,
 		displayImage,
 		imageRatio,
 		imageSize,
@@ -79,6 +80,8 @@ const Edit = (props) => {
 		cardBackgroundColor,
 		cardBorder,
 		cardPadding,
+		imageBottomSpacing,
+		imageBorderRadius,
 		titleColor,
 		titleTypography,
 		titleBottomSpacing,
@@ -95,9 +98,15 @@ const Edit = (props) => {
 		readMoreButtonPadding,
 		readMoreButtonBottomSpacing,
 		paginationTextColor,
+		paginationActiveBackgroundColor,
+		paginationActiveTextColor,
 		paginationBorder,
 		paginationItemsGap,
-		imageBottomSpacing,
+		paginationTopSpacing,
+		paginationButtonBackgroundColor,
+		paginationButtonTextColor,
+		paginationButtonBorder,
+		paginationButtonPadding,
 
         // Advanced.
         hideOnDesktop,
@@ -113,13 +122,13 @@ const Edit = (props) => {
 			postsPerPage: atts.postsPerPage,
 			excludeCurrentPost: atts.excludeCurrentPost,
 			offsetStartingPoint: atts.offsetStartingPoint,
+			offsetStartingPointValue: atts.offsetStartingPointValue,
 			orderBy: atts.orderBy,
 			order: atts.order,
 			pagination: atts.pagination,
 			paginationPageLimit: atts.paginationPageLimit,
 			paginationType: atts.paginationType,
-			paginationPrevText: atts.paginationPrevText,
-			paginationNextText: atts.paginationNextText,
+			paginationAlignment: getSettingValue('paginationAlignment', currentDevice, atts),
 			displayImage: atts.displayImage,
 			imageRatio: atts.imageRatio,
 			imageSize: atts.imageSize,
@@ -143,6 +152,8 @@ const Edit = (props) => {
 			rowsGap: getSettingValue('rowsGap', currentDevice, atts),
 			cardBackgroundColor: getSettingValue('cardBackgroundColor', 'desktop', atts),
 			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
+			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
+			imageBorderRadius: getSettingValue('imageBorderRadius', 'desktop', atts),
 			titleColor: getSettingValue('titleColor', 'desktop', atts),
 			titleTypography: atts.titleTypography,
 			titleBottomSpacing: getSettingValue('titleBottomSpacing', currentDevice, atts),
@@ -159,9 +170,15 @@ const Edit = (props) => {
 			readMoreButtonPadding: getDimensionsSettingValue('readMoreButtonPadding', currentDevice, atts),
 			readMoreButtonBottomSpacing: getSettingValue('readMoreButtonBottomSpacing', currentDevice, atts),
 			paginationTextColor: getSettingValue('paginationTextColor', 'desktop', atts),
+			paginationActiveBackgroundColor: getSettingValue('paginationActiveBackgroundColor', 'desktop', atts),
+			paginationActiveTextColor: getSettingValue('paginationActiveTextColor', 'desktop', atts),
 			paginationBorder: atts.paginationBorder,
 			paginationItemsGap: getSettingValue('paginationItemsGap', currentDevice, atts),
-			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
+			paginationTopSpacing: getSettingValue('paginationTopSpacing', currentDevice, atts),
+			paginationButtonBackgroundColor: getSettingValue('paginationButtonBackgroundColor', 'desktop', atts),
+			paginationButtonTextColor: getSettingValue('paginationButtonTextColor', 'desktop', atts),
+			paginationButtonBorder: atts.paginationButtonBorder,
+			paginationButtonPadding: getDimensionsSettingValue('paginationButtonPadding', currentDevice, atts),
 			cardBorder: atts.cardBorder,
 
 			// Advanced.
@@ -201,6 +218,30 @@ const Edit = (props) => {
 			};
 		}
 	}, []);
+
+	// Order by options.
+	const orderByOptions = useMemo(() => {
+		const generalOptions = [
+			{ label: __( 'Date', 'athemes-blocks' ), value: 'date' },
+			{ label: __( 'Modified', 'athemes-blocks' ), value: 'modified' },
+			{ label: __( 'Title', 'athemes-blocks' ), value: 'title' },
+			{ label: __( 'Author', 'athemes-blocks' ), value: 'author' },
+			{ label: __( 'Random', 'athemes-blocks' ), value: 'random' },
+		]
+
+		if ( postType === 'product' ) {
+			return [
+				...generalOptions,
+				{ label: __( 'Popularity', 'athemes-blocks' ), value: 'popularity' },
+				{ label: __( 'Rating', 'athemes-blocks' ), value: 'rating' },
+				{ label: __( 'Price', 'athemes-blocks' ), value: 'price' },
+				{ label: __( 'Sales', 'athemes-blocks' ), value: 'sales' },
+				{ label: __( 'Menu Order', 'athemes-blocks' ), value: 'menu_order' },
+			];
+		}
+
+		return generalOptions;
+	}, [postType]);
 
 	// Get taxonomies for the selected post type.
 	const taxonomies = useSelect((select) => {
@@ -270,32 +311,38 @@ const Edit = (props) => {
 										setAttributes({ postType: attributesDefaults.postType.default });
 									} }
 								/>
-								<Select
-									label={ __( 'Taxonomy', 'athemes-blocks' ) }
-									options={taxonomies}
-									value={ taxonomy }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ taxonomy: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ taxonomy: attributesDefaults.taxonomy.default });
-									} }
-								/>
-								<Select
-									label={ __( 'Taxonomy Term', 'athemes-blocks' ) }
-									options={taxonomyTerms}
-									value={ taxonomyTerm }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ taxonomyTerm: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ taxonomyTerm: attributesDefaults.taxonomyTerm.default });
-									} }
-								/>
+								{
+									postType !== 'page' && (
+										<>
+											<Select
+												label={ __( 'Taxonomy', 'athemes-blocks' ) }
+												options={taxonomies}
+												value={ taxonomy }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ taxonomy: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ taxonomy: attributesDefaults.taxonomy.default });
+												} }
+											/>
+											<Select
+												label={ __( 'Taxonomy Term', 'athemes-blocks' ) }
+												options={taxonomyTerms}
+												value={ taxonomyTerm }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ taxonomyTerm: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ taxonomyTerm: attributesDefaults.taxonomyTerm.default });
+												} }
+											/>
+										</>
+									)
+								}
 								<RangeSlider 
 									label={ __( 'Posts Per Page', 'athemes-blocks' ) }
 									defaultValue={ postsPerPage }
@@ -335,16 +382,28 @@ const Edit = (props) => {
 										setAttributes({ offsetStartingPoint: attributesDefaults.offsetStartingPoint.default });
 									} }
 								/>
+								{
+									offsetStartingPoint && (
+										<RangeSlider 
+											label={ __( 'Offset Value', 'athemes-blocks' ) }
+											defaultValue={ offsetStartingPointValue }
+											min={ 0 }
+											max={ 50 }
+											responsive={false}
+											reset={true}
+											units={false}
+											onChange={ ( value ) => {
+												setAttributes({ offsetStartingPointValue: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ offsetStartingPointValue: attributesDefaults.offsetStartingPointValue.default });
+											} }
+										/>											
+									)
+								}
 								<Select
 									label={ __( 'Order By', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Date', 'athemes-blocks' ), value: 'date' },
-										{ label: __( 'Title', 'athemes-blocks' ), value: 'title' },
-										{ label: __( 'Author', 'athemes-blocks' ), value: 'author' },
-										{ label: __( 'Comment Count', 'athemes-blocks' ), value: 'comment_count' },
-										{ label: __( 'Menu Order', 'athemes-blocks' ), value: 'menu_order' },
-										{ label: __( 'Random', 'athemes-blocks' ), value: 'rand' },
-									]}
+									options={orderByOptions}
 									value={ orderBy }
 									responsive={false}
 									reset={true}
@@ -358,8 +417,8 @@ const Edit = (props) => {
 								<Select
 									label={ __( 'Order', 'athemes-blocks' ) }
 									options={[
-										{ label: __( 'Ascending', 'athemes-blocks' ), value: 'ASC' },
-										{ label: __( 'Descending', 'athemes-blocks' ), value: 'DESC' },
+										{ label: __( 'Ascending', 'athemes-blocks' ), value: 'asc' },
+										{ label: __( 'Descending', 'athemes-blocks' ), value: 'desc' },
 									]}
 									value={ order }
 									responsive={false}
@@ -390,61 +449,69 @@ const Edit = (props) => {
 										setAttributes({ pagination: attributesDefaults.pagination.default });
 									} }
 								/>
-								<RangeSlider 
-									label={ __( 'Page Limit', 'athemes-blocks' ) }
-									defaultValue={ paginationPageLimit }
-									min={ 1 }
-									max={ 100 }
-									responsive={false}
-									reset={true}
-									units={false}
-									onChange={ ( value ) => {
-										setAttributes({ paginationPageLimit: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ paginationPageLimit: attributesDefaults.paginationPageLimit.default });
-									} }
-								/>
-								<Select
-									label={ __( 'Pagination Type', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'Ajax', 'athemes-blocks' ), value: 'ajax' },
-										{ label: __( 'Load More', 'athemes-blocks' ), value: 'load-more' },
-									]}
-									value={ paginationType }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ paginationType: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ paginationType: attributesDefaults.paginationType.default });
-									} }
-								/>
-								<TextInput
-									label={ __( 'Prev Text', 'athemes-blocks' ) }
-									value={ paginationPrevText }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ paginationPrevText: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ paginationPrevText: attributesDefaults.paginationPrevText.default });
-									} }
-								/>
-								<TextInput
-									label={ __( 'Next Text', 'athemes-blocks' ) }
-									value={ paginationNextText }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ paginationNextText: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ paginationNextText: attributesDefaults.paginationNextText.default });
-									} }
-								/>
+								{
+									pagination && (
+										<>
+											<RangeSlider 
+												label={ __( 'Page Limit', 'athemes-blocks' ) }
+												defaultValue={ paginationPageLimit }
+												min={ 1 }
+												max={ 100 }
+												responsive={false}
+												reset={true}
+												units={false}
+												onChange={ ( value ) => {
+													setAttributes({ paginationPageLimit: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ paginationPageLimit: attributesDefaults.paginationPageLimit.default });
+												} }
+											/>
+											<Select
+												label={ __( 'Pagination Type', 'athemes-blocks' ) }
+												options={[
+													{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
+													{ label: __( 'Load More', 'athemes-blocks' ), value: 'load-more' },
+													{ label: __( 'Infinite Scroll', 'athemes-blocks' ), value: 'infinite-scroll' },
+												]}
+												value={ paginationType }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ paginationType: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ paginationType: attributesDefaults.paginationType.default });
+												} }
+											/>
+											<RadioButtons 
+												label={ __( 'Alignment', 'athemes-blocks' ) }
+												defaultValue={ paginationAlignment }
+												options={[
+													{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
+													{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+													{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+												]}
+												responsive={true}
+												reset={true}
+												onChange={ ( value ) => {
+													updateAttribute( 'paginationAlignment', {
+														value: value
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'paginationAlignment', value: value } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationAlignment', {
+														value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults )
+													}, currentDevice );
+													
+													setUpdateCss( { settingId: 'paginationAlignment', value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults ) } );
+												} }
+											/>
+										</>
+									)
+								}
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Image', 'athemes-blocks' ) } 
@@ -538,26 +605,30 @@ const Edit = (props) => {
 										setAttributes({ displayTitle: attributesDefaults.displayTitle.default });
 									} }
 								/>
-								<Select
-									label={ __( 'Title Tag', 'athemes-blocks' ) }
-									options={[
-										{ label: __( 'H1', 'athemes-blocks' ), value: 'h1' },
-										{ label: __( 'H2', 'athemes-blocks' ), value: 'h2' },
-										{ label: __( 'H3', 'athemes-blocks' ), value: 'h3' },
-										{ label: __( 'H4', 'athemes-blocks' ), value: 'h4' },
-										{ label: __( 'H5', 'athemes-blocks' ), value: 'h5' },
-										{ label: __( 'H6', 'athemes-blocks' ), value: 'h6' },
-									]}
-									value={ titleTag }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ titleTag: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ titleTag: attributesDefaults.titleTag.default });
-									} }
-								/>
+								{
+									displayTitle && (
+										<Select
+											label={ __( 'Title Tag', 'athemes-blocks' ) }
+											options={[
+												{ label: __( 'H1', 'athemes-blocks' ), value: 'h1' },
+												{ label: __( 'H2', 'athemes-blocks' ), value: 'h2' },
+												{ label: __( 'H3', 'athemes-blocks' ), value: 'h3' },
+												{ label: __( 'H4', 'athemes-blocks' ), value: 'h4' },
+												{ label: __( 'H5', 'athemes-blocks' ), value: 'h5' },
+												{ label: __( 'H6', 'athemes-blocks' ), value: 'h6' },
+											]}
+											value={ titleTag }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ titleTag: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ titleTag: attributesDefaults.titleTag.default });
+											} }
+										/>	
+									)
+								}
 								<SwitchToggle
 									label={ __( 'Display Author', 'athemes-blocks' ) }
 									value={ displayAuthor }
@@ -819,7 +890,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'cardBackgroundColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -830,7 +901,7 @@ const Edit = (props) => {
 										updateAttribute( 'cardBackgroundColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -897,6 +968,77 @@ const Edit = (props) => {
 								/>
 							</PanelBody>
 							<PanelBody 
+								title={ __( 'Image', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'image' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
+							>
+								<RangeSlider 
+									label={ __( 'Border Radius', 'athemes-blocks' ) }
+									defaultValue={ imageBorderRadius }
+									defaultUnit="px"	
+									min={0}
+									max={100}
+									responsive={false}
+									reset={true}
+									units={false}
+									onChange={ ( value ) => {
+										updateAttribute( 'imageBorderRadius', {
+											value: value,
+											unit: 'px'
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageBorderRadius', value: value } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'imageBorderRadius', {
+											value: getSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ),
+											unit: 'px'
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'imageBorderRadius', value: getSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+									defaultValue={ imageBottomSpacing }
+									defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
+									min={ 1 }
+									max={ {
+										px: 150,
+										em: 20,
+										rem: 20
+									} }
+									responsive={true}
+									reset={true}
+									units={['px', 'em', 'rem']}
+									onChange={ ( value ) => {
+										updateAttribute( 'imageBottomSpacing', {
+											value: value,
+											unit: getSettingUnit( 'imageBottomSpacing', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'imageBottomSpacing', {
+											value: imageBottomSpacing,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'imageBottomSpacing', {
+											value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'imageBottomSpacing', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'imageBottomSpacing', value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
 								title={ __( 'Title', 'athemes-blocks' ) } 
 								initialOpen={false}
 								opened={ isPanelOpened( 'title' ) }
@@ -908,10 +1050,11 @@ const Edit = (props) => {
 									hover={false}
 									responsive={false}
 									reset={true}
+									enableAlpha={true}
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'titleColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'titleColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -922,7 +1065,7 @@ const Edit = (props) => {
 										updateAttribute( 'titleColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'titleColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1002,7 +1145,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'metaColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'metaColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1013,7 +1156,7 @@ const Edit = (props) => {
 										updateAttribute( 'metaColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'metaColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1093,7 +1236,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'excerptColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'excerptColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1104,7 +1247,7 @@ const Edit = (props) => {
 										updateAttribute( 'excerptColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'excerptColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1184,7 +1327,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'readMoreButtonColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1195,7 +1338,7 @@ const Edit = (props) => {
 										updateAttribute( 'readMoreButtonColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1230,7 +1373,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'readMoreButtonBackgroundColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -1241,7 +1384,7 @@ const Edit = (props) => {
 										updateAttribute( 'readMoreButtonBackgroundColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										
@@ -1351,56 +1494,302 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'pagination' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'pagination' ) }
 							>
-								<ColorPicker
-									label={ __( 'Text Color', 'athemes-blocks' ) }
-									value={ paginationTextColor }
-									hover={false}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'paginationTextColor', {
-											value: {
-												defaultState: value.hex,
-												hoverState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
+								{
+									paginationType === 'default' && (
+										<>
+											<ColorPicker
+												label={ __( 'Text Color', 'athemes-blocks' ) }
+												value={ paginationTextColor }
+												hover={true}
+												responsive={false}
+												reset={true}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationTextColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
 
-										setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'paginationTextColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'paginationTextColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-								<Border
-									label=""
-									settingId="paginationBorder"
-									attributes={ atts }
-									setAttributes={ setAttributes }
-									attributesDefaults={ attributesDefaults }
-									setUpdateCss={ setUpdateCss }
-									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
-								/>
+													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationTextColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ),
+															hoverState: value
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationTextColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<ColorPicker
+												label={ __( 'Active Background Color', 'athemes-blocks' ) }
+												value={ paginationActiveBackgroundColor }
+												hover={false}
+												responsive={false}
+												reset={true}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationActiveBackgroundColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationActiveBackgroundColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ),
+															hoverState: value	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationActiveBackgroundColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<ColorPicker
+												label={ __( 'Active Text Color', 'athemes-blocks' ) }
+												value={ paginationActiveTextColor }
+												hover={false}
+												responsive={false}
+												reset={true}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationActiveTextColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationActiveTextColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ),
+															hoverState: value	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationActiveTextColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<Border
+												label=""
+												settingId="paginationBorder"
+												attributes={ atts }
+												setAttributes={ setAttributes }
+												attributesDefaults={ attributesDefaults }
+												setUpdateCss={ setUpdateCss }
+												subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+											/>
+											<RangeSlider 
+												label={ __( 'Items Gap', 'athemes-blocks' ) }
+												defaultValue={ paginationItemsGap }
+												defaultUnit={ getSettingUnit( 'paginationItemsGap', currentDevice, atts ) }
+												min={ 1 }
+												max={ {
+													px: 150,
+													em: 20,
+													rem: 20
+												} }
+												responsive={false}
+												reset={true}
+												units={['px', 'em', 'rem']}
+												onChange={ ( value ) => {
+													updateAttribute( 'paginationItemsGap', {
+														value: value,
+														unit: getSettingUnit( 'paginationItemsGap', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'paginationItemsGap', value: value } );
+												} }
+												onChangeUnit={ ( value ) => {
+													updateAttribute( 'paginationItemsGap', {
+														value: paginationItemsGap,
+														unit: value,
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'paginationItemsGap', value: value } );								
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationItemsGap', {
+														value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ),
+														unit: getSettingDefaultUnit( 'paginationItemsGap', currentDevice, attributesDefaults )
+													}, currentDevice );							
+
+													setUpdateCss( { settingId: 'paginationItemsGap', value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ) } );								
+												} }
+											/>
+										</>
+									)
+								}
+								{
+									paginationType === 'load-more' && (
+										<>
+											<ColorPicker
+												label={ __( 'Button Background Color', 'athemes-blocks' ) }
+												value={ paginationButtonBackgroundColor }
+												hover={true}
+												responsive={false}
+												reset={true}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationButtonBackgroundColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationButtonBackgroundColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ),
+															hoverState: value	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationButtonBackgroundColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<ColorPicker
+												label={ __( 'Button Text Color', 'athemes-blocks' ) }
+												value={ paginationButtonTextColor }
+												hover={true}
+												responsive={false}
+												reset={true}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationButtonTextColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'paginationButtonTextColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ),
+															hoverState: value	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationButtonTextColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<Border
+												label=""
+												settingId="paginationButtonBorder"
+												attributes={ atts }
+												setAttributes={ setAttributes }
+												attributesDefaults={ attributesDefaults }
+												setUpdateCss={ setUpdateCss }
+												subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+											/>
+											<Dimensions
+												label={ __( 'Button Padding', 'athemes-blocks' ) }
+												directions={[
+													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+													{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+													{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+													{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+												]}
+												value={ getDimensionsSettingValue( 'paginationButtonPadding', currentDevice, atts ) }
+												defaultUnit={ getSettingUnit('paginationButtonPadding', currentDevice, atts) }
+												directionsValue={ getDimensionsSettingDirectionsValue('paginationButtonPadding', currentDevice, atts) }
+												connect={ getDimensionsSettingConnectValue('paginationButtonPadding', currentDevice, atts) }
+												responsive={ true }
+												units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+												reset={true}
+												onChange={ ( value ) => {
+													updateAttribute( 'paginationButtonPadding', {
+														value: value.value,
+														unit: getSettingUnit( 'paginationButtonPadding', currentDevice, atts ),
+														connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'paginationButtonPadding', value: value.value } );
+												} }
+												onChangeUnit={ ( value ) => {
+													updateAttribute( 'paginationButtonPadding', {
+														value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ),
+														unit: value,
+														connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'paginationButtonPadding', value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'paginationButtonPadding', getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ), currentDevice );
+
+													setUpdateCss( { settingId: 'paginationButtonPadding', value: getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ) } );
+												} }
+											/>
+										</>
+									)
+								}
 								<RangeSlider 
-									label={ __( 'Items Gap', 'athemes-blocks' ) }
-									defaultValue={ paginationItemsGap }
-									defaultUnit={ getSettingUnit( 'paginationItemsGap', currentDevice, atts ) }
+									label={ __( 'Top Spacing', 'athemes-blocks' ) }
+									defaultValue={ paginationTopSpacing }
+									defaultUnit={ getSettingUnit( 'paginationTopSpacing', currentDevice, atts ) }
 									min={ 1 }
 									max={ {
 										px: 150,
@@ -1411,73 +1800,28 @@ const Edit = (props) => {
 									reset={true}
 									units={['px', 'em', 'rem']}
 									onChange={ ( value ) => {
-										updateAttribute( 'paginationItemsGap', {
+										updateAttribute( 'paginationTopSpacing', {
 											value: value,
-											unit: getSettingUnit( 'paginationItemsGap', currentDevice, atts )
+											unit: getSettingUnit( 'paginationTopSpacing', currentDevice, atts )
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'paginationItemsGap', value: value } );
+										setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );
 									} }
 									onChangeUnit={ ( value ) => {
-										updateAttribute( 'paginationItemsGap', {
-											value: paginationItemsGap,
+										updateAttribute( 'paginationTopSpacing', {
+											value: paginationTopSpacing,
 											unit: value,
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'paginationItemsGap', value: value } );								
+										setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );								
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'paginationItemsGap', {
-											value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'paginationItemsGap', currentDevice, attributesDefaults )
+										updateAttribute( 'paginationTopSpacing', {
+											value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'paginationTopSpacing', currentDevice, attributesDefaults )
 										}, currentDevice );							
 
-										setUpdateCss( { settingId: 'paginationItemsGap', value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ) } );								
-									} }
-								/>
-							</PanelBody>
-							<PanelBody 
-								title={ __( 'Image', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'image' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
-							>
-								<RangeSlider 
-									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
-									defaultValue={ imageBottomSpacing }
-									defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
-									max={ {
-										px: 150,
-										em: 20,
-										rem: 20
-									} }
-									responsive={true}
-									reset={true}
-									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: value,
-											unit: getSettingUnit( 'imageBottomSpacing', currentDevice, atts )
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: imageBottomSpacing,
-											unit: value,
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'imageBottomSpacing', currentDevice, attributesDefaults )
-										}, currentDevice );							
-
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ) } );								
+										setUpdateCss( { settingId: 'paginationTopSpacing', value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
 							</PanelBody>
@@ -1536,6 +1880,9 @@ const Edit = (props) => {
 											alt: post.title.rendered
 										}
 
+										const hasTaxonomyTerms = post._embedded?.[`wp:term`]?.find(terms => terms[0]?.taxonomy === taxonomy);
+										const taxonomyTerms = hasTaxonomyTerms ? hasTaxonomyTerms.map(term => term.name) : [];
+
 										return (
 											<div key={post.id} className="at-block-post-grid__item">
 												{ displayImage && postFeaturedMedia && image.src && (
@@ -1557,7 +1904,7 @@ const Edit = (props) => {
 
 													{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
 														<div className="at-block-post-grid__meta">
-															{displayAuthor && (
+															{ ( postType !== 'product' && displayAuthor ) && (
 																<span className="at-block-post-grid__author">
 																	{displayMetaIcon && (
 																		<div
@@ -1581,7 +1928,7 @@ const Edit = (props) => {
 																</span>
 															)}
 															
-															{displayComments && (
+															{( postType !== 'page' && displayComments ) && (
 																<span className="at-block-post-grid__comments">
 																	{displayMetaIcon && (
 																		<div
@@ -1593,7 +1940,7 @@ const Edit = (props) => {
 																</span>
 															)}
 															
-															{displayTaxonomy && taxonomy !== 'all' && (
+															{postType !== 'page' && displayTaxonomy && taxonomy !== 'all' && taxonomyTerms.length > 0 && (
 																<span className="at-block-post-grid__taxonomy">
 																	{displayMetaIcon && (
 																		<div
@@ -1601,7 +1948,7 @@ const Edit = (props) => {
 																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-purchase-tag-alt-regular'] }} 
 																		/>
 																	)}
-																	{post._embedded?.[`wp:term`]?.[0]?.map(term => term.name).join(', ') || ''}
+																	{taxonomyTerms.join(', ') || ''}
 																</span>
 															)}
 														</div>
@@ -1630,20 +1977,23 @@ const Edit = (props) => {
 									})}
 								</div>
 
-								{pagination && posts.length > 0 && (
+								{pagination && posts.length >= postsPerPage && (
 									<div className="at-block-post-grid__pagination">
-										{paginationType === 'numbers' ? (
-											<div className="at-block-post-grid__pagination-numbers">
-												<span className="at-block-post-grid__pagination-prev">{paginationPrevText}</span>
-												<span className="at-block-post-grid__pagination-current">1</span>
-												<span className="at-block-post-grid__pagination-next">{paginationNextText}</span>
-											</div>
-										) : (
-											<div className="at-block-post-grid__pagination-prev-next">
-												<span className="at-block-post-grid__pagination-prev">{paginationPrevText}</span>
-												<span className="at-block-post-grid__pagination-next">{paginationNextText}</span>
-											</div>
-										)}
+										{
+											paginationType === 'default' && (
+												<div className="at-block-post-grid__pagination-numbers">
+													<span className="at-block-post-grid__pagination-number at-block-post-grid__pagination-number--active">1</span>
+													<span className="at-block-post-grid__pagination-number">2</span>
+													<span className="at-block-post-grid__pagination-number">3</span>
+													<span className="at-block-post-grid__pagination-number at-block-post-grid__pagination-number--next">→</span>
+												</div>	
+											)
+										}
+										{
+											paginationType === 'load-more' && (
+												<a href="#" className="at-block-post-grid__pagination-button at-block-post-grid__pagination-button--load-more">{ __( 'Load More', 'athemes-blocks' ) }</a>
+											)
+										}
 									</div>
 								)}
 							</>
@@ -1666,8 +2016,8 @@ const applyWithSelect = withSelect((select, props) => {
 		taxonomy,
 		taxonomyTerm,
 		postsPerPage,
-		excludeCurrentPost,
 		offsetStartingPoint,
+		offsetStartingPointValue,
 		orderBy,
 		order,
 	} = attributes;
@@ -1683,7 +2033,7 @@ const applyWithSelect = withSelect((select, props) => {
 	const queryArgs = {
 		per_page: postsPerPage || 10,
 		orderby: orderBy || 'date',
-		// order: order || 'desc',
+		order: order || 'desc',
 		_embed: true, // This ensures we get featured images, authors, and terms
 	};
 
@@ -1692,17 +2042,9 @@ const applyWithSelect = withSelect((select, props) => {
 		queryArgs[taxonomy] = taxonomyTerm;
 	}
 
-	// Exclude current post if enabled
-	if (excludeCurrentPost) {
-		const currentPostId = select('core/editor').getCurrentPostId();
-		if (currentPostId) {
-			queryArgs.exclude = [currentPostId];
-		}
-	}
-
 	// Add offset if set
 	if (offsetStartingPoint) {
-		queryArgs.offset = offsetStartingPoint;
+		queryArgs.offset = offsetStartingPointValue;
 	}
 
 	// Get posts from the WordPress REST API

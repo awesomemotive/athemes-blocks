@@ -281,7 +281,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'color', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'color', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -292,7 +292,7 @@ const Edit = (props) => {
 										updateAttribute( 'color', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'color', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value
 											}
 										}, 'desktop' );
 										
@@ -327,7 +327,7 @@ const Edit = (props) => {
 											defaultStateOnChangeComplete={ ( value ) => {
 												updateAttribute( 'iconColor', {
 													value: {
-														defaultState: value.hex,
+														defaultState: value,
 														hoverState: getColorPickerSettingValue( 'iconColor', 'desktop', 'hoverState', atts )
 													}
 												}, 'desktop' );
@@ -338,7 +338,7 @@ const Edit = (props) => {
 												updateAttribute( 'iconColor', {
 													value: {
 														defaultState: getColorPickerSettingValue( 'iconColor', 'desktop', 'defaultState', atts ),
-														hoverState: value.hex	
+														hoverState: value	
 													}
 												}, 'desktop' );
 												
@@ -373,7 +373,7 @@ const Edit = (props) => {
 									defaultStateOnChangeComplete={ ( value ) => {
 										updateAttribute( 'buttonBackgroundColor', {
 											value: {
-												defaultState: value.hex,
+												defaultState: value,
 												hoverState: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
@@ -384,7 +384,7 @@ const Edit = (props) => {
 										updateAttribute( 'buttonBackgroundColor', {
 											value: {
 												defaultState: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value.hex	
+												hoverState: value	
 											}
 										}, 'desktop' );
 										

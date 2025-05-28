@@ -45,8 +45,12 @@ return array_merge(
             'default' => false
         ),
         'offsetStartingPoint' => array(
+            'type' => 'boolean',
+            'default' => false
+        ),
+        'offsetStartingPointValue' => array(
             'type' => 'number',
-            'default' => 0
+            'default' => 1
         ),
         'orderBy' => array(
             'type' => 'string',
@@ -54,7 +58,7 @@ return array_merge(
         ),
         'order' => array(
             'type' => 'string',
-            'default' => 'DESC'
+            'default' => 'desc'
         ),
     ),
 
@@ -72,15 +76,27 @@ return array_merge(
         ),
         'paginationType' => array(
             'type' => 'string',
-            'default' => 'ajax'
+            'default' => 'default'
         ),
-        'paginationPrevText' => array(
-            'type' => 'string',
-            'default' => 'Previous'
-        ),
-        'paginationNextText' => array(
-            'type' => 'string',
-            'default' => 'Next'
+        'paginationAlignment' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 'center',
+                ),
+                'tablet' => array(
+                    'value' => 'center',
+                ),
+                'mobile' => array(
+                    'value' => 'center',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__pagination'
+                ),
+                'property' => 'justify-content',
+            ),
         ),
     ),
 
@@ -385,6 +401,58 @@ return array_merge(
                     '{{WRAPPER}} .at-block-post-grid__item'
                 ),
                 'property' => 'padding-{{DIRECTION}}',
+            ),
+        ),
+    ),
+
+    // ------------------------------------
+    // --- Image --------------------------
+    // ------------------------------------
+    array(
+        'imageBorderRadius' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 0,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__image img'
+                ),
+                'property' => 'border-radius',
+            )
+        ),
+        'imageBottomSpacing' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 10,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__image'
+                ),
+                'property' => 'margin-bottom',
             ),
         ),
     ),
@@ -1120,7 +1188,37 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
+                        'defaultState' => '#212121',
+                        'hoverState' => '#757575'
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
                         'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__pagination-number' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__pagination-number:hover' => '{{HOVER}}',
+                ),
+                'property' => '--atb-post-grid-pagination-text-color',
+            ),
+        ),
+        'paginationActiveBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#212121',
                         'hoverState' => ''
                     )
                 ),
@@ -1136,6 +1234,41 @@ return array_merge(
                         'hoverState' => ''
                     )
                 ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}' => '{{VALUE}}',
+                ),
+                'property' => '--atb-post-grid-pagination-active-background-color',
+            ),
+        ),
+        'paginationActiveTextColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#FFF',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}' => '{{VALUE}}',
+                ),
+                'property' => '--atb-post-grid-pagination-active-text-color',
             ),
         ),
     ),
@@ -1156,7 +1289,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
                     ),
                     'property' => 'border-style',
                 )
@@ -1164,7 +1297,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -1201,16 +1334,36 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
             ),
             'borderColor' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => array(
+                            'defaultState' => '#212121',
+                            'hoverState' => '#757575',
+                        )
+                    ),
+                    'tablet' => array(
+                        'value' => array(
+                            'defaultState' => '',
+                            'hoverState' => ''
+                        )
+                    ),
+                    'mobile' => array(
+                        'value' => array(
+                            'defaultState' => '',
+                            'hoverState' => ''
+                        )
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper' => '{{VALUE}}',
-                        '{{WRAPPER}} .at-block-button__wrapper:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-post-grid__pagination-number' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-post-grid__pagination-number:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )
@@ -1234,18 +1387,199 @@ return array_merge(
                     'unit' => 'px',
                 ),
             ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-post-grid-pagination-items-gap',
+            ),
         ),
-    ),
-
-    // ------------------------------------
-    // --- Image --------------------------
-    // ------------------------------------
-    array(
-        'imageBottomSpacing' => array(
+        'paginationButtonBackgroundColor' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 10,
+                    'value' => array(
+                        'defaultState' => '#212121',
+                        'hoverState' => '#757575'
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__pagination-button' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__pagination-button:hover' => '{{HOVER}}',
+                ),
+                'property' => 'background-color',
+            ),
+        ),
+        'paginationButtonTextColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#FFF',
+                        'hoverState' => '#FFF'
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__pagination-button' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__pagination-button:hover' => '{{HOVER}}',
+                ),
+                'property' => 'color',
+            ),
+        ),
+    ),
+    Attributes::get_border_attributes(
+        'paginationButtonBorder',
+        array(
+            'borderStyle' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'none',
+                    ),
+                    'tablet' => array(
+                        'value' => 'none',
+                    ),
+                    'mobile' => array(
+                        'value' => 'none',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__pagination-button'
+                    ),
+                    'property' => 'border-style',
+                )
+            ),
+            'borderWidth' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__pagination-button'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-width',
+                )
+            ),
+            'borderRadius' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => array(
+                            'top' => 4,
+                            'right' => 4,
+                            'bottom' => 4,
+                            'left' => 4,
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'tablet' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'mobile' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__pagination-button'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-radius',
+                )
+            ),
+            'borderColor' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__pagination-button' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-post-grid__pagination-button:hover' => '{{HOVER}}',
+                    ),
+                    'property' => 'border-color',
+                )
+            ),
+        )
+    ),
+    array(
+        'paginationButtonPadding' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'top' => 13,
+                        'right' => 25,
+                        'bottom' => 13,
+                        'left' => 25,
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__pagination-button',
+                ),
+                'property' => 'padding-{{DIRECTION}}',
+            ),
+        ),
+        'paginationTopSpacing' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 30,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -1259,9 +1593,9 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__image'
+                    '{{WRAPPER}} .at-block-post-grid__pagination'
                 ),
-                'property' => 'margin-bottom',
+                'property' => 'margin-top',
             ),
         ),
     ),

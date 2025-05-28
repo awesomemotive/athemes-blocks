@@ -13,7 +13,6 @@ import { Select } from '../../block-editor/controls/select/select';
 import { TextInput } from '../../block-editor/controls/text-input/text-input';
 import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
 import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
-import { ColorPickerPalette } from '../../block-editor/controls/color-picker-palette/color-picker-palette';
 import { Border } from '../../block-editor/controls/border/border';
 import { ColorPickerAdvanced } from '../../block-editor/controls/color-picker-advanced/color-picker-advanced';
 
@@ -874,7 +873,7 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'color' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'color' ) }
 							>
-								<ColorPickerPalette
+								<ColorPicker
 									label={ __( 'Text Color', 'athemes-blocks' ) }
 									value={ textColor }
 									hover={true}
@@ -908,7 +907,7 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'textColor', value: getSettingDefaultValue( 'textColor', 'desktop', attributesDefaults ) } );                            
 									} }
 								/>
-								<ColorPickerPalette
+								<ColorPicker
 									label={ __( 'Link Color', 'athemes-blocks' ) }
 									value={ linkColor }
 									hover={true}
