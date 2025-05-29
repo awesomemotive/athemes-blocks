@@ -64,4 +64,9 @@
   margin-right: auto;
 }
 
+/* Popover */
+.atblocks-popover .components-popover__content {
+  padding: 15px;
+}
+
 /*# sourceMappingURL=block-editor.css.map*/

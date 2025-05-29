@@ -82,10 +82,10 @@ class BlockCss {
             // }
 
             // Inner settings (recursive).
-            if ( isset( $attributes[$attribute_name]['innerSettings'] ) ) {
-                $inner_settings_attributes = $attributes[$attribute_name]['innerSettings'];
+            if ( isset( $default_attributes[$attribute_name]['default']['innerSettings'] ) ) {
+                $inner_settings_attributes = $default_attributes[$attribute_name]['default']['innerSettings'];
                 $block_id = $block_id;
-                $inner_default_attributes = $attribute_settings['default']['innerSettings'];
+                $inner_default_attributes = $default_attributes[$attribute_name]['default']['innerSettings'];
 
                 $css .= self::get_block_css( $inner_settings_attributes, $block_id, $inner_default_attributes );
                 continue;
@@ -148,7 +148,7 @@ class BlockCss {
                             $selector = str_replace( '{{WRAPPER}}', '.at-block-' . $block_id, $selector );
 
                             $replaced_selector_value = is_array( $value['value'] )
-                                ? str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( array_values( $value['value'] )[0], $unit ), $selector_value )
+                                ? str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( !empty($value['value']) ? array_values( $value['value'] )[0] : '', $unit ), $selector_value )
                                 : str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( $value['value'], $unit ), $selector_value );
 
                             if ( $is_color_picker ) {

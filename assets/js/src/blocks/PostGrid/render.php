@@ -8,6 +8,8 @@
 
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Settings.php' );
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Functions.php' );
+include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Swiper.php' );
+include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/PostGrid.php' );
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
+use aThemes_Blocks\Blocks\Helper\Swiper;
+use AThemes_Blocks\Blocks\Helper\PostGrid as PostGridHelper;
 
 $atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/PostGrid/attributes.php' );
 
@@ -23,6 +27,7 @@ $atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/PostGrid/a
 $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 
+// Query options.
 $postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, false );
 $taxonomy = Settings::get_setting( 'taxonomy', $attributes, $atts_defaults, false );
 $taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaults, false );
@@ -31,30 +36,27 @@ $excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, 
 $offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, false );
 $orderBy = Settings::get_setting( 'orderBy', $attributes, $atts_defaults, false );
 $order = Settings::get_setting( 'order', $attributes, $atts_defaults, false );
+$columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
+$columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'tablet' );
+$columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
+$columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, false );
 
+// Carousel.
+$displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, false );
+$carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, false );
+$carouselAutoplay = Settings::get_setting( 'carouselAutoplay', $attributes, $atts_defaults, false );
+$carouselAutoplaySpeed = Settings::get_setting( 'carouselAutoplaySpeed', $attributes, $atts_defaults, false );
+$carouselLoop = Settings::get_setting( 'carouselLoop', $attributes, $atts_defaults, false );
+$carouselAutoHeight = Settings::get_setting( 'carouselAutoHeight', $attributes, $atts_defaults, false );
+$carouselTransitionDuration = Settings::get_setting( 'carouselTransitionDuration', $attributes, $atts_defaults, false );
+$carouselNavigation = Settings::get_setting( 'carouselNavigation', $attributes, $atts_defaults, false );
+
+// Pagination.
 $pagination = Settings::get_setting( 'pagination', $attributes, $atts_defaults, false );
 $paginationPageLimit = Settings::get_setting( 'paginationPageLimit', $attributes, $atts_defaults, false );
 $paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_defaults, false );
 
-$displayImage = Settings::get_setting( 'displayImage', $attributes, $atts_defaults, false );
-$imageRatio = Settings::get_setting( 'imageRatio', $attributes, $atts_defaults, false );
-$imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, false );
-$imagePosition = Settings::get_setting( 'imagePosition', $attributes, $atts_defaults, false );
-
-$displayTitle = Settings::get_setting( 'displayTitle', $attributes, $atts_defaults, false );
-$titleTag = Settings::get_setting( 'titleTag', $attributes, $atts_defaults, false );
-$displayAuthor = Settings::get_setting( 'displayAuthor', $attributes, $atts_defaults, false );
-$displayDate = Settings::get_setting( 'displayDate', $attributes, $atts_defaults, false );
-$displayComments = Settings::get_setting( 'displayComments', $attributes, $atts_defaults, false );
-$displayTaxonomy = Settings::get_setting( 'displayTaxonomy', $attributes, $atts_defaults, false );
-$displayMetaIcon = Settings::get_setting( 'displayMetaIcon', $attributes, $atts_defaults, false );
-$displayExcerpt = Settings::get_setting( 'displayExcerpt', $attributes, $atts_defaults, false );
-$excerptMaxWords = Settings::get_setting( 'excerptMaxWords', $attributes, $atts_defaults, false );
-
-$displayReadMore = Settings::get_setting( 'displayReadMore', $attributes, $atts_defaults, false );
-$readMoreOpenInNewTab = Settings::get_setting( 'readMoreOpenInNewTab', $attributes, $atts_defaults, false );
-$readMoreText = Settings::get_setting( 'readMoreText', $attributes, $atts_defaults, false );
-
+// Visibility.
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );
 $hideOnMobile = Settings::get_setting( 'hideOnMobile', $attributes, $atts_defaults );
@@ -65,6 +67,21 @@ $wrapper_classes = array(
     'at-block-' . $clientId, 
     'at-block-post-grid' 
 );
+
+// Add image ratio class
+if ( ! empty( $imageRatio ) ) {
+    $wrapper_classes[] = 'atb-image-ratio-' . $imageRatio;
+}
+
+// Add image size class
+if ( ! empty( $imageSize ) ) {
+    $wrapper_classes[] = 'atb-image-size-' . $imageSize;
+}
+
+// Add image position class
+if ( ! empty( $imagePosition ) ) {
+    $wrapper_classes[] = 'atb-image-position-' . $imagePosition;
+}
 
 // Visibility classes
 if ( ! empty( $hideOnDesktop ) ) {
@@ -124,130 +141,94 @@ if ( ! empty( $pagination ) ) {
 
 // Run the query
 $query = new WP_Query( $query_args );
-// var_dump($query);
+
 // Start output
 $output = '';
 
 if ( $query->have_posts() ) {
-    $output .= '<div class="at-block-post-grid__items">';
-    
-    while ( $query->have_posts() ) {
-        $query->the_post();
+    if ( $displayCarousel ) {
+
+        // Prepare slider items
+        $slider_items = array();
         
-        $output .= '<article class="at-block-post-grid__item">';
-        
-        // Featured Image
-        if ( ! empty( $displayImage ) && has_post_thumbnail() ) {
-            $output .= '<div class="at-block-post-grid__image">';
-            $output .= get_the_post_thumbnail( get_the_ID(), $imageSize );
-            $output .= '</div>';
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $slider_items[] = PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
         }
         
-        // Content wrapper
-        $output .= '<div class="at-block-post-grid__content">';
+        // Carousel options
+        $swiper_options = array(
+            'spaceBetween' => $columnsGap,
+            'loop' => $carouselLoop,
+            'autoplay' => ($carouselAutoplay) ? [
+                'delay' => $carouselAutoplaySpeed,
+                'disableOnInteraction' => false,
+                'pauseOnMouseEnter' => $carouselPauseOnHover
+            ] : false,
+            'speed' => $carouselTransitionDuration,
+            'navigation' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? array(
+                'enabled' => true,
+                'nextEl' => 'at-block-nav--next',
+                'prevEl' => 'at-block-nav--prev',
+            ) : false,
+            'pagination' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? array(
+                'enabled' => true,
+                'el' => '.swiper-pagination',
+                'type' => 'bullets',
+                'bulletClass' => 'at-block-bullets--bullet',
+                'bulletActiveClass' => 'at-block-bullets--bullet-active',
+                'clickable' => true,
+            ) : false,
+            'autoHeight' => $carouselAutoHeight,
+            'breakpoints' => array(
+                1024 => array(
+                    'slidesPerView' => $columnsDesktop,
+                ),
+                768 => array(
+                    'slidesPerView' => $columnsTablet,
+                ),
+                480 => array(
+                    'slidesPerView' => $columnsMobile,
+                ),
+            )
+        );
+
+        $swiper_markup_options = array(
+            'slider_items' => $slider_items,
+            'swiper_class' => 'at-block-post-grid__swiper',
+            'swiper_slide_class' => 'at-block-post-grid__item',
+        );
+
+        $slider = new Swiper( $swiper_options, $swiper_markup_options );
+        $output .= $slider->get_html_output();
+    } else {
+        $output .= '<div class="at-block-post-grid__items">';
         
-        // Title
-        if ( ! empty( $displayTitle ) ) {
-            $output .= sprintf(
-                '<%1$s class="at-block-post-grid__title"><a href="%2$s">%3$s</a></%1$s>',
-                $titleTag,
-                get_permalink(),
-                get_the_title()
-            );
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $output .= PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
         }
         
-        // Meta information
-        if ( ! empty( $displayAuthor ) || ! empty( $displayDate ) || ! empty( $displayComments ) || ! empty( $displayTaxonomy ) ) {
-            $output .= '<div class="at-block-post-grid__meta">';
-            
-            // Author
-            if ( ! empty( $displayAuthor ) ) {
-                $output .= '<span class="at-block-post-grid__author">';
-                if ( ! empty( $displayMetaIcon ) ) {
-                    $output .= '<i class="fas fa-user"></i> ';
-                }
-                $output .= get_the_author();
-                $output .= '</span>';
-            }
-            
-            // Date
-            if ( ! empty( $displayDate ) ) {
-                $output .= '<span class="at-block-post-grid__date">';
-                if ( ! empty( $displayMetaIcon ) ) {
-                    $output .= '<i class="fas fa-calendar"></i> ';
-                }
-                $output .= get_the_date();
-                $output .= '</span>';
-            }
-            
-            // Comments
-            if ( ! empty( $displayComments ) ) {
-                $output .= '<span class="at-block-post-grid__comments">';
-                if ( ! empty( $displayMetaIcon ) ) {
-                    $output .= '<i class="fas fa-comments"></i> ';
-                }
-                $output .= get_comments_number();
-                $output .= '</span>';
-            }
-            
-            // Taxonomy
-            if ( ! empty( $displayTaxonomy ) && ! empty( $taxonomy ) ) {
-                $terms = get_the_terms( get_the_ID(), $taxonomy );
-                if ( $terms && ! is_wp_error( $terms ) ) {
-                    $output .= '<span class="at-block-post-grid__taxonomy">';
-                    if ( ! empty( $displayMetaIcon ) ) {
-                        $output .= '<i class="fas fa-tags"></i> ';
-                    }
-                    $term_names = array();
-                    foreach ( $terms as $term ) {
-                        $term_names[] = $term->name;
-                    }
-                    $output .= implode( ', ', $term_names );
-                    $output .= '</span>';
-                }
-            }
-            
-            $output .= '</div>';
-        }
-        
-        // Excerpt
-        if ( ! empty( $displayExcerpt ) ) {
-            $output .= '<div class="at-block-post-grid__excerpt">';
-            $output .= wp_trim_words( get_the_excerpt(), $excerptMaxWords );
-            $output .= '</div>';
-        }
-        
-        // Read More
-        if ( ! empty( $displayReadMore ) ) {
-            $target = ! empty( $readMoreOpenInNewTab ) ? ' target="_blank"' : '';
-            $output .= sprintf(
-                '<a href="%1$s" class="at-block-post-grid__read-more"%2$s>%3$s</a>',
-                get_permalink(),
-                $target,
-                $readMoreText
-            );
-        }
-        
-        $output .= '</div>'; // End content wrapper
-        $output .= '</article>';
+        $output .= '</div>';
     }
     
-    $output .= '</div>'; // End grid items
-    
     // Pagination
-    if ( ! empty( $pagination ) && $query->max_num_pages > 1 ) {
+    if ( $pagination && $query->max_num_pages > 1 ) {
         $output .= '<div class="at-block-post-grid__pagination">';
-        
-        if ( $paginationType === 'numbers' ) {
+        $output .= '<div class="at-block-post-grid__pagination-numbers">';
             $output .= paginate_links( array(
                 'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
                 'format'    => '?paged=%#%',
                 'current'   => max( 1, get_query_var( 'paged' ) ),
                 'total'     => $query->max_num_pages,
+                'prev_text' => '←',
+                'next_text' => '→',
+                'type'      => 'plain',
             ) );
-        } else {
-            $output .= '<div class="at-block-post-grid__pagination-prev-next">';
             $output .= '</div>';
+
+        if ( $paginationType === 'load-more' || $paginationType === 'infinite-scroll' ) {
+            $output .= '<a href="#" class="at-block-post-grid__pagination-button at-block-post-grid__pagination-button--load-more">' . __( 'Load More', 'athemes-blocks' ) . '</a>';
         }
         
         $output .= '</div>';

@@ -1,5 +1,14 @@
+// Carousel.
+@use '../../../../sass/common-components/carousel';
+
 .at-block-post-grid {
     box-sizing: border-box;
+
+    &__swiper {
+        .swiper-slide {
+            box-sizing: border-box;
+        }
+    }
 
     &__items {
         display: grid;
@@ -23,6 +32,12 @@
     // Title.
     &__title {
         margin-top: 0;
+
+        a {
+            display: block;
+            color: inherit !important;
+            text-decoration: inherit !important;
+        }
     }
 
     // Meta.
@@ -30,6 +45,13 @@
         display: flex;
         flex-wrap: wrap;
         column-gap: 15px;
+        font-size: 0.85em;
+
+        a {
+            display: inline-flex;
+            color: inherit !important;
+            text-decoration: inherit !important;
+        }
     }
 
     &__author,
@@ -37,8 +59,9 @@
     &__comments,
     &__taxonomy {
         display: inline-flex;
-        gap: 6px;
+        gap: 3px;
         align-items: center;
+        text-decoration: none;
 
         .at-block-post-grid__meta-icon {
             display: flex;
@@ -48,6 +71,25 @@
                 width: 100%;
                 height: auto;
             }
+        }
+    }
+
+    &__author,
+    &__date,
+    &__comments {
+        transition: ease opacity 250ms;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__taxonomy-link {
+        text-decoration: none;
+        transition: ease opacity 250ms;
+
+        &:hover {
+            opacity: 0.8;
         }
     }
 
@@ -63,7 +105,11 @@
         display: inline-flex;
     }
 
-    // Image Ratio.
+    // Image.
+    &__image {
+        display: block;
+    }
+
     &[class*="atb-image-ratio-"] {
         .at-block-post-grid__image {
             .at-block-post-grid__image-image {
@@ -142,7 +188,7 @@
         align-items: center;
         gap: var(--atb-post-grid-pagination-items-gap, 5px);
 
-        .at-block-post-grid__pagination-number {
+        .page-numbers {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -150,14 +196,16 @@
             height: 30px;
             border-radius: 50%;
             color: var(--atb-post-grid-pagination-text-color, #212121);
+            text-decoration: none;
             cursor: pointer;
 
-            &--active {
+            &.current {
                 background-color: var(--atb-post-grid-pagination-active-background-color, #212121);
                 color: var(--atb-post-grid-pagination-active-text-color, #FFF);
             }
 
-            &--next {
+            &.next,
+            &.prev {
                 color: var(--atb-post-grid-pagination-text-color, #212121);
             }
         }

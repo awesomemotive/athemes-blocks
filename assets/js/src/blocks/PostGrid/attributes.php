@@ -63,6 +63,44 @@ return array_merge(
     ),
 
     // ------------------------------------
+    // --- Carousel -----------------------
+    // ------------------------------------
+    array(
+        'displayCarousel' => array(
+            'type' => 'boolean',
+            'default' => false,
+        ),
+        'carouselPauseOnHover' => array(
+            'type' => 'boolean',
+            'default' => true,
+        ),
+        'carouselAutoplay' => array(
+            'type' => 'boolean',
+            'default' => false,
+        ),
+        'carouselAutoplaySpeed' => array(
+            'type' => 'number',
+            'default' => 5000,
+        ),
+        'carouselLoop' => array(
+            'type' => 'boolean',
+            'default' => true,
+        ),
+        'carouselAutoHeight' => array(
+            'type' => 'boolean',
+            'default' => false,
+        ),
+        'carouselTransitionDuration' => array(
+            'type' => 'number',
+            'default' => 1000,
+        ),
+        'carouselNavigation' => array(
+            'type' => 'string',
+            'default' => 'both',
+        ),
+    ),
+
+    // ------------------------------------
     // --- Pagination ---------------------
     // ------------------------------------
     array(
@@ -338,7 +376,7 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
+                        'defaultState' => '#f5f5f5',
                         'hoverState' => ''
                     )
                 ),
@@ -362,15 +400,35 @@ return array_merge(
                 'property' => 'background-color',
             ),
         ),
+        'cardVerticalAlignment' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 'flex-start',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__items'
+                ),
+                'property' => 'align-items',
+            ),
+        ),
         'cardPadding' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'top' => 20,
-                        'right' => 20,
-                        'bottom' => 20,
-                        'left' => 20,
+                        'top' => 30,
+                        'right' => 30,
+                        'bottom' => 30,
+                        'left' => 30,
                     ),
                     'unit' => 'px',
                     'connect' => true,
@@ -403,6 +461,284 @@ return array_merge(
                 'property' => 'padding-{{DIRECTION}}',
             ),
         ),
+        'carouselPadding' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'unit' => 'px',
+                    'connect' => true,
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__swiper .swiper-slide'
+                ),
+                'property' => 'padding-{{DIRECTION}}',
+            ),
+        ),
+    ),
+
+    // ------------------------------------
+    // --- Carousel navigation ------------
+    // ------------------------------------
+    array(
+        'arrowSize' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 50,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav',
+                ),
+                'property' => '--at-block-nav-arrow-size',
+            ),
+        ),
+        'arrowBorderSize' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-arrow-border-width',
+            ),
+        ),
+        'arrowBorderRadius' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => '%',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => '%',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => '%',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-arrow-border-radius',
+            ),
+        ),
+        'arrowOffset' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-arrow-offset',
+            ),
+        ),
+        'navigationColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-color',
+            ),
+        ),
+        'navigationBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-background-color',
+            ),
+        ),
+        'navigationBorderColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-nav'
+                ),
+                'property' => '--at-block-nav-border-color',
+            ),
+        ),
+        'dotsOffset' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 25,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .swiper-pagination-bullets'
+                ),
+                'property' => '--at-block-dots-offset',
+            ),
+        ),
+        'dotsColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-bullets--bullet' => '{{VALUE}}',
+                ),
+                'property' => '--at-block-dots-color',
+            ),
+        ),
     ),
 
     // ------------------------------------
@@ -413,7 +749,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 0,
+                    'value' => 5,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -503,6 +839,20 @@ return array_merge(
                 )
             ),
             'fontSize' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 1.2,
+                        'unit' => 'rem',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-post-grid__title'
@@ -511,6 +861,17 @@ return array_merge(
                 )
             ),
             'fontWeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 600,
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-post-grid__title'
@@ -535,6 +896,17 @@ return array_merge(
                 )
             ),
             'textDecoration' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'none',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-post-grid__title'
@@ -545,7 +917,7 @@ return array_merge(
             'lineHeight' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1.3,
+                        'value' => 1.4,
                         'unit' => 'em',
                     ),
                     'tablet' => array(
@@ -609,7 +981,7 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
+                        'defaultState' => '#444',
                         'hoverState' => ''
                     )
                 ),
@@ -628,9 +1000,38 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__meta'
+                    '{{WRAPPER}} .at-block-post-grid__meta a'
                 ),
                 'property' => 'color',
+            ),
+        ),
+        'metaIconColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#444',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__meta-icon svg'
+                ),
+                'property' => 'fill',
             ),
         ),
     ),
@@ -752,7 +1153,7 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
+                        'defaultState' => '#444',
                         'hoverState' => ''
                     )
                 ),
@@ -789,6 +1190,20 @@ return array_merge(
                 )
             ),
             'fontSize' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 1,
+                        'unit' => 'rem',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-post-grid__excerpt'
@@ -865,7 +1280,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 10,
+                    'value' => 25,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -933,6 +1348,20 @@ return array_merge(
                 )
             ),
             'fontSize' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 1,
+                        'unit' => 'rem',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                ),
                 'css' => array(
                     'selectors' => array(
                         '{{WRAPPER}} .at-block-post-grid__read-more'
@@ -1207,8 +1636,8 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__pagination-number' => '{{VALUE}}',
-                    '{{WRAPPER}} .at-block-post-grid__pagination-number:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers:hover' => '{{HOVER}}',
                 ),
                 'property' => '--atb-post-grid-pagination-text-color',
             ),
@@ -1289,7 +1718,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers'
                     ),
                     'property' => 'border-style',
                 )
@@ -1297,7 +1726,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -1334,7 +1763,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__pagination-number'
+                        '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -1362,8 +1791,8 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__pagination-number' => '{{VALUE}}',
-                        '{{WRAPPER}} .at-block-post-grid__pagination-number:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-post-grid__pagination-numbers .page-numbers:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )

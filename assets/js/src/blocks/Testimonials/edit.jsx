@@ -5,7 +5,7 @@ import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
 import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
-// import Swiper from 'swiper';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css/bundle';

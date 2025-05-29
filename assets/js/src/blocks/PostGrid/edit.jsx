@@ -8,6 +8,10 @@ import { withSelect } from '@wordpress/data';
 
 import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css/bundle';
+
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
 import { Select } from '../../block-editor/controls/select/select';
@@ -40,6 +44,8 @@ const Edit = (props) => {
 	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
 	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
+	const swiperRef = useRef(null);
+
 	const {
 
 		// General.
@@ -52,6 +58,14 @@ const Edit = (props) => {
 		offsetStartingPointValue,
 		orderBy,
 		order,
+		displayCarousel,
+		carouselPauseOnHover,
+		carouselAutoplay,
+		carouselAutoplaySpeed,
+		carouselLoop,
+		carouselAutoHeight,
+		carouselTransitionDuration,
+		carouselNavigation,
 		pagination,
 		paginationPageLimit,
 		paginationType,
@@ -79,13 +93,25 @@ const Edit = (props) => {
 		rowsGap,
 		cardBackgroundColor,
 		cardBorder,
+		cardVerticalAlignment,
 		cardPadding,
+		carouselPadding,
+		arrowSize,
+		arrowBorderSize,
+		arrowBorderRadius,
+		arrowOffset,
+		navigationColor,
+		navigationBackgroundColor,
+		navigationBorderColor,
+		dotsColor,
+		dotsOffset,
 		imageBottomSpacing,
 		imageBorderRadius,
 		titleColor,
 		titleTypography,
 		titleBottomSpacing,
 		metaColor,
+		metaIconColor,
 		metaTypography,
 		metaBottomSpacing,
 		excerptColor,
@@ -125,6 +151,14 @@ const Edit = (props) => {
 			offsetStartingPointValue: atts.offsetStartingPointValue,
 			orderBy: atts.orderBy,
 			order: atts.order,
+			displayCarousel: atts.displayCarousel,
+			carouselPauseOnHover: atts.carouselPauseOnHover,
+			carouselAutoplay: atts.carouselAutoplay,
+			carouselAutoplaySpeed: atts.carouselAutoplaySpeed,
+			carouselLoop: atts.carouselLoop,
+			carouselAutoHeight: atts.carouselAutoHeight,
+			carouselTransitionDuration: atts.carouselTransitionDuration,
+			carouselNavigation: atts.carouselNavigation,
 			pagination: atts.pagination,
 			paginationPageLimit: atts.paginationPageLimit,
 			paginationType: atts.paginationType,
@@ -151,13 +185,25 @@ const Edit = (props) => {
 			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
 			rowsGap: getSettingValue('rowsGap', currentDevice, atts),
 			cardBackgroundColor: getSettingValue('cardBackgroundColor', 'desktop', atts),
+			cardVerticalAlignment: getSettingValue('cardVerticalAlignment', 'desktop', atts),
 			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
+			carouselPadding: getDimensionsSettingValue('carouselPadding', currentDevice, atts),
+			arrowSize: getSettingValue('arrowSize', 'desktop', atts),
+			arrowBorderSize: getSettingValue('arrowBorderSize', 'desktop', atts),
+			arrowBorderRadius: getSettingValue('arrowBorderRadius', 'desktop', atts),
+			arrowOffset: getSettingValue('arrowOffset', 'desktop', atts),
+			navigationColor: getSettingValue('navigationColor', 'desktop', atts),
+			navigationBackgroundColor: getSettingValue('navigationBackgroundColor', 'desktop', atts),
+			navigationBorderColor: getSettingValue('navigationBorderColor', 'desktop', atts),
+			dotsColor: getSettingValue('dotsColor', 'desktop', atts),
+			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),			
 			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
 			imageBorderRadius: getSettingValue('imageBorderRadius', 'desktop', atts),
 			titleColor: getSettingValue('titleColor', 'desktop', atts),
 			titleTypography: atts.titleTypography,
 			titleBottomSpacing: getSettingValue('titleBottomSpacing', currentDevice, atts),
 			metaColor: getSettingValue('metaColor', 'desktop', atts),
+			metaIconColor: getSettingValue('metaIconColor', 'desktop', atts),
 			metaTypography: atts.metaTypography,
 			metaBottomSpacing: getSettingValue('metaBottomSpacing', currentDevice, atts),
 			excerptColor: getSettingValue('excerptColor', 'desktop', atts),
@@ -286,6 +332,85 @@ const Edit = (props) => {
 		];
 	}, [taxonomy, postType]);
 
+	// Swiper Options.
+	const swiperOptions = {
+		slidesPerView: columns,
+		spaceBetween: columnsGap,
+		loop: carouselLoop,
+		autoplay: carouselAutoplay ? {
+			delay: carouselAutoplaySpeed,
+			disableOnInteraction: false,
+			pauseOnMouseEnter: carouselPauseOnHover
+		} : false,
+		speed: carouselTransitionDuration,
+		navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
+			enabled: true,
+			nextEl: 'at-block-nav--next',
+			prevEl: 'at-block-nav--prev',
+		} : false,
+		pagination: ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
+			type: 'bullets',
+			bulletClass: 'at-block-bullets--bullet',
+			bulletActiveClass: 'at-block-bullets--bullet-active',
+			clickable: true,
+		} : false,
+		draggable: false,
+		allowTouchMove: false,
+		autoHeight: carouselAutoHeight,
+	};
+
+	// Swiper Navigation.
+	const swiperNavigationPrevHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		swiperRef.current.swiper.slidePrev();
+	};
+	
+	const swiperNavigationNextHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		swiperRef.current.swiper.slideNext();
+	};
+
+	// Swiper Pause on Hover.
+	const swiperPauseMouseEnterHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		if ( carouselPauseOnHover && carouselAutoplay ) {
+			console.log('PAUSE!');
+			swiperRef.current.swiper.autoplay.stop();
+		}
+	};
+
+	const swiperPauseMouseLeaveHandler = () => {
+		if ( ! swiperRef.current ) return;
+
+		if ( carouselPauseOnHover && carouselAutoplay ) {
+			console.log('RESUME!');
+			swiperRef.current.swiper.autoplay.start();
+		}
+	};
+
+	// Refresh the swiper every time a attribute change.
+	useEffect(() => {
+		if ( displayCarousel === false ) {
+			return;
+		}
+
+		if ( swiperRef === null || swiperRef.current === null || swiperRef.current.swiper === null ) {
+			return;
+		}
+
+		swiperRef.current.swiper.update();
+
+		// Handle autoplay state changes
+		if (carouselAutoplay) {
+			swiperRef.current.swiper.autoplay.start();
+		} else {
+			swiperRef.current.swiper.autoplay.stop();
+		}
+	}, [atts]);
+
 	return (
 		<>
 			<InspectorControls>
@@ -327,6 +452,12 @@ const Edit = (props) => {
 													setAttributes({ taxonomy: attributesDefaults.taxonomy.default });
 												} }
 											/>
+										</>
+									)
+								}
+								{
+									( postType !== 'page' && taxonomy !== 'all' ) && (
+										<>
 											<Select
 												label={ __( 'Taxonomy Term', 'athemes-blocks' ) }
 												options={taxonomyTerms}
@@ -432,87 +563,215 @@ const Edit = (props) => {
 								/>
 							</PanelBody>
 							<PanelBody 
-								title={ __( 'Pagination', 'athemes-blocks' ) } 
+								title={ __( 'Carousel', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'pagination' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'pagination' ) }
+								opened={ isPanelOpened( 'carousel' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'carousel' ) }
 							>
 								<SwitchToggle
-									label={ __( 'Pagination', 'athemes-blocks' ) }
-									value={ pagination }
+									label={ __( 'Enable', 'athemes-blocks' ) }
+									value={ displayCarousel }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ pagination: value });
+										setAttributes({ displayCarousel: value });
 									} }
 									onClickReset={ () => {
-										setAttributes({ pagination: attributesDefaults.pagination.default });
+										setAttributes({ displayCarousel: attributesDefaults.displayCarousel.default });
 									} }
 								/>
 								{
-									pagination && (
+									displayCarousel && (
 										<>
+											<SwitchToggle
+												label={ __( 'Pause on hover', 'athemes-blocks' ) }
+												value={ carouselPauseOnHover }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ carouselPauseOnHover: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ carouselPauseOnHover: getSettingDefaultValue( 'carouselPauseOnHover', '', attributesDefaults ) });
+												} }
+											/>
+											<SwitchToggle
+												label={ __( 'Autoplay', 'athemes-blocks' ) }
+												value={ carouselAutoplay }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ carouselAutoplay: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ carouselAutoplay: getSettingDefaultValue( 'carouselAutoplay', '', attributesDefaults ) });
+												} }
+											/>
+											{
+												carouselAutoplay && (
+													<RangeSlider 
+														label={ __( 'Autoplay speed (ms)', 'athemes-blocks' ) }
+														defaultValue={ carouselAutoplaySpeed }
+														min={ 1000 }
+														max={ 10000 }
+														responsive={false}
+														reset={true}
+														units={false}
+														onChange={ ( value ) => {
+															setAttributes({ carouselAutoplaySpeed: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ carouselAutoplaySpeed: getSettingDefaultValue( 'carouselAutoplaySpeed', '', attributesDefaults ) });
+														} }
+													/>
+												)
+											}
+											<SwitchToggle
+												label={ __( 'Loop', 'athemes-blocks' ) }
+												value={ carouselLoop }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ carouselLoop: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ carouselLoop: getSettingDefaultValue( 'carouselLoop', '', attributesDefaults ) });
+												} }
+											/>
+											<SwitchToggle
+												label={ __( 'Auto Height', 'athemes-blocks' ) }
+												value={ carouselAutoHeight }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ carouselAutoHeight: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ carouselAutoHeight: getSettingDefaultValue( 'carouselAutoHeight', '', attributesDefaults ) });
+												} }
+											/>
 											<RangeSlider 
-												label={ __( 'Page Limit', 'athemes-blocks' ) }
-												defaultValue={ paginationPageLimit }
-												min={ 1 }
-												max={ 100 }
+												label={ __( 'Transition duration (ms)', 'athemes-blocks' ) }
+												defaultValue={ carouselTransitionDuration }
+												min={ 100 }
+												max={ 1000 }
 												responsive={false}
 												reset={true}
 												units={false}
 												onChange={ ( value ) => {
-													setAttributes({ paginationPageLimit: value });
+													setAttributes({ carouselTransitionDuration: value });
 												} }
 												onClickReset={ () => {
-													setAttributes({ paginationPageLimit: attributesDefaults.paginationPageLimit.default });
-												} }
-											/>
-											<Select
-												label={ __( 'Pagination Type', 'athemes-blocks' ) }
-												options={[
-													{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
-													{ label: __( 'Load More', 'athemes-blocks' ), value: 'load-more' },
-													{ label: __( 'Infinite Scroll', 'athemes-blocks' ), value: 'infinite-scroll' },
-												]}
-												value={ paginationType }
-												responsive={false}
-												reset={true}
-												onChange={ ( value ) => {
-													setAttributes({ paginationType: value });
-												} }
-												onClickReset={ () => {
-													setAttributes({ paginationType: attributesDefaults.paginationType.default });
+													setAttributes({ carouselTransitionDuration: getSettingDefaultValue( 'carouselTransitionDuration', '', attributesDefaults ) });
 												} }
 											/>
 											<RadioButtons 
-												label={ __( 'Alignment', 'athemes-blocks' ) }
-												defaultValue={ paginationAlignment }
+												label={ __( 'Navigation', 'athemes-blocks' ) }
+												defaultValue={ carouselNavigation }
 												options={[
-													{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
-													{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-													{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+													{ label: __( 'Arrows', 'athemes-blocks' ), value: 'arrows' },
+													{ label: __( 'Dots', 'athemes-blocks' ), value: 'dots' },
+													{ label: __( 'Both', 'athemes-blocks' ), value: 'both' },
 												]}
-												responsive={true}
+												responsive={false}
 												reset={true}
 												onChange={ ( value ) => {
-													updateAttribute( 'paginationAlignment', {
-														value: value
-													}, currentDevice );
-
-													setUpdateCss( { settingId: 'paginationAlignment', value: value } );
+													setAttributes({ carouselNavigation: value });
 												} }
 												onClickReset={ () => {
-													updateAttribute( 'paginationAlignment', {
-														value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults )
-													}, currentDevice );
-													
-													setUpdateCss( { settingId: 'paginationAlignment', value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults ) } );
+													setAttributes({ carouselNavigation: getSettingDefaultValue( 'carouselNavigation', '', attributesDefaults ) });
 												} }
-											/>
+											/>		
 										</>
 									)
 								}
 							</PanelBody>
+							{
+								displayCarousel === false && (
+									<PanelBody 
+										title={ __( 'Pagination', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'pagination' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'pagination' ) }
+									>
+										<SwitchToggle
+											label={ __( 'Pagination', 'athemes-blocks' ) }
+											value={ pagination }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ pagination: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ pagination: attributesDefaults.pagination.default });
+											} }
+										/>
+										{
+											pagination && (
+												<>
+													<RangeSlider 
+														label={ __( 'Page Limit', 'athemes-blocks' ) }
+														defaultValue={ paginationPageLimit }
+														min={ 1 }
+														max={ 100 }
+														responsive={false}
+														reset={true}
+														units={false}
+														onChange={ ( value ) => {
+															setAttributes({ paginationPageLimit: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ paginationPageLimit: attributesDefaults.paginationPageLimit.default });
+														} }
+													/>
+													<Select
+														label={ __( 'Pagination Type', 'athemes-blocks' ) }
+														options={[
+															{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
+															{ label: __( 'Load More', 'athemes-blocks' ), value: 'load-more' },
+															{ label: __( 'Infinite Scroll', 'athemes-blocks' ), value: 'infinite-scroll' },
+														]}
+														value={ paginationType }
+														responsive={false}
+														reset={true}
+														onChange={ ( value ) => {
+															setAttributes({ paginationType: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ paginationType: attributesDefaults.paginationType.default });
+														} }
+													/>
+													<RadioButtons 
+														label={ __( 'Alignment', 'athemes-blocks' ) }
+														defaultValue={ paginationAlignment }
+														options={[
+															{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
+															{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+															{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+														]}
+														responsive={true}
+														reset={true}
+														onChange={ ( value ) => {
+															updateAttribute( 'paginationAlignment', {
+																value: value
+															}, currentDevice );
+
+															setUpdateCss( { settingId: 'paginationAlignment', value: value } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationAlignment', {
+																value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults )
+															}, currentDevice );
+															
+															setUpdateCss( { settingId: 'paginationAlignment', value: getSettingDefaultValue( 'paginationAlignment', currentDevice, attributesDefaults ) } );
+														} }
+													/>
+												</>
+											)
+										}
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Image', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -927,8 +1186,38 @@ const Edit = (props) => {
 									setUpdateCss={ setUpdateCss }
 									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
 								/>
+								{
+									displayCarousel === false && (
+										<RadioButtons 
+											label={ __( 'Vertical Alignment', 'athemes-blocks' ) }
+											defaultValue={ cardVerticalAlignment }
+											options={[
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
+											]}
+											responsive={true}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'cardVerticalAlignment', {
+													value: value
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'cardVerticalAlignment', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'cardVerticalAlignment', {
+													value: getSettingDefaultValue( 'cardVerticalAlignment', currentDevice, attributesDefaults )
+												}, currentDevice );
+												
+												setUpdateCss( { settingId: 'cardVerticalAlignment', value: getSettingDefaultValue( 'cardVerticalAlignment', currentDevice, attributesDefaults ) } );
+											} }
+										/>		
+									)
+								}
 								<Dimensions
-									label={ __( 'Padding', 'athemes-blocks' ) }
+									label={ __( 'Card Padding', 'athemes-blocks' ) }
 									directions={[
 										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
 										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
@@ -966,7 +1255,385 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'cardPadding', value: getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ) } );
 									} }
 								/>
+								{
+									displayCarousel && columns === 1 && (
+										<>
+											<Dimensions
+												label={ __( 'Carousel Padding', 'athemes-blocks' ) }
+												directions={[
+													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+													{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+													{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+													{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+												]}
+												value={ carouselPadding }
+												defaultUnit={ getSettingUnit('carouselPadding', currentDevice, atts) }
+												directionsValue={ getDimensionsSettingDirectionsValue('carouselPadding', currentDevice, atts) }
+												connect={ getDimensionsSettingConnectValue('carouselPadding', currentDevice, atts) }
+												responsive={ true }
+												units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+												reset={true}
+												onChange={ ( value ) => {
+													updateAttribute( 'carouselPadding', {
+														value: value.value,
+														unit: getSettingUnit( 'carouselPadding', currentDevice, atts ),
+														connect: getDimensionsSettingConnectValue( 'carouselPadding', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'carouselPadding', value: value.value } );
+												} }
+												onChangeUnit={ ( value ) => {
+													updateAttribute( 'carouselPadding', {
+														value: getSettingValue( 'carouselPadding', currentDevice, atts ),
+														unit: value,
+														connect: getDimensionsSettingConnectValue( 'carouselPadding', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'carouselPadding', value: getSettingValue( 'carouselPadding', currentDevice, atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'carouselPadding', getDimensionsSettingDefaultValue( 'carouselPadding', currentDevice, attributesDefaults ), currentDevice );
+
+													setUpdateCss( { settingId: 'carouselPadding', value: getDimensionsSettingDefaultValue( 'carouselPadding', currentDevice, attributesDefaults ) } );
+												} }
+											/>
+										</>
+									)
+								}
 							</PanelBody>
+							{
+								displayCarousel && (
+									<PanelBody 
+										title={ __( 'Navigation', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'navigation' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'navigation' ) }
+									>
+										<RangeSlider 
+											label={ __( 'Arrow Size', 'athemes-blocks' ) }
+											defaultValue={ arrowSize }
+											defaultUnit={ getSettingUnit( 'arrowSize', 'desktop', atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={false}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowSize', {
+													value: value,
+													unit: getSettingUnit( 'arrowSize', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowSize', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowSize', {
+													value: arrowSize,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowSize', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowSize', {
+													value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowSize', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'arrowSize', value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Border Size', 'athemes-blocks' ) }
+											defaultValue={ arrowBorderSize }
+											defaultUnit={ getSettingUnit( 'arrowBorderSize', 'desktop', atts ) }
+											min={ 0 }
+											max={ 10 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowBorderSize', {
+													value: value,
+													unit: getSettingUnit( 'arrowBorderSize', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowBorderSize', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowBorderSize', {
+													value: arrowBorderSize,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowBorderSize', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowBorderSize', {
+													value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowBorderSize', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'arrowBorderSize', value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Border Radius', 'athemes-blocks' ) }
+											defaultValue={ arrowBorderRadius }
+											defaultUnit={ getSettingUnit( 'arrowBorderRadius', 'desktop', atts ) }
+											min={ 1 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: value,
+													unit: getSettingUnit( 'arrowBorderRadius', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: arrowBorderRadius,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowBorderRadius', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Offset', 'athemes-blocks' ) }
+											defaultValue={ arrowOffset }
+											defaultUnit={ getSettingUnit( 'arrowOffset', 'desktop', atts ) }
+											min={ 0 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowOffset', {
+													value: value,
+													unit: getSettingUnit( 'arrowOffset', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowOffset', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowOffset', {
+													value: arrowOffset,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'arrowOffset', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowOffset', {
+													value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowOffset', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'arrowOffset', value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Color', 'athemes-blocks' ) }
+											value={ navigationColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Background Color', 'athemes-blocks' ) }
+											value={ navigationBackgroundColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Border Color', 'athemes-blocks' ) }
+											value={ navigationBorderColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Dots Offset', 'athemes-blocks' ) }
+											defaultValue={ dotsOffset }
+											defaultUnit={ getSettingUnit( 'dotsOffset', 'desktop', atts ) }
+											min={ 0 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'dotsOffset', {
+													value: value,
+													unit: getSettingUnit( 'dotsOffset', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'dotsOffset', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'dotsOffset', {
+													value: dotsOffset,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'dotsOffset', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'dotsOffset', {
+													value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'dotsOffset', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'dotsOffset', value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Dots Color', 'athemes-blocks' ) }
+											value={ dotsColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Image', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1173,6 +1840,47 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'metaColor', value: getColorPickerSettingDefaultValue( 'metaColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
 								/>
+								{
+									displayMetaIcon && (
+										<ColorPicker
+											label={ __( 'Icon Color', 'athemes-blocks' ) }
+											value={ metaIconColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'metaIconColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'metaIconColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'metaIconColor', value: getColorPickerSettingValue( 'metaIconColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'metaIconColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'metaIconColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'metaIconColor', value: getColorPickerSettingValue( 'metaIconColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'metaIconColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'metaIconColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'metaIconColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'metaIconColor', value: getColorPickerSettingDefaultValue( 'metaIconColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
 								<Typography
 									label={ __( 'Typography', 'athemes-blocks' ) }
 									settingId="metaTypography"
@@ -1488,343 +2196,347 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
-							<PanelBody 
-								title={ __( 'Pagination', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'pagination' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'pagination' ) }
-							>
-								{
-									paginationType === 'default' && (
-										<>
-											<ColorPicker
-												label={ __( 'Text Color', 'athemes-blocks' ) }
-												value={ paginationTextColor }
-												hover={true}
-												responsive={false}
-												reset={true}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationTextColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
+							{
+								pagination && displayCarousel === false && (
+									<PanelBody 
+										title={ __( 'Pagination', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'pagination' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'pagination' ) }
+									>
+										{
+											paginationType === 'default' && (
+												<>
+													<ColorPicker
+														label={ __( 'Text Color', 'athemes-blocks' ) }
+														value={ paginationTextColor }
+														hover={true}
+														responsive={false}
+														reset={true}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationTextColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
 
-													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationTextColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ),
-															hoverState: value
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationTextColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<ColorPicker
-												label={ __( 'Active Background Color', 'athemes-blocks' ) }
-												value={ paginationActiveBackgroundColor }
-												hover={false}
-												responsive={false}
-												reset={true}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationActiveBackgroundColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingValue( 'paginationTextColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationTextColor', value: getColorPickerSettingDefaultValue( 'paginationTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<ColorPicker
+														label={ __( 'Active Background Color', 'athemes-blocks' ) }
+														value={ paginationActiveBackgroundColor }
+														hover={false}
+														responsive={false}
+														reset={true}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationActiveBackgroundColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
 
-													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationActiveBackgroundColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ),
-															hoverState: value	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationActiveBackgroundColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<ColorPicker
-												label={ __( 'Active Text Color', 'athemes-blocks' ) }
-												value={ paginationActiveTextColor }
-												hover={false}
-												responsive={false}
-												reset={true}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationActiveTextColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationActiveBackgroundColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationActiveBackgroundColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationActiveBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationActiveBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<ColorPicker
+														label={ __( 'Active Text Color', 'athemes-blocks' ) }
+														value={ paginationActiveTextColor }
+														hover={false}
+														responsive={false}
+														reset={true}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationActiveTextColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
 
-													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationActiveTextColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ),
-															hoverState: value	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationActiveTextColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<Border
-												label=""
-												settingId="paginationBorder"
-												attributes={ atts }
-												setAttributes={ setAttributes }
-												attributesDefaults={ attributesDefaults }
-												setUpdateCss={ setUpdateCss }
-												subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
-											/>
-											<RangeSlider 
-												label={ __( 'Items Gap', 'athemes-blocks' ) }
-												defaultValue={ paginationItemsGap }
-												defaultUnit={ getSettingUnit( 'paginationItemsGap', currentDevice, atts ) }
-												min={ 1 }
-												max={ {
-													px: 150,
-													em: 20,
-													rem: 20
-												} }
-												responsive={false}
-												reset={true}
-												units={['px', 'em', 'rem']}
-												onChange={ ( value ) => {
-													updateAttribute( 'paginationItemsGap', {
-														value: value,
-														unit: getSettingUnit( 'paginationItemsGap', currentDevice, atts )
-													}, currentDevice );
+															setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationActiveTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingValue( 'paginationActiveTextColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationActiveTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationActiveTextColor', value: getColorPickerSettingDefaultValue( 'paginationActiveTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<Border
+														label=""
+														settingId="paginationBorder"
+														attributes={ atts }
+														setAttributes={ setAttributes }
+														attributesDefaults={ attributesDefaults }
+														setUpdateCss={ setUpdateCss }
+														subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+													/>
+													<RangeSlider 
+														label={ __( 'Items Gap', 'athemes-blocks' ) }
+														defaultValue={ paginationItemsGap }
+														defaultUnit={ getSettingUnit( 'paginationItemsGap', currentDevice, atts ) }
+														min={ 1 }
+														max={ {
+															px: 150,
+															em: 20,
+															rem: 20
+														} }
+														responsive={false}
+														reset={true}
+														units={['px', 'em', 'rem']}
+														onChange={ ( value ) => {
+															updateAttribute( 'paginationItemsGap', {
+																value: value,
+																unit: getSettingUnit( 'paginationItemsGap', currentDevice, atts )
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'paginationItemsGap', value: value } );
-												} }
-												onChangeUnit={ ( value ) => {
-													updateAttribute( 'paginationItemsGap', {
-														value: paginationItemsGap,
-														unit: value,
-													}, currentDevice );
+															setUpdateCss( { settingId: 'paginationItemsGap', value: value } );
+														} }
+														onChangeUnit={ ( value ) => {
+															updateAttribute( 'paginationItemsGap', {
+																value: paginationItemsGap,
+																unit: value,
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'paginationItemsGap', value: value } );								
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationItemsGap', {
-														value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ),
-														unit: getSettingDefaultUnit( 'paginationItemsGap', currentDevice, attributesDefaults )
-													}, currentDevice );							
+															setUpdateCss( { settingId: 'paginationItemsGap', value: value } );								
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationItemsGap', {
+																value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ),
+																unit: getSettingDefaultUnit( 'paginationItemsGap', currentDevice, attributesDefaults )
+															}, currentDevice );							
 
-													setUpdateCss( { settingId: 'paginationItemsGap', value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ) } );								
-												} }
-											/>
-										</>
-									)
-								}
-								{
-									paginationType === 'load-more' && (
-										<>
-											<ColorPicker
-												label={ __( 'Button Background Color', 'athemes-blocks' ) }
-												value={ paginationButtonBackgroundColor }
-												hover={true}
-												responsive={false}
-												reset={true}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationButtonBackgroundColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'paginationItemsGap', value: getSettingDefaultValue( 'paginationItemsGap', currentDevice, attributesDefaults ) } );								
+														} }
+													/>
+												</>
+											)
+										}
+										{
+											paginationType === 'load-more' && (
+												<>
+													<ColorPicker
+														label={ __( 'Button Background Color', 'athemes-blocks' ) }
+														value={ paginationButtonBackgroundColor }
+														hover={true}
+														responsive={false}
+														reset={true}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationButtonBackgroundColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
 
-													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationButtonBackgroundColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ),
-															hoverState: value	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationButtonBackgroundColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<ColorPicker
-												label={ __( 'Button Text Color', 'athemes-blocks' ) }
-												value={ paginationButtonTextColor }
-												hover={true}
-												responsive={false}
-												reset={true}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationButtonTextColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationButtonBackgroundColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationButtonBackgroundColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationButtonBackgroundColor', value: getColorPickerSettingDefaultValue( 'paginationButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<ColorPicker
+														label={ __( 'Button Text Color', 'athemes-blocks' ) }
+														value={ paginationButtonTextColor }
+														hover={true}
+														responsive={false}
+														reset={true}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationButtonTextColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
 
-													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'paginationButtonTextColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ),
-															hoverState: value	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationButtonTextColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<Border
-												label=""
-												settingId="paginationButtonBorder"
-												attributes={ atts }
-												setAttributes={ setAttributes }
-												attributesDefaults={ attributesDefaults }
-												setUpdateCss={ setUpdateCss }
-												subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
-											/>
-											<Dimensions
-												label={ __( 'Button Padding', 'athemes-blocks' ) }
-												directions={[
-													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
-													{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
-													{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
-													{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
-												]}
-												value={ getDimensionsSettingValue( 'paginationButtonPadding', currentDevice, atts ) }
-												defaultUnit={ getSettingUnit('paginationButtonPadding', currentDevice, atts) }
-												directionsValue={ getDimensionsSettingDirectionsValue('paginationButtonPadding', currentDevice, atts) }
-												connect={ getDimensionsSettingConnectValue('paginationButtonPadding', currentDevice, atts) }
-												responsive={ true }
-												units={['px', '%', 'em', 'rem', 'vh', 'vw']}
-												reset={true}
-												onChange={ ( value ) => {
-													updateAttribute( 'paginationButtonPadding', {
-														value: value.value,
-														unit: getSettingUnit( 'paginationButtonPadding', currentDevice, atts ),
-														connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
-													}, currentDevice );
+															setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'paginationButtonTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingValue( 'paginationButtonTextColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationButtonTextColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'paginationButtonTextColor', value: getColorPickerSettingDefaultValue( 'paginationButtonTextColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<Border
+														label=""
+														settingId="paginationButtonBorder"
+														attributes={ atts }
+														setAttributes={ setAttributes }
+														attributesDefaults={ attributesDefaults }
+														setUpdateCss={ setUpdateCss }
+														subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+													/>
+													<Dimensions
+														label={ __( 'Button Padding', 'athemes-blocks' ) }
+														directions={[
+															{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+															{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+															{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+															{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+														]}
+														value={ getDimensionsSettingValue( 'paginationButtonPadding', currentDevice, atts ) }
+														defaultUnit={ getSettingUnit('paginationButtonPadding', currentDevice, atts) }
+														directionsValue={ getDimensionsSettingDirectionsValue('paginationButtonPadding', currentDevice, atts) }
+														connect={ getDimensionsSettingConnectValue('paginationButtonPadding', currentDevice, atts) }
+														responsive={ true }
+														units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+														reset={true}
+														onChange={ ( value ) => {
+															updateAttribute( 'paginationButtonPadding', {
+																value: value.value,
+																unit: getSettingUnit( 'paginationButtonPadding', currentDevice, atts ),
+																connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'paginationButtonPadding', value: value.value } );
-												} }
-												onChangeUnit={ ( value ) => {
-													updateAttribute( 'paginationButtonPadding', {
-														value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ),
-														unit: value,
-														connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
-													}, currentDevice );
+															setUpdateCss( { settingId: 'paginationButtonPadding', value: value.value } );
+														} }
+														onChangeUnit={ ( value ) => {
+															updateAttribute( 'paginationButtonPadding', {
+																value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ),
+																unit: value,
+																connect: getDimensionsSettingConnectValue( 'paginationButtonPadding', currentDevice, atts )
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'paginationButtonPadding', value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'paginationButtonPadding', getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ), currentDevice );
+															setUpdateCss( { settingId: 'paginationButtonPadding', value: getSettingValue( 'paginationButtonPadding', currentDevice, atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'paginationButtonPadding', getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ), currentDevice );
 
-													setUpdateCss( { settingId: 'paginationButtonPadding', value: getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ) } );
-												} }
-											/>
-										</>
-									)
-								}
-								<RangeSlider 
-									label={ __( 'Top Spacing', 'athemes-blocks' ) }
-									defaultValue={ paginationTopSpacing }
-									defaultUnit={ getSettingUnit( 'paginationTopSpacing', currentDevice, atts ) }
-									min={ 1 }
-									max={ {
-										px: 150,
-										em: 20,
-										rem: 20
-									} }
-									responsive={false}
-									reset={true}
-									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => {
-										updateAttribute( 'paginationTopSpacing', {
-											value: value,
-											unit: getSettingUnit( 'paginationTopSpacing', currentDevice, atts )
-										}, currentDevice );
+															setUpdateCss( { settingId: 'paginationButtonPadding', value: getDimensionsSettingDefaultValue( 'paginationButtonPadding', currentDevice, attributesDefaults ) } );
+														} }
+													/>
+												</>
+											)
+										}
+										<RangeSlider 
+											label={ __( 'Top Spacing', 'athemes-blocks' ) }
+											defaultValue={ paginationTopSpacing }
+											defaultUnit={ getSettingUnit( 'paginationTopSpacing', currentDevice, atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={false}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'paginationTopSpacing', {
+													value: value,
+													unit: getSettingUnit( 'paginationTopSpacing', currentDevice, atts )
+												}, currentDevice );
 
-										setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'paginationTopSpacing', {
-											value: paginationTopSpacing,
-											unit: value,
-										}, currentDevice );
+												setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'paginationTopSpacing', {
+													value: paginationTopSpacing,
+													unit: value,
+												}, currentDevice );
 
-										setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'paginationTopSpacing', {
-											value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'paginationTopSpacing', currentDevice, attributesDefaults )
-										}, currentDevice );							
+												setUpdateCss( { settingId: 'paginationTopSpacing', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'paginationTopSpacing', {
+													value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ),
+													unit: getSettingDefaultUnit( 'paginationTopSpacing', currentDevice, attributesDefaults )
+												}, currentDevice );							
 
-										setUpdateCss( { settingId: 'paginationTopSpacing', value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ) } );								
-									} }
-								/>
-							</PanelBody>
+												setUpdateCss( { settingId: 'paginationTopSpacing', value: getSettingDefaultValue( 'paginationTopSpacing', currentDevice, attributesDefaults ) } );								
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 						</Panel>
 					)
 				}
@@ -1862,6 +2574,116 @@ const Edit = (props) => {
 				// Animation.
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
 
+				// Post Content.
+				const PostContent = (props) => {
+					const { post } = props;
+
+					const postFeaturedMedia = post._embedded?.['wp:featuredmedia']?.[0];
+					const image = {
+						src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
+						width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
+						height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
+						alt: post.title.rendered
+					}
+
+					const hasTaxonomyTerms = post._embedded?.[`wp:term`]?.find(terms => terms[0]?.taxonomy === taxonomy);
+					const taxonomyTerms = hasTaxonomyTerms ? hasTaxonomyTerms.map(term => term.name) : [];
+
+					return (
+						<div key={post.id} className="at-block-post-grid__item">
+							{ displayImage && postFeaturedMedia && image.src && (
+								<div className="at-block-post-grid__image">
+									<img 
+										src={image.src || postFeaturedMedia?.source_url}
+										className="at-block-post-grid__image-image"
+										width={image.width}
+										height={image.height}
+										alt={image.alt}
+									/>
+								</div>
+							)}
+							
+							<div className="at-block-post-grid__content">
+								{displayTitle && (
+									<TitleTag className="at-block-post-grid__title">{ post.title.rendered }</TitleTag>
+								)}
+
+								{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
+									<div className="at-block-post-grid__meta">
+										{ ( postType !== 'product' && displayAuthor ) && (
+											<a href="#" className="at-block-post-grid__author">
+												{displayMetaIcon && (
+													<div
+														className="at-block-post-grid__meta-icon" 
+														dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-user-circle-regular'] }} 
+													/>
+												)}
+												{post._embedded?.author?.[0]?.name || ''}
+											</a>
+										)}
+										
+										{displayDate && (
+											<a href="#" className="at-block-post-grid__date">
+												{displayMetaIcon && (
+													<div
+														className="at-block-post-grid__meta-icon" 
+														dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-calendar-regular'] }} 
+													/>
+												)}
+												{new Date(post.date).toLocaleDateString()}
+											</a>
+										)}
+										
+										{( postType !== 'page' && displayComments ) && (
+											<a href="#" className="at-block-post-grid__comments">
+												{displayMetaIcon && (
+													<div
+														className="at-block-post-grid__meta-icon" 
+														dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-chat-regular'] }} 
+													/>
+												)}
+												{post._embedded?.replies?.[0]?.length || '0'}
+											</a>
+										)}
+										
+										{postType !== 'page' && displayTaxonomy && taxonomy !== 'all' && taxonomyTerms.length > 0 && (
+											<span className="at-block-post-grid__taxonomy">
+												{displayMetaIcon && (
+													<div
+														className="at-block-post-grid__meta-icon" 
+														dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-purchase-tag-alt-regular'] }} 
+													/>
+												)}
+												{taxonomyTerms.map((term, index) => (
+													<a href="#" className="at-block-post-grid__taxonomy-link" key={index}>{term}{index < taxonomyTerms.length - 1 && ', '}</a>
+												))}
+											</span>
+										)}
+									</div>
+								)}
+
+								{displayExcerpt && (
+									<div 
+										className="at-block-post-grid__excerpt"
+										dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.split(' ').slice(0, excerptMaxWords).join(' ') + (post.excerpt.rendered.split(' ').length > excerptMaxWords ? '...' : '') }}
+									/>
+								)}
+
+								{displayReadMore && (
+									<a 
+										href={post.link} 
+										className="at-block-post-grid__read-more"
+										target={readMoreOpenInNewTab ? '_blank' : undefined}
+										rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
+									>
+										{readMoreText}
+									</a>
+								)}
+							</div>
+						</div>
+					)
+				}
+
 				return (
 					<div { ...blockProps }>
 						{isLoading ? (
@@ -1870,114 +2692,56 @@ const Edit = (props) => {
 							</div>
 						) : posts && posts.length > 0 ? (
 							<>
-								<div className="at-block-post-grid__items">
-									{posts.map((post) => {
-										const postFeaturedMedia = post._embedded?.['wp:featuredmedia']?.[0];
-										const image = {
-											src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
-											width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
-											height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
-											alt: post.title.rendered
-										}
+								{displayCarousel ? (
+									<div 
+										onMouseEnter={ swiperPauseMouseEnterHandler }
+										onMouseLeave={ swiperPauseMouseLeaveHandler }
+									>
+										<Swiper
+											ref={swiperRef}
+											modules={[Pagination, Navigation, Autoplay]}
+											className="at-block-post-grid__swiper"
+											{...swiperOptions}
+										>
+											{posts.map((post) => {
+												const postFeaturedMedia = post._embedded?.['wp:featuredmedia']?.[0];
+												const image = {
+													src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
+													width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
+													height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
+													alt: post.title.rendered
+												}
 
-										const hasTaxonomyTerms = post._embedded?.[`wp:term`]?.find(terms => terms[0]?.taxonomy === taxonomy);
-										const taxonomyTerms = hasTaxonomyTerms ? hasTaxonomyTerms.map(term => term.name) : [];
+												return (
+													<SwiperSlide key={post.id}>
+														<PostContent post={post} />
+													</SwiperSlide>
+												)
+											})}
 
-										return (
-											<div key={post.id} className="at-block-post-grid__item">
-												{ displayImage && postFeaturedMedia && image.src && (
-													<div className="at-block-post-grid__image">
-														<img 
-															src={image.src || postFeaturedMedia?.source_url}
-															className="at-block-post-grid__image-image"
-															width={image.width}
-															height={image.height}
-															alt={image.alt}
-														/>
-													</div>
-												)}
-												
-												<div className="at-block-post-grid__content">
-													{displayTitle && (
-														<TitleTag className="at-block-post-grid__title">{ post.title.rendered }</TitleTag>
-													)}
+											{
+												( ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+													<>
+														<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
+														<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
+													</>
+												)
+											}
+										</Swiper>
+									</div>
+								) : (
+									<>
+										<div className="at-block-post-grid__items">
+											{posts.map((post) => {
+												return (
+													<PostContent post={post} key={post.id} />
+												)
+											})}
+										</div>
+									</>
+								)}	
 
-													{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
-														<div className="at-block-post-grid__meta">
-															{ ( postType !== 'product' && displayAuthor ) && (
-																<span className="at-block-post-grid__author">
-																	{displayMetaIcon && (
-																		<div
-																			className="at-block-post-grid__meta-icon" 
-																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-user-circle-regular'] }} 
-																		/>
-																	)}
-																	{post._embedded?.author?.[0]?.name || ''}
-																</span>
-															)}
-															
-															{displayDate && (
-																<span className="at-block-post-grid__date">
-																	{displayMetaIcon && (
-																		<div
-																			className="at-block-post-grid__meta-icon" 
-																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-calendar-regular'] }} 
-																		/>
-																	)}
-																	{new Date(post.date).toLocaleDateString()}
-																</span>
-															)}
-															
-															{( postType !== 'page' && displayComments ) && (
-																<span className="at-block-post-grid__comments">
-																	{displayMetaIcon && (
-																		<div
-																			className="at-block-post-grid__meta-icon" 
-																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-chat-regular'] }} 
-																		/>
-																	)}
-																	{post._embedded?.replies?.[0]?.length || '0'}
-																</span>
-															)}
-															
-															{postType !== 'page' && displayTaxonomy && taxonomy !== 'all' && taxonomyTerms.length > 0 && (
-																<span className="at-block-post-grid__taxonomy">
-																	{displayMetaIcon && (
-																		<div
-																			className="at-block-post-grid__meta-icon" 
-																			dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-purchase-tag-alt-regular'] }} 
-																		/>
-																	)}
-																	{taxonomyTerms.join(', ') || ''}
-																</span>
-															)}
-														</div>
-													)}
-
-													{displayExcerpt && (
-														<div 
-															className="at-block-post-grid__excerpt"
-															dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.split(' ').slice(0, excerptMaxWords).join(' ') + (post.excerpt.rendered.split(' ').length > excerptMaxWords ? '...' : '') }}
-														/>
-													)}
-
-													{displayReadMore && (
-														<a 
-															href={post.link} 
-															className="at-block-post-grid__read-more"
-															target={readMoreOpenInNewTab ? '_blank' : undefined}
-															rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
-														>
-															{readMoreText}
-														</a>
-													)}
-												</div>
-											</div>
-										)
-									})}
-								</div>
-
-								{pagination && posts.length >= postsPerPage && (
+								{pagination && displayCarousel === false && posts.length >= postsPerPage && (
 									<div className="at-block-post-grid__pagination">
 										{
 											paginationType === 'default' && (
