@@ -28,33 +28,44 @@ $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 
 // Query options.
-$postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, false );
-$taxonomy = Settings::get_setting( 'taxonomy', $attributes, $atts_defaults, false );
-$taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaults, false );
-$postsPerPage = Settings::get_setting( 'postsPerPage', $attributes, $atts_defaults, false );
-$excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, $atts_defaults, false );
-$offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, false );
-$orderBy = Settings::get_setting( 'orderBy', $attributes, $atts_defaults, false );
-$order = Settings::get_setting( 'order', $attributes, $atts_defaults, false );
+$postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, '' );
+$taxonomy = Settings::get_setting( 'taxonomy', $attributes, $atts_defaults, '' );
+$taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaults, '' );
+$postsPerPage = Settings::get_setting( 'postsPerPage', $attributes, $atts_defaults, '' );
+$excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, $atts_defaults, '' );
+$offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, '' );
+$orderBy = Settings::get_setting( 'orderBy', $attributes, $atts_defaults, '' );
+$order = Settings::get_setting( 'order', $attributes, $atts_defaults, '' );
 $columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
 $columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'tablet' );
 $columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
-$columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, false );
+$columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, '' );
 
 // Carousel.
-$displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, false );
-$carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, false );
-$carouselAutoplay = Settings::get_setting( 'carouselAutoplay', $attributes, $atts_defaults, false );
-$carouselAutoplaySpeed = Settings::get_setting( 'carouselAutoplaySpeed', $attributes, $atts_defaults, false );
-$carouselLoop = Settings::get_setting( 'carouselLoop', $attributes, $atts_defaults, false );
-$carouselAutoHeight = Settings::get_setting( 'carouselAutoHeight', $attributes, $atts_defaults, false );
-$carouselTransitionDuration = Settings::get_setting( 'carouselTransitionDuration', $attributes, $atts_defaults, false );
-$carouselNavigation = Settings::get_setting( 'carouselNavigation', $attributes, $atts_defaults, false );
+$displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, '' );
+$carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, '' );
+$carouselAutoplay = Settings::get_setting( 'carouselAutoplay', $attributes, $atts_defaults, '' );
+$carouselAutoplaySpeed = Settings::get_setting( 'carouselAutoplaySpeed', $attributes, $atts_defaults, '' );
+$carouselLoop = Settings::get_setting( 'carouselLoop', $attributes, $atts_defaults, '' );
+$carouselAutoHeight = Settings::get_setting( 'carouselAutoHeight', $attributes, $atts_defaults, '' );
+$carouselTransitionDuration = Settings::get_setting( 'carouselTransitionDuration', $attributes, $atts_defaults, '' );
+$carouselNavigation = Settings::get_setting( 'carouselNavigation', $attributes, $atts_defaults, '' );
 
 // Pagination.
-$pagination = Settings::get_setting( 'pagination', $attributes, $atts_defaults, false );
-$paginationPageLimit = Settings::get_setting( 'paginationPageLimit', $attributes, $atts_defaults, false );
-$paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_defaults, false );
+$pagination = Settings::get_setting( 'pagination', $attributes, $atts_defaults, '' );
+$paginationPageLimit = Settings::get_setting( 'paginationPageLimit', $attributes, $atts_defaults, '' );
+$paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_defaults, '' );
+
+// Image.
+$imageRatio = Settings::get_setting( 'imageRatio', $attributes, $atts_defaults, '' );
+$imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, '' );
+$imagePosition = Settings::get_setting( 'imagePosition', $attributes, $atts_defaults, '' );
+
+// Card padding to content only.
+$cardPaddingToContentOnly = Settings::get_setting( 'cardPaddingToContentOnly', $attributes, $atts_defaults, '' );
+
+// Content horizontal alignment.
+$cardHorizontalAlignment = Settings::get_setting( 'cardHorizontalAlignment', $attributes, $atts_defaults );
 
 // Visibility.
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
@@ -68,31 +79,48 @@ $wrapper_classes = array(
     'at-block-post-grid' 
 );
 
-// Add image ratio class
-if ( ! empty( $imageRatio ) ) {
+// Image ratio.
+if ( $imageRatio ) {
     $wrapper_classes[] = 'atb-image-ratio-' . $imageRatio;
 }
 
-// Add image size class
-if ( ! empty( $imageSize ) ) {
+// Image size.
+if ( $imageSize ) {
     $wrapper_classes[] = 'atb-image-size-' . $imageSize;
 }
 
-// Add image position class
-if ( ! empty( $imagePosition ) ) {
+// Image position.
+if ( $imagePosition ) {
     $wrapper_classes[] = 'atb-image-position-' . $imagePosition;
 }
 
+// Has carousel dots.
+if ( $displayCarousel && $carouselNavigation === 'dots' || $carouselNavigation === 'both' ) {
+    $wrapper_classes[] = 'atb-has-carousel-dots';
+}
+
+// Card padding to content only.
+if ( $cardPaddingToContentOnly ) {
+    $wrapper_classes[] = 'content-padding';
+} else {
+    $wrapper_classes[] = 'card-padding';
+}
+
+// Content horizontal alignment.
+if ( $cardHorizontalAlignment ) {
+    $wrapper_classes[] = 'content-align-' . $cardHorizontalAlignment;
+}
+
 // Visibility classes
-if ( ! empty( $hideOnDesktop ) ) {
+if ( $hideOnDesktop ) {
     $wrapper_classes[] = 'atb-hide-desktop';
 }
 
-if ( ! empty( $hideOnTablet ) ) {
+if ( $hideOnTablet ) {
     $wrapper_classes[] = 'atb-hide-tablet';
 }
 
-if ( ! empty( $hideOnMobile ) ) {
+if ( $hideOnMobile ) {
     $wrapper_classes[] = 'atb-hide-mobile';
 }
 
@@ -113,7 +141,7 @@ $query_args = array(
 );
 
 // Add taxonomy query if taxonomy and terms are set
-if ( ! empty( $taxonomy ) && $taxonomy !== 'all' && ! empty( $taxonomyTerm ) && $taxonomyTerm !== 'all' ) {
+if ( $taxonomy && $taxonomy !== 'all' && $taxonomyTerm && $taxonomyTerm !== 'all' ) {
     $query_args['tax_query'] = array(
         array(
             'taxonomy' => $taxonomy,
@@ -124,17 +152,17 @@ if ( ! empty( $taxonomy ) && $taxonomy !== 'all' && ! empty( $taxonomyTerm ) && 
 }
 
 // Exclude current post if enabled
-if ( ! empty( $excludeCurrentPost ) ) {
+if ( $excludeCurrentPost ) {
     $query_args['post__not_in'] = array( get_the_ID() );
 }
 
 // Add offset if set
-if ( ! empty( $offsetStartingPoint ) ) {
+if ( $offsetStartingPoint ) {
     $query_args['offset'] = $offsetStartingPoint;
 }
 
 // Add pagination
-if ( ! empty( $pagination ) ) {
+if ( $pagination ) {
     $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
     $query_args['paged'] = $paged;
 }
@@ -158,7 +186,7 @@ if ( $query->have_posts() ) {
         
         // Carousel options
         $swiper_options = array(
-            'spaceBetween' => $columnsGap,
+            'spaceBetween' => Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, 'desktop' ),
             'loop' => $carouselLoop,
             'autoplay' => ($carouselAutoplay) ? [
                 'delay' => $carouselAutoplaySpeed,
@@ -213,8 +241,10 @@ if ( $query->have_posts() ) {
     }
     
     // Pagination
-    if ( $pagination && $query->max_num_pages > 1 ) {
-        $output .= '<div class="at-block-post-grid__pagination">';
+    if ( $pagination && ! $displayCarousel && $query->max_num_pages > 1 ) {
+        wp_enqueue_script( 'athemes-blocks-pagination' );
+
+        $output .= '<div class="at-pagination at-block-post-grid__pagination '. $paginationType .'">';
         $output .= '<div class="at-block-post-grid__pagination-numbers">';
             $output .= paginate_links( array(
                 'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
@@ -223,12 +253,14 @@ if ( $query->have_posts() ) {
                 'total'     => $query->max_num_pages,
                 'prev_text' => '←',
                 'next_text' => '→',
-                'type'      => 'plain',
+                'type'      => 'list',
+                'end_size'  => 1,
+                'mid_size'  => $paginationType === 'default' ? $paginationPageLimit : 9999,
             ) );
             $output .= '</div>';
 
         if ( $paginationType === 'load-more' || $paginationType === 'infinite-scroll' ) {
-            $output .= '<a href="#" class="at-block-post-grid__pagination-button at-block-post-grid__pagination-button--load-more">' . __( 'Load More', 'athemes-blocks' ) . '</a>';
+            $output .= '<a href="#" class="at-pagination__button at-block-post-grid__pagination-button at-block-post-grid__pagination-button--load-more" data-pagination-type="' . $paginationType . '" data-total-pages="' . $query->max_num_pages . '">' . __( 'Load More', 'athemes-blocks' ) . '</a>';
         }
         
         $output .= '</div>';

@@ -162,9 +162,10 @@ module.exports = [
         mode: 'development',
         entry: {
             'entrance-effects': path.resolve(__dirname, 'assets/js/src/animation/entrance-effects.js'),
+            'pagination': path.resolve(__dirname, 'assets/js/src/pagination/pagination.js'),
         },
         output: {
-            path: path.resolve(__dirname, 'assets/js/animation/'),
+            path: path.resolve(__dirname, 'assets/js/'),
             filename: '[name].js',
         },
         devtool: 'source-map',

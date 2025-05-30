@@ -34,10 +34,14 @@ import { withQueryPostTypesData } from '../../block-editor/hoc/with-query-post-t
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingDefaultValue, getDimensionsSettingConnectValue, getDimensionsSettingDirectionsValue, getDimensionsSettingValue } from '../../utils/settings';
+
+import postCardPresets from './presets';
+import postCardPresetsImages from './presets-images';
+
 const attributesDefaults = PostGridBlockData.attributes;
 
 const Edit = (props) => {
-	const { attributes, setAttributes, clientId, postTypes, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler, posts, isLoading } = props;
+	const { attributes, setAttributes, clientId, postTypes, setUpdateCss, setUpdatePresetCss, isPanelOpened, onTogglePanelBodyHandler, posts, isLoading } = props;
 	const { content } = attributes;
 	const atts = attributes;
 	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
@@ -49,6 +53,7 @@ const Edit = (props) => {
 	const {
 
 		// General.
+		postCardLayout,
         postType,
 		taxonomy,
 		taxonomyTerm,
@@ -93,8 +98,10 @@ const Edit = (props) => {
 		rowsGap,
 		cardBackgroundColor,
 		cardBorder,
+		cardHorizontalAlignment,
 		cardVerticalAlignment,
 		cardPadding,
+		cardPaddingToContentOnly,
 		carouselPadding,
 		arrowSize,
 		arrowBorderSize,
@@ -142,6 +149,7 @@ const Edit = (props) => {
 		return {
 
 			// General.
+			postCardLayout: atts.postCardLayout,
 			postType: atts.postType,
 			taxonomy: atts.taxonomy,
 			taxonomyTerm: atts.taxonomyTerm,
@@ -185,8 +193,10 @@ const Edit = (props) => {
 			columnsGap: getSettingValue('columnsGap', currentDevice, atts),
 			rowsGap: getSettingValue('rowsGap', currentDevice, atts),
 			cardBackgroundColor: getSettingValue('cardBackgroundColor', 'desktop', atts),
+			cardHorizontalAlignment: getSettingValue('cardHorizontalAlignment', 'desktop', atts),
 			cardVerticalAlignment: getSettingValue('cardVerticalAlignment', 'desktop', atts),
 			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
+			cardPaddingToContentOnly: atts.cardPaddingToContentOnly,
 			carouselPadding: getDimensionsSettingValue('carouselPadding', currentDevice, atts),
 			arrowSize: getSettingValue('arrowSize', 'desktop', atts),
 			arrowBorderSize: getSettingValue('arrowBorderSize', 'desktop', atts),
@@ -198,7 +208,7 @@ const Edit = (props) => {
 			dotsColor: getSettingValue('dotsColor', 'desktop', atts),
 			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),			
 			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
-			imageBorderRadius: getSettingValue('imageBorderRadius', 'desktop', atts),
+			imageBorderRadius: getDimensionsSettingValue('imageBorderRadius', currentDevice, atts),
 			titleColor: getSettingValue('titleColor', 'desktop', atts),
 			titleTypography: atts.titleTypography,
 			titleBottomSpacing: getSettingValue('titleBottomSpacing', currentDevice, atts),
@@ -417,6 +427,43 @@ const Edit = (props) => {
 				{
 					currentTab === 'general' && (
 						<Panel>
+							<PanelBody 
+								title={ __( 'Presets', 'botiga-pro' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'presets' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'presets' ) }
+							>
+								<RadioImages 
+									label={ __( 'Layout', 'athemes-blocks' ) }
+									defaultValue={ postCardLayout }
+									options={[
+										{ label: __( 'Layout 1', 'athemes-blocks' ), value: 'layout1', image: postCardPresetsImages.layout1 },
+										{ label: __( 'Layout 2', 'athemes-blocks' ), value: 'layout2', image: postCardPresetsImages.layout2 },
+										{ label: __( 'Layout 3', 'athemes-blocks' ), value: 'layout3', image: postCardPresetsImages.layout3 },
+										{ label: __( 'Layout 4', 'athemes-blocks' ), value: 'layout4', image: postCardPresetsImages.layout4 },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										const presetSettings = postCardPresets[value];
+
+										setAttributes({ 
+											...presetSettings,
+										});
+
+										setUpdatePresetCss(presetSettings);
+									} }
+									onClickReset={ () => {
+										const presetSettings = postCardPresets['default'];
+
+										setAttributes({ 
+											...presetSettings,
+										});
+										
+										setUpdatePresetCss(presetSettings);
+									} }
+								/>
+							</PanelBody>
 							<PanelBody 
 								title={ __( 'Query Settings', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1197,25 +1244,50 @@ const Edit = (props) => {
 												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
 												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
 											]}
-											responsive={true}
+											responsive={false}
 											reset={true}
 											onChange={ ( value ) => {
 												updateAttribute( 'cardVerticalAlignment', {
 													value: value
-												}, currentDevice );
+												}, 'desktop' );
 
 												setUpdateCss( { settingId: 'cardVerticalAlignment', value: value } );
 											} }
 											onClickReset={ () => {
 												updateAttribute( 'cardVerticalAlignment', {
-													value: getSettingDefaultValue( 'cardVerticalAlignment', currentDevice, attributesDefaults )
-												}, currentDevice );
+													value: getSettingDefaultValue( 'cardVerticalAlignment', 'desktop', attributesDefaults )
+												}, 'desktop' );
 												
-												setUpdateCss( { settingId: 'cardVerticalAlignment', value: getSettingDefaultValue( 'cardVerticalAlignment', currentDevice, attributesDefaults ) } );
+												setUpdateCss( { settingId: 'cardVerticalAlignment', value: getSettingDefaultValue( 'cardVerticalAlignment', 'desktop', attributesDefaults ) } );
 											} }
 										/>		
 									)
 								}
+								<RadioButtons 
+									label={ __( 'Horizontal Alignment', 'athemes-blocks' ) }
+									defaultValue={ cardHorizontalAlignment }
+									options={[
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'cardHorizontalAlignment', {
+											value: value
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'cardHorizontalAlignment', value: value } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'cardHorizontalAlignment', {
+											value: getSettingDefaultValue( 'cardHorizontalAlignment', 'desktop', attributesDefaults )
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'cardHorizontalAlignment', value: getSettingDefaultValue( 'cardHorizontalAlignment', 'desktop', attributesDefaults ) } );
+									} }
+								/>
 								<Dimensions
 									label={ __( 'Card Padding', 'athemes-blocks' ) }
 									directions={[
@@ -1253,6 +1325,18 @@ const Edit = (props) => {
 										updateAttribute( 'cardPadding', getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ), currentDevice );
 
 										setUpdateCss( { settingId: 'cardPadding', value: getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+								<SwitchToggle
+									label={ __( 'Aplly padding to content', 'athemes-blocks' ) }
+									value={ cardPaddingToContentOnly }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ cardPaddingToContentOnly: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ cardPaddingToContentOnly: attributesDefaults.cardPaddingToContentOnly.default });
 									} }
 								/>
 								{
@@ -1640,30 +1724,43 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'image' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
 							>
-								<RangeSlider 
+								<Dimensions
 									label={ __( 'Border Radius', 'athemes-blocks' ) }
-									defaultValue={ imageBorderRadius }
-									defaultUnit="px"	
-									min={0}
-									max={100}
-									responsive={false}
+									directions={[
+										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+									]}
+									value={ imageBorderRadius }
+									defaultUnit={ getSettingUnit('imageBorderRadius', currentDevice, atts) }
+									directionsValue={ getDimensionsSettingDirectionsValue('imageBorderRadius', currentDevice, atts) }
+									connect={ getDimensionsSettingConnectValue('imageBorderRadius', currentDevice, atts) }
+									responsive={ true }
+									units={['px', '%']}
 									reset={true}
-									units={false}
 									onChange={ ( value ) => {
 										updateAttribute( 'imageBorderRadius', {
-											value: value,
-											unit: 'px'
+											value: value.value,
+											unit: getSettingUnit( 'imageBorderRadius', currentDevice, atts ),
+											connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'imageBorderRadius', value: value } );
+										setUpdateCss( { settingId: 'imageBorderRadius', value: value.value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'imageBorderRadius', {
+											value: getSettingValue( 'imageBorderRadius', currentDevice, atts ),
+											unit: value,
+											connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageBorderRadius', value: getSettingValue( 'imageBorderRadius', currentDevice, atts ) } );
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'imageBorderRadius', {
-											value: getSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ),
-											unit: 'px'
-										}, currentDevice );							
+										updateAttribute( 'imageBorderRadius', getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ), currentDevice );
 
-										setUpdateCss( { settingId: 'imageBorderRadius', value: getSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );								
+										setUpdateCss( { settingId: 'imageBorderRadius', value: getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );
 									} }
 								/>
 								<RangeSlider 
@@ -2559,6 +2656,23 @@ const Edit = (props) => {
 				// Image Position.
 				blockProps.className += ` atb-image-position-${imagePosition}`;
 
+				// Has carousel dots.
+				if (displayCarousel && (carouselNavigation === 'dots' || carouselNavigation === 'both')) {
+					blockProps.className += ' atb-has-carousel-dots';
+				}
+
+				// Card padding to content only.
+				if (cardPaddingToContentOnly) {
+					blockProps.className += ' content-padding';
+				} else {
+					blockProps.className += ' card-padding';
+				}
+
+				// Content horizontal alignment.
+				if (cardHorizontalAlignment) {
+					blockProps.className += ` content-align-${cardHorizontalAlignment}`;
+				}
+
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
 				}
@@ -2746,10 +2860,12 @@ const Edit = (props) => {
 										{
 											paginationType === 'default' && (
 												<div className="at-block-post-grid__pagination-numbers">
-													<span className="at-block-post-grid__pagination-number at-block-post-grid__pagination-number--active">1</span>
-													<span className="at-block-post-grid__pagination-number">2</span>
-													<span className="at-block-post-grid__pagination-number">3</span>
-													<span className="at-block-post-grid__pagination-number at-block-post-grid__pagination-number--next">→</span>
+													<ul className="page-numbers">
+														<li><a className="page-numbers current">1</a></li>
+														<li><a className="page-numbers">2</a></li>
+														<li><a className="page-numbers">3</a></li>
+														<li><a className="page-numbers next">→</a></li>
+													</ul>
 												</div>	
 											)
 										}

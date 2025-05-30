@@ -1,29 +1,3 @@
-// Load more.
-const loadMoreButtons = document.querySelectorAll('.at-block-post-grid__load-more');
-
-for (let i = 0; i < loadMoreButtons.length; i++) {
-    const loadMoreButton = loadMoreButtons[i];
-
-    // Add click event listener to the load more button.
-    loadMoreButton.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        // Get the post grid block.
-        const postGridBlock = loadMoreButton.closest('.at-block-post-grid');
-
-        // Do ajax request to get the next page (with xhr).
-        // const xhr = new XMLHttpRequest();
-        // xhr.open('GET', loadMoreButton.getAttribute('data-load-more-url'), true);
-        // xhr.setRequestHeader('X-WP-Nonce', loadMoreButton.getAttribute('data-nonce'));
-        // xhr.send();
-
-        // xhr.onload = () => {
-        //     if (xhr.status === 200) {
-
-        //     }
-    });
-}
-
 // Get all post grid blocks on the page
 const postGridBlocks = document.querySelectorAll('.at-block-post-grid__swiper');
 
@@ -40,16 +14,38 @@ for (let i = 0; i < postGridBlocks.length; i++) {
         const nextNavButton = block.querySelector('.at-block-nav--next');
         const prevNavButton = block.querySelector('.at-block-nav--prev');
 
+        // Add accessibility attributes to navigation buttons
+        nextNavButton.setAttribute('role', 'button');
+        nextNavButton.setAttribute('aria-label', 'Next slide');
+        nextNavButton.setAttribute('tabindex', '0');
+
+        prevNavButton.setAttribute('role', 'button');
+        prevNavButton.setAttribute('aria-label', 'Previous slide');
+        prevNavButton.setAttribute('tabindex', '0');
+
         nextNavButton.addEventListener('click', (e) => {
             e.preventDefault();
-
             swiper.slideNext();
         });
 
         prevNavButton.addEventListener('click', (e) => {
             e.preventDefault();
-
             swiper.slidePrev();
+        });
+
+        // Add keyboard navigation support
+        nextNavButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                swiper.slideNext();
+            }
+        });
+
+        prevNavButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                swiper.slidePrev();
+            }
         });
     }
 }

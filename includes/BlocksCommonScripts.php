@@ -30,6 +30,6 @@ class BlocksCommonScripts {
      * @return void
      */
     public function enqueue_scripts(): void {
-        wp_enqueue_script( 'athemes-blocks-entrance-effects', ATHEMES_BLOCKS_URL . 'assets/js/animation/entrance-effects.js', array(), ATHEMES_BLOCKS_VERSION, true );
+        wp_enqueue_script( 'athemes-blocks-entrance-effects', ATHEMES_BLOCKS_URL . 'assets/js/entrance-effects.js', array(), ATHEMES_BLOCKS_VERSION, true );
     }
 }

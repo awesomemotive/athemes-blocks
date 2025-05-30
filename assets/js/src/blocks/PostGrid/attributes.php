@@ -21,6 +21,16 @@ return array_merge(
     // ### General #######################
 
     // ------------------------------------
+    // --- Post Card Layout ---------------
+    // ------------------------------------
+    array(
+        'postCardLayout' => array(
+            'type' => 'string',
+            'default' => 'default'
+        )
+    ),
+
+    // ------------------------------------
     // --- Query Settings -----------------
     // ------------------------------------
     array(
@@ -333,6 +343,7 @@ return array_merge(
                             'left' => 4,
                         ),
                         'unit' => 'px',
+                        'connect' => true,
                     ),
                     'tablet' => array(
                         'value' => array(
@@ -342,6 +353,7 @@ return array_merge(
                             'left' => '',
                         ),
                         'unit' => 'px',
+                        'connect' => true,
                     ),
                     'mobile' => array(
                         'value' => array(
@@ -351,6 +363,7 @@ return array_merge(
                             'left' => '',
                         ),
                         'unit' => 'px',
+                        'connect' => true,
                     ),
                 ),
                 'css' => array(
@@ -400,11 +413,31 @@ return array_merge(
                 'property' => 'background-color',
             ),
         ),
+        'cardHorizontalAlignment' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => '',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__item',
+                ),
+                'property' => 'text-align',
+            ),
+        ),
         'cardVerticalAlignment' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 'flex-start',
+                    'value' => 'stretch',
                 ),
                 'tablet' => array(
                     'value' => '',
@@ -456,10 +489,15 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__item'
+                    '{{WRAPPER}}.card-padding .at-block-post-grid__item',
+                    '{{WRAPPER}}.content-padding .at-block-post-grid__item .at-block-post-grid__content',
                 ),
                 'property' => 'padding-{{DIRECTION}}',
             ),
+        ),
+        'cardPaddingToContentOnly' => array(
+            'type' => 'boolean',
+            'default' => false,
         ),
         'carouselPadding' => array(
             'type' => 'object',
@@ -691,7 +729,7 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 25,
+                    'value' => 0,
                     'unit' => 'px',
                 ),
                 'tablet' => array(
@@ -749,24 +787,42 @@ return array_merge(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
-                    'value' => 5,
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
                 'tablet' => array(
-                    'value' => '',
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
                 'mobile' => array(
-                    'value' => '',
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
                     'unit' => 'px',
+                    'connect' => true,
                 ),
             ),
             'css' => array(
                 'selectors' => array(
                     '{{WRAPPER}} .at-block-post-grid__image img'
                 ),
-                'property' => 'border-radius',
-            )
+                'property' => 'border-{{DIRECTION}}-radius',
+            ),
         ),
         'imageBottomSpacing' => array(
             'type' => 'object',
@@ -1968,9 +2024,9 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'top' => 13,
+                        'top' => 10,
                         'right' => 25,
-                        'bottom' => 13,
+                        'bottom' => 10,
                         'left' => 25,
                     ),
                     'connect' => true,

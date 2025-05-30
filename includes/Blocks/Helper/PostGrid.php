@@ -45,11 +45,16 @@ class PostGrid {
         $readMoreOpenInNewTab = Settings::get_setting( 'readMoreOpenInNewTab', $attributes, $atts_defaults, '' );
         $readMoreText = Settings::get_setting( 'readMoreText', $attributes, $atts_defaults, '' );
 
+        $displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, '' );
+
         // Links target.
         $target = ! empty( $readMoreOpenInNewTab ) ? ' target="_blank" rel="noopener noreferrer"' : '';
 
         $output = '';
-        $output .= '<div class="at-block-post-grid__item">';
+
+        if ( ! $displayCarousel ) {
+            $output .= '<div class="at-block-post-grid__item">';
+        }
             
         // Featured Image
         if ( $displayImage && has_post_thumbnail( $post_id ) ) {
@@ -177,7 +182,10 @@ class PostGrid {
             );
         }
 
-        $output .= '</div>';
+        if ( ! $displayCarousel ) {
+            $output .= '</div>';
+        }
+
         $output .= '</div>';
 
         return $output;

@@ -15,16 +15,38 @@ for (let i = 0; i < testimonialBlocks.length; i++) {
         const nextNavButton = block.querySelector('.at-block-nav--next');
         const prevNavButton = block.querySelector('.at-block-nav--prev');
 
+        // Add accessibility attributes to navigation buttons
+        nextNavButton.setAttribute('role', 'button');
+        nextNavButton.setAttribute('aria-label', 'Next slide');
+        nextNavButton.setAttribute('tabindex', '0');
+
+        prevNavButton.setAttribute('role', 'button');
+        prevNavButton.setAttribute('aria-label', 'Previous slide');
+        prevNavButton.setAttribute('tabindex', '0');
+
         nextNavButton.addEventListener('click', (e) => {
             e.preventDefault();
-
             swiper.slideNext();
         });
 
         prevNavButton.addEventListener('click', (e) => {
             e.preventDefault();
-
             swiper.slidePrev();
+        });
+
+        // Add keyboard navigation support
+        nextNavButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                swiper.slideNext();
+            }
+        });
+
+        prevNavButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                swiper.slidePrev();
+            }
         });
     }
 }

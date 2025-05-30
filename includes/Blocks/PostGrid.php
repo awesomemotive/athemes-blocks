@@ -32,6 +32,9 @@ class PostGrid extends BlockBase {
 
         // Regsiter swiper script.
         add_action( 'wp_enqueue_scripts', array( $this, 'register_swiper_script' ) );
+
+        // Register pagination script.
+        add_action( 'wp_enqueue_scripts', array( $this, 'register_pagination_script' ) );
     }
 
     /**
@@ -52,5 +55,14 @@ class PostGrid extends BlockBase {
      */
     public function register_swiper_script(): void {
         wp_register_script( 'athemes-blocks-modularized-swiper', ATHEMES_BLOCKS_URL . 'assets/vendor/swiper/modularized-swiper.min.js', array(), ATHEMES_BLOCKS_VERSION, true );
+    }
+
+    /**
+     * Register pagination script.
+     * 
+     * @return void
+     */
+    public function register_pagination_script(): void {
+        wp_register_script( 'athemes-blocks-pagination', ATHEMES_BLOCKS_URL . 'assets/js/pagination.js', array(), ATHEMES_BLOCKS_VERSION, true );
     }
 }

@@ -77,17 +77,15 @@ class BlockCss {
         );
 
         foreach ( $default_attributes as $attribute_name => $attribute_settings ) {
-            // if ( ! isset( $attributes[$attribute_name] ) ) {
-            //     continue;
-            // }
 
             // Inner settings (recursive).
             if ( isset( $default_attributes[$attribute_name]['default']['innerSettings'] ) ) {
-                $inner_settings_attributes = $default_attributes[$attribute_name]['default']['innerSettings'];
+                $inner_settings_attributes = isset( $attributes[$attribute_name]['innerSettings'] ) ? $attributes[$attribute_name]['innerSettings'] : $default_attributes[$attribute_name]['default']['innerSettings'];
                 $block_id = $block_id;
-                $inner_default_attributes = $default_attributes[$attribute_name]['default']['innerSettings'];
+                $inner_settings_default_attributes = $default_attributes[$attribute_name]['default']['innerSettings'];
 
-                $css .= self::get_block_css( $inner_settings_attributes, $block_id, $inner_default_attributes );
+                $css .= self::get_block_css( $inner_settings_attributes, $block_id, $inner_settings_default_attributes );
+
                 continue;
             }
 
