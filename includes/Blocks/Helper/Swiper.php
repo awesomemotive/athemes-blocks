@@ -133,23 +133,24 @@ class Swiper {
         }
 
         ?>
-        <div class="<?php echo esc_attr( implode( ' ', $swiper_classes ) ); ?>" data-swiper-options="<?php echo esc_attr( json_encode( $this->swiper_options ) ); ?>">
-            <div class="swiper-wrapper">
-                <?php foreach($this->swiper_markup_options['slider_items'] as $slide_item_content) : ?>
-                    <div class="<?php echo esc_attr( implode( ' ', $swiper_slide_classes ) ); ?>">
-                        <?php echo $slide_item_content; ?>
-                    </div>
-                <?php endforeach; ?>
+        <div class="at-block-swiper-wrapper">
+            <div class="<?php echo esc_attr( implode( ' ', $swiper_classes ) ); ?>" data-swiper-options="<?php echo esc_attr( json_encode( $this->swiper_options ) ); ?>">
+                <div class="swiper-wrapper">
+                    <?php foreach($this->swiper_markup_options['slider_items'] as $slide_item_content) : ?>
+                        <div class="<?php echo esc_attr( implode( ' ', $swiper_slide_classes ) ); ?>">
+                            <?php echo $slide_item_content; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php if ( $this->has_pagination() ) : ?>
+                    <div class='swiper-pagination'></div>
+                <?php endif; ?>
             </div>
             <?php if ( $this->has_navigation() ) : ?>
                 <div class='at-block-nav at-block-nav--next'></div>
                 <div class='at-block-nav at-block-nav--prev'></div>
             <?php endif; ?>
-            <?php if ( $this->has_pagination() ) : ?>
-                <div class='swiper-pagination'></div>
-            <?php endif; ?>
         </div>
-    
         <?php
     }
 

@@ -163,6 +163,7 @@ module.exports = [
         entry: {
             'entrance-effects': path.resolve(__dirname, 'assets/js/src/animation/entrance-effects.js'),
             'pagination': path.resolve(__dirname, 'assets/js/src/pagination/pagination.js'),
+            'ajax-add-to-cart': path.resolve(__dirname, 'assets/js/src/woocommerce/ajax-add-to-cart.js'),
         },
         output: {
             path: path.resolve(__dirname, 'assets/js/'),

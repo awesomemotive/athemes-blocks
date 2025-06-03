@@ -64,11 +64,11 @@ return array_merge(
         ),
         'orderBy' => array(
             'type' => 'string',
-            'default' => 'date'
+            'default' => 'modified'
         ),
         'order' => array(
             'type' => 'string',
-            'default' => 'desc'
+            'default' => 'asc'
         ),
     ),
 
@@ -194,6 +194,14 @@ return array_merge(
             'type' => 'boolean',
             'default' => true
         ),
+        'displayReviewsRating' => array(
+            'type' => 'boolean',
+            'default' => true
+        ),
+        'displayPrice' => array(
+            'type' => 'boolean',
+            'default' => true
+        ),
         'displayTaxonomy' => array(
             'type' => 'boolean',
             'default' => true,
@@ -213,20 +221,16 @@ return array_merge(
     ),
 
     // ------------------------------------
-    // --- Read More Button ---------------
+    // --- Button -------------------------
     // ------------------------------------
     array(
-        'displayReadMore' => array(
+        'displayButton' => array(
             'type' => 'boolean',
             'default' => true,
         ),
-        'readMoreOpenInNewTab' => array(
+        'buttonOpenInNewTab' => array(
             'type' => 'boolean',
             'default' => false,
-        ),
-        'readMoreText' => array(
-            'type' => 'string',
-            'default' => __( 'Read More', 'athemes-blocks' ),
         ),
     ),
 
@@ -368,7 +372,8 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__item'
+                        '{{WRAPPER}} .at-block-post-grid__item',
+                        '{{WRAPPER}}.has-image-overlay .at-block-post-grid__image:before'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -847,6 +852,62 @@ return array_merge(
                 'property' => 'margin-bottom',
             ),
         ),
+        'imageOverlay' => array(
+            'type' => 'boolean',
+            'default' => false,
+        ),
+        'imageOverlayColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#212121',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => '' 
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}',
+                ),
+                'property' => '--atb-image-overlay-color',
+            )
+        ),
+        'imageOverlayOpacity' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 0.5,
+                    'unit' => '',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => '',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => '',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}',
+                ),
+                'property' => '--atb-image-overlay-opacity',
+            )
+        ),
     ),
 
     // ------------------------------------
@@ -858,8 +919,8 @@ return array_merge(
             'default' => array(
                 'desktop' => array(
                     'value' => array(
-                        'defaultState' => '',
-                        'hoverState' => ''
+                        'defaultState' => '#212121',
+                        'hoverState' => '#757575'
                     )
                 ),
                 'tablet' => array(
@@ -877,7 +938,8 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__title'
+                    '{{WRAPPER}} .at-block-post-grid__title a' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__title a:hover' => '{{HOVER}}'
                 ),
                 'property' => 'color',
             ),
@@ -1029,6 +1091,97 @@ return array_merge(
     ),
 
     // ------------------------------------
+    // --- Product Reviews Rating ---------
+    // ------------------------------------
+    array(
+        'reviewsRatingColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#FFA534',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__reviews-rating .atb-star-rating span:before'
+                ),
+                'property' => 'color',
+            ),
+        ),
+    ),
+    array(
+        'reviewsRatingBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#ededed',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__reviews-rating .atb-star-rating::before'
+                ),
+                'property' => 'color',
+            ),
+        ),
+    ),
+    array(
+        'reviewsRatingBottomSpacing' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 10,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__reviews-rating'
+                ),
+                'property' => 'margin-bottom',
+            ),
+        ),
+    ),
+
+    // ------------------------------------
     // --- Meta ---------------------------
     // ------------------------------------
     array(
@@ -1056,7 +1209,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__meta a'
+                    '{{WRAPPER}} .at-block-post-grid__meta'
                 ),
                 'property' => 'color',
             ),
@@ -1145,7 +1298,7 @@ return array_merge(
             'lineHeight' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => '',
+                        'value' => 1,
                         'unit' => 'em',
                     ),
                     'tablet' => array(
@@ -1358,10 +1511,167 @@ return array_merge(
     ),
 
     // ------------------------------------
-    // --- Read More Button ---------------
+    // --- Price --------------------------
     // ------------------------------------
     array(
-        'readMoreButtonColor' => array(
+        'priceColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#212121',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__price'
+                ),
+                'property' => 'color',
+            ),
+        ),
+    ),
+    Attributes::get_typography_attributes(
+        'priceTypography',
+        array(
+            'fontFamily' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'font-family',
+                )
+            ),
+            'fontSize' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 1,
+                        'unit' => 'rem',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'font-size',
+                )
+            ),
+            'fontWeight' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'font-weight',
+                )
+            ),
+            'fontStyle' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'font-style',
+                )
+            ),
+            'textTransform' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'text-transform',
+                )
+            ),
+            'textDecoration' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'text-decoration',
+                )
+            ),
+            'lineHeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'line-height',
+                )
+            ),
+            'letterSpacing' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .at-block-post-grid__price'
+                    ),
+                    'property' => 'letter-spacing',
+                )
+            ),
+        )
+    ),
+    array(
+        'priceBottomSpacing' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 25,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .at-block-post-grid__price'
+                ),
+                'property' => 'margin-bottom',
+            ),
+        ),
+    ),
+
+    // ------------------------------------
+    // --- Button -------------------------
+    // ------------------------------------
+    array(
+        'buttonColor' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
@@ -1385,20 +1695,20 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__read-more' => '{{VALUE}}',
-                    '{{WRAPPER}} .at-block-post-grid__read-more:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-post-grid__button-button' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__button-button:hover' => '{{HOVER}}',
                 ),
                 'property' => 'color',
             ),
         ),
     ),
     Attributes::get_typography_attributes(
-        'readMoreButtonTypography',
+        'buttonTypography',
         array(
             'fontFamily' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'font-family',
                 )
@@ -1420,7 +1730,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'font-size',
                 )
@@ -1428,7 +1738,7 @@ return array_merge(
             'fontWeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'font-weight',
                 )
@@ -1436,7 +1746,7 @@ return array_merge(
             'fontStyle' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'font-style',
                 )
@@ -1444,8 +1754,7 @@ return array_merge(
             'textTransform' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-button__wrapper',
-                        '{{WRAPPER}} .at-block-button__wrapper > a'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'text-transform',
                 )
@@ -1464,7 +1773,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'text-decoration',
                 )
@@ -1472,7 +1781,7 @@ return array_merge(
             'lineHeight' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'line-height',
                 )
@@ -1480,7 +1789,7 @@ return array_merge(
             'letterSpacing' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'letter-spacing',
                 )
@@ -1488,7 +1797,7 @@ return array_merge(
         )
     ),
     array(
-        'readMoreButtonBackgroundColor' => array(
+        'buttonBackgroundColor' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
@@ -1512,15 +1821,15 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__read-more' => '{{VALUE}}',
-                    '{{WRAPPER}} .at-block-post-grid__read-more:hover' => '{{HOVER}}',
+                    '{{WRAPPER}} .at-block-post-grid__button-button' => '{{VALUE}}',
+                    '{{WRAPPER}} .at-block-post-grid__button-button:hover' => '{{HOVER}}',
                 ),
                 'property' => 'background-color',
             ),
         ),
     ),
     Attributes::get_border_attributes(
-        'readMoreButtonBorder',
+        'buttonBorder',
         array(
             'borderStyle' => array(
                 'default' => array(
@@ -1536,7 +1845,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'border-style',
                 )
@@ -1544,7 +1853,7 @@ return array_merge(
             'borderWidth' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'border-{{DIRECTION}}-width',
                 )
@@ -1581,7 +1890,7 @@ return array_merge(
                 ),
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more'
+                        '{{WRAPPER}} .at-block-post-grid__button-button'
                     ),
                     'property' => 'border-{{DIRECTION}}-radius',
                 )
@@ -1589,8 +1898,8 @@ return array_merge(
             'borderColor' => array(
                 'css' => array(
                     'selectors' => array(
-                        '{{WRAPPER}} .at-block-post-grid__read-more' => '{{VALUE}}',
-                        '{{WRAPPER}} .at-block-post-grid__read-more:hover' => '{{HOVER}}',
+                        '{{WRAPPER}} .at-block-post-grid__button-button' => '{{VALUE}}',
+                        '{{WRAPPER}} .at-block-post-grid__button-button:hover' => '{{HOVER}}',
                     ),
                     'property' => 'border-color',
                 )
@@ -1598,7 +1907,7 @@ return array_merge(
         )
     ),
     array(
-        'readMoreButtonPadding' => array(
+        'buttonPadding' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
@@ -1634,12 +1943,12 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__read-more',
+                    '{{WRAPPER}} .at-block-post-grid__button-button',
                 ),
                 'property' => 'padding-{{DIRECTION}}',
             ),
         ),
-        'readMoreButtonBottomSpacing' => array(
+        'buttonBottomSpacing' => array(
             'type' => 'object',
             'default' => array(
                 'desktop' => array(
@@ -1657,7 +1966,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__read-more'
+                    '{{WRAPPER}} .at-block-post-grid__button'
                 ),
                 'property' => 'margin-bottom',
             ),

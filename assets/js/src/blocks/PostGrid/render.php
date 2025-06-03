@@ -34,6 +34,7 @@ $taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaul
 $postsPerPage = Settings::get_setting( 'postsPerPage', $attributes, $atts_defaults, '' );
 $excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, $atts_defaults, '' );
 $offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, '' );
+$offsetStartingPointValue = Settings::get_setting( 'offsetStartingPointValue', $attributes, $atts_defaults, '' );
 $orderBy = Settings::get_setting( 'orderBy', $attributes, $atts_defaults, '' );
 $order = Settings::get_setting( 'order', $attributes, $atts_defaults, '' );
 $columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
@@ -60,6 +61,7 @@ $paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_de
 $imageRatio = Settings::get_setting( 'imageRatio', $attributes, $atts_defaults, '' );
 $imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, '' );
 $imagePosition = Settings::get_setting( 'imagePosition', $attributes, $atts_defaults, '' );
+$imageOverlay = Settings::get_setting( 'imageOverlay', $attributes, $atts_defaults, '' );
 
 // Card padding to content only.
 $cardPaddingToContentOnly = Settings::get_setting( 'cardPaddingToContentOnly', $attributes, $atts_defaults, '' );
@@ -92,6 +94,11 @@ if ( $imageSize ) {
 // Image position.
 if ( $imagePosition ) {
     $wrapper_classes[] = 'atb-image-position-' . $imagePosition;
+}
+
+// Image overlay.
+if ( $imageOverlay ) {
+    $wrapper_classes[] = 'has-image-overlay';
 }
 
 // Has carousel dots.
@@ -157,13 +164,13 @@ if ( $excludeCurrentPost ) {
 }
 
 // Add offset if set
-if ( $offsetStartingPoint ) {
-    $query_args['offset'] = $offsetStartingPoint;
+if ( $offsetStartingPoint && $offsetStartingPointValue ) {
+    $query_args['offset'] = $offsetStartingPointValue;
 }
 
 // Add pagination
 if ( $pagination ) {
-    $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+    $paged = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
     $query_args['paged'] = $paged;
 }
 
@@ -181,7 +188,10 @@ if ( $query->have_posts() ) {
         
         while ( $query->have_posts() ) {
             $query->the_post();
-            $slider_items[] = PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+
+            ob_start();
+            PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+            $slider_items[] = ob_get_clean();
         }
         
         // Carousel options
@@ -234,7 +244,10 @@ if ( $query->have_posts() ) {
         
         while ( $query->have_posts() ) {
             $query->the_post();
-            $output .= PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+            
+            ob_start();
+            PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+            $output .= ob_get_clean();
         }
         
         $output .= '</div>';
@@ -249,7 +262,7 @@ if ( $query->have_posts() ) {
             $output .= paginate_links( array(
                 'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
                 'format'    => '?paged=%#%',
-                'current'   => max( 1, get_query_var( 'paged' ) ),
+                'current'   => max( 1, $paged ),
                 'total'     => $query->max_num_pages,
                 'prev_text' => '←',
                 'next_text' => '→',

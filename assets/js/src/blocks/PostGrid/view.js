@@ -1,51 +1,56 @@
 // Get all post grid blocks on the page
-const postGridBlocks = document.querySelectorAll('.at-block-post-grid__swiper');
+const postGridBlocks = document.querySelectorAll('.at-block-post-grid');
 
 for (let i = 0; i < postGridBlocks.length; i++) {
     const block = postGridBlocks[i];
-    // Get the swiper options from the data attribute
-    const swiperOptions = JSON.parse(block.getAttribute('data-swiper-options') || '{}');
+    const swiperEl = block.querySelector('.at-block-swiper-wrapper .swiper');
 
-    // Initialize Swiper with the options
-    const swiper = new Swiper(block, swiperOptions);
+    if ( swiperEl ) {
+        
+        // Get the swiper options from the data attribute
+        const swiperOptions = JSON.parse(swiperEl.getAttribute('data-swiper-options') || '{}');
 
-    // Custom Navigation.
-    if (swiper.slides.length > 1 && swiper.navigation) {
-        const nextNavButton = block.querySelector('.at-block-nav--next');
-        const prevNavButton = block.querySelector('.at-block-nav--prev');
+        // Initialize Swiper with the options
+        const swiper = new Swiper(swiperEl, swiperOptions);
 
-        // Add accessibility attributes to navigation buttons
-        nextNavButton.setAttribute('role', 'button');
-        nextNavButton.setAttribute('aria-label', 'Next slide');
-        nextNavButton.setAttribute('tabindex', '0');
+        // Custom Navigation.
+        if (swiper.slides.length > 1 && swiper.navigation) {
+            const nextNavButton = block.querySelector('.at-block-nav--next');
+            const prevNavButton = block.querySelector('.at-block-nav--prev');
 
-        prevNavButton.setAttribute('role', 'button');
-        prevNavButton.setAttribute('aria-label', 'Previous slide');
-        prevNavButton.setAttribute('tabindex', '0');
+            // Add accessibility attributes to navigation buttons
+            nextNavButton.setAttribute('role', 'button');
+            nextNavButton.setAttribute('aria-label', 'Next slide');
+            nextNavButton.setAttribute('tabindex', '0');
 
-        nextNavButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            swiper.slideNext();
-        });
+            prevNavButton.setAttribute('role', 'button');
+            prevNavButton.setAttribute('aria-label', 'Previous slide');
+            prevNavButton.setAttribute('tabindex', '0');
 
-        prevNavButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            swiper.slidePrev();
-        });
-
-        // Add keyboard navigation support
-        nextNavButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            nextNavButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 swiper.slideNext();
-            }
-        });
+            });
 
-        prevNavButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            prevNavButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 swiper.slidePrev();
-            }
-        });
+            });
+
+            // Add keyboard navigation support
+            nextNavButton.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    swiper.slideNext();
+                }
+            });
+
+            prevNavButton.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    swiper.slidePrev();
+                }
+            });
+        }
     }
 }

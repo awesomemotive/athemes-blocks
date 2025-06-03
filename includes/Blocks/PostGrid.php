@@ -35,6 +35,9 @@ class PostGrid extends BlockBase {
 
         // Register pagination script.
         add_action( 'wp_enqueue_scripts', array( $this, 'register_pagination_script' ) );
+
+        // Register ajax add to cart script.
+        add_action( 'wp_enqueue_scripts', array( $this, 'register_ajax_add_to_cart_script' ) );
     }
 
     /**
@@ -64,5 +67,14 @@ class PostGrid extends BlockBase {
      */
     public function register_pagination_script(): void {
         wp_register_script( 'athemes-blocks-pagination', ATHEMES_BLOCKS_URL . 'assets/js/pagination.js', array(), ATHEMES_BLOCKS_VERSION, true );
+    }
+
+    /**
+     * Register ajax add to cart script.
+     * 
+     * @return void
+     */
+    public function register_ajax_add_to_cart_script(): void {
+        wp_register_script( 'athemes-blocks-ajax-add-to-cart', ATHEMES_BLOCKS_URL . 'assets/js/ajax-add-to-cart.js', array(), ATHEMES_BLOCKS_VERSION, true );
     }
 }

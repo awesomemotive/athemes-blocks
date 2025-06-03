@@ -84,13 +84,14 @@ const Edit = (props) => {
 		displayAuthor,
 		displayDate,
 		displayComments,
+		displayReviewsRating,
+		displayPrice,
 		displayTaxonomy,
 		displayMetaIcon,
 		displayExcerpt,
 		excerptMaxWords,
-		displayReadMore,
-		readMoreOpenInNewTab,
-		readMoreText,
+		displayButton,
+		buttonOpenInNewTab,
 
         // Style.
 		columns,
@@ -114,9 +115,15 @@ const Edit = (props) => {
 		dotsOffset,
 		imageBottomSpacing,
 		imageBorderRadius,
+		imageOverlay,
+		imageOverlayColor,
+		imageOverlayOpacity,
 		titleColor,
 		titleTypography,
 		titleBottomSpacing,
+		reviewsRatingColor,
+		reviewsRatingBackgroundColor,
+		reviewsRatingBottomSpacing,
 		metaColor,
 		metaIconColor,
 		metaTypography,
@@ -124,12 +131,15 @@ const Edit = (props) => {
 		excerptColor,
 		excerptTypography,
 		excerptBottomSpacing,
-		readMoreButtonColor,
-		readMoreButtonTypography,
-		readMoreButtonBackgroundColor,
-		readMoreButtonBorder,
-		readMoreButtonPadding,
-		readMoreButtonBottomSpacing,
+		priceColor,
+		priceTypography,
+		priceBottomSpacing,
+		buttonColor,
+		buttonTypography,
+		buttonBackgroundColor,
+		buttonBorder,
+		buttonPadding,
+		buttonBottomSpacing,
 		paginationTextColor,
 		paginationActiveBackgroundColor,
 		paginationActiveTextColor,
@@ -180,13 +190,14 @@ const Edit = (props) => {
 			displayAuthor: atts.displayAuthor,
 			displayDate: atts.displayDate,
 			displayComments: atts.displayComments,
+			displayReviewsRating: atts.displayReviewsRating,
+			displayPrice: atts.displayPrice,
 			displayTaxonomy: atts.displayTaxonomy,
 			displayMetaIcon: atts.displayMetaIcon,
 			displayExcerpt: atts.displayExcerpt,
 			excerptMaxWords: atts.excerptMaxWords,
-			displayReadMore: atts.displayReadMore,
-			readMoreOpenInNewTab: atts.readMoreOpenInNewTab,
-			readMoreText: atts.readMoreText,
+			displayButton: atts.displayButton,
+			buttonOpenInNewTab: atts.buttonOpenInNewTab,
 
 			// Style.
 			columns: getSettingValue('columns', currentDevice, atts),
@@ -209,9 +220,15 @@ const Edit = (props) => {
 			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),			
 			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
 			imageBorderRadius: getDimensionsSettingValue('imageBorderRadius', currentDevice, atts),
+			imageOverlay: atts.imageOverlay,
+			imageOverlayColor: getSettingValue('imageOverlayColor', 'desktop', atts),
+			imageOverlayOpacity: getSettingValue('imageOverlayOpacity', 'desktop', atts),
 			titleColor: getSettingValue('titleColor', 'desktop', atts),
 			titleTypography: atts.titleTypography,
 			titleBottomSpacing: getSettingValue('titleBottomSpacing', currentDevice, atts),
+			reviewsRatingColor: getSettingValue('reviewsRatingColor', 'desktop', atts),
+			reviewsRatingBackgroundColor: getSettingValue('reviewsRatingBackgroundColor', 'desktop', atts),
+			reviewsRatingBottomSpacing: getSettingValue('reviewsRatingBottomSpacing', currentDevice, atts),
 			metaColor: getSettingValue('metaColor', 'desktop', atts),
 			metaIconColor: getSettingValue('metaIconColor', 'desktop', atts),
 			metaTypography: atts.metaTypography,
@@ -219,12 +236,15 @@ const Edit = (props) => {
 			excerptColor: getSettingValue('excerptColor', 'desktop', atts),
 			excerptTypography: atts.excerptTypography,
 			excerptBottomSpacing: getSettingValue('excerptBottomSpacing', currentDevice, atts),
-			readMoreButtonColor: getSettingValue('readMoreButtonColor', 'desktop', atts),
-			readMoreButtonTypography: atts.readMoreButtonTypography,
-			readMoreButtonBackgroundColor: getSettingValue('readMoreButtonBackgroundColor', 'desktop', atts),
-			readMoreButtonBorder: atts.readMoreButtonBorder,
-			readMoreButtonPadding: getDimensionsSettingValue('readMoreButtonPadding', currentDevice, atts),
-			readMoreButtonBottomSpacing: getSettingValue('readMoreButtonBottomSpacing', currentDevice, atts),
+			priceColor: getSettingValue('priceColor', 'desktop', atts),
+			priceTypography: atts.priceTypography,
+			priceBottomSpacing: getSettingValue('priceBottomSpacing', currentDevice, atts),
+			buttonColor: getSettingValue('buttonColor', 'desktop', atts),
+			buttonTypography: atts.buttonTypography,
+			buttonBackgroundColor: getSettingValue('buttonBackgroundColor', 'desktop', atts),
+			buttonBorder: atts.buttonBorder,
+			buttonPadding: getDimensionsSettingValue('buttonPadding', currentDevice, atts),
+			buttonBottomSpacing: getSettingValue('buttonBottomSpacing', currentDevice, atts),
 			paginationTextColor: getSettingValue('paginationTextColor', 'desktop', atts),
 			paginationActiveBackgroundColor: getSettingValue('paginationActiveBackgroundColor', 'desktop', atts),
 			paginationActiveTextColor: getSettingValue('paginationActiveTextColor', 'desktop', atts),
@@ -282,7 +302,7 @@ const Edit = (props) => {
 			{ label: __( 'Modified', 'athemes-blocks' ), value: 'modified' },
 			{ label: __( 'Title', 'athemes-blocks' ), value: 'title' },
 			{ label: __( 'Author', 'athemes-blocks' ), value: 'author' },
-			{ label: __( 'Random', 'athemes-blocks' ), value: 'random' },
+			{ label: __( 'Random', 'athemes-blocks' ), value: 'rand' },
 		]
 
 		if ( postType === 'product' ) {
@@ -420,6 +440,9 @@ const Edit = (props) => {
 			swiperRef.current.swiper.autoplay.stop();
 		}
 	}, [atts]);
+
+	// Get woocommerce price symbol.
+	const priceCurrencyData = wc ? '$' : wc.priceFormat?.getCurrency();
 
 	return (
 		<>
@@ -935,18 +958,22 @@ const Edit = (props) => {
 										/>	
 									)
 								}
-								<SwitchToggle
-									label={ __( 'Display Author', 'athemes-blocks' ) }
-									value={ displayAuthor }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ displayAuthor: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ displayAuthor: attributesDefaults.displayAuthor.default });
-									} }
-								/>
+								{
+									postType !== 'product' && (
+										<SwitchToggle
+											label={ __( 'Display Author', 'athemes-blocks' ) }
+											value={ displayAuthor }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displayAuthor: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displayAuthor: attributesDefaults.displayAuthor.default });
+											} }
+										/>
+									)
+								}
 								<SwitchToggle
 									label={ __( 'Display Date', 'athemes-blocks' ) }
 									value={ displayDate }
@@ -959,18 +986,51 @@ const Edit = (props) => {
 										setAttributes({ displayDate: attributesDefaults.displayDate.default });
 									} }
 								/>
-								<SwitchToggle
-									label={ __( 'Display Comments', 'athemes-blocks' ) }
-									value={ displayComments }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ displayComments: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ displayComments: attributesDefaults.displayComments.default });
-									} }
-								/>
+								{
+									postType !== 'product' && (
+										<SwitchToggle
+											label={ __( 'Display Comments', 'athemes-blocks' ) }
+											value={ displayComments }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displayComments: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displayComments: attributesDefaults.displayComments.default });
+											} }
+										/>
+									) || (
+										<SwitchToggle
+											label={ __( 'Display Reviews Rating', 'athemes-blocks' ) }
+											value={ displayReviewsRating }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displayReviewsRating: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displayReviewsRating: attributesDefaults.displayReviewsRating.default });
+											} }
+										/>
+									)
+								}
+								{
+									postType === 'product' && (
+										<SwitchToggle
+											label={ __( 'Display Price', 'athemes-blocks' ) }
+											value={ displayPrice }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displayPrice: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displayPrice: attributesDefaults.displayPrice.default });
+											} }
+										/>		
+									)
+								}
 								<SwitchToggle
 									label={ __( 'Display Taxonomy', 'athemes-blocks' ) }
 									value={ displayTaxonomy }
@@ -1023,47 +1083,41 @@ const Edit = (props) => {
 								/>
 							</PanelBody>
 							<PanelBody 
-								title={ __( 'Read More Button', 'athemes-blocks' ) } 
+								title={ __( 'Button', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'read-more-button' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'read-more-button' ) }
+								opened={ isPanelOpened( 'button' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'button' ) }
 							>
 								<SwitchToggle
-									label={ __( 'Display Read More Button', 'athemes-blocks' ) }
-									value={ displayReadMore }
+									label={ __( 'Display Button', 'athemes-blocks' ) }
+									value={ displayButton }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
-										setAttributes({ displayReadMore: value });
+										setAttributes({ displayButton: value });
 									} }
 									onClickReset={ () => {
-										setAttributes({ displayReadMore: attributesDefaults.displayReadMore.default });
+										setAttributes({ displayButton: attributesDefaults.displayButton.default });
 									} }
 								/>
-								<SwitchToggle
-									label={ __( 'Open in New Tab', 'athemes-blocks' ) }
-									value={ readMoreOpenInNewTab }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ readMoreOpenInNewTab: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ readMoreOpenInNewTab: attributesDefaults.readMoreOpenInNewTab.default });
-									} }
-								/>
-								<TextInput
-									label={ __( 'Text', 'athemes-blocks' ) }
-									value={ readMoreText }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ readMoreText: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ readMoreText: attributesDefaults.readMoreText.default });
-									} }
-								/>
+								{
+									displayButton && (
+										<>
+											<SwitchToggle
+												label={ __( 'Open in New Tab', 'athemes-blocks' ) }
+												value={ buttonOpenInNewTab }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ buttonOpenInNewTab: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ buttonOpenInNewTab: attributesDefaults.buttonOpenInNewTab.default });
+												} }
+											/>
+										</>
+									)
+								}
 							</PanelBody>
 						</Panel>
 					)
@@ -1503,7 +1557,7 @@ const Edit = (props) => {
 											label={ __( 'Arrow Offset', 'athemes-blocks' ) }
 											defaultValue={ arrowOffset }
 											defaultUnit={ getSettingUnit( 'arrowOffset', 'desktop', atts ) }
-											min={ 0 }
+											min={ -100 }
 											max={ 100 }
 											responsive={false}
 											reset={true}
@@ -1763,6 +1817,86 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'imageBorderRadius', value: getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );
 									} }
 								/>
+								<SwitchToggle
+									label={ __( 'Overlay', 'athemes-blocks' ) }
+									value={ imageOverlay }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'imageOverlay', value );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'imageOverlay', getSettingDefaultValue( 'imageOverlay', '', attributesDefaults ) );
+									} }
+								/>
+								{
+									imageOverlay && (
+										<>
+											<ColorPicker
+												label={ __( 'Overlay Color', 'athemes-blocks' ) }
+												value={ imageOverlayColor }
+												hover={false}
+												responsive={false}
+												reset={true}
+												enableAlpha={false}
+												defaultStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'imageOverlayColor', {
+														value: {
+															defaultState: value,
+															hoverState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts )
+														}
+													}, 'desktop' );
+													
+													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ) } );
+												} }
+												hoverStateOnChangeComplete={ ( value ) => {
+													updateAttribute( 'imageOverlayColor', {
+														value: {
+															defaultState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ),
+															hoverState: value	
+														}
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts ) } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'imageOverlayColor', {
+														value: {
+															defaultState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ),
+															hoverState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'hoverState', attributesDefaults )	
+														}
+													}, 'desktop' ); 
+
+													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ) } );
+												} }
+											/>
+											<RangeSlider 
+												label={ __( 'Overlay Opacity', 'athemes-blocks' ) }
+												defaultValue={ imageOverlayOpacity }
+												defaultUnit=""
+												min={0}
+												step={0.1}
+												max={1}
+												responsive={false}
+												reset={true}
+												units={false}
+												onChange={ ( value ) => {
+													updateAttribute( 'imageOverlayOpacity', {
+														value: value,
+														unit: ''
+													}, 'desktop' );
+
+													setUpdateCss( { settingId: 'imageOverlayOpacity', value: value } );
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'imageOverlayOpacity', getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ), 'desktop' );
+
+													setUpdateCss( { settingId: 'imageOverlayOpacity', value: getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ) } );
+												} }
+											/>
+										</>
+									)
+								}
 								<RangeSlider 
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ imageBottomSpacing }
@@ -1811,7 +1945,7 @@ const Edit = (props) => {
 								<ColorPicker
 									label={ __( 'Color', 'athemes-blocks' ) }
 									value={ titleColor }
-									hover={false}
+									hover={true}
 									responsive={false}
 									reset={true}
 									enableAlpha={true}
@@ -1894,6 +2028,129 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
+							{
+								postType === 'product' && displayReviewsRating && (
+									<PanelBody 
+										title={ __( 'Reviews Rating', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'reviewsRating' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'reviewsRating' ) }
+									>
+										<ColorPicker
+											label={ __( 'Color', 'athemes-blocks' ) }
+											value={ reviewsRatingColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'reviewsRatingColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'reviewsRatingColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'reviewsRatingColor', value: getColorPickerSettingValue( 'reviewsRatingColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'reviewsRatingColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'reviewsRatingColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'reviewsRatingColor', value: getColorPickerSettingValue( 'reviewsRatingColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'reviewsRatingColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'reviewsRatingColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'reviewsRatingColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'reviewsRatingColor', value: getColorPickerSettingDefaultValue( 'reviewsRatingColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'BackgroundColor', 'athemes-blocks' ) }
+											value={ reviewsRatingBackgroundColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'reviewsRatingBackgroundColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'reviewsRatingBackgroundColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'reviewsRatingBackgroundColor', value: getColorPickerSettingValue( 'reviewsRatingBackgroundColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'reviewsRatingBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'reviewsRatingBackgroundColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'reviewsRatingBackgroundColor', value: getColorPickerSettingValue( 'reviewsRatingBackgroundColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'reviewsRatingBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'reviewsRatingBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'reviewsRatingBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'reviewsRatingBackgroundColor', value: getColorPickerSettingDefaultValue( 'reviewsRatingBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+											defaultValue={ reviewsRatingBottomSpacing }
+											defaultUnit={ getSettingUnit( 'reviewsRatingBottomSpacing', currentDevice, atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={false}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'reviewsRatingBottomSpacing', {
+													value: value,
+													unit: getSettingUnit( 'reviewsRatingBottomSpacing', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'reviewsRatingBottomSpacing', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'reviewsRatingBottomSpacing', {
+													value: reviewsRatingBottomSpacing,
+													unit: value,
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'reviewsRatingBottomSpacing', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'reviewsRatingBottomSpacing', {
+													value: getSettingDefaultValue( 'reviewsRatingBottomSpacing', currentDevice, attributesDefaults ),
+													unit: getSettingDefaultUnit( 'reviewsRatingBottomSpacing', currentDevice, attributesDefaults )
+												}, currentDevice );							
+
+												setUpdateCss( { settingId: 'reviewsRatingBottomSpacing', value: getSettingDefaultValue( 'reviewsRatingBottomSpacing', currentDevice, attributesDefaults ) } );								
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Meta', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -2117,52 +2374,147 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
+							{
+								postType === 'product' && displayPrice && (
+									<PanelBody 
+										title={ __( 'Price', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'price' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'price' ) }
+									>
+										<ColorPicker
+											label={ __( 'Color', 'athemes-blocks' ) }
+											value={ priceColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'priceColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'priceColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'priceColor', value: getColorPickerSettingValue( 'priceColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'priceColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'priceColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'priceColor', value: getColorPickerSettingValue( 'priceColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'priceColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'priceColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'priceColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'priceColor', value: getColorPickerSettingDefaultValue( 'priceColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<Typography
+											label={ __( 'Typography', 'athemes-blocks' ) }
+											settingId="priceTypography"
+											attributes={ atts }
+											setAttributes={ setAttributes }
+											attributesDefaults={ attributesDefaults }
+											setUpdateCss={ setUpdateCss }
+											subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+										/>
+										<RangeSlider 
+											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+											defaultValue={ priceBottomSpacing }
+											defaultUnit={ getSettingUnit( 'priceBottomSpacing', currentDevice, atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={false}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'priceBottomSpacing', {
+													value: value,
+													unit: getSettingUnit( 'priceBottomSpacing', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'priceBottomSpacing', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'priceBottomSpacing', {
+													value: priceBottomSpacing,
+													unit: value,
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'priceBottomSpacing', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'priceBottomSpacing', {
+													value: getSettingDefaultValue( 'priceBottomSpacing', currentDevice, attributesDefaults ),
+													unit: getSettingDefaultUnit( 'priceBottomSpacing', currentDevice, attributesDefaults )
+												}, currentDevice );							
+
+												setUpdateCss( { settingId: 'priceBottomSpacing', value: getSettingDefaultValue( 'priceBottomSpacing', currentDevice, attributesDefaults ) } );								
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
-								title={ __( 'Read More Button', 'athemes-blocks' ) } 
+								title={ __( 'Button', 'athemes-blocks' ) } 
 								initialOpen={false}
-								opened={ isPanelOpened( 'read-more-button' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'read-more-button' ) }
+								opened={ isPanelOpened( 'button' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'button' ) }
 							>
 								<ColorPicker
 									label={ __( 'Text Color', 'athemes-blocks' ) }
-									value={ readMoreButtonColor }
+									value={ buttonColor }
 									hover={true}
 									responsive={false}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'readMoreButtonColor', {
+										updateAttribute( 'buttonColor', {
 											value: {
 												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'hoverState', atts )
+												hoverState: getColorPickerSettingValue( 'buttonColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'readMoreButtonColor', value: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'defaultState', atts ) } );
+										setUpdateCss( { settingId: 'buttonColor', value: getColorPickerSettingValue( 'buttonColor', 'desktop', 'defaultState', atts ) } );
 									} }
 									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'readMoreButtonColor', {
+										updateAttribute( 'buttonColor', {
 											value: {
-												defaultState: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'defaultState', atts ),
+												defaultState: getColorPickerSettingValue( 'buttonColor', 'desktop', 'defaultState', atts ),
 												hoverState: value	
 											}
 										}, 'desktop' );
 										
-										setUpdateCss( { settingId: 'readMoreButtonColor', value: getColorPickerSettingValue( 'readMoreButtonColor', 'desktop', 'hoverState', atts ) } );
+										setUpdateCss( { settingId: 'buttonColor', value: getColorPickerSettingValue( 'buttonColor', 'desktop', 'hoverState', atts ) } );
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'readMoreButtonColor', {
+										updateAttribute( 'buttonColor', {
 											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'readMoreButtonColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'readMoreButtonColor', 'desktop', 'hoverState', attributesDefaults )	
+												defaultState: getColorPickerSettingDefaultValue( 'buttonColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'buttonColor', 'desktop', 'hoverState', attributesDefaults )	
 											}
 										}, 'desktop' );
 										
-										setUpdateCss( { settingId: 'readMoreButtonColor', value: getColorPickerSettingDefaultValue( 'readMoreButtonColor', 'desktop', 'defaultState', attributesDefaults ) } );
+										setUpdateCss( { settingId: 'buttonColor', value: getColorPickerSettingDefaultValue( 'buttonColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
 								/>
 								<Typography
 									label={ __( 'Typography', 'athemes-blocks' ) }
-									settingId="readMoreButtonTypography"
+									settingId="buttonTypography"
 									attributes={ atts }
 									setAttributes={ setAttributes }
 									attributesDefaults={ attributesDefaults }
@@ -2171,44 +2523,44 @@ const Edit = (props) => {
 								/>
 								<ColorPicker
 									label={ __( 'Background Color', 'athemes-blocks' ) }
-									value={ readMoreButtonBackgroundColor }
+									value={ buttonBackgroundColor }
 									hover={true}
 									responsive={false}
 									reset={true}
 									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'readMoreButtonBackgroundColor', {
+										updateAttribute( 'buttonBackgroundColor', {
 											value: {
 												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'hoverState', atts )
+												hoverState: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'hoverState', atts )
 											}
 										}, 'desktop' );
 
-										setUpdateCss( { settingId: 'readMoreButtonBackgroundColor', value: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'defaultState', atts ) } );
+										setUpdateCss( { settingId: 'buttonBackgroundColor', value: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'defaultState', atts ) } );
 									} }
 									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'readMoreButtonBackgroundColor', {
+										updateAttribute( 'buttonBackgroundColor', {
 											value: {
-												defaultState: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'defaultState', atts ),
+												defaultState: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'defaultState', atts ),
 												hoverState: value	
 											}
 										}, 'desktop' );
 										
-										setUpdateCss( { settingId: 'readMoreButtonBackgroundColor', value: getColorPickerSettingValue( 'readMoreButtonBackgroundColor', 'desktop', 'hoverState', atts ) } );
+										setUpdateCss( { settingId: 'buttonBackgroundColor', value: getColorPickerSettingValue( 'buttonBackgroundColor', 'desktop', 'hoverState', atts ) } );
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'readMoreButtonBackgroundColor', {
+										updateAttribute( 'buttonBackgroundColor', {
 											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'readMoreButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'readMoreButtonBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+												defaultState: getColorPickerSettingDefaultValue( 'buttonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'buttonBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
 											}
 										}, 'desktop' );
 										
-										setUpdateCss( { settingId: 'readMoreButtonBackgroundColor', value: getColorPickerSettingDefaultValue( 'readMoreButtonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+										setUpdateCss( { settingId: 'buttonBackgroundColor', value: getColorPickerSettingDefaultValue( 'buttonBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
 									} }
 								/>
 								<Border
 									label=""
-									settingId="readMoreButtonBorder"
+									settingId="buttonBorder"
 									attributes={ atts }
 									setAttributes={ setAttributes }
 									attributesDefaults={ attributesDefaults }
@@ -2223,41 +2575,41 @@ const Edit = (props) => {
 										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
 										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
 									]}
-									value={ readMoreButtonPadding }
-									defaultUnit={ getSettingUnit('readMoreButtonPadding', currentDevice, atts) }
-									directionsValue={ getDimensionsSettingDirectionsValue('readMoreButtonPadding', currentDevice, atts) }
-									connect={ getDimensionsSettingConnectValue('readMoreButtonPadding', currentDevice, atts) }
+									value={ buttonPadding }
+									defaultUnit={ getSettingUnit('buttonPadding', currentDevice, atts) }
+									directionsValue={ getDimensionsSettingDirectionsValue('buttonPadding', currentDevice, atts) }
+									connect={ getDimensionsSettingConnectValue('buttonPadding', currentDevice, atts) }
 									responsive={ true }
 									units={['px', '%', 'em', 'rem', 'vh', 'vw']}
 									reset={true}
 									onChange={ ( value ) => {
-										updateAttribute( 'readMoreButtonPadding', {
+										updateAttribute( 'buttonPadding', {
 											value: value.value,
-											unit: getSettingUnit( 'readMoreButtonPadding', currentDevice, atts ),
-											connect: getDimensionsSettingConnectValue( 'readMoreButtonPadding', currentDevice, atts )
+											unit: getSettingUnit( 'buttonPadding', currentDevice, atts ),
+											connect: getDimensionsSettingConnectValue( 'buttonPadding', currentDevice, atts )
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'readMoreButtonPadding', value: value.value } );
+										setUpdateCss( { settingId: 'buttonPadding', value: value.value } );
 									} }
 									onChangeUnit={ ( value ) => {
-										updateAttribute( 'readMoreButtonPadding', {
-											value: getSettingValue( 'readMoreButtonPadding', currentDevice, atts ),
+										updateAttribute( 'buttonPadding', {
+											value: getSettingValue( 'buttonPadding', currentDevice, atts ),
 											unit: value,
-											connect: getDimensionsSettingConnectValue( 'readMoreButtonPadding', currentDevice, atts )
+											connect: getDimensionsSettingConnectValue( 'buttonPadding', currentDevice, atts )
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'readMoreButtonPadding', value: getSettingValue( 'readMoreButtonPadding', currentDevice, atts ) } );
+										setUpdateCss( { settingId: 'buttonPadding', value: getSettingValue( 'buttonPadding', currentDevice, atts ) } );
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'readMoreButtonPadding', getDimensionsSettingDefaultValue( 'readMoreButtonPadding', currentDevice, attributesDefaults ), currentDevice );
+										updateAttribute( 'buttonPadding', getDimensionsSettingDefaultValue( 'buttonPadding', currentDevice, attributesDefaults ), currentDevice );
 
-										setUpdateCss( { settingId: 'readMoreButtonPadding', value: getDimensionsSettingDefaultValue( 'readMoreButtonPadding', currentDevice, attributesDefaults ) } );
+										setUpdateCss( { settingId: 'buttonPadding', value: getDimensionsSettingDefaultValue( 'buttonPadding', currentDevice, attributesDefaults ) } );
 									} }
 								/>
 								<RangeSlider 
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
-									defaultValue={ readMoreButtonBottomSpacing }
-									defaultUnit={ getSettingUnit( 'readMoreButtonBottomSpacing', currentDevice, atts ) }
+									defaultValue={ buttonBottomSpacing }
+									defaultUnit={ getSettingUnit( 'buttonBottomSpacing', currentDevice, atts ) }
 									min={ 1 }
 									max={ {
 										px: 150,
@@ -2268,28 +2620,28 @@ const Edit = (props) => {
 									reset={true}
 									units={['px', 'em', 'rem']}
 									onChange={ ( value ) => {
-										updateAttribute( 'readMoreButtonBottomSpacing', {
+										updateAttribute( 'buttonBottomSpacing', {
 											value: value,
-											unit: getSettingUnit( 'readMoreButtonBottomSpacing', currentDevice, atts )
+											unit: getSettingUnit( 'buttonBottomSpacing', currentDevice, atts )
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'readMoreButtonBottomSpacing', value: value } );
+										setUpdateCss( { settingId: 'buttonBottomSpacing', value: value } );
 									} }
 									onChangeUnit={ ( value ) => {
-										updateAttribute( 'readMoreButtonBottomSpacing', {
-											value: readMoreButtonBottomSpacing,
+										updateAttribute( 'buttonBottomSpacing', {
+											value: buttonBottomSpacing,
 											unit: value,
 										}, currentDevice );
 
-										setUpdateCss( { settingId: 'readMoreButtonBottomSpacing', value: value } );								
+										setUpdateCss( { settingId: 'buttonBottomSpacing', value: value } );								
 									} }
 									onClickReset={ () => {
-										updateAttribute( 'readMoreButtonBottomSpacing', {
-											value: getSettingDefaultValue( 'readMoreButtonBottomSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'readMoreButtonBottomSpacing', currentDevice, attributesDefaults )
+										updateAttribute( 'buttonBottomSpacing', {
+											value: getSettingDefaultValue( 'buttonBottomSpacing', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'buttonBottomSpacing', currentDevice, attributesDefaults )
 										}, currentDevice );							
 
-										setUpdateCss( { settingId: 'readMoreButtonBottomSpacing', value: getSettingDefaultValue( 'readMoreButtonBottomSpacing', currentDevice, attributesDefaults ) } );								
+										setUpdateCss( { settingId: 'buttonBottomSpacing', value: getSettingDefaultValue( 'buttonBottomSpacing', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
 							</PanelBody>
@@ -2656,6 +3008,11 @@ const Edit = (props) => {
 				// Image Position.
 				blockProps.className += ` atb-image-position-${imagePosition}`;
 
+				// Image overlay.
+				if ( imageOverlay ) {
+					blockProps.className += ' has-image-overlay';
+				}
+
 				// Has carousel dots.
 				if (displayCarousel && (carouselNavigation === 'dots' || carouselNavigation === 'both')) {
 					blockProps.className += ' atb-has-carousel-dots';
@@ -2719,7 +3076,17 @@ const Edit = (props) => {
 							
 							<div className="at-block-post-grid__content">
 								{displayTitle && (
-									<TitleTag className="at-block-post-grid__title">{ post.title.rendered }</TitleTag>
+									<TitleTag className="at-block-post-grid__title">
+										<a href="#">{ post.title.rendered }</a>
+									</TitleTag>
+								)}
+
+								{( postType === 'product' && displayReviewsRating ) && (
+									<a href="#" className="at-block-post-grid__reviews-rating">
+										<div className="atb-star-rating star-rating" role="img">
+											<span style={{width: '60%'}}>{ __( 'Rated', 'athemes-blocks' ) } <strong className="rating">{post.reviews_rating}</strong> { __( 'out of 5', 'athemes-blocks' ) }</span>
+										</div>
+									</a>
 								)}
 
 								{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
@@ -2748,7 +3115,7 @@ const Edit = (props) => {
 											</a>
 										)}
 										
-										{( postType !== 'page' && displayComments ) && (
+										{( postType !== 'page' && postType !== 'product' && displayComments ) && (
 											<a href="#" className="at-block-post-grid__comments">
 												{displayMetaIcon && (
 													<div
@@ -2776,22 +3143,30 @@ const Edit = (props) => {
 									</div>
 								)}
 
-								{displayExcerpt && (
+								{displayExcerpt && post?.excerpt?.rendered && (
 									<div 
 										className="at-block-post-grid__excerpt"
 										dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.split(' ').slice(0, excerptMaxWords).join(' ') + (post.excerpt.rendered.split(' ').length > excerptMaxWords ? '...' : '') }}
 									/>
 								)}
 
-								{displayReadMore && (
-									<a 
-										href={post.link} 
-										className="at-block-post-grid__read-more"
-										target={readMoreOpenInNewTab ? '_blank' : undefined}
-										rel={readMoreOpenInNewTab ? 'noopener noreferrer' : undefined}
-									>
-										{readMoreText}
-									</a>
+								{postType === 'product' && displayPrice && (
+									<div className="at-block-post-grid__price">
+										<span className="woocommerce-Price-amount amount"><bdi><span className="woocommerce-Price-currencySymbol">$</span>0.00</bdi></span> – <span className="woocommerce-Price-amount amount"><bdi><span className="woocommerce-Price-currencySymbol">$</span>25.00</bdi></span>
+									</div>
+								)}
+
+								{displayButton && (
+									<div className="at-block-post-grid__button">
+										<a 
+											href={post.link} 
+											className="at-block-post-grid__button-button"
+											target={buttonOpenInNewTab ? '_blank' : undefined}
+											rel={buttonOpenInNewTab ? 'noopener noreferrer' : undefined}
+										>
+											{postType === 'product' ? __( 'Add To Cart', 'athemes-blocks' ) : __( 'Read More', 'athemes-blocks' )}
+										</a>
+									</div>
 								)}
 							</div>
 						</div>
@@ -2808,6 +3183,7 @@ const Edit = (props) => {
 							<>
 								{displayCarousel ? (
 									<div 
+										className="at-block-swiper-wrapper"
 										onMouseEnter={ swiperPauseMouseEnterHandler }
 										onMouseLeave={ swiperPauseMouseLeaveHandler }
 									>
@@ -2832,16 +3208,16 @@ const Edit = (props) => {
 													</SwiperSlide>
 												)
 											})}
-
-											{
-												( ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
-													<>
-														<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
-														<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
-													</>
-												)
-											}
 										</Swiper>
+
+										{
+											( ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+												<>
+													<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
+													<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
+												</>
+											)
+										}
 									</div>
 								) : (
 									<>
@@ -2910,9 +3286,16 @@ const applyWithSelect = withSelect((select, props) => {
 		};
 	}
 
+	let orderByValue = 'date';
+	if ( ! orderBy || orderBy === 'rand' ) {
+		orderByValue = 'date';
+	} else {
+		orderByValue = orderBy;
+	}
+
 	const queryArgs = {
 		per_page: postsPerPage || 10,
-		orderby: orderBy || 'date',
+		orderby: orderByValue,
 		order: order || 'desc',
 		_embed: true, // This ensures we get featured images, authors, and terms
 	};
@@ -2928,7 +3311,12 @@ const applyWithSelect = withSelect((select, props) => {
 	}
 
 	// Get posts from the WordPress REST API
-	const posts = select('core').getEntityRecords('postType', postType, queryArgs);
+	let posts = select('core').getEntityRecords('postType', postType, queryArgs);
+	
+	// Shuffle posts if orderby is random
+	if (orderBy === 'rand' && posts) {
+		posts = [...posts].sort(() => Math.random() - 0.5);
+	}
 	
 	// Check if the data is still being fetched
 	const isLoading = select('core/data').isResolving('core', 'getEntityRecords', [
