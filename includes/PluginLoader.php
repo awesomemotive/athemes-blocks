@@ -94,6 +94,7 @@ class PluginLoader {
             'Image',
             'Testimonials',
             'PostGrid',
+            'TaxonomyGrid',
         );
 
         foreach ( $blocks as $block ) {
