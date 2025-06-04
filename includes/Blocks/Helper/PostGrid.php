@@ -29,6 +29,7 @@ class PostGrid {
         $postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, '' );
         $displayImage = Settings::get_setting( 'displayImage', $attributes, $atts_defaults, '' );
         $imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, '' );
+        $displaySaleBadge = Settings::get_setting( 'displaySaleBadge', $attributes, $atts_defaults, '' );
         $displayTitle = Settings::get_setting( 'displayTitle', $attributes, $atts_defaults, '' );
         $displayReviewsRating = Settings::get_setting( 'displayReviewsRating', $attributes, $atts_defaults, '' );
         $titleTag = Settings::get_setting( 'titleTag', $attributes, $atts_defaults, '' );
@@ -54,8 +55,8 @@ class PostGrid {
             <div class="at-block-post-grid__item">
         <?php endif;
 
-        // Sale badge.
-        if ( $postType === 'product' && function_exists( 'wc_get_product' ) ) :
+// Sale badge.
+        if ( $postType === 'product' && $displaySaleBadge && function_exists( 'wc_get_product' ) ) :
             $product = wc_get_product( $post_id );
 
             if ( $product->is_on_sale() ) :

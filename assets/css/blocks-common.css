@@ -161,4 +161,41 @@
   animation: l3 1s infinite linear;
 }
 
+.star-rating {
+  overflow: hidden;
+  position: relative;
+  height: 1.618em;
+  line-height: 1.618;
+  width: 5.3em;
+  font-family: star;
+  font-weight: 400;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0;
+  color: #ffa441;
+}
+.star-rating:before {
+  content: "SSSSS";
+  opacity: 0.25;
+  float: left;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+.star-rating span {
+  overflow: hidden;
+  float: left;
+  top: 0;
+  left: 0;
+  position: absolute;
+  padding-top: 1.5em;
+}
+.star-rating span:before {
+  content: "SSSSS";
+  top: 0;
+  position: absolute;
+  left: 0;
+  color: #ffa441;
+}
+
 /*# sourceMappingURL=blocks-common.css.map*/

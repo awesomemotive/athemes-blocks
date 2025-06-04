@@ -42,6 +42,10 @@ $columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 
 $columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
 $columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, '' );
 
+// Sale Badge.
+$displaySaleBadge = Settings::get_setting( 'displaySaleBadge', $attributes, $atts_defaults, '' );
+$saleBadgePosition = Settings::get_setting( 'saleBadgePosition', $attributes, $atts_defaults, '' );
+
 // Carousel.
 $displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, '' );
 $carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, '' );
@@ -80,6 +84,11 @@ $wrapper_classes = array(
     'at-block-' . $clientId, 
     'at-block-post-grid' 
 );
+
+// Sale Badge.
+if ( $postType === 'product' && $displaySaleBadge ) {
+    $wrapper_classes[] = 'atb-sale-badge-' . $saleBadgePosition;
+}
 
 // Image ratio.
 if ( $imageRatio ) {
@@ -282,6 +291,15 @@ if ( $query->have_posts() ) {
     wp_reset_postdata();
 } else {
     $output .= '<p class="at-block-post-grid__no-posts">' . esc_html__( 'No posts found.', 'athemes-blocks' ) . '</p>';
+}
+
+// Do not display if post type is product and WooCommerce is not active.
+if ( $postType === 'product' && ! class_exists( 'WooCommerce' ) ) {
+    if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+        $output = '<p class="at-block-post-grid__no-posts">' . esc_html__( 'WooCommerce is not active.', 'athemes-blocks' ) . '</p>';
+    } else {
+        $output = '<p class="at-block-post-grid__no-posts">' . esc_html__( 'No products found.', 'athemes-blocks' ) . '</p>';
+    }
 }
 
 // Output.

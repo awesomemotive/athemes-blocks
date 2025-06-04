@@ -79,6 +79,7 @@ const Edit = (props) => {
 		imageRatio,
 		imageSize,
 		imagePosition,
+		displaySaleBadge,
 		displayTitle,
 		titleTag,
 		displayAuthor,
@@ -118,6 +119,13 @@ const Edit = (props) => {
 		imageOverlay,
 		imageOverlayColor,
 		imageOverlayOpacity,
+		saleBadgePosition,
+		saleBadgeColor,
+		saleBadgeBackgroundColor,
+		saleBadgeTypography,
+		saleBadgeBorder,
+		saleBadgePadding,
+		saleBadgeOffset,
 		titleColor,
 		titleTypography,
 		titleBottomSpacing,
@@ -185,6 +193,7 @@ const Edit = (props) => {
 			imageRatio: atts.imageRatio,
 			imageSize: atts.imageSize,
 			imagePosition: atts.imagePosition,
+			displaySaleBadge: atts.displaySaleBadge,
 			displayTitle: atts.displayTitle,
 			titleTag: atts.titleTag,
 			displayAuthor: atts.displayAuthor,
@@ -223,6 +232,13 @@ const Edit = (props) => {
 			imageOverlay: atts.imageOverlay,
 			imageOverlayColor: getSettingValue('imageOverlayColor', 'desktop', atts),
 			imageOverlayOpacity: getSettingValue('imageOverlayOpacity', 'desktop', atts),
+			saleBadgePosition: atts.saleBadgePosition,
+			saleBadgeColor: getSettingValue('saleBadgeColor', 'desktop', atts),
+			saleBadgeBackgroundColor: getSettingValue('saleBadgeBackgroundColor', 'desktop', atts),
+			saleBadgeTypography: atts.saleBadgeTypography,
+			saleBadgeBorder: atts.saleBadgeBorder,
+			saleBadgePadding: getDimensionsSettingValue('saleBadgePadding', currentDevice, atts),
+			saleBadgeOffset: getSettingValue('saleBadgeOffset', 'desktop', atts),
 			titleColor: getSettingValue('titleColor', 'desktop', atts),
 			titleTypography: atts.titleTypography,
 			titleBottomSpacing: getSettingValue('titleBottomSpacing', currentDevice, atts),
@@ -440,9 +456,6 @@ const Edit = (props) => {
 			swiperRef.current.swiper.autoplay.stop();
 		}
 	}, [atts]);
-
-	// Get woocommerce price symbol.
-	const priceCurrencyData = wc ? '$' : wc.priceFormat?.getCurrency();
 
 	return (
 		<>
@@ -922,6 +935,22 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'content' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
+								{
+									postType === 'product' && (
+										<SwitchToggle
+											label={ __( 'Display Sale Badge', 'athemes-blocks' ) }
+											value={ displaySaleBadge }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displaySaleBadge: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displaySaleBadge: attributesDefaults.displaySaleBadge.default });
+											} }
+										/>
+									)
+								}
 								<SwitchToggle
 									label={ __( 'Display Title', 'athemes-blocks' ) }
 									value={ displayTitle }
@@ -1936,6 +1965,200 @@ const Edit = (props) => {
 									} }
 								/>
 							</PanelBody>
+							{
+								postType === 'product' && displaySaleBadge && (
+									<PanelBody 
+										title={ __( 'Sale Badge', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'sale-badge' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'sale-badge' ) }
+									>
+										<RadioButtons 
+											label={ __( 'Alignment', 'athemes-blocks' ) }
+											defaultValue={ saleBadgePosition }
+											options={[
+												{ label: __( 'Top Left', 'athemes-blocks' ), value: 'top-left' },
+												{ label: __( 'Top Right', 'athemes-blocks' ), value: 'top-right' },
+											]}
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ saleBadgePosition: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ saleBadgePosition: attributesDefaults.saleBadgePosition.default });
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Text Color', 'athemes-blocks' ) }
+											value={ saleBadgeColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											enableAlpha={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'saleBadgeColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'saleBadgeColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'saleBadgeColor', value: getColorPickerSettingValue( 'saleBadgeColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'saleBadgeColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'saleBadgeColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'saleBadgeColor', value: getColorPickerSettingValue( 'saleBadgeColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'saleBadgeColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'saleBadgeColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'saleBadgeColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'saleBadgeColor', value: getColorPickerSettingDefaultValue( 'saleBadgeColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Background Color', 'athemes-blocks' ) }
+											value={ saleBadgeBackgroundColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											enableAlpha={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'saleBadgeBackgroundColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'saleBadgeBackgroundColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'saleBadgeBackgroundColor', value: getColorPickerSettingValue( 'saleBadgeBackgroundColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'saleBadgeBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'saleBadgeBackgroundColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'saleBadgeBackgroundColor', value: getColorPickerSettingValue( 'saleBadgeBackgroundColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'saleBadgeBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'saleBadgeBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'saleBadgeBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'saleBadgeBackgroundColor', value: getColorPickerSettingDefaultValue( 'saleBadgeBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<Typography
+											label={ __( 'Typography', 'athemes-blocks' ) }
+											settingId="saleBadgeTypography"
+											attributes={ atts }
+											setAttributes={ setAttributes }
+											attributesDefaults={ attributesDefaults }
+											setUpdateCss={ setUpdateCss }
+											subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+										/>
+										<Border
+											label=""
+											settingId="saleBadgeBorder"
+											attributes={ atts }
+											setAttributes={ setAttributes }
+											attributesDefaults={ attributesDefaults }
+											setUpdateCss={ setUpdateCss }
+											subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+										/>
+										<Dimensions
+											label={ __( 'Padding', 'athemes-blocks' ) }
+											directions={[
+												{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+												{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+												{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+												{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+											]}
+											value={ saleBadgePadding }
+											defaultUnit={ getSettingUnit('saleBadgePadding', currentDevice, atts) }
+											directionsValue={ getDimensionsSettingDirectionsValue('saleBadgePadding', currentDevice, atts) }
+											connect={ getDimensionsSettingConnectValue('saleBadgePadding', currentDevice, atts) }
+											responsive={ true }
+											units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'saleBadgePadding', {
+													value: value.value,
+													unit: getSettingUnit( 'saleBadgePadding', currentDevice, atts ),
+													connect: getDimensionsSettingConnectValue( 'saleBadgePadding', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'saleBadgePadding', value: value.value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'saleBadgePadding', {
+													value: getSettingValue( 'saleBadgePadding', currentDevice, atts ),
+													unit: value,
+													connect: getDimensionsSettingConnectValue( 'saleBadgePadding', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'saleBadgePadding', value: getSettingValue( 'saleBadgePadding', currentDevice, atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'saleBadgePadding', getDimensionsSettingDefaultValue( 'saleBadgePadding', currentDevice, attributesDefaults ), currentDevice );
+
+												setUpdateCss( { settingId: 'saleBadgePadding', value: getDimensionsSettingDefaultValue( 'saleBadgePadding', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Corner Offset', 'athemes-blocks' ) }
+											defaultValue={ saleBadgeOffset }
+											defaultUnit={ getSettingUnit( 'saleBadgeOffset', 'desktop', atts ) }
+											min={ 0 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'saleBadgeOffset', {
+													value: value,
+													unit: getSettingUnit( 'saleBadgeOffset', 'desktop', atts )
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'saleBadgeOffset', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'saleBadgeOffset', {
+													value: saleBadgeOffset,
+													unit: value,
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'saleBadgeOffset', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'saleBadgeOffset', {
+													value: getSettingDefaultValue( 'saleBadgeOffset', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'saleBadgeOffset', 'desktop', attributesDefaults )
+												}, 'desktop' );							
+
+												setUpdateCss( { settingId: 'saleBadgeOffset', value: getSettingDefaultValue( 'saleBadgeOffset', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Title', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -2999,6 +3222,11 @@ const Edit = (props) => {
 					className: blockPropsClassName
 				});
 
+				// Sale Badge.
+				if ( postType === 'product' && displaySaleBadge ) {
+					blockProps.className += ` atb-sale-badge-${saleBadgePosition}`;
+				}
+
 				// Image Ratio.
 				blockProps.className += ` atb-image-ratio-${imageRatio}`;
 
@@ -3075,6 +3303,12 @@ const Edit = (props) => {
 							)}
 							
 							<div className="at-block-post-grid__content">
+								{postType === 'product' && displaySaleBadge && (
+									<span className="onsale">
+										{ __( 'Sale', 'athemes-blocks' ) }
+									</span>
+								)}
+
 								{displayTitle && (
 									<TitleTag className="at-block-post-grid__title">
 										<a href="#">{ post.title.rendered }</a>

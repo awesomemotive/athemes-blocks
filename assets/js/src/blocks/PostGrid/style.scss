@@ -83,6 +83,28 @@
         }
     }
 
+    // Sale badge.
+    .onsale {
+        position: absolute;
+        background-color: var( --atb-post-grid-sale-badge-background-color, #000 );
+        color: var( --atb-post-grid-sale-badge-text-color, #fff );
+        z-index: 1;
+    }
+
+    &.atb-sale-badge-top-left {
+        .onsale {
+            top: var( --atb-post-grid-sale-badge-offset, 20px ) !important;
+            left: var( --atb-post-grid-sale-badge-offset, 20px ) !important;
+        }
+    }
+
+    &.atb-sale-badge-top-right {
+        .onsale {
+            top: var( --atb-post-grid-sale-badge-offset, 20px ) !important;
+            right: var( --atb-post-grid-sale-badge-offset, 20px ) !important;
+        }
+    }
+
     // Title.
     &__title {
         margin-top: 0 !important;
@@ -175,6 +197,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            color: var( --atb-post-grid-button-color, #FFF ) !important;
 
             &.with-spinner-loader {
                 &:before {
@@ -195,6 +218,10 @@
                         display: block !important;
                     }
                 }
+            }
+
+            svg {
+                fill: var( --atb-post-grid-button-color, #FFF );
             }
         }
     }

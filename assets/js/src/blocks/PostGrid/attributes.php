@@ -174,6 +174,10 @@ return array_merge(
     // --- Content ------------------------
     // ------------------------------------
     array(
+        'displaySaleBadge' => array(
+            'type' => 'boolean',
+            'default' => true
+        ),
         'displayTitle' => array(
             'type' => 'boolean',
             'default' => true
@@ -908,6 +912,349 @@ return array_merge(
                 'property' => '--atb-image-overlay-opacity',
             )
         ),
+    ),
+
+    // ------------------------------------
+    // --- Sale Badge ---------------------
+    // ------------------------------------
+    array(
+        'saleBadgePosition' => array(
+            'type' => 'string',
+            'default' => 'top-left',
+        ),
+        'saleBadgeColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#FFF',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-post-grid-sale-badge-text-color',
+            ),
+        ),
+        'saleBadgeBackgroundColor' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'defaultState' => '#212121',
+                        'hoverState' => ''
+                    )
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'defaultState' => '',
+                        'hoverState' => ''
+                    )
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-post-grid-sale-badge-background-color',
+            ),
+        ),
+    ),
+    Attributes::get_typography_attributes(
+        'saleBadgeTypography',
+        array(
+            'fontFamily' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'font-family',
+                )
+            ),
+            'fontSize' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 0.9,
+                        'unit' => 'rem',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'rem',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'font-size',
+                )
+            ),
+            'fontWeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 400,
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'font-weight',
+                )
+            ),
+            'fontStyle' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'font-style',
+                )
+            ),
+            'textTransform' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'uppercase',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'text-transform',
+                )
+            ),
+            'textDecoration' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'none',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'text-decoration',
+                )
+            ),
+            'lineHeight' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 1,
+                        'unit' => 'em',
+                    ),
+                    'tablet' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                    'mobile' => array(
+                        'value' => '',
+                        'unit' => 'em',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'line-height',
+                )
+            ),
+            'letterSpacing' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'letter-spacing',
+                )
+            ),
+        )
+    ),
+    Attributes::get_border_attributes(
+        'saleBadgeBorder',
+        array(
+            'borderStyle' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => 'none',
+                    ),
+                    'tablet' => array(
+                        'value' => 'none',
+                    ),
+                    'mobile' => array(
+                        'value' => 'none',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'border-style',
+                )
+            ),
+            'borderWidth' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-width',
+                )
+            ),
+            'borderRadius' => array(
+                'default' => array(
+                    'desktop' => array(
+                        'value' => array(
+                            'top' => 4,
+                            'right' => 4,
+                            'bottom' => 4,
+                            'left' => 4,
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'tablet' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                    'mobile' => array(
+                        'value' => array(
+                            'top' => '',
+                            'right' => '',
+                            'bottom' => '',
+                            'left' => '',
+                        ),
+                        'unit' => 'px',
+                    ),
+                ),
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale'
+                    ),
+                    'property' => 'border-{{DIRECTION}}-radius',
+                )
+            ),
+            'borderColor' => array(
+                'css' => array(
+                    'selectors' => array(
+                        '{{WRAPPER}} .onsale' => '{{VALUE}}',
+                        '{{WRAPPER}} .onsale:hover' => '{{HOVER}}',
+                    ),
+                    'property' => 'border-color',
+                )
+            ),
+        )
+    ),
+    array(
+        'saleBadgePadding' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => array(
+                        'top' => 10,
+                        'right' => 20,
+                        'bottom' => 10,
+                        'left' => 20,
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => array(
+                        'top' => '',
+                        'right' => '',
+                        'bottom' => '',
+                        'left' => '',
+                    ),
+                    'connect' => true,
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}} .onsale',
+                ),
+                'property' => 'padding-{{DIRECTION}}',
+            ),
+        ),
+        'saleBadgeOffset' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 20,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}',
+                ),
+                'property' => '--atb-post-grid-sale-badge-offset',
+            ),
+        ),
+
     ),
 
     // ------------------------------------
@@ -1698,7 +2045,7 @@ return array_merge(
                     '{{WRAPPER}} .at-block-post-grid__button-button' => '{{VALUE}}',
                     '{{WRAPPER}} .at-block-post-grid__button-button:hover' => '{{HOVER}}',
                 ),
-                'property' => 'color',
+                'property' => '--atb-post-grid-button-color',
             ),
         ),
     ),
