@@ -1083,7 +1083,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
-                    '{{WRAPPER}} .at-block-post-grid__title'
+                    '{{WRAPPER}} .at-block-post-grid__title' => '{{VALUE}}{{UNIT}} !important;'
                 ),
                 'property' => 'margin-bottom',
             ),

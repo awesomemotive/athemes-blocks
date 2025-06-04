@@ -1,3 +1,13 @@
+// Fade Effect Before Initialization.
+.swiper {
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    
+    &:not(.swiper-initialized) {
+        opacity: 0;
+    }
+}
+
 // Navigation.
 .at-block-nav {
     position: absolute;

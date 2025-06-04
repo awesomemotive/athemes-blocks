@@ -85,7 +85,7 @@
 
     // Title.
     &__title {
-        margin-top: 0;
+        margin-top: 0 !important;
 
         a {
             display: block;
@@ -301,6 +301,19 @@
         &.atb-image-position-top {
             .at-block-post-grid__image {
                 position: relative;
+            }
+        }
+    }
+
+    // Carousel state before initialization.
+    .at-block-post-grid__swiper {
+        &:not(.swiper-initialized) {
+            .swiper-wrapper {
+                display: flex;
+
+                .at-block-post-grid__item {
+                    width: calc(100% / var(--atb-post-grid-columns, 3));
+                }
             }
         }
     }
