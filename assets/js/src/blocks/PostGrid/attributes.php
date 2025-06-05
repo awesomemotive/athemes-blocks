@@ -18,6 +18,14 @@ use AThemes_Blocks\Blocks\Helper\Attributes;
 return array_merge(
     Attributes::get_block_core_attributes(),
     
+    // ### Block Controls #######################
+    array(
+        'align' => array(
+            'type' => 'string',
+            'default' => 'none'
+        )
+    ),
+
     // ### General #######################
 
     // ------------------------------------
@@ -53,6 +61,10 @@ return array_merge(
         'excludeCurrentPost' => array(
             'type' => 'boolean',
             'default' => false
+        ),
+        'stickyPosts' => array(
+            'type' => 'string',
+            'default' => 'ignore'
         ),
         'offsetStartingPoint' => array(
             'type' => 'boolean',

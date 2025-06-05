@@ -2,9 +2,10 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, Spinner } from '@wordpress/components';
-import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText, BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
+import { alignNone } from '@wordpress/icons';
 
 import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
@@ -58,6 +59,7 @@ const Edit = (props) => {
 		taxonomy,
 		taxonomyTerm,
 		postsPerPage,
+		stickyPosts,
 		excludeCurrentPost,
 		offsetStartingPoint,
 		offsetStartingPointValue,
@@ -172,6 +174,7 @@ const Edit = (props) => {
 			taxonomy: atts.taxonomy,
 			taxonomyTerm: atts.taxonomyTerm,
 			postsPerPage: atts.postsPerPage,
+			stickyPosts: atts.stickyPosts,
 			excludeCurrentPost: atts.excludeCurrentPost,
 			offsetStartingPoint: atts.offsetStartingPoint,
 			offsetStartingPointValue: atts.offsetStartingPointValue,
@@ -572,6 +575,27 @@ const Edit = (props) => {
 										setAttributes({ postsPerPage: attributesDefaults.postsPerPage.default });
 									} }
 								/>
+								{
+									postType === 'post' && (
+										<Select
+											label={ __( 'Sticky Posts', 'athemes-blocks' ) }
+											options={[
+												{ label: __( 'Ignore', 'athemes-blocks' ), value: 'ignore' },
+												{ label: __( 'Include', 'athemes-blocks' ), value: 'include' },
+												{ label: __( 'Only', 'athemes-blocks' ), value: 'only' },
+											]}
+											value={ stickyPosts }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ stickyPosts: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ stickyPosts: attributesDefaults.stickyPosts.default });
+											} }
+										/>		
+									)
+								}
 								<SwitchToggle
 									label={ __( 'Exclude Current Post', 'athemes-blocks' ) }
 									value={ excludeCurrentPost }
@@ -1411,7 +1435,7 @@ const Edit = (props) => {
 									} }
 								/>
 								<SwitchToggle
-									label={ __( 'Aplly padding to content', 'athemes-blocks' ) }
+									label={ __( 'Apply padding to content', 'athemes-blocks' ) }
 									value={ cardPaddingToContentOnly }
 									responsive={false}
 									reset={true}
@@ -3222,6 +3246,12 @@ const Edit = (props) => {
 					className: blockPropsClassName
 				});
 
+				// Block alignment.
+				if (attributes.align) {
+					blockProps.className += ` align${attributes.align}`;
+					blockProps['data-align'] = attributes.align;
+				}
+
 				// Sale Badge.
 				if ( postType === 'product' && displaySaleBadge ) {
 					blockProps.className += ` atb-sale-badge-${saleBadgePosition}`;
@@ -3345,8 +3375,18 @@ const Edit = (props) => {
 														dangerouslySetInnerHTML={{ __html: athemesBlocksIconBoxLibrary['bx-calendar-regular'] }} 
 													/>
 												)}
-												{new Date(post.date).toLocaleDateString()}
-											</a>
+												
+												{
+													new Date(post.date).toLocaleDateString(
+														'en-US',
+														{
+															year: 'numeric',
+															month: 'long',
+															day: 'numeric'
+														}
+													)
+												}
+												</a>
 										)}
 										
 										{( postType !== 'page' && postType !== 'product' && displayComments ) && (
@@ -3409,6 +3449,30 @@ const Edit = (props) => {
 
 				return (
 					<div { ...blockProps }>
+						<BlockControls>
+							<AlignmentToolbar
+								alignmentControls={[
+									{
+										align: 'none',
+										icon: alignNone,
+										title: __( 'None', 'athemes-blocks' )
+									},
+									{
+										align: 'wide',
+										icon: 'align-wide',
+										title: __( 'Wide Width', 'athemes-blocks' )
+									},
+									{
+										align: 'full',
+										icon: 'align-full-width',
+										title: __( 'Full Width', 'athemes-blocks' )
+									}
+								]}
+								value={attributes.align}
+								onChange={(align) => setAttributes({ align })}
+							/>
+						</BlockControls>
+
 						{isLoading ? (
 							<div className="at-block-post-grid__loading">
 								<Spinner />
@@ -3506,6 +3570,7 @@ const applyWithSelect = withSelect((select, props) => {
 		taxonomy,
 		taxonomyTerm,
 		postsPerPage,
+		stickyPosts,
 		offsetStartingPoint,
 		offsetStartingPointValue,
 		orderBy,
@@ -3531,8 +3596,13 @@ const applyWithSelect = withSelect((select, props) => {
 		per_page: postsPerPage || 10,
 		orderby: orderByValue,
 		order: order || 'desc',
-		_embed: true, // This ensures we get featured images, authors, and terms
+		_embed: true,
 	};
+
+	// Sticky Posts.
+	if (stickyPosts === 'only') {
+		queryArgs.sticky = true;
+	}
 
 	// Add taxonomy query if taxonomy and terms are set
 	if (taxonomy && taxonomy !== 'all' && taxonomyTerm && taxonomyTerm !== 'all') {

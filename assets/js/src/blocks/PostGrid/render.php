@@ -32,6 +32,7 @@ $postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, '' )
 $taxonomy = Settings::get_setting( 'taxonomy', $attributes, $atts_defaults, '' );
 $taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaults, '' );
 $postsPerPage = Settings::get_setting( 'postsPerPage', $attributes, $atts_defaults, '' );
+$stickyPosts = Settings::get_setting( 'stickyPosts', $attributes, $atts_defaults, '' );
 $excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, $atts_defaults, '' );
 $offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, '' );
 $offsetStartingPointValue = Settings::get_setting( 'offsetStartingPointValue', $attributes, $atts_defaults, '' );
@@ -84,6 +85,11 @@ $wrapper_classes = array(
     'at-block-' . $clientId, 
     'at-block-post-grid' 
 );
+
+// Add alignment class if set
+if ( ! empty( $attributes['align'] ) ) {
+    $wrapper_classes[] = 'align' . $attributes['align'];
+}
 
 // Sale Badge.
 if ( $postType === 'product' && $displaySaleBadge ) {
@@ -155,6 +161,15 @@ $query_args = array(
     'orderby'        => $orderBy,
     'order'          => $order,
 );
+
+// Sticky Posts.
+if ( $stickyPosts === 'ignore' ) {
+    $query_args['ignore_sticky_posts'] = 1;
+} else if ( $stickyPosts === 'include' ) {
+    $query_args['ignore_sticky_posts'] = 0;
+} else if ( $stickyPosts === 'only' ) {
+    $query_args['post__in'] = get_option( 'sticky_posts' );
+}
 
 // Add taxonomy query if taxonomy and terms are set
 if ( $taxonomy && $taxonomy !== 'all' && $taxonomyTerm && $taxonomyTerm !== 'all' ) {

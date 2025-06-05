@@ -1012,7 +1012,7 @@ const Edit = (props) => {
 									} }
 								/>
 								<SwitchToggle
-									label={ __( 'Aplly padding to content', 'athemes-blocks' ) }
+									label={ __( 'Apply padding to content', 'athemes-blocks' ) }
 									value={ cardPaddingToContentOnly }
 									responsive={false}
 									reset={true}
