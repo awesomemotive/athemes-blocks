@@ -14,8 +14,8 @@ export const withGoogleFonts = (WrappedComponent) => {
 
 		// Load the selected font and weight on mount
 		useEffect(() => {
-            const hasTypography = atts.typography;
-            if (!hasTypography) {
+            const hasTypography = Object.keys(atts).some(key => key.indexOf('typography') !== -1 || key.indexOf('Typography') !== -1);
+            if ( ! hasTypography ) {
 				return;
 			}
 
@@ -23,34 +23,46 @@ export const withGoogleFonts = (WrappedComponent) => {
 			const fontFamily = getInnerSettingValue('typography', 'fontFamily', 'desktop', atts);
 			const fontWeight = getInnerSettingValue('typography', 'fontWeight', 'desktop', atts);
 
-			if (fontFamily && fontWeight) {
-				const font = googleFontsData.items.find(f => f.family === fontFamily);
+			const familiesWithWeight = [];
 
-				if (font) {
-					const fontUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@${fontWeight}&display=swap`;
+			Object.keys(atts).forEach(key => {
+				if (key.indexOf('typography') !== -1 || key.indexOf('Typography') !== -1) {
+					const settingId = key;
+					const fontFamily = getInnerSettingValue(settingId, 'fontFamily', 'desktop', atts);
+					const fontWeight = getInnerSettingValue(settingId, 'fontWeight', 'desktop', atts);
 
-					// Function to add link to a document
-					const addLinkToDocument = (doc) => {
-						const existingLink = Array.from(doc.getElementsByTagName('link')).find(
-							link => link.href === fontUrl
-						);
+					if ( fontFamily === 'default' ) {
+						return;
+					} 
 
-						if (!existingLink) {
-							const link = doc.createElement('link');
-							link.href = fontUrl;
-							link.rel = 'stylesheet';
-							doc.head.appendChild(link);
-						}
-					};
+					familiesWithWeight.push(`${encodeURIComponent(fontFamily)}:wght@${fontWeight}`);
+				}
+			});
 
-					// Add to main editor DOM
-					addLinkToDocument(document);
+			if ( familiesWithWeight.length > 0 ) {
+				const fontUrl = `https://fonts.googleapis.com/css2?family=${familiesWithWeight.join('&family=')}&display=swap`;
 
-					// Add to canvas iframe if it exists
-					const editorCanvas = document.querySelector('.block-editor-iframe__container iframe');
-					if (editorCanvas && editorCanvas.contentDocument) {
-						addLinkToDocument(editorCanvas.contentDocument);
+				// Function to add link to a document
+				const addLinkToDocument = (doc) => {
+					const existingLink = Array.from(doc.getElementsByTagName('link')).find(
+						link => link.href === fontUrl
+					);
+
+					if (!existingLink) {
+						const link = doc.createElement('link');
+						link.href = fontUrl;
+						link.rel = 'stylesheet';
+						doc.head.appendChild(link);
 					}
+				};
+
+				// Add to main editor DOM
+				addLinkToDocument(document);
+
+				// Add to canvas iframe if it exists
+				const editorCanvas = document.querySelector('.block-editor-iframe__container iframe');
+				if (editorCanvas && editorCanvas.contentDocument) {
+					addLinkToDocument(editorCanvas.contentDocument);
 				}
 			}
 		}, []);

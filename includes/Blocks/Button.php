@@ -13,9 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-use AThemes_Blocks\Blocks\BlockBaseText;
+use AThemes_Blocks\Blocks\BlockBase;
+use AThemes_Blocks\Blocks\Traits\WithGoogleFonts;
 
-class Button extends BlockBaseText {
+class Button extends BlockBase {
+
+    use WithGoogleFonts;
 
     /**
      * Constructor.
@@ -27,7 +30,7 @@ class Button extends BlockBaseText {
 
         parent::__construct();
 
-        // Register Google Fonts hooks.
-        $this->register_google_fonts_hooks();
+        // Initialize Google Fonts service.
+        $this->init_google_fonts();
     }
 }

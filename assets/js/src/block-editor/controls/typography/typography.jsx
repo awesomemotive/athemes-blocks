@@ -52,6 +52,10 @@ export function Typography( props ) {
         }
 
         const selectedFontFamily = googleFontsData.items.find( ( font ) => font.family === fontFamily.default['desktop'].value );
+        if ( ! selectedFontFamily ) {
+            return;
+        }
+
         const fontWeightOptions = selectedFontFamily.variants.map( ( variant ) => {
             return {
                 label: variant,

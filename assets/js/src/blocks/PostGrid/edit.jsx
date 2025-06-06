@@ -6,6 +6,7 @@ import { InspectorControls, useBlockProps, InnerBlocks, RichText, BlockControls,
 import { useMergeRefs } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { alignNone } from '@wordpress/icons';
+import { decodeEntities } from '@wordpress/html-entities';
 
 import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
@@ -66,6 +67,7 @@ const Edit = (props) => {
 		orderBy,
 		order,
 		displayCarousel,
+		displayCarouselNavigation,
 		carouselPauseOnHover,
 		carouselAutoplay,
 		carouselAutoplaySpeed,
@@ -117,6 +119,8 @@ const Edit = (props) => {
 		dotsColor,
 		dotsOffset,
 		imageBottomSpacing,
+		imageWidth,
+		imageGap,
 		imageBorderRadius,
 		imageOverlay,
 		imageOverlayColor,
@@ -181,6 +185,7 @@ const Edit = (props) => {
 			orderBy: atts.orderBy,
 			order: atts.order,
 			displayCarousel: atts.displayCarousel,
+			displayCarouselNavigation: atts.displayCarouselNavigation,
 			carouselPauseOnHover: atts.carouselPauseOnHover,
 			carouselAutoplay: atts.carouselAutoplay,
 			carouselAutoplaySpeed: atts.carouselAutoplaySpeed,
@@ -229,7 +234,9 @@ const Edit = (props) => {
 			navigationBackgroundColor: getSettingValue('navigationBackgroundColor', 'desktop', atts),
 			navigationBorderColor: getSettingValue('navigationBorderColor', 'desktop', atts),
 			dotsColor: getSettingValue('dotsColor', 'desktop', atts),
-			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),			
+			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),
+			imageWidth: getSettingValue('imageWidth', currentDevice, atts),
+			imageGap: getSettingValue('imageGap', currentDevice, atts),
 			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
 			imageBorderRadius: getDimensionsSettingValue('imageBorderRadius', currentDevice, atts),
 			imageOverlay: atts.imageOverlay,
@@ -392,12 +399,12 @@ const Edit = (props) => {
 			pauseOnMouseEnter: carouselPauseOnHover
 		} : false,
 		speed: carouselTransitionDuration,
-		navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
+		navigation: ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ? {
 			enabled: true,
 			nextEl: 'at-block-nav--next',
 			prevEl: 'at-block-nav--prev',
 		} : false,
-		pagination: ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
+		pagination: ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) && displayCarouselNavigation ? {
 			type: 'bullets',
 			bulletClass: 'at-block-bullets--bullet',
 			bulletActiveClass: 'at-block-bullets--bullet-active',
@@ -691,6 +698,18 @@ const Edit = (props) => {
 									displayCarousel && (
 										<>
 											<SwitchToggle
+												label={ __( 'Navigation', 'athemes-blocks' ) }
+												value={ displayCarouselNavigation }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ displayCarouselNavigation: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ displayCarouselNavigation: attributesDefaults.displayCarouselNavigation.default });
+												} }
+											/>
+											<SwitchToggle
 												label={ __( 'Pause on hover', 'athemes-blocks' ) }
 												value={ carouselPauseOnHover }
 												responsive={false}
@@ -938,6 +957,8 @@ const Edit = (props) => {
 												options={[
 													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
 													{ label: __( 'Background', 'athemes-blocks' ), value: 'background' },
+													{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+													{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
 												]}
 												value={ imagePosition }
 												responsive={false}
@@ -1332,7 +1353,8 @@ const Edit = (props) => {
 									} }
 								/>
 								<Border
-									label=""
+									label={ __( 'Border', 'athemes-blocks' ) }
+									labelPosition="before-subfield-label"
 									settingId="cardBorder"
 									attributes={ atts }
 									setAttributes={ setAttributes }
@@ -1493,7 +1515,7 @@ const Edit = (props) => {
 								}
 							</PanelBody>
 							{
-								displayCarousel && (
+								( displayCarousel && displayCarouselNavigation ) && (
 									<PanelBody 
 										title={ __( 'Navigation', 'athemes-blocks' ) } 
 										initialOpen={false}
@@ -1831,6 +1853,83 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'image' ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
 							>
+								{
+									( imagePosition === 'left' || imagePosition === 'right' )&& (
+										<>
+											<RangeSlider 
+												label={ __( 'Width', 'athemes-blocks' ) }
+												defaultValue={ imageWidth }
+												defaultUnit={ getSettingUnit( 'imageWidth', currentDevice, atts ) }
+												min={ 0 }
+												max={ {
+													'%': 100,
+													px: 1000,
+												} }
+												responsive={true}
+												reset={true}
+												units={['%', 'px']}
+												onChange={ ( value ) => {
+													updateAttribute( 'imageWidth', {
+														value: value,
+														unit: getSettingUnit( 'imageWidth', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'imageWidth', value: value } );
+												} }
+												onChangeUnit={ ( value ) => {
+													updateAttribute( 'imageWidth', {
+														value: imageWidth,
+														unit: value,
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'imageWidth', value: value } );								
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'imageWidth', {
+														value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ),
+														unit: getSettingDefaultUnit( 'imageWidth', currentDevice, attributesDefaults )
+													}, currentDevice );							
+
+													setUpdateCss( { settingId: 'imageWidth', value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ) } );								
+												} }
+											/>
+											<RangeSlider 
+												label={ __( 'Gap', 'athemes-blocks' ) }
+												defaultValue={ imageGap }
+												defaultUnit={ getSettingUnit( 'imageGap', currentDevice, atts ) }
+												min={ 1 }
+												max={ 100 }
+												responsive={true}
+												reset={true}
+												units={['px']}
+												onChange={ ( value ) => {
+													updateAttribute( 'imageGap', {
+														value: value,
+														unit: getSettingUnit( 'imageGap', currentDevice, atts )
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'imageGap', value: value } );
+												} }
+												onChangeUnit={ ( value ) => {
+													updateAttribute( 'imageGap', {
+														value: imageGap,
+														unit: value,
+													}, currentDevice );
+
+													setUpdateCss( { settingId: 'imageGap', value: value } );								
+												} }
+												onClickReset={ () => {
+													updateAttribute( 'imageGap', {
+														value: getSettingDefaultValue( 'imageGap', currentDevice, attributesDefaults ),
+														unit: getSettingDefaultUnit( 'imageGap', currentDevice, attributesDefaults )
+													}, currentDevice );							
+
+													setUpdateCss( { settingId: 'imageGap', value: getSettingDefaultValue( 'imageGap', currentDevice, attributesDefaults ) } );								
+												} }
+											/>
+										</>
+									)
+								}
 								<Dimensions
 									label={ __( 'Border Radius', 'athemes-blocks' ) }
 									directions={[
@@ -3271,6 +3370,11 @@ const Edit = (props) => {
 					blockProps.className += ' has-image-overlay';
 				}
 
+				// Card Vertical Alignment.
+				if (cardVerticalAlignment) {
+					blockProps.className += ` atb-card-vertical-alignment-${cardVerticalAlignment}`;
+				}
+
 				// Has carousel dots.
 				if (displayCarousel && (carouselNavigation === 'dots' || carouselNavigation === 'both')) {
 					blockProps.className += ' atb-has-carousel-dots';
@@ -3312,7 +3416,7 @@ const Edit = (props) => {
 						src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
 						width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
 						height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
-						alt: post.title.rendered
+						alt: decodeEntities( post.title.rendered )
 					}
 
 					const hasTaxonomyTerms = post._embedded?.[`wp:term`]?.find(terms => terms[0]?.taxonomy === taxonomy);
@@ -3341,7 +3445,7 @@ const Edit = (props) => {
 
 								{displayTitle && (
 									<TitleTag className="at-block-post-grid__title">
-										<a href="#">{ post.title.rendered }</a>
+										<a href="#">{ decodeEntities(post.title.rendered) }</a>
 									</TitleTag>
 								)}
 
@@ -3451,6 +3555,7 @@ const Edit = (props) => {
 					<div { ...blockProps }>
 						<BlockControls>
 							<AlignmentToolbar
+								label={ __( 'Align', 'athemes-blocks' ) }
 								alignmentControls={[
 									{
 										align: 'none',
@@ -3497,7 +3602,7 @@ const Edit = (props) => {
 													src: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.source_url : postFeaturedMedia?.source_url,
 													width: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.width : postFeaturedMedia?.media_details?.width,
 													height: postFeaturedMedia?.media_details ? postFeaturedMedia?.media_details?.sizes[imageSize]?.height : postFeaturedMedia?.media_details?.height,
-													alt: post.title.rendered
+													alt: decodeEntities( post.title.rendered )
 												}
 
 												return (
@@ -3509,7 +3614,7 @@ const Edit = (props) => {
 										</Swiper>
 
 										{
-											( ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+											( ( postsPerPage > 1 && postsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ) && (
 												<>
 													<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
 													<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
@@ -3604,9 +3709,14 @@ const applyWithSelect = withSelect((select, props) => {
 		queryArgs.sticky = true;
 	}
 
-	// Add taxonomy query if taxonomy and terms are set
-	if (taxonomy && taxonomy !== 'all' && taxonomyTerm && taxonomyTerm !== 'all') {
-		queryArgs[taxonomy] = taxonomyTerm;
+	// Filter by post category.
+	if ( taxonomy && taxonomy === 'category' && taxonomyTerm && taxonomyTerm !== 'all' ) {
+		queryArgs.categories = taxonomyTerm;
+	}
+
+	// Filter by post tag.
+	if ( taxonomy && taxonomy === 'post_tag' && taxonomyTerm && taxonomyTerm !== 'all' ) {
+		queryArgs.tags = taxonomyTerm;
 	}
 
 	// Add offset if set

@@ -14,7 +14,7 @@ import { createInnerControlAttributeUpdater } from '../../../utils/block-attribu
 import { getInnerSettingDefaultValue, getInnerSettingDefaultUnit } from '../../../utils/settings';
 
 export function Border( props ) {
-    const { label, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
+    const { label, labelPosition, settingId, attributes, setAttributes, attributesDefaults, setUpdateCss, subFields } = props;
     const { 
         borderStyle, 
         borderWidth,
@@ -35,14 +35,18 @@ export function Border( props ) {
 
     return(
         <BaseControl>
-            <div className="atblocks-component-header">
-                <span className="atblocks-component-header__title">{ label }</span>
-            </div>
+            {
+                labelPosition !== 'before-subfield-label' && (
+                    <div className="atblocks-component-header">
+                        <span className="atblocks-component-header__title">{ label }</span>
+                    </div>
+                )
+            }
             
             {
                 ( subFields && subFields.includes('borderStyle') ) && (
                     <Select
-                        label={ __( 'Style', 'athemes-blocks' ) }
+                        label={ labelPosition === 'before-subfield-label' ? `${label} ${__( 'Style', 'athemes-blocks' )}` : __( 'Style', 'athemes-blocks' ) }
                         options={[
                             { label: __( 'Default', 'athemes-blocks' ), value: 'default' },
                             { label: __( 'None', 'athemes-blocks' ), value: 'none' },
@@ -84,7 +88,7 @@ export function Border( props ) {
             {
                 ( borderStyleValue !== 'none' && borderStyleValue !== 'default' && subFields && subFields.includes('borderWidth') ) && (
                     <Dimensions
-                        label={ __( 'Width', 'athemes-blocks' ) }
+                        label={ labelPosition === 'before-subfield-label' ? `${label} ${__( 'Width', 'athemes-blocks' )}` : __( 'Width', 'athemes-blocks' ) }
                         directions={[
                             { label: __( 'Top', 'athemes-blocks' ), value: 'top' },
                             { label: __( 'Right', 'athemes-blocks' ), value: 'right' },
@@ -140,7 +144,7 @@ export function Border( props ) {
             {
                 ( borderStyleValue !== 'default' && subFields && subFields.includes('borderRadius') ) && (
                     <Dimensions
-                        label={ __( 'Radius', 'athemes-blocks' ) }
+                        label={ labelPosition === 'before-subfield-label' ? `${label} ${__( 'Radius', 'athemes-blocks' )}` : __( 'Radius', 'athemes-blocks' ) }
                         directions={[
                             { label: __( 'Top', 'athemes-blocks' ), value: 'top' },
                             { label: __( 'Right', 'athemes-blocks' ), value: 'right' },
@@ -196,7 +200,7 @@ export function Border( props ) {
             {
                 ( borderStyleValue !== 'none' && borderStyleValue !== 'default' && subFields && subFields.includes('borderColor') ) && (
                     <ColorPicker
-                        label={ __( 'Color', 'athemes-blocks' ) }
+                        label={ labelPosition === 'before-subfield-label' ? `${label} ${__( 'Color', 'athemes-blocks' )}` : __( 'Color', 'athemes-blocks' ) }
                         value={ borderColorValue }
                         hover={true}
                         responsive={false}

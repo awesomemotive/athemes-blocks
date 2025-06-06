@@ -14,8 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AThemes_Blocks\Blocks\BlockBase;
+use AThemes_Blocks\Blocks\Traits\WithGoogleFonts;
 
 class PostGrid extends BlockBase {
+
+    use WithGoogleFonts;
 
     /**
      * Constructor.
@@ -26,6 +29,9 @@ class PostGrid extends BlockBase {
         $this->slug = 'post-grid';
         
         parent::__construct();
+
+        // Initialize Google Fonts service.
+        $this->init_google_fonts();
         
         // Register swiper styles.
         add_action( 'wp_enqueue_scripts', array( $this, 'register_swiper_styles' ) );

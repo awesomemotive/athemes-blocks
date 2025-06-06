@@ -49,6 +49,7 @@ $saleBadgePosition = Settings::get_setting( 'saleBadgePosition', $attributes, $a
 
 // Carousel.
 $displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, '' );
+$displayCarouselNavigation = Settings::get_setting( 'displayCarouselNavigation', $attributes, $atts_defaults, '' );
 $carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, '' );
 $carouselAutoplay = Settings::get_setting( 'carouselAutoplay', $attributes, $atts_defaults, '' );
 $carouselAutoplaySpeed = Settings::get_setting( 'carouselAutoplaySpeed', $attributes, $atts_defaults, '' );
@@ -68,10 +69,9 @@ $imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, ''
 $imagePosition = Settings::get_setting( 'imagePosition', $attributes, $atts_defaults, '' );
 $imageOverlay = Settings::get_setting( 'imageOverlay', $attributes, $atts_defaults, '' );
 
-// Card padding to content only.
+// Card.
+$cardVerticalAlignment = Settings::get_setting( 'cardVerticalAlignment', $attributes, $atts_defaults );
 $cardPaddingToContentOnly = Settings::get_setting( 'cardPaddingToContentOnly', $attributes, $atts_defaults, '' );
-
-// Content horizontal alignment.
 $cardHorizontalAlignment = Settings::get_setting( 'cardHorizontalAlignment', $attributes, $atts_defaults );
 
 // Visibility.
@@ -114,6 +114,11 @@ if ( $imagePosition ) {
 // Image overlay.
 if ( $imageOverlay ) {
     $wrapper_classes[] = 'has-image-overlay';
+}
+
+// Card vertical alignment.
+if ( $cardVerticalAlignment ) {
+    $wrapper_classes[] = 'atb-card-vertical-alignment-' . $cardVerticalAlignment;
 }
 
 // Has carousel dots.
@@ -228,12 +233,12 @@ if ( $query->have_posts() ) {
                 'pauseOnMouseEnter' => $carouselPauseOnHover
             ] : false,
             'speed' => $carouselTransitionDuration,
-            'navigation' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? array(
+            'navigation' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
                 'enabled' => true,
                 'nextEl' => 'at-block-nav--next',
                 'prevEl' => 'at-block-nav--prev',
             ) : false,
-            'pagination' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? array(
+            'pagination' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
                 'enabled' => true,
                 'el' => '.swiper-pagination',
                 'type' => 'bullets',

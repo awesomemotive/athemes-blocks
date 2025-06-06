@@ -13,6 +13,13 @@ namespace AThemes_Blocks\Services;
 class GoogleFontsService {
 	
 	/**
+	 * Instance.
+	 * 
+	 * @var GoogleFontsService|null
+	 */
+	private static $instance = null;
+
+	/**
 	 * Google Fonts data.
 	 *
 	 * @var array<string, array<string>>
@@ -20,10 +27,30 @@ class GoogleFontsService {
 	private array $fonts_data;
 
 	/**
+	 * Font families.
+	 *
+	 * @var array<string>
+	 */
+	public static $font_families = array();
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->fonts_data = $this->get_fonts_data();
+	}
+
+	/**
+	 * Get instance.
+	 *
+	 * @return GoogleFontsService
+	 */
+	public static function get_instance(): GoogleFontsService {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -90,20 +117,32 @@ class GoogleFontsService {
 		// Recursively search for fontFamily and fontWeight attributes.
 		$find_fonts = function( $blocks ) use ( &$find_fonts, &$font_data, $block_slug ) {
 			foreach ( $blocks as $block ) {
-				if ( $block['blockName'] === $block_slug && isset( $block['attrs']['typography']['innerSettings'] ) ) {
-					$settings = $block['attrs']['typography']['innerSettings'];
-					
-					if ( isset( $settings['fontFamily']['default']['desktop']['value'] ) ) {
-						$font_family = $settings['fontFamily']['default']['desktop']['value'];
-						$font_weight = isset( $settings['fontWeight']['default']['desktop']['value'] ) ? 
-							$settings['fontWeight']['default']['desktop']['value'] : '400';
-						
-						if ( ! isset( $font_data[$font_family] ) ) {
-							$font_data[$font_family] = array();
+				if ( $block['blockName'] === $block_slug ) {
+					$setting_ids = array();
+
+					foreach ( $block['attrs'] as $attribute_id => $attribute_value ) {
+						if ( strpos( $attribute_id, 'typography' ) === false && strpos( $attribute_id, 'Typography' ) === false ) {
+							continue;
 						}
 						
-						if ( ! in_array( $font_weight, $font_data[$font_family] ) ) {
-							$font_data[$font_family][] = $font_weight;
+						$setting_ids[] = $attribute_id;
+					}
+
+					foreach ( $setting_ids as $setting_id ) {
+						$settings = $block['attrs'][$setting_id]['innerSettings'];
+						
+						if ( isset( $settings['fontFamily']['default']['desktop']['value'] ) ) {
+							$font_family = $settings['fontFamily']['default']['desktop']['value'];
+							$font_weight = isset( $settings['fontWeight']['default']['desktop']['value'] ) ? 
+								$settings['fontWeight']['default']['desktop']['value'] : '400';
+							
+							if ( ! isset( $font_data[$font_family] ) ) {
+								$font_data[$font_family] = array();
+							}
+							
+							if ( ! in_array( $font_weight, $font_data[$font_family] ) ) {
+								$font_data[$font_family][] = $font_weight;
+							}
 						}
 					}
 				}
@@ -113,7 +152,7 @@ class GoogleFontsService {
 				}
 			}
 		};
-		
+
 		$find_fonts( $blocks );
 
 		return $font_data;
@@ -130,10 +169,8 @@ class GoogleFontsService {
 			return '';
 		}
 
-		$font_families = array();
-		
 		foreach ( $font_data as $font_name => $weights ) {
-			
+
 			// If no weights specified, get all available weights
 			if ( empty( $weights ) ) {
 				$font_data = array_filter( $this->fonts_data['items'], function( $item ) use ( $font_name ) {
@@ -148,11 +185,11 @@ class GoogleFontsService {
 			
 			// Format weights to match the old API pattern (e.g., 100,400,700)
 			$formatted_weights = implode( ',', $weights );
-			$font_families[] = $font_name . ':' . $formatted_weights;
+			self::$font_families[] = $font_name . ':' . $formatted_weights;
 		}
 
 		// Join font families with | and add display=swap
-		$url = 'https://fonts.googleapis.com/css?family=' . implode( '|', $font_families ) . '&display=swap';
+		$url = 'https://fonts.googleapis.com/css?family=' . implode( '|', self::$font_families ) . '&display=swap';
 
 		return $url;
 	}
