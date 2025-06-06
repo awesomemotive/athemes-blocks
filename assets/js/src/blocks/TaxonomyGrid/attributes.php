@@ -18,6 +18,14 @@ use AThemes_Blocks\Blocks\Helper\Attributes;
 return array_merge(
     Attributes::get_block_core_attributes(),
     
+    // ### Block Controls #######################
+    array(
+        'align' => array(
+            'type' => 'string',
+            'default' => 'none'
+        )
+    ),
+
     // ### General #######################
 
     // ------------------------------------
@@ -67,6 +75,10 @@ return array_merge(
         'displayCarousel' => array(
             'type' => 'boolean',
             'default' => false,
+        ),
+        'displayCarouselNavigation' => array(
+            'type' => 'boolean',
+            'default' => true,
         ),
         'carouselPauseOnHover' => array(
             'type' => 'boolean',
@@ -144,7 +156,7 @@ return array_merge(
     array(
         'displayButton' => array(
             'type' => 'boolean',
-            'default' => true,
+            'default' => false,
         ),
         'buttonOpenInNewTab' => array(
             'type' => 'boolean',
@@ -706,6 +718,52 @@ return array_merge(
     // --- Image --------------------------
     // ------------------------------------
     array(
+        'imageWidth' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 35,
+                    'unit' => '%',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => '%',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => '%',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-taxonomy-grid-image-width',
+            ),
+        ),
+        'imageGap' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 15,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-taxonomy-grid-image-gap',
+            ),
+        ),
         'imageBorderRadius' => array(
             'type' => 'object',
             'default' => array(
@@ -742,6 +800,7 @@ return array_merge(
             ),
             'css' => array(
                 'selectors' => array(
+                    '{{WRAPPER}} .at-block-taxonomy-grid__image',
                     '{{WRAPPER}} .at-block-taxonomy-grid__image img'
                 ),
                 'property' => 'border-{{DIRECTION}}-radius',

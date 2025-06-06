@@ -332,6 +332,49 @@
         }
     }
 
+    // Image Left and Right Position.
+    &.atb-image-position-left,
+    &.atb-image-position-right {
+        .at-block-taxonomy-grid__item {
+            display: flex;
+            gap: var(--atb-taxonomy-grid-image-gap, 15px);
+        }
+
+        .at-block-taxonomy-grid__image {
+            position: relative;
+            flex: 1 0 auto;
+            width: var(--atb-taxonomy-grid-image-width, 35%);
+        }
+
+        .at-block-taxonomy-grid__content {
+            width: 100%;
+        }
+
+        &.atb-card-vertical-alignment-flex-start {
+            .at-block-taxonomy-grid__item {
+                align-items: flex-start;
+            }
+        }
+
+        &.atb-card-vertical-alignment-flex-end {
+            .at-block-taxonomy-grid__item {
+                align-items: flex-end;
+            }
+        }
+
+        &.atb-card-vertical-alignment-center {
+            .at-block-taxonomy-grid__item {
+                align-items: center;
+            }
+        }
+    }
+
+    &.atb-image-position-right {
+        .at-block-taxonomy-grid__item {
+            flex-direction: row-reverse;
+        }
+    }
+
     // Carousel state before initialization.
     .at-block-taxonomy-grid__swiper {
         &:not(.swiper-initialized) {

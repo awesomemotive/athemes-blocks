@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Render the Heading block.
+ * Render the Post Grid block.
  * 
  * @package aThemes_Blocks
  */

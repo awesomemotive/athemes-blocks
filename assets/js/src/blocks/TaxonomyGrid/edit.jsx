@@ -2,9 +2,11 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, Spinner } from '@wordpress/components';
-import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText, BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
 import { withSelect, select } from '@wordpress/data';
+import { alignNone } from '@wordpress/icons';
+import { decodeEntities } from '@wordpress/html-entities';
 
 import { store as persistentTabsStore } from '../../block-editor/store/persistent-tabs-store';
 
@@ -61,6 +63,7 @@ const Edit = (props) => {
 		orderBy,
 		order,
 		displayCarousel,
+		displayCarouselNavigation,
 		carouselPauseOnHover,
 		carouselAutoplay,
 		carouselAutoplaySpeed,
@@ -98,6 +101,8 @@ const Edit = (props) => {
 		navigationBorderColor,
 		dotsColor,
 		dotsOffset,
+		imageWidth,
+		imageGap,
 		imageBottomSpacing,
 		imageBorderRadius,
 		imageOverlay,
@@ -132,6 +137,7 @@ const Edit = (props) => {
 			orderBy: atts.orderBy,
 			order: atts.order,
 			displayCarousel: atts.displayCarousel,
+			displayCarouselNavigation: atts.displayCarouselNavigation,
 			carouselPauseOnHover: atts.carouselPauseOnHover,
 			carouselAutoplay: atts.carouselAutoplay,
 			carouselAutoplaySpeed: atts.carouselAutoplaySpeed,
@@ -168,7 +174,9 @@ const Edit = (props) => {
 			navigationBackgroundColor: getSettingValue('navigationBackgroundColor', 'desktop', atts),
 			navigationBorderColor: getSettingValue('navigationBorderColor', 'desktop', atts),
 			dotsColor: getSettingValue('dotsColor', 'desktop', atts),
-			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),			
+			dotsOffset: getSettingValue('dotsOffset', 'desktop', atts),
+			imageWidth: getSettingValue('imageWidth', currentDevice, atts),
+			imageGap: getSettingValue('imageGap', currentDevice, atts),
 			imageBottomSpacing: getSettingValue('imageBottomSpacing', currentDevice, atts),
 			imageBorderRadius: getDimensionsSettingValue('imageBorderRadius', currentDevice, atts),
 			imageOverlay: atts.imageOverlay,
@@ -231,7 +239,7 @@ const Edit = (props) => {
 			{ label: __( 'Name', 'athemes-blocks' ), value: 'name' },
 			{ label: __( 'Slug', 'athemes-blocks' ), value: 'slug' },
 			{ label: __( 'Term Group', 'athemes-blocks' ), value: 'term_group' },
-			{ label: __( 'Term ID', 'athemes-blocks' ), value: 'term_group' },
+			{ label: __( 'Term ID', 'athemes-blocks' ), value: 'term_id' },
 			{ label: __( 'Description', 'athemes-blocks' ), value: 'description' },
 			{ label: __( 'Parent', 'athemes-blocks' ), value: 'parent' },
 			{ label: __( 'Term Order', 'athemes-blocks' ), value: 'term_order' },
@@ -272,12 +280,12 @@ const Edit = (props) => {
 			pauseOnMouseEnter: carouselPauseOnHover
 		} : false,
 		speed: carouselTransitionDuration,
-		navigation: carouselNavigation === 'arrows' || carouselNavigation === 'both' ? {
+		navigation: ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ? {
 			enabled: true,
 			nextEl: 'at-block-nav--next',
 			prevEl: 'at-block-nav--prev',
 		} : false,
-		pagination: ( termsPerPage > 1 && termsPerPage > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
+		pagination: ( termsPerPage > 1 && termsPerPage > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) && displayCarouselNavigation ? {
 			type: 'bullets',
 			bulletClass: 'at-block-bullets--bullet',
 			bulletActiveClass: 'at-block-bullets--bullet-active',
@@ -429,6 +437,18 @@ const Edit = (props) => {
 										setAttributes({ excludeCurrentTerm: attributesDefaults.excludeCurrentTerm.default });
 									} }
 								/>
+								<SwitchToggle
+									label={ __( 'Hide Empty Terms', 'athemes-blocks' ) }
+									value={ hideEmptyTerms }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ hideEmptyTerms: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ hideEmptyTerms: attributesDefaults.hideEmptyTerms.default });
+									} }
+								/>
 								<Select
 									label={ __( 'Order By', 'athemes-blocks' ) }
 									options={orderByOptions}
@@ -478,8 +498,20 @@ const Edit = (props) => {
 									} }
 								/>
 								{
-									displayCarousel && (
+									( displayCarousel && displayCarouselNavigation ) && (
 										<>
+											<SwitchToggle
+												label={ __( 'Navigation', 'athemes-blocks' ) }
+												value={ displayCarouselNavigation }
+												responsive={false}
+												reset={true}
+												onChange={ ( value ) => {
+													setAttributes({ displayCarouselNavigation: value });
+												} }
+												onClickReset={ () => {
+													setAttributes({ displayCarouselNavigation: attributesDefaults.displayCarouselNavigation.default });
+												} }
+											/>
 											<SwitchToggle
 												label={ __( 'Pause on hover', 'athemes-blocks' ) }
 												value={ carouselPauseOnHover }
@@ -583,80 +615,86 @@ const Edit = (props) => {
 									)
 								}
 							</PanelBody>
-							<PanelBody 
-								title={ __( 'Image', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'image' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
-							>
-								<SwitchToggle
-									label={ __( 'Display Image', 'athemes-blocks' ) }
-									value={ displayImage }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ displayImage: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ displayImage: attributesDefaults.displayImage.default });
-									} }
-								/>
-								{
-									displayImage && (
-										<>
-											<Select
-												label={ __( 'Image Ratio', 'athemes-blocks' ) }
-												options={[
-													{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
-													{ label: '1:1', value: '1-1' },
-													{ label: '2:1', value: '2-1' },
-													{ label: '3:2', value: '3-2' },
-													{ label: '4:3', value: '4-3' },
-													{ label: '16:9', value: '16-9' },
-												]}
-												value={ imageRatio }
-												responsive={false}
-												reset={true}
-												onChange={ ( value ) => {
-													setAttributes({ imageRatio: value });
-												} }
-												onClickReset={ () => {
-													setAttributes({ imageRatio: attributesDefaults.imageRatio.default });
-												} }
-											/>
-											<Select
-												label={ __( 'Image Size', 'athemes-blocks' ) }
-												options={athemesBlocksAvailableImageSizes || []}
-												value={ imageSize }
-												responsive={false}
-												reset={true}
-												onChange={ ( value ) => {
-													setAttributes({ imageSize: value });
-												} }
-												onClickReset={ () => {
-													setAttributes({ imageSize: attributesDefaults.imageSize.default });
-												} }
-											/>
-											<Select
-												label={ __( 'Image Position', 'athemes-blocks' ) }
-												options={[
-													{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
-													{ label: __( 'Background', 'athemes-blocks' ), value: 'background' },
-												]}
-												value={ imagePosition }
-												responsive={false}
-												reset={true}
-												onChange={ ( value ) => {
-													setAttributes({ imagePosition: value });
-												} }
-												onClickReset={ () => {
-													setAttributes({ imagePosition: attributesDefaults.imagePosition.default });
-												} }
-											/>	
-										</>	
-									)
-								}
-							</PanelBody>
+							{
+								( taxonomy === 'product_cat' || taxonomy === 'product_brand' ) && (
+									<PanelBody 
+										title={ __( 'Image', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'image' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
+									>
+										<SwitchToggle
+											label={ __( 'Display Image', 'athemes-blocks' ) }
+											value={ displayImage }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ displayImage: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ displayImage: attributesDefaults.displayImage.default });
+											} }
+										/>
+										{
+											displayImage && (
+												<>
+													<Select
+														label={ __( 'Image Ratio', 'athemes-blocks' ) }
+														options={[
+															{ label: __( 'Default', 'athemes-blocks' ), value: 'default' },
+															{ label: '1:1', value: '1-1' },
+															{ label: '2:1', value: '2-1' },
+															{ label: '3:2', value: '3-2' },
+															{ label: '4:3', value: '4-3' },
+															{ label: '16:9', value: '16-9' },
+														]}
+														value={ imageRatio }
+														responsive={false}
+														reset={true}
+														onChange={ ( value ) => {
+															setAttributes({ imageRatio: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ imageRatio: attributesDefaults.imageRatio.default });
+														} }
+													/>
+													<Select
+														label={ __( 'Image Size', 'athemes-blocks' ) }
+														options={athemesBlocksAvailableImageSizes || []}
+														value={ imageSize }
+														responsive={false}
+														reset={true}
+														onChange={ ( value ) => {
+															setAttributes({ imageSize: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ imageSize: attributesDefaults.imageSize.default });
+														} }
+													/>
+													<Select
+														label={ __( 'Image Position', 'athemes-blocks' ) }
+														options={[
+															{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+															{ label: __( 'Background', 'athemes-blocks' ), value: 'background' },
+															{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+															{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+														]}
+														value={ imagePosition }
+														responsive={false}
+														reset={true}
+														onChange={ ( value ) => {
+															setAttributes({ imagePosition: value });
+														} }
+														onClickReset={ () => {
+															setAttributes({ imagePosition: attributesDefaults.imagePosition.default });
+														} }
+													/>	
+												</>	
+											)
+										}
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Content', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1402,170 +1440,251 @@ const Edit = (props) => {
 									</PanelBody>
 								)
 							}
-							<PanelBody 
-								title={ __( 'Image', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'image' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
-							>
-								<Dimensions
-									label={ __( 'Border Radius', 'athemes-blocks' ) }
-									directions={[
-										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
-										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
-										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
-										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
-									]}
-									value={ imageBorderRadius }
-									defaultUnit={ getSettingUnit('imageBorderRadius', currentDevice, atts) }
-									directionsValue={ getDimensionsSettingDirectionsValue('imageBorderRadius', currentDevice, atts) }
-									connect={ getDimensionsSettingConnectValue('imageBorderRadius', currentDevice, atts) }
-									responsive={ true }
-									units={['px', '%']}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'imageBorderRadius', {
-											value: value.value,
-											unit: getSettingUnit( 'imageBorderRadius', currentDevice, atts ),
-											connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
-										}, currentDevice );
+							{
+								( taxonomy === 'product_cat' || taxonomy === 'product_brand' ) && (
+									<PanelBody 
+										title={ __( 'Image', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'image' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
+									>
+										{
+											( imagePosition === 'left' || imagePosition === 'right' )&& (
+												<>
+													<RangeSlider 
+														label={ __( 'Width', 'athemes-blocks' ) }
+														defaultValue={ imageWidth }
+														defaultUnit={ getSettingUnit( 'imageWidth', currentDevice, atts ) }
+														min={ 0 }
+														max={ {
+															'%': 100,
+															px: 1000,
+														} }
+														responsive={true}
+														reset={true}
+														units={['%', 'px']}
+														onChange={ ( value ) => {
+															updateAttribute( 'imageWidth', {
+																value: value,
+																unit: getSettingUnit( 'imageWidth', currentDevice, atts )
+															}, currentDevice );
 
-										setUpdateCss( { settingId: 'imageBorderRadius', value: value.value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'imageBorderRadius', {
-											value: getSettingValue( 'imageBorderRadius', currentDevice, atts ),
-											unit: value,
-											connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
-										}, currentDevice );
+															setUpdateCss( { settingId: 'imageWidth', value: value } );
+														} }
+														onChangeUnit={ ( value ) => {
+															updateAttribute( 'imageWidth', {
+																value: imageWidth,
+																unit: value,
+															}, currentDevice );
 
-										setUpdateCss( { settingId: 'imageBorderRadius', value: getSettingValue( 'imageBorderRadius', currentDevice, atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'imageBorderRadius', getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ), currentDevice );
+															setUpdateCss( { settingId: 'imageWidth', value: value } );								
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'imageWidth', {
+																value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ),
+																unit: getSettingDefaultUnit( 'imageWidth', currentDevice, attributesDefaults )
+															}, currentDevice );							
 
-										setUpdateCss( { settingId: 'imageBorderRadius', value: getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );
-									} }
-								/>
-								<SwitchToggle
-									label={ __( 'Overlay', 'athemes-blocks' ) }
-									value={ imageOverlay }
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										updateAttribute( 'imageOverlay', value );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'imageOverlay', getSettingDefaultValue( 'imageOverlay', '', attributesDefaults ) );
-									} }
-								/>
-								{
-									imageOverlay && (
-										<>
-											<ColorPicker
-												label={ __( 'Overlay Color', 'athemes-blocks' ) }
-												value={ imageOverlayColor }
-												hover={false}
-												responsive={false}
-												reset={true}
-												enableAlpha={false}
-												defaultStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'imageOverlayColor', {
-														value: {
-															defaultState: value,
-															hoverState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts )
-														}
-													}, 'desktop' );
-													
-													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ) } );
-												} }
-												hoverStateOnChangeComplete={ ( value ) => {
-													updateAttribute( 'imageOverlayColor', {
-														value: {
-															defaultState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ),
-															hoverState: value	
-														}
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'imageWidth', value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ) } );								
+														} }
+													/>
+													<RangeSlider 
+														label={ __( 'Gap', 'athemes-blocks' ) }
+														defaultValue={ imageGap }
+														defaultUnit={ getSettingUnit( 'imageGap', currentDevice, atts ) }
+														min={ 1 }
+														max={ 100 }
+														responsive={true}
+														reset={true}
+														units={['px']}
+														onChange={ ( value ) => {
+															updateAttribute( 'imageGap', {
+																value: value,
+																unit: getSettingUnit( 'imageGap', currentDevice, atts )
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts ) } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'imageOverlayColor', {
-														value: {
-															defaultState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ),
-															hoverState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'hoverState', attributesDefaults )	
-														}
-													}, 'desktop' ); 
+															setUpdateCss( { settingId: 'imageGap', value: value } );
+														} }
+														onChangeUnit={ ( value ) => {
+															updateAttribute( 'imageGap', {
+																value: imageGap,
+																unit: value,
+															}, currentDevice );
 
-													setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ) } );
-												} }
-											/>
-											<RangeSlider 
-												label={ __( 'Overlay Opacity', 'athemes-blocks' ) }
-												defaultValue={ imageOverlayOpacity }
-												defaultUnit=""
-												min={0}
-												step={0.1}
-												max={1}
-												responsive={false}
-												reset={true}
-												units={false}
-												onChange={ ( value ) => {
-													updateAttribute( 'imageOverlayOpacity', {
-														value: value,
-														unit: ''
-													}, 'desktop' );
+															setUpdateCss( { settingId: 'imageGap', value: value } );								
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'imageGap', {
+																value: getSettingDefaultValue( 'imageGap', currentDevice, attributesDefaults ),
+																unit: getSettingDefaultUnit( 'imageGap', currentDevice, attributesDefaults )
+															}, currentDevice );							
 
-													setUpdateCss( { settingId: 'imageOverlayOpacity', value: value } );
-												} }
-												onClickReset={ () => {
-													updateAttribute( 'imageOverlayOpacity', getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ), 'desktop' );
+															setUpdateCss( { settingId: 'imageGap', value: getSettingDefaultValue( 'imageGap', currentDevice, attributesDefaults ) } );								
+														} }
+													/>
+												</>
+											)
+										}
+										<Dimensions
+											label={ __( 'Border Radius', 'athemes-blocks' ) }
+											directions={[
+												{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+												{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+												{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+												{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+											]}
+											value={ imageBorderRadius }
+											defaultUnit={ getSettingUnit('imageBorderRadius', currentDevice, atts) }
+											directionsValue={ getDimensionsSettingDirectionsValue('imageBorderRadius', currentDevice, atts) }
+											connect={ getDimensionsSettingConnectValue('imageBorderRadius', currentDevice, atts) }
+											responsive={ true }
+											units={['px', '%']}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'imageBorderRadius', {
+													value: value.value,
+													unit: getSettingUnit( 'imageBorderRadius', currentDevice, atts ),
+													connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
+												}, currentDevice );
 
-													setUpdateCss( { settingId: 'imageOverlayOpacity', value: getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ) } );
-												} }
-											/>
-										</>
-									)
-								}
-								<RangeSlider 
-									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
-									defaultValue={ imageBottomSpacing }
-									defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
-									max={ {
-										px: 150,
-										em: 20,
-										rem: 20
-									} }
-									responsive={true}
-									reset={true}
-									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: value,
-											unit: getSettingUnit( 'imageBottomSpacing', currentDevice, atts )
-										}, currentDevice );
+												setUpdateCss( { settingId: 'imageBorderRadius', value: value.value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'imageBorderRadius', {
+													value: getSettingValue( 'imageBorderRadius', currentDevice, atts ),
+													unit: value,
+													connect: getDimensionsSettingConnectValue( 'imageBorderRadius', currentDevice, atts )
+												}, currentDevice );
 
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: imageBottomSpacing,
-											unit: value,
-										}, currentDevice );
+												setUpdateCss( { settingId: 'imageBorderRadius', value: getSettingValue( 'imageBorderRadius', currentDevice, atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'imageBorderRadius', getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ), currentDevice );
 
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'imageBottomSpacing', {
-											value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'imageBottomSpacing', currentDevice, attributesDefaults )
-										}, currentDevice );							
+												setUpdateCss( { settingId: 'imageBorderRadius', value: getDimensionsSettingDefaultValue( 'imageBorderRadius', currentDevice, attributesDefaults ) } );
+											} }
+										/>
+										<SwitchToggle
+											label={ __( 'Overlay', 'athemes-blocks' ) }
+											value={ imageOverlay }
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'imageOverlay', value );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'imageOverlay', getSettingDefaultValue( 'imageOverlay', '', attributesDefaults ) );
+											} }
+										/>
+										{
+											imageOverlay && (
+												<>
+													<ColorPicker
+														label={ __( 'Overlay Color', 'athemes-blocks' ) }
+														value={ imageOverlayColor }
+														hover={false}
+														responsive={false}
+														reset={true}
+														enableAlpha={false}
+														defaultStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'imageOverlayColor', {
+																value: {
+																	defaultState: value,
+																	hoverState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts )
+																}
+															}, 'desktop' );
+															
+															setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ) } );
+														} }
+														hoverStateOnChangeComplete={ ( value ) => {
+															updateAttribute( 'imageOverlayColor', {
+																value: {
+																	defaultState: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'defaultState', atts ),
+																	hoverState: value	
+																}
+															}, 'desktop' );
 
-										setUpdateCss( { settingId: 'imageBottomSpacing', value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ) } );								
-									} }
-								/>
-							</PanelBody>
+															setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingValue( 'imageOverlayColor', 'desktop', 'hoverState', atts ) } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'imageOverlayColor', {
+																value: {
+																	defaultState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ),
+																	hoverState: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'hoverState', attributesDefaults )	
+																}
+															}, 'desktop' ); 
+
+															setUpdateCss( { settingId: 'imageOverlayColor', value: getColorPickerSettingDefaultValue( 'imageOverlayColor', 'desktop', 'defaultState', attributesDefaults ) } );
+														} }
+													/>
+													<RangeSlider 
+														label={ __( 'Overlay Opacity', 'athemes-blocks' ) }
+														defaultValue={ imageOverlayOpacity }
+														defaultUnit=""
+														min={0}
+														step={0.1}
+														max={1}
+														responsive={false}
+														reset={true}
+														units={false}
+														onChange={ ( value ) => {
+															updateAttribute( 'imageOverlayOpacity', {
+																value: value,
+																unit: ''
+															}, 'desktop' );
+
+															setUpdateCss( { settingId: 'imageOverlayOpacity', value: value } );
+														} }
+														onClickReset={ () => {
+															updateAttribute( 'imageOverlayOpacity', getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ), 'desktop' );
+
+															setUpdateCss( { settingId: 'imageOverlayOpacity', value: getSettingDefaultValue( 'imageOverlayOpacity', 'desktop', attributesDefaults ) } );
+														} }
+													/>
+												</>
+											)
+										}
+										<RangeSlider 
+											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+											defaultValue={ imageBottomSpacing }
+											defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={true}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'imageBottomSpacing', {
+													value: value,
+													unit: getSettingUnit( 'imageBottomSpacing', currentDevice, atts )
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'imageBottomSpacing', {
+													value: imageBottomSpacing,
+													unit: value,
+												}, currentDevice );
+
+												setUpdateCss( { settingId: 'imageBottomSpacing', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'imageBottomSpacing', {
+													value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ),
+													unit: getSettingDefaultUnit( 'imageBottomSpacing', currentDevice, attributesDefaults )
+												}, currentDevice );							
+
+												setUpdateCss( { settingId: 'imageBottomSpacing', value: getSettingDefaultValue( 'imageBottomSpacing', currentDevice, attributesDefaults ) } );								
+											} }
+										/>
+									</PanelBody>		
+								)
+							}
 							<PanelBody 
 								title={ __( 'Title', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1939,6 +2058,12 @@ const Edit = (props) => {
 					className: blockPropsClassName
 				});
 
+				// Block alignment.
+				if (attributes.align) {
+					blockProps.className += ` align${attributes.align}`;
+					blockProps['data-align'] = attributes.align;
+				}
+
 				// Image Ratio.
 				blockProps.className += ` atb-image-ratio-${imageRatio}`;
 
@@ -1951,6 +2076,11 @@ const Edit = (props) => {
 				// Image overlay.
 				if ( imageOverlay ) {
 					blockProps.className += ' has-image-overlay';
+				}
+
+				// Card Vertical Alignment.
+				if (cardVerticalAlignment) {
+					blockProps.className += ` atb-card-vertical-alignment-${cardVerticalAlignment}`;
 				}
 
 				// Has carousel dots.
@@ -1994,7 +2124,7 @@ const Edit = (props) => {
 						src: '',
 						width: 200,
 						height: 200,
-						alt: term.name || 'alt'
+						alt: decodeEntities(term.name) || 'alt'
 					};
 
 					// Handle product category image
@@ -2006,7 +2136,7 @@ const Edit = (props) => {
 								src: media.source_url,
 								width: media.media_details?.width || 200,
 								height: media.media_details?.height || 200,
-								alt: media.alt_text || term.name || 'alt'
+								alt: media.alt_text || decodeEntities(term.name) || 'alt'
 							};
 						}
 					}
@@ -2028,13 +2158,13 @@ const Edit = (props) => {
 							<div className="at-block-taxonomy-grid__content">
 								{displayTitle && (
 									<TitleTag className="at-block-taxonomy-grid__title">
-										<a href="#">{ term.name }</a>
+										<a href="#">{ decodeEntities(term.name) }</a>
 									</TitleTag>
 								)}
 
 								{displayDescription && (
 									<div className="at-block-taxonomy-grid__description">
-										{term.description}
+										{decodeEntities(term.description)}
 									</div>
 								)}
 
@@ -2057,6 +2187,31 @@ const Edit = (props) => {
 
 				return (
 					<div { ...blockProps }>
+						<BlockControls>
+							<AlignmentToolbar
+								label={ __( 'Align', 'athemes-blocks' ) }
+								alignmentControls={[
+									{
+										align: 'none',
+										icon: alignNone,
+										title: __( 'None', 'athemes-blocks' )
+									},
+									{
+										align: 'wide',
+										icon: 'align-wide',
+										title: __( 'Wide Width', 'athemes-blocks' )
+									},
+									{
+										align: 'full',
+										icon: 'align-full-width',
+										title: __( 'Full Width', 'athemes-blocks' )
+									}
+								]}
+								value={attributes.align}
+								onChange={(align) => setAttributes({ align })}
+							/>
+						</BlockControls>
+
 						{isLoading ? (
 							<div className="at-block-taxonomy-grid__loading">
 								<Spinner />
@@ -2085,7 +2240,7 @@ const Edit = (props) => {
 										</Swiper>
 
 										{
-											( ( termsPerPage > 1 && termsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+											( ( termsPerPage > 1 && termsPerPage > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ) && (
 												<>
 													<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
 													<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>
@@ -2122,8 +2277,6 @@ const applyWithSelect = withSelect((select, props) => {
 	const {
 		taxonomy,
 		termsPerPage,
-		offsetStartingPoint,
-		offsetStartingPointValue,
 		hideEmptyTerms,
 		orderBy,
 		order,
@@ -2148,15 +2301,19 @@ const applyWithSelect = withSelect((select, props) => {
 		queryArgs[taxonomy] = taxonomy;
 	}
 
+	// Hide empty terms if enabled
+	if ( hideEmptyTerms) {
+		queryArgs['hide_empty'] = true;
+	}
+
 	// Get terms from the WordPress REST API
 	let terms = select('core').getEntityRecords('taxonomy', taxonomy, queryArgs);
-	console.log(terms);
 
 	// Check if the data is still being fetched
 	const isLoading = select('core/data').isResolving('core', 'getEntityRecords', [
 		'taxonomy',
-			taxonomy,
-			queryArgs
+		taxonomy,
+		queryArgs
 	]);
 
 	return {

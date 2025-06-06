@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Render the Heading block.
+ * Render the Taxonomy Grid block.
  * 
  * @package aThemes_Blocks
  */
@@ -9,7 +9,7 @@
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Settings.php' );
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Functions.php' );
 include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/Swiper.php' );
-include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/PostGrid.php' );
+include_once( ATHEMES_BLOCKS_PATH . 'includes/Blocks/Helper/TaxonomyGrid.php' );
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,22 +19,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
 use aThemes_Blocks\Blocks\Helper\Swiper;
-use AThemes_Blocks\Blocks\Helper\PostGrid as PostGridHelper;
+use AThemes_Blocks\Blocks\Helper\TaxonomyGrid as TaxonomyGridHelper;
 
-$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/PostGrid/attributes.php' );
+$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/TaxonomyGrid/attributes.php' );
 
 // Extract the settings values.
 $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 
 // Query options.
-$postType = Settings::get_setting( 'postType', $attributes, $atts_defaults, '' );
 $taxonomy = Settings::get_setting( 'taxonomy', $attributes, $atts_defaults, '' );
-$taxonomyTerm = Settings::get_setting( 'taxonomyTerm', $attributes, $atts_defaults, '' );
-$postsPerPage = Settings::get_setting( 'postsPerPage', $attributes, $atts_defaults, '' );
-$excludeCurrentPost = Settings::get_setting( 'excludeCurrentPost', $attributes, $atts_defaults, '' );
-$offsetStartingPoint = Settings::get_setting( 'offsetStartingPoint', $attributes, $atts_defaults, '' );
-$offsetStartingPointValue = Settings::get_setting( 'offsetStartingPointValue', $attributes, $atts_defaults, '' );
+$termsPerPage = Settings::get_setting( 'termsPerPage', $attributes, $atts_defaults, '' );
+$excludeCurrentTerm = Settings::get_setting( 'excludeCurrentTerm', $attributes, $atts_defaults, '' );
+$hideEmptyTerms = Settings::get_setting( 'hideEmptyTerms', $attributes, $atts_defaults, '' );
 $orderBy = Settings::get_setting( 'orderBy', $attributes, $atts_defaults, '' );
 $order = Settings::get_setting( 'order', $attributes, $atts_defaults, '' );
 $columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
@@ -42,12 +39,9 @@ $columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 
 $columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
 $columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults, '' );
 
-// Sale Badge.
-$displaySaleBadge = Settings::get_setting( 'displaySaleBadge', $attributes, $atts_defaults, '' );
-$saleBadgePosition = Settings::get_setting( 'saleBadgePosition', $attributes, $atts_defaults, '' );
-
 // Carousel.
 $displayCarousel = Settings::get_setting( 'displayCarousel', $attributes, $atts_defaults, '' );
+$displayCarouselNavigation = Settings::get_setting( 'displayCarouselNavigation', $attributes, $atts_defaults, '' );
 $carouselPauseOnHover = Settings::get_setting( 'carouselPauseOnHover', $attributes, $atts_defaults, '' );
 $carouselAutoplay = Settings::get_setting( 'carouselAutoplay', $attributes, $atts_defaults, '' );
 $carouselAutoplaySpeed = Settings::get_setting( 'carouselAutoplaySpeed', $attributes, $atts_defaults, '' );
@@ -56,21 +50,15 @@ $carouselAutoHeight = Settings::get_setting( 'carouselAutoHeight', $attributes, 
 $carouselTransitionDuration = Settings::get_setting( 'carouselTransitionDuration', $attributes, $atts_defaults, '' );
 $carouselNavigation = Settings::get_setting( 'carouselNavigation', $attributes, $atts_defaults, '' );
 
-// Pagination.
-$pagination = Settings::get_setting( 'pagination', $attributes, $atts_defaults, '' );
-$paginationPageLimit = Settings::get_setting( 'paginationPageLimit', $attributes, $atts_defaults, '' );
-$paginationType = Settings::get_setting( 'paginationType', $attributes, $atts_defaults, '' );
-
 // Image.
 $imageRatio = Settings::get_setting( 'imageRatio', $attributes, $atts_defaults, '' );
 $imageSize = Settings::get_setting( 'imageSize', $attributes, $atts_defaults, '' );
 $imagePosition = Settings::get_setting( 'imagePosition', $attributes, $atts_defaults, '' );
 $imageOverlay = Settings::get_setting( 'imageOverlay', $attributes, $atts_defaults, '' );
 
-// Card padding to content only.
+// Card.
+$cardVerticalAlignment = Settings::get_setting( 'cardVerticalAlignment', $attributes, $atts_defaults );
 $cardPaddingToContentOnly = Settings::get_setting( 'cardPaddingToContentOnly', $attributes, $atts_defaults, '' );
-
-// Content horizontal alignment.
 $cardHorizontalAlignment = Settings::get_setting( 'cardHorizontalAlignment', $attributes, $atts_defaults );
 
 // Visibility.
@@ -82,12 +70,12 @@ $wrapper_attributes = array();
 $wrapper_classes = array( 
     'at-block', 
     'at-block-' . $clientId, 
-    'at-block-post-grid' 
+    'at-block-taxonomy-grid' 
 );
 
-// Sale Badge.
-if ( $postType === 'product' && $displaySaleBadge ) {
-    $wrapper_classes[] = 'atb-sale-badge-' . $saleBadgePosition;
+// Add alignment class if set
+if ( ! empty( $attributes['align'] ) ) {
+    $wrapper_classes[] = 'align' . $attributes['align'];
 }
 
 // Image ratio.
@@ -108,6 +96,11 @@ if ( $imagePosition ) {
 // Image overlay.
 if ( $imageOverlay ) {
     $wrapper_classes[] = 'has-image-overlay';
+}
+
+// Card vertical alignment.
+if ( $cardVerticalAlignment ) {
+    $wrapper_classes[] = 'atb-card-vertical-alignment-' . $cardVerticalAlignment;
 }
 
 // Has carousel dots.
@@ -150,56 +143,43 @@ $wrapper_attributes['class'] = implode( ' ', $wrapper_classes );
 
 // Build query args
 $query_args = array(
-    'post_type'      => $postType,
-    'posts_per_page' => $postsPerPage,
-    'orderby'        => $orderBy,
-    'order'          => $order,
+    'taxonomy' => $taxonomy,
+    'number' => $termsPerPage,
+    'orderby'  => $orderBy,
+    'order'    => $order,
 );
 
 // Add taxonomy query if taxonomy and terms are set
-if ( $taxonomy && $taxonomy !== 'all' && $taxonomyTerm && $taxonomyTerm !== 'all' ) {
-    $query_args['tax_query'] = array(
-        array(
-            'taxonomy' => $taxonomy,
-            'field'    => 'term_id',
-            'terms'    => $taxonomyTerm,
-        ),
-    );
+if ( $taxonomy ) {
+    $query_args['taxonomy'] = $taxonomy;
 }
 
-// Exclude current post if enabled
-if ( $excludeCurrentPost ) {
-    $query_args['post__not_in'] = array( get_the_ID() );
+// Exclude current term if enabled
+if ( $excludeCurrentTerm ) {
+    $query_args['exclude'] = get_queried_object_id();
 }
 
-// Add offset if set
-if ( $offsetStartingPoint && $offsetStartingPointValue ) {
-    $query_args['offset'] = $offsetStartingPointValue;
-}
-
-// Add pagination
-if ( $pagination ) {
-    $paged = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
-    $query_args['paged'] = $paged;
+// Hide empty terms if enabled
+if ( $hideEmptyTerms ) {
+    $query_args['hide_empty'] = true;
 }
 
 // Run the query
-$query = new WP_Query( $query_args );
+$query = get_terms( $query_args );
 
 // Start output
 $output = '';
 
-if ( $query->have_posts() ) {
+if ( $query ) {
     if ( $displayCarousel ) {
 
         // Prepare slider items
         $slider_items = array();
         
-        while ( $query->have_posts() ) {
-            $query->the_post();
+        foreach ( $query as $term ) {
 
             ob_start();
-            PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+            TaxonomyGridHelper::get_taxonomy_grid_item_output( $term->term_id, $attributes, $atts_defaults );
             $slider_items[] = ob_get_clean();
         }
         
@@ -213,12 +193,12 @@ if ( $query->have_posts() ) {
                 'pauseOnMouseEnter' => $carouselPauseOnHover
             ] : false,
             'speed' => $carouselTransitionDuration,
-            'navigation' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? array(
+            'navigation' => ($termsPerPage > 1 && $termsPerPage > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
                 'enabled' => true,
                 'nextEl' => 'at-block-nav--next',
                 'prevEl' => 'at-block-nav--prev',
             ) : false,
-            'pagination' => ($postsPerPage > 1 && $postsPerPage > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? array(
+            'pagination' => ($termsPerPage > 1 && $termsPerPage > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
                 'enabled' => true,
                 'el' => '.swiper-pagination',
                 'type' => 'bullets',
@@ -242,64 +222,26 @@ if ( $query->have_posts() ) {
 
         $swiper_markup_options = array(
             'slider_items' => $slider_items,
-            'swiper_class' => 'at-block-post-grid__swiper',
-            'swiper_slide_class' => 'at-block-post-grid__item',
+            'swiper_class' => 'at-block-taxonomy-grid__swiper',
+            'swiper_slide_class' => 'at-block-taxonomy-grid__item',
         );
 
         $slider = new Swiper( $swiper_options, $swiper_markup_options );
         $output .= $slider->get_html_output();
     } else {
-        $output .= '<div class="at-block-post-grid__items">';
+        $output .= '<div class="at-block-taxonomy-grid__items">';
         
-        while ( $query->have_posts() ) {
-            $query->the_post();
+        foreach ( $query as $term ) {
             
             ob_start();
-            PostGridHelper::get_post_grid_item_output( get_the_ID(), $attributes, $atts_defaults );
+            TaxonomyGridHelper::get_taxonomy_grid_item_output( $term->term_id, $attributes, $atts_defaults );
             $output .= ob_get_clean();
         }
         
         $output .= '</div>';
-    }
-    
-    // Pagination
-    if ( $pagination && ! $displayCarousel && $query->max_num_pages > 1 ) {
-        wp_enqueue_script( 'athemes-blocks-pagination' );
-
-        $output .= '<div class="at-pagination at-block-post-grid__pagination '. $paginationType .'">';
-        $output .= '<div class="at-block-post-grid__pagination-numbers">';
-            $output .= paginate_links( array(
-                'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
-                'format'    => '?paged=%#%',
-                'current'   => max( 1, $paged ),
-                'total'     => $query->max_num_pages,
-                'prev_text' => '←',
-                'next_text' => '→',
-                'type'      => 'list',
-                'end_size'  => 1,
-                'mid_size'  => $paginationType === 'default' ? $paginationPageLimit : 9999,
-            ) );
-            $output .= '</div>';
-
-        if ( $paginationType === 'load-more' || $paginationType === 'infinite-scroll' ) {
-            $output .= '<a href="#" class="at-pagination__button at-block-post-grid__pagination-button at-block-post-grid__pagination-button--load-more" data-pagination-type="' . $paginationType . '" data-total-pages="' . $query->max_num_pages . '">' . __( 'Load More', 'athemes-blocks' ) . '</a>';
-        }
-        
-        $output .= '</div>';
-    }
-    
-    wp_reset_postdata();
+    }    
 } else {
-    $output .= '<p class="at-block-post-grid__no-posts">' . esc_html__( 'No posts found.', 'athemes-blocks' ) . '</p>';
-}
-
-// Do not display if post type is product and WooCommerce is not active.
-if ( $postType === 'product' && ! class_exists( 'WooCommerce' ) ) {
-    if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-        $output = '<p class="at-block-post-grid__no-posts">' . esc_html__( 'WooCommerce is not active.', 'athemes-blocks' ) . '</p>';
-    } else {
-        $output = '<p class="at-block-post-grid__no-posts">' . esc_html__( 'No products found.', 'athemes-blocks' ) . '</p>';
-    }
+    $output .= '<p class="at-block-taxonomy-grid__no-posts">' . esc_html__( 'No terms found.', 'athemes-blocks' ) . '</p>';
 }
 
 // Output.
