@@ -136,6 +136,10 @@ class GoogleFontsService {
 							$font_weight = isset( $settings['fontWeight']['default']['desktop']['value'] ) ? 
 								$settings['fontWeight']['default']['desktop']['value'] : '400';
 							
+							if ( ! is_string( $font_family ) ) {
+								continue;
+							}
+
 							if ( ! isset( $font_data[$font_family] ) ) {
 								$font_data[$font_family] = array();
 							}

@@ -55,13 +55,17 @@ for ( $i = 1; $i <= $number_of_testimonials; $i++ ) {
 
 return array_merge(
     Attributes::get_block_core_attributes(),
+
+    // ### Block Controls #######################
+    array(
+        'align' => array(
+            'type' => 'string',
+            'default' => 'none'
+        )
+    ),
     
     // General - Content -----------------------------
     array(
-        'alignment' => array(
-            'type' => 'string',
-            'default' => 'center',
-        ),
         'testimonialsAmount' => array(
             'type' => 'number',
             'default' => 3,
@@ -120,6 +124,30 @@ return array_merge(
                 'property' => '--at-block-testimonials-content-gap',
             ),
         ),
+        'alignment' => array(
+            'type' => 'string',
+            'default' => 'center',
+        ),
+        'verticalAlignment' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 'flex-start',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}'
+                ),
+                'property' => '--atb-block-testimonials-vertical-alignment',
+            ),
+        ),
     ),
   
     // General - Images -----------------------------
@@ -164,6 +192,10 @@ return array_merge(
 
     // General - Carousel -----------------------------
     array(
+        'displayCarouselNavigation' => array(
+            'type' => 'boolean',
+            'default' => true,
+        ),
         'carouselPauseOnHover' => array(
             'type' => 'boolean',
             'default' => true,

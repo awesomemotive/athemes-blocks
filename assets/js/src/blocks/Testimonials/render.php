@@ -26,11 +26,13 @@ $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 $htmlTag = 'div';
 $alignment = isset( $attributes['alignment'] ) ? $attributes['alignment'] : $atts_defaults['alignment']['default'];
+$verticalAlignment = Settings::get_setting( 'verticalAlignment', $attributes, $atts_defaults, 'desktop' );
 $testimonialsAmount = isset( $attributes['testimonialsAmount'] ) ? $attributes['testimonialsAmount'] : $atts_defaults['testimonialsAmount']['default'];
 $columnsDesktop = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'desktop' );
 $columnsTablet = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'tablet' );
 $columnsMobile = Settings::get_setting( 'columns', $attributes, $atts_defaults, 'mobile' );
 $columnsGap = Settings::get_setting( 'columnsGap', $attributes, $atts_defaults );
+$displayCarouselNavigation = isset( $attributes['displayCarouselNavigation'] ) ? $attributes['displayCarouselNavigation'] : $atts_defaults['displayCarouselNavigation']['default'];
 $carouselLoop = isset( $attributes['carouselLoop'] ) ? $attributes['carouselLoop'] : $atts_defaults['carouselLoop']['default'];
 $carouselAutoplay = isset( $attributes['carouselAutoplay'] ) ? $attributes['carouselAutoplay'] : $atts_defaults['carouselAutoplay']['default'];
 $carouselAutoplaySpeed = isset( $attributes['carouselAutoplaySpeed'] ) ? $attributes['carouselAutoplaySpeed'] : $atts_defaults['carouselAutoplaySpeed']['default'];
@@ -52,6 +54,11 @@ $wrapper_classes = array(
     'at-block-' . $clientId, 
     'at-block-testimonials' 
 );
+
+// Add alignment class if set
+if ( ! empty( $attributes['align'] ) ) {
+    $wrapper_classes[] = 'align' . $attributes['align'];
+}
 
 // Slides output.
 $slider_items = array();
@@ -127,12 +134,12 @@ $swiper_options = array(
         'pauseOnMouseEnter' => $carouselPauseOnHover
     ] : false,
     'speed' => $carouselTransitionDuration,
-    'navigation' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') ? array(
+    'navigation' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'arrows' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
         'enabled' => true,
         'nextEl' => 'at-block-nav--next',
         'prevEl' => 'at-block-nav--prev',
      ) : false,
-    'pagination' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') ? array(
+    'pagination' => ($testimonialsAmount > 1 && $testimonialsAmount > $columnsDesktop) && ($carouselNavigation === 'dots' || $carouselNavigation === 'both') && $displayCarouselNavigation ? array(
         'enabled' => true,
         'el' => '.swiper-pagination',
         'type' => 'bullets',
@@ -165,6 +172,9 @@ $slider_output = $slider->get_html_output();
 
 // Alignment.
 $wrapper_classes[] = 'at-block-testimonials--' . $alignment;
+
+// Vertical Alignment.
+$wrapper_classes[] = 'at-block-testimonials--vertical-alignment-' . $verticalAlignment;
 
 // Image Position.
 $wrapper_classes[] = 'at-block-testimonials--image-' . $imagePosition;

@@ -3,8 +3,9 @@ import { useRefEffect } from '@wordpress/compose';
 import { useEffect, useMemo, useRef, useState, useCallback } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
-import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder, BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
+import { alignNone } from '@wordpress/icons';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
@@ -48,6 +49,7 @@ const Edit = (props) => {
 	const {
 		// General.
 		alignment,
+		verticalAlignment,
 		testimonialsAmount,
 		testimonialsAmountMax,
 		columns,
@@ -57,6 +59,7 @@ const Edit = (props) => {
 		imageStyle,
 		imageSize,
 		imageWidth,
+		displayCarouselNavigation,
 		carouselPauseOnHover,
 		carouselAutoplay,
 		carouselAutoplaySpeed,
@@ -91,6 +94,7 @@ const Edit = (props) => {
 		return {
 			// General.
 			alignment: atts.alignment,
+			verticalAlignment: getSettingValue('verticalAlignment', 'desktop', atts),
 			testimonialsAmount: atts.testimonialsAmount,
 			testimonialsAmountMax: athemesBlocksGeneralData ? athemesBlocksGeneralData.testimonialsAmount : 40,
 			columns: getSettingValue('columns', currentDevice, atts),
@@ -98,6 +102,7 @@ const Edit = (props) => {
 			imageStyle: atts.imageStyle,
 			imageSize: atts.imageSize,
 			imageWidth: getSettingValue('imageWidth', currentDevice, atts),
+			displayCarouselNavigation: atts.displayCarouselNavigation,
 			carouselPauseOnHover: atts.carouselPauseOnHover,
 			carouselAutoplay: atts.carouselAutoplay,
 			carouselAutoplaySpeed: atts.carouselAutoplaySpeed,
@@ -253,23 +258,6 @@ const Edit = (props) => {
 								opened={ isPanelOpened( 'content', true ) }
 								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
-								<RadioButtons 
-									label={ __( 'Alignment', 'athemes-blocks' ) }
-									defaultValue={ alignment }
-									options={[
-										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
-									]}
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ alignment: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ alignment: attributesDefaults.alignment.default.value });										
-									} }
-								/>
 								<RangeSlider 
 									label={ __( 'Number of Testimonials', 'athemes-blocks' ) }
 									defaultValue={ testimonialsAmount }
@@ -395,6 +383,52 @@ const Edit = (props) => {
 										setUpdateCss( { settingId: 'contentGap', value: getSettingDefaultValue( 'contentGap', currentDevice, attributesDefaults ) } );								
 									} }
 								/>
+								<RadioButtons 
+									label={ __( 'Horizontal Alignment', 'athemes-blocks' ) }
+									defaultValue={ alignment }
+									options={[
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ alignment: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ alignment: attributesDefaults.alignment.default.value });										
+									} }
+								/>
+								{
+									( imagePosition === 'left' || imagePosition === 'right' ) && (
+										<RadioButtons 
+											label={ __( 'Vertical Alignment', 'athemes-blocks' ) }
+											defaultValue={ verticalAlignment }
+											options={[
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+											]}
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'verticalAlignment', {
+													value: value
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'verticalAlignment', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'verticalAlignment', {
+													value: getSettingDefaultValue( 'verticalAlignment', 'desktop', attributesDefaults )
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'verticalAlignment', value: getSettingDefaultValue( 'verticalAlignment', 'desktop', attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
 							</PanelBody>
 							<PanelBody 
 								title={ __( 'Image', 'athemes-blocks' ) } 
@@ -526,6 +560,18 @@ const Edit = (props) => {
 								onToggle={ () => onTogglePanelBodyHandler( 'carousel' ) }
 							>
 								<SwitchToggle
+									label={ __( 'Navigation', 'athemes-blocks' ) }
+									value={ displayCarouselNavigation }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ displayCarouselNavigation: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ displayCarouselNavigation: attributesDefaults.displayCarouselNavigation.default });
+									} }
+								/>
+								<SwitchToggle
 									label={ __( 'Pause on hover', 'athemes-blocks' ) }
 									value={ carouselPauseOnHover }
 									responsive={false}
@@ -607,23 +653,27 @@ const Edit = (props) => {
 										setAttributes({ carouselTransitionDuration: getSettingDefaultValue( 'carouselTransitionDuration', '', attributesDefaults ) });
 									} }
 								/>
-								<RadioButtons 
-									label={ __( 'Navigation', 'athemes-blocks' ) }
-									defaultValue={ carouselNavigation }
-									options={[
-										{ label: __( 'Arrows', 'athemes-blocks' ), value: 'arrows' },
-										{ label: __( 'Dots', 'athemes-blocks' ), value: 'dots' },
-										{ label: __( 'Both', 'athemes-blocks' ), value: 'both' },
-									]}
-									responsive={false}
-									reset={true}
-									onChange={ ( value ) => {
-										setAttributes({ carouselNavigation: value });
-									} }
-									onClickReset={ () => {
-										setAttributes({ carouselNavigation: getSettingDefaultValue( 'carouselNavigation', '', attributesDefaults ) });
-									} }
-								/>
+								{
+									displayCarouselNavigation && (
+										<RadioButtons 
+											label={ __( 'Navigation', 'athemes-blocks' ) }
+											defaultValue={ carouselNavigation }
+											options={[
+												{ label: __( 'Arrows', 'athemes-blocks' ), value: 'arrows' },
+												{ label: __( 'Dots', 'athemes-blocks' ), value: 'dots' },
+												{ label: __( 'Both', 'athemes-blocks' ), value: 'both' },
+											]}
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												setAttributes({ carouselNavigation: value });
+											} }
+											onClickReset={ () => {
+												setAttributes({ carouselNavigation: getSettingDefaultValue( 'carouselNavigation', '', attributesDefaults ) });
+											} }
+										/>		
+									)
+								}
 							</PanelBody>
 						</Panel>
 					)
@@ -858,335 +908,339 @@ const Edit = (props) => {
 									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
 								/>
 							</PanelBody>
-							<PanelBody 
-								title={ __( 'Navigation', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'navigation' ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'navigation' ) }
-							>
-								<RangeSlider 
-									label={ __( 'Arrow Size', 'athemes-blocks' ) }
-									defaultValue={ arrowSize }
-									defaultUnit={ getSettingUnit( 'arrowSize', 'desktop', atts ) }
-									min={ 1 }
-									max={ {
-										px: 150,
-										em: 20,
-										rem: 20
-									} }
-									responsive={false}
-									reset={true}
-									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => {
-										updateAttribute( 'arrowSize', {
-											value: value,
-											unit: getSettingUnit( 'arrowSize', 'desktop', atts )
-										}, 'desktop' );
+							{
+								displayCarouselNavigation && (
+									<PanelBody 
+										title={ __( 'Navigation', 'athemes-blocks' ) } 
+										initialOpen={false}
+										opened={ isPanelOpened( 'navigation' ) }
+										onToggle={ () => onTogglePanelBodyHandler( 'navigation' ) }
+									>
+										<RangeSlider 
+											label={ __( 'Arrow Size', 'athemes-blocks' ) }
+											defaultValue={ arrowSize }
+											defaultUnit={ getSettingUnit( 'arrowSize', 'desktop', atts ) }
+											min={ 1 }
+											max={ {
+												px: 150,
+												em: 20,
+												rem: 20
+											} }
+											responsive={false}
+											reset={true}
+											units={['px', 'em', 'rem']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowSize', {
+													value: value,
+													unit: getSettingUnit( 'arrowSize', 'desktop', atts )
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowSize', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'arrowSize', {
-											value: arrowSize,
-											unit: value,
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowSize', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowSize', {
+													value: arrowSize,
+													unit: value,
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowSize', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'arrowSize', {
-											value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ),
-											unit: getSettingDefaultUnit( 'arrowSize', 'desktop', attributesDefaults )
-										}, 'desktop' );							
+												setUpdateCss( { settingId: 'arrowSize', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowSize', {
+													value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowSize', 'desktop', attributesDefaults )
+												}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'arrowSize', value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ) } );								
-									} }
-								/>
-								<RangeSlider 
-									label={ __( 'Arrow Border Size', 'athemes-blocks' ) }
-									defaultValue={ arrowBorderSize }
-									defaultUnit={ getSettingUnit( 'arrowBorderSize', 'desktop', atts ) }
-									min={ 0 }
-									max={ 10 }
-									responsive={false}
-									reset={true}
-									units={['px']}
-									onChange={ ( value ) => {
-										updateAttribute( 'arrowBorderSize', {
-											value: value,
-											unit: getSettingUnit( 'arrowBorderSize', 'desktop', atts )
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowSize', value: getSettingDefaultValue( 'arrowSize', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Border Size', 'athemes-blocks' ) }
+											defaultValue={ arrowBorderSize }
+											defaultUnit={ getSettingUnit( 'arrowBorderSize', 'desktop', atts ) }
+											min={ 0 }
+											max={ 10 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowBorderSize', {
+													value: value,
+													unit: getSettingUnit( 'arrowBorderSize', 'desktop', atts )
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowBorderSize', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'arrowBorderSize', {
-											value: arrowBorderSize,
-											unit: value,
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowBorderSize', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowBorderSize', {
+													value: arrowBorderSize,
+													unit: value,
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowBorderSize', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'arrowBorderSize', {
-											value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ),
-											unit: getSettingDefaultUnit( 'arrowBorderSize', 'desktop', attributesDefaults )
-										}, 'desktop' );							
+												setUpdateCss( { settingId: 'arrowBorderSize', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowBorderSize', {
+													value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowBorderSize', 'desktop', attributesDefaults )
+												}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'arrowBorderSize', value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ) } );								
-									} }
-								/>
-								<RangeSlider 
-									label={ __( 'Arrow Border Radius', 'athemes-blocks' ) }
-									defaultValue={ arrowBorderRadius }
-									defaultUnit={ getSettingUnit( 'arrowBorderRadius', 'desktop', atts ) }
-									min={ 1 }
-									max={ 100 }
-									responsive={false}
-									reset={true}
-									units={['px']}
-									onChange={ ( value ) => {
-										updateAttribute( 'arrowBorderRadius', {
-											value: value,
-											unit: getSettingUnit( 'arrowBorderRadius', 'desktop', atts )
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowBorderSize', value: getSettingDefaultValue( 'arrowBorderSize', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Border Radius', 'athemes-blocks' ) }
+											defaultValue={ arrowBorderRadius }
+											defaultUnit={ getSettingUnit( 'arrowBorderRadius', 'desktop', atts ) }
+											min={ 1 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: value,
+													unit: getSettingUnit( 'arrowBorderRadius', 'desktop', atts )
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'arrowBorderRadius', {
-											value: arrowBorderRadius,
-											unit: value,
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: arrowBorderRadius,
+													unit: value,
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'arrowBorderRadius', {
-											value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ),
-											unit: getSettingDefaultUnit( 'arrowBorderRadius', 'desktop', attributesDefaults )
-										}, 'desktop' );							
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowBorderRadius', {
+													value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowBorderRadius', 'desktop', attributesDefaults )
+												}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'arrowBorderRadius', value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ) } );								
-									} }
-								/>
-								<RangeSlider 
-									label={ __( 'Arrow Offset', 'athemes-blocks' ) }
-									defaultValue={ arrowOffset }
-									defaultUnit={ getSettingUnit( 'arrowOffset', 'desktop', atts ) }
-									min={ 0 }
-									max={ 100 }
-									responsive={false}
-									reset={true}
-									units={['px']}
-									onChange={ ( value ) => {
-										updateAttribute( 'arrowOffset', {
-											value: value,
-											unit: getSettingUnit( 'arrowOffset', 'desktop', atts )
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowBorderRadius', value: getSettingDefaultValue( 'arrowBorderRadius', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Arrow Offset', 'athemes-blocks' ) }
+											defaultValue={ arrowOffset }
+											defaultUnit={ getSettingUnit( 'arrowOffset', 'desktop', atts ) }
+											min={ -100 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'arrowOffset', {
+													value: value,
+													unit: getSettingUnit( 'arrowOffset', 'desktop', atts )
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowOffset', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'arrowOffset', {
-											value: arrowOffset,
-											unit: value,
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowOffset', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'arrowOffset', {
+													value: arrowOffset,
+													unit: value,
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'arrowOffset', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'arrowOffset', {
-											value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ),
-											unit: getSettingDefaultUnit( 'arrowOffset', 'desktop', attributesDefaults )
-										}, 'desktop' );							
+												setUpdateCss( { settingId: 'arrowOffset', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'arrowOffset', {
+													value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'arrowOffset', 'desktop', attributesDefaults )
+												}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'arrowOffset', value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ) } );								
-									} }
-								/>
-								<ColorPicker
-									label={ __( 'Arrow Color', 'athemes-blocks' ) }
-									value={ navigationColor }
-									hover={true}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationColor', {
-											value: {
-												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'arrowOffset', value: getSettingDefaultValue( 'arrowOffset', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Color', 'athemes-blocks' ) }
+											value={ navigationColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ),
-												hoverState: value	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'navigationColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-								<ColorPicker
-									label={ __( 'Arrow Background Color', 'athemes-blocks' ) }
-									value={ navigationBackgroundColor }
-									hover={true}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationBackgroundColor', {
-											value: {
-												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingValue( 'navigationColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationColor', value: getColorPickerSettingDefaultValue( 'navigationColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Background Color', 'athemes-blocks' ) }
+											value={ navigationBackgroundColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationBackgroundColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ),
-												hoverState: value	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'navigationBackgroundColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-								<ColorPicker
-									label={ __( 'Arrow Border Color', 'athemes-blocks' ) }
-									value={ navigationBorderColor }
-									hover={true}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationBorderColor', {
-											value: {
-												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingValue( 'navigationBackgroundColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationBackgroundColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBackgroundColor', value: getColorPickerSettingDefaultValue( 'navigationBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Arrow Border Color', 'athemes-blocks' ) }
+											value={ navigationBorderColor }
+											hover={true}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'navigationBorderColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ),
-												hoverState: value	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'navigationBorderColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-								<RangeSlider 
-									label={ __( 'Dots Offset', 'athemes-blocks' ) }
-									defaultValue={ dotsOffset }
-									defaultUnit={ getSettingUnit( 'dotsOffset', 'desktop', atts ) }
-									min={ 0 }
-									max={ 100 }
-									responsive={false}
-									reset={true}
-									units={['px']}
-									onChange={ ( value ) => {
-										updateAttribute( 'dotsOffset', {
-											value: value,
-											unit: getSettingUnit( 'dotsOffset', 'desktop', atts )
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingValue( 'navigationBorderColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'navigationBorderColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'navigationBorderColor', value: getColorPickerSettingDefaultValue( 'navigationBorderColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+										<RangeSlider 
+											label={ __( 'Dots Offset', 'athemes-blocks' ) }
+											defaultValue={ dotsOffset }
+											defaultUnit={ getSettingUnit( 'dotsOffset', 'desktop', atts ) }
+											min={ 0 }
+											max={ 100 }
+											responsive={false}
+											reset={true}
+											units={['px']}
+											onChange={ ( value ) => {
+												updateAttribute( 'dotsOffset', {
+													value: value,
+													unit: getSettingUnit( 'dotsOffset', 'desktop', atts )
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'dotsOffset', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'dotsOffset', {
-											value: dotsOffset,
-											unit: value,
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'dotsOffset', value: value } );
+											} }
+											onChangeUnit={ ( value ) => {
+												updateAttribute( 'dotsOffset', {
+													value: dotsOffset,
+													unit: value,
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'dotsOffset', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'dotsOffset', {
-											value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ),
-											unit: getSettingDefaultUnit( 'dotsOffset', 'desktop', attributesDefaults )
-										}, 'desktop' );							
+												setUpdateCss( { settingId: 'dotsOffset', value: value } );								
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'dotsOffset', {
+													value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ),
+													unit: getSettingDefaultUnit( 'dotsOffset', 'desktop', attributesDefaults )
+												}, 'desktop' );							
 
-										setUpdateCss( { settingId: 'dotsOffset', value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ) } );								
-									} }
-								/>
-								<ColorPicker
-									label={ __( 'Dots Color', 'athemes-blocks' ) }
-									value={ dotsColor }
-									hover={false}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'dotsColor', {
-											value: {
-												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
+												setUpdateCss( { settingId: 'dotsOffset', value: getSettingDefaultValue( 'dotsOffset', 'desktop', attributesDefaults ) } );								
+											} }
+										/>
+										<ColorPicker
+											label={ __( 'Dots Color', 'athemes-blocks' ) }
+											value={ dotsColor }
+											hover={false}
+											responsive={false}
+											reset={true}
+											defaultStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: value,
+														hoverState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts )
+													}
+												}, 'desktop' );
 
-										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'dotsColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ),
-												hoverState: value	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'dotsColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-							</PanelBody>
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ) } );
+											} }
+											hoverStateOnChangeComplete={ ( value ) => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: getColorPickerSettingValue( 'dotsColor', 'desktop', 'defaultState', atts ),
+														hoverState: value	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingValue( 'dotsColor', 'desktop', 'hoverState', atts ) } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'dotsColor', {
+													value: {
+														defaultState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ),
+														hoverState: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'hoverState', attributesDefaults )	
+													}
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'dotsColor', value: getColorPickerSettingDefaultValue( 'dotsColor', 'desktop', 'defaultState', attributesDefaults ) } );
+											} }
+										/>
+									</PanelBody>
+								)
+							}
 							<PanelBody 
 								title={ __( 'Background', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1341,8 +1395,17 @@ const Edit = (props) => {
 				// Block HTML tag.
 				let Tag = 'div';
 
+				// Block alignment.
+				if (attributes.align) {
+					blockProps.className += ` align${attributes.align}`;
+					blockProps['data-align'] = attributes.align;
+				}
+
 				// Alignment.
-				blockProps.className += ` at-block-testimonials--${alignment}`;				
+				blockProps.className += ` at-block-testimonials--${alignment}`;	
+				
+				// Vertical Alignment.
+				blockProps.className += ` at-block-testimonials--vertical-alignment-${verticalAlignment}`;
 
 				// Image Position.
 				blockProps.className += ` at-block-testimonials--image-${imagePosition}`;
@@ -1368,7 +1431,32 @@ const Edit = (props) => {
 				
 				// Display the image.
 				return (
-					<Tag {...blockProps}>				
+					<Tag {...blockProps}>
+						<BlockControls>
+							<AlignmentToolbar
+								label={ __( 'Align', 'athemes-blocks' ) }
+								alignmentControls={[
+									{
+										align: 'none',
+										icon: alignNone,
+										title: __( 'None', 'athemes-blocks' )
+									},
+									{
+										align: 'wide',
+										icon: 'align-wide',
+										title: __( 'Wide Width', 'athemes-blocks' )
+									},
+									{
+										align: 'full',
+										icon: 'align-full-width',
+										title: __( 'Full Width', 'athemes-blocks' )
+									}
+								]}
+								value={attributes.align}
+								onChange={(align) => setAttributes({ align })}
+							/>
+						</BlockControls>
+
 						<div 
 							onMouseEnter={ swiperPauseMouseEnterHandler }
 							onMouseLeave={ swiperPauseMouseLeaveHandler }
@@ -1521,7 +1609,7 @@ const Edit = (props) => {
 								}
 
 								{
-									( ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) ) && (
+									( ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ) && (
 										<>
 											<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
 											<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>

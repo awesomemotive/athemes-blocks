@@ -14,7 +14,7 @@ for (let i = 0; i < postGridBlocks.length; i++) {
         const swiper = new Swiper(swiperEl, swiperOptions);
 
         // Custom Navigation.
-        if (swiper.slides.length > 1 && swiper.navigation) {
+        if (swiper.slides.length > 1 && swiperOptions.navigation) {
             const nextNavButton = block.querySelector('.at-block-nav--next');
             const prevNavButton = block.querySelector('.at-block-nav--prev');
 

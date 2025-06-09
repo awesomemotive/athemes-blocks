@@ -321,6 +321,11 @@ const Edit = (props) => {
 		}
 	}, []);
 
+	// Prevent links clicks.
+	const preventClickHandler = (event) => {
+		event.preventDefault();
+	};
+
 	// Order by options.
 	const orderByOptions = useMemo(() => {
 		const generalOptions = [
@@ -1145,7 +1150,7 @@ const Edit = (props) => {
 									label={ __( 'Excerpt Length', 'athemes-blocks' ) }
 									defaultValue={ excerptMaxWords }
 									min={ 1 }
-									max={ 100 }
+									max={ 200 }
 									responsive={false}
 									reset={true}
 									onChange={ ( value ) => {
@@ -2053,7 +2058,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ imageBottomSpacing }
 									defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2339,7 +2344,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ titleBottomSpacing }
 									defaultUnit={ getSettingUnit( 'titleBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2460,7 +2465,7 @@ const Edit = (props) => {
 											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 											defaultValue={ reviewsRatingBottomSpacing }
 											defaultUnit={ getSettingUnit( 'reviewsRatingBottomSpacing', currentDevice, atts ) }
-											min={ 1 }
+											min={ 0 }
 											max={ {
 												px: 150,
 												em: 20,
@@ -2594,7 +2599,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ metaBottomSpacing }
 									defaultUnit={ getSettingUnit( 'metaBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2685,7 +2690,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ excerptBottomSpacing }
 									defaultUnit={ getSettingUnit( 'excerptBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2778,7 +2783,7 @@ const Edit = (props) => {
 											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 											defaultValue={ priceBottomSpacing }
 											defaultUnit={ getSettingUnit( 'priceBottomSpacing', currentDevice, atts ) }
-											min={ 1 }
+											min={ 0 }
 											max={ {
 												px: 150,
 												em: 20,
@@ -2956,7 +2961,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ buttonBottomSpacing }
 									defaultUnit={ getSettingUnit( 'buttonBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -3126,7 +3131,7 @@ const Edit = (props) => {
 														label={ __( 'Items Gap', 'athemes-blocks' ) }
 														defaultValue={ paginationItemsGap }
 														defaultUnit={ getSettingUnit( 'paginationItemsGap', currentDevice, atts ) }
-														min={ 1 }
+														min={ 0 }
 														max={ {
 															px: 150,
 															em: 20,
@@ -3295,7 +3300,7 @@ const Edit = (props) => {
 											label={ __( 'Top Spacing', 'athemes-blocks' ) }
 											defaultValue={ paginationTopSpacing }
 											defaultUnit={ getSettingUnit( 'paginationTopSpacing', currentDevice, atts ) }
-											min={ 1 }
+											min={ 0 }
 											max={ {
 												px: 150,
 												em: 20,
@@ -3445,12 +3450,12 @@ const Edit = (props) => {
 
 								{displayTitle && (
 									<TitleTag className="at-block-post-grid__title">
-										<a href="#">{ decodeEntities(post.title.rendered) }</a>
+										<a href="#" onClick={ preventClickHandler }>{ decodeEntities(post.title.rendered) }</a>
 									</TitleTag>
 								)}
 
 								{( postType === 'product' && displayReviewsRating ) && (
-									<a href="#" className="at-block-post-grid__reviews-rating">
+									<a href="#" className="at-block-post-grid__reviews-rating" onClick={ preventClickHandler }>
 										<div className="atb-star-rating star-rating" role="img">
 											<span style={{width: '60%'}}>{ __( 'Rated', 'athemes-blocks' ) } <strong className="rating">{post.reviews_rating}</strong> { __( 'out of 5', 'athemes-blocks' ) }</span>
 										</div>
@@ -3460,7 +3465,7 @@ const Edit = (props) => {
 								{(displayAuthor || displayDate || displayComments || displayTaxonomy) && (
 									<div className="at-block-post-grid__meta">
 										{ ( postType !== 'product' && displayAuthor ) && (
-											<a href="#" className="at-block-post-grid__author">
+											<a href="#" className="at-block-post-grid__author" onClick={ preventClickHandler }>
 												{displayMetaIcon && (
 													<div
 														className="at-block-post-grid__meta-icon" 
@@ -3472,7 +3477,7 @@ const Edit = (props) => {
 										)}
 										
 										{displayDate && (
-											<a href="#" className="at-block-post-grid__date">
+											<a href="#" className="at-block-post-grid__date" onClick={ preventClickHandler }>
 												{displayMetaIcon && (
 													<div
 														className="at-block-post-grid__meta-icon" 
@@ -3494,7 +3499,7 @@ const Edit = (props) => {
 										)}
 										
 										{( postType !== 'page' && postType !== 'product' && displayComments ) && (
-											<a href="#" className="at-block-post-grid__comments">
+											<a href="#" className="at-block-post-grid__comments" onClick={ preventClickHandler }>
 												{displayMetaIcon && (
 													<div
 														className="at-block-post-grid__meta-icon" 
@@ -3514,17 +3519,23 @@ const Edit = (props) => {
 													/>
 												)}
 												{taxonomyTerms.map((term, index) => (
-													<a href="#" className="at-block-post-grid__taxonomy-link" key={index}>{term}{index < taxonomyTerms.length - 1 && ', '}</a>
+													<a href="#" className="at-block-post-grid__taxonomy-link" key={index} onClick={ preventClickHandler }>{term}{index < taxonomyTerms.length - 1 && ', '}</a>
 												))}
 											</span>
 										)}
 									</div>
 								)}
 
-								{displayExcerpt && post?.excerpt?.rendered && (
+								{displayExcerpt && post?.content?.rendered && (
 									<div 
 										className="at-block-post-grid__excerpt"
-										dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.split(' ').slice(0, excerptMaxWords).join(' ') + (post.excerpt.rendered.split(' ').length > excerptMaxWords ? '...' : '') }}
+										dangerouslySetInnerHTML={{ __html: (() => {
+											const tempDiv = document.createElement('div');
+											tempDiv.innerHTML = post.content.rendered;
+											const textContent = tempDiv.textContent || tempDiv.innerText || '';
+											const words = textContent.trim().split(/\s+/);
+											return words.slice(0, excerptMaxWords).join(' ') + (words.length > excerptMaxWords ? '...' : '');
+										})() }}
 									/>
 								)}
 
@@ -3537,7 +3548,8 @@ const Edit = (props) => {
 								{displayButton && (
 									<div className="at-block-post-grid__button">
 										<a 
-											href={post.link} 
+											href={post.link}
+											onClick={ preventClickHandler }
 											className="at-block-post-grid__button-button"
 											target={buttonOpenInNewTab ? '_blank' : undefined}
 											rel={buttonOpenInNewTab ? 'noopener noreferrer' : undefined}

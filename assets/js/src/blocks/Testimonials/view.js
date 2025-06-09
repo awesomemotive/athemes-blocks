@@ -1,52 +1,57 @@
 // Get all testimonial blocks on the page
-const testimonialBlocks = document.querySelectorAll('.at-block-testimonials__swiper');
+const testimonialBlocks = document.querySelectorAll('.at-block-testimonials');
 
 // Initialize each testimonial block
 for (let i = 0; i < testimonialBlocks.length; i++) {
     const block = testimonialBlocks[i];
-    // Get the swiper options from the data attribute
-    const swiperOptions = JSON.parse(block.getAttribute('data-swiper-options') || '{}');
+    const swiperEl = block.querySelector('.at-block-swiper-wrapper .swiper');
 
-    // Initialize Swiper with the options
-    const swiper = new Swiper(block, swiperOptions);
+    if ( swiperEl ) {
 
-    // Custom Navigation.
-    if (swiper.slides.length > 1 && swiper.navigation) {
-        const nextNavButton = block.querySelector('.at-block-nav--next');
-        const prevNavButton = block.querySelector('.at-block-nav--prev');
+        // Get the swiper options from the data attribute
+        const swiperOptions = JSON.parse(swiperEl.getAttribute('data-swiper-options') || '{}');
 
-        // Add accessibility attributes to navigation buttons
-        nextNavButton.setAttribute('role', 'button');
-        nextNavButton.setAttribute('aria-label', 'Next slide');
-        nextNavButton.setAttribute('tabindex', '0');
+        // Initialize Swiper with the options
+        const swiper = new Swiper(swiperEl, swiperOptions);
 
-        prevNavButton.setAttribute('role', 'button');
-        prevNavButton.setAttribute('aria-label', 'Previous slide');
-        prevNavButton.setAttribute('tabindex', '0');
+        // Custom Navigation.
+        if (swiper.slides.length > 1 && swiperOptions.navigation) {
+            const nextNavButton = block.querySelector('.at-block-nav--next');
+            const prevNavButton = block.querySelector('.at-block-nav--prev');
 
-        nextNavButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            swiper.slideNext();
-        });
+            // Add accessibility attributes to navigation buttons
+            nextNavButton.setAttribute('role', 'button');
+            nextNavButton.setAttribute('aria-label', 'Next slide');
+            nextNavButton.setAttribute('tabindex', '0');
 
-        prevNavButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            swiper.slidePrev();
-        });
+            prevNavButton.setAttribute('role', 'button');
+            prevNavButton.setAttribute('aria-label', 'Previous slide');
+            prevNavButton.setAttribute('tabindex', '0');
 
-        // Add keyboard navigation support
-        nextNavButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            nextNavButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 swiper.slideNext();
-            }
-        });
+            });
 
-        prevNavButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            prevNavButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 swiper.slidePrev();
-            }
-        });
+            });
+
+            // Add keyboard navigation support
+            nextNavButton.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    swiper.slideNext();
+                }
+            });
+
+            prevNavButton.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    swiper.slidePrev();
+                }
+            });
+        }
     }
 }

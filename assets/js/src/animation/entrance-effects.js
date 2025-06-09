@@ -4,7 +4,7 @@
  * Initialize entrance animations using Intersection Observer
  */
 const initEntranceAnimations = () => {
-    console.log(123123123);
+
     // Get all elements with animation delay attribute
     const animatedElements = document.querySelectorAll('[data-atb-animation]');
 

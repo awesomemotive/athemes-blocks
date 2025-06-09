@@ -233,6 +233,11 @@ const Edit = (props) => {
 		}
 	}, []);
 
+	// Prevent links clicks.
+	const preventClickHandler = (event) => {
+		event.preventDefault();
+	};
+
 	// Order by options.
 	const orderByOptions = useMemo(() => {
 		const generalOptions = [
@@ -1648,7 +1653,7 @@ const Edit = (props) => {
 											label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 											defaultValue={ imageBottomSpacing }
 											defaultUnit={ getSettingUnit( 'imageBottomSpacing', currentDevice, atts ) }
-											min={ 1 }
+											min={ 0 }
 											max={ {
 												px: 150,
 												em: 20,
@@ -1742,7 +1747,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ titleBottomSpacing }
 									defaultUnit={ getSettingUnit( 'titleBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -1834,7 +1839,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ descriptionBottomSpacing }
 									defaultUnit={ getSettingUnit( 'descriptionBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2010,7 +2015,7 @@ const Edit = (props) => {
 									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
 									defaultValue={ buttonBottomSpacing }
 									defaultUnit={ getSettingUnit( 'buttonBottomSpacing', currentDevice, atts ) }
-									min={ 1 }
+									min={ 0 }
 									max={ {
 										px: 150,
 										em: 20,
@@ -2158,7 +2163,7 @@ const Edit = (props) => {
 							<div className="at-block-taxonomy-grid__content">
 								{displayTitle && (
 									<TitleTag className="at-block-taxonomy-grid__title">
-										<a href="#">{ decodeEntities(term.name) }</a>
+										<a href="#" onClick={ preventClickHandler }>{ decodeEntities(term.name) }</a>
 									</TitleTag>
 								)}
 
@@ -2171,7 +2176,8 @@ const Edit = (props) => {
 								{displayButton && (
 									<div className="at-block-taxonomy-grid__button">
 										<a 
-											href={term.link} 
+											href="#"
+											onClick={ preventClickHandler }
 											className="at-block-taxonomy-grid__button-button"
 											target={buttonOpenInNewTab ? '_blank' : undefined}
 											rel={buttonOpenInNewTab ? 'noopener noreferrer' : undefined}

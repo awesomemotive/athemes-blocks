@@ -1391,7 +1391,7 @@ return array_merge(
             'fontWeight' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 600,
+                        'value' => '',
                     ),
                     'tablet' => array(
                         'value' => '',
@@ -1445,7 +1445,7 @@ return array_merge(
             'lineHeight' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1.4,
+                        'value' => '',
                         'unit' => 'em',
                     ),
                     'tablet' => array(
@@ -1708,7 +1708,7 @@ return array_merge(
             'lineHeight' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1,
+                        'value' => '',
                         'unit' => 'em',
                     ),
                     'tablet' => array(
@@ -1811,7 +1811,7 @@ return array_merge(
             'fontSize' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1,
+                        'value' => '',
                         'unit' => 'rem',
                     ),
                     'tablet' => array(
@@ -1968,7 +1968,7 @@ return array_merge(
             'fontSize' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1,
+                        'value' => '',
                         'unit' => 'rem',
                     ),
                     'tablet' => array(
@@ -2126,7 +2126,7 @@ return array_merge(
             'fontSize' => array(
                 'default' => array(
                     'desktop' => array(
-                        'value' => 1,
+                        'value' => '',
                         'unit' => 'rem',
                     ),
                     'tablet' => array(

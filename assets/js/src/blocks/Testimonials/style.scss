@@ -23,7 +23,9 @@
     // Image.
     &__item-image {
         display: flex;
-        width: var(--at-block-testimonials-image-width, 100px);
+        flex: 1 0 auto;
+        width: var(--at-block-testimonials-image-width, 85px);
+        max-width: var(--at-block-testimonials-image-width, 100%);
         overflow: hidden;
 
         img {
@@ -118,14 +120,18 @@
             gap: var(--at-block-testimonials-content-gap, 20px);
         }
 
-        .at-block-testimonials__item-image-wrapper {
-            align-self: flex-start;
+        .at-block-testimonials__item-inner {
+            align-items: var(--atb-block-testimonials-vertical-alignment, flex-start);
         }
     }
 
     &--image-right {
         .at-block-testimonials__item-inner {
             flex-direction: row-reverse;
+        }
+
+        .at-block-testimonials__item-inner {
+            align-items: var(--atb-block-testimonials-vertical-alignment, flex-end);
         }
     }
 

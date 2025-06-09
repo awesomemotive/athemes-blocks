@@ -187,7 +187,7 @@ class PostGrid {
             // Excerpt.
             if ( ! empty( $displayExcerpt ) ) : ?>
                 <div class="at-block-post-grid__excerpt">
-                    <?php echo wp_trim_words( get_the_excerpt( $post_id ), $excerptMaxWords ); ?>
+                    <?php echo wp_trim_words( get_the_content( null, false, $post_id ), $excerptMaxWords ); ?>
                 </div>
             <?php endif;
 

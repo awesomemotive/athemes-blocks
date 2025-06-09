@@ -193,15 +193,15 @@ class Attributes {
                         'letterSpacing' => array(
                             'default' => array(
                                 'desktop' => array(
-                                    'value' => 0,
+                                    'value' => '',
                                     'unit' => 'px',
                                 ),
                                 'tablet' => array(
-                                    'value' => 0,
+                                    'value' => '',
                                     'unit' => 'px',
                                 ),
                                 'mobile' => array(
-                                    'value' => 0,
+                                    'value' => '',
                                     'unit' => 'px',
                                 ),
                             ),
