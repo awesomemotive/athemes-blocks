@@ -79,6 +79,8 @@ export function getControlCSS( cssData, clientId, attributes ) {
 
     const isFocalPoint = property === 'background-position';
 
+    const isTypography = property === 'font-family';
+
     // Generate the CSS for each device.
     let css = '';
     for ( const device in sortedAttributeValue ) {
@@ -112,6 +114,10 @@ export function getControlCSS( cssData, clientId, attributes ) {
                 if ( sortedAttributeValue[device].value === '' ) {
                     continue;
                 }
+            }
+
+            if ( isTypography && valueIsObject ) {
+                continue;
             }
 
             const focalPointValueX = ( sortedAttributeValue[device].value.x * 100 ) + '%';

@@ -33,7 +33,7 @@ import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingUnit, getDimensionsSettingDefaultValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue } from '../../utils/settings';
 
-const attributesDefaults = TestimonialsBlockData.attributes;
+const attributesDefaults = TeamBlockData.attributes;
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
@@ -50,8 +50,8 @@ const Edit = (props) => {
 		// General.
 		alignment,
 		verticalAlignment,
-		testimonialsAmount,
-		testimonialsAmountMax,
+		teamMembersAmount,
+		teamMembersAmountMax,
 		columns,
 		columnsGap,
 		contentGap,
@@ -95,8 +95,8 @@ const Edit = (props) => {
 			// General.
 			alignment: atts.alignment,
 			verticalAlignment: getSettingValue('verticalAlignment', 'desktop', atts),
-			testimonialsAmount: atts.testimonialsAmount,
-			testimonialsAmountMax: athemesBlocksGeneralData ? athemesBlocksGeneralData.testimonialsAmount : 40,
+			teamMembersAmount: atts.teamMembersAmount,
+			teamMembersAmountMax: athemesBlocksGeneralData ? athemesBlocksGeneralData.teamMembersAmount : 40,
 			columns: getSettingValue('columns', currentDevice, atts),
 			imagePosition: atts.imagePosition,
 			imageStyle: atts.imageStyle,
@@ -143,7 +143,7 @@ const Edit = (props) => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
 
-	let blockPropsClassName = `at-block at-block-testimonials`;
+	let blockPropsClassName = `at-block at-block-team`;
 
 	let blockProps = useBlockProps({
 		className: blockPropsClassName
@@ -189,7 +189,7 @@ const Edit = (props) => {
 			nextEl: 'at-block-nav--next',
 			prevEl: 'at-block-nav--prev',
 		} : false,
-		pagination: ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
+		pagination: ( teamMembersAmount > 1 && teamMembersAmount > columns ) && ( carouselNavigation === 'dots' || carouselNavigation === 'both' ) ? {
 			type: 'bullets',
 			bulletClass: 'at-block-bullets--bullet',
 			bulletActiveClass: 'at-block-bullets--bullet-active',
@@ -259,18 +259,18 @@ const Edit = (props) => {
 								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
 							>
 								<RangeSlider 
-									label={ __( 'Number of Testimonials', 'athemes-blocks' ) }
-									defaultValue={ testimonialsAmount }
+									label={ __( 'Number of Team Members', 'athemes-blocks' ) }
+									defaultValue={ teamMembersAmount }
 									min={ 1 }
-									max={ testimonialsAmountMax }
+									max={ teamMembersAmountMax }
 									responsive={false}
 									reset={true}
 									units={false}
 									onChange={ ( value ) => {
-										setAttributes({ testimonialsAmount: value });
+										setAttributes({ teamMembersAmount: value });
 									} }
 									onClickReset={ () => {
-										setAttributes({ testimonialsAmount: getSettingDefaultValue( 'testimonialsAmount', '', attributesDefaults ) });
+										setAttributes({ teamMembersAmount: getSettingDefaultValue( 'teamMembersAmount', '', attributesDefaults ) });
 									} }
 								/>
 								<RangeSlider 
@@ -278,7 +278,7 @@ const Edit = (props) => {
 									defaultValue={ columns }
 									defaultUnit={ getSettingUnit( 'columns', currentDevice, atts ) }
 									min={ 1 }
-									max={ testimonialsAmount }
+									max={ teamMembersAmount }
 									responsive={true}
 									reset={true}
 									units={false}
@@ -437,7 +437,7 @@ const Edit = (props) => {
 								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
 							>
 								{
-									Array.from({ length: testimonialsAmount }, (_, index) => (
+									Array.from({ length: teamMembersAmount }, (_, index) => (
 										<ImageUpload
 											key={index}
 											label=""
@@ -681,93 +681,6 @@ const Edit = (props) => {
 				{
 					currentTab === 'style' && (
 						<Panel>
-							<PanelBody 
-								title={ __( 'Content', 'athemes-blocks' ) } 
-								initialOpen={false}
-								opened={ isPanelOpened( 'content', true ) }
-								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
-							>
-								<ColorPicker
-									label={ __( 'Color', 'athemes-blocks' ) }
-									value={ contentColor }
-									hover={false}
-									responsive={false}
-									reset={true}
-									defaultStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'contentColor', {
-											value: {
-												defaultState: value,
-												hoverState: getColorPickerSettingValue( 'contentColor', 'desktop', 'hoverState', atts )
-											}
-										}, 'desktop' );
-
-										setUpdateCss( { settingId: 'contentColor', value: getColorPickerSettingValue( 'contentColor', 'desktop', 'defaultState', atts ) } );
-									} }
-									hoverStateOnChangeComplete={ ( value ) => {
-										updateAttribute( 'contentColor', {
-											value: {
-												defaultState: getColorPickerSettingValue( 'contentColor', 'desktop', 'defaultState', atts ),
-												hoverState: value	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'contentColor', value: getColorPickerSettingValue( 'contentColor', 'desktop', 'hoverState', atts ) } );
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'contentColor', {
-											value: {
-												defaultState: getColorPickerSettingDefaultValue( 'contentColor', 'desktop', 'defaultState', attributesDefaults ),
-												hoverState: getColorPickerSettingDefaultValue( 'contentColor', 'desktop', 'hoverState', attributesDefaults )	
-											}
-										}, 'desktop' );
-										
-										setUpdateCss( { settingId: 'contentColor', value: getColorPickerSettingDefaultValue( 'contentColor', 'desktop', 'defaultState', attributesDefaults ) } );
-									} }
-								/>
-								<Typography
-									label={ __( 'Typography', 'athemes-blocks' ) }
-									settingId="contentTypography"
-									attributes={ atts }
-									setAttributes={ setAttributes }
-									attributesDefaults={ attributesDefaults }
-									setUpdateCss={ setUpdateCss }
-									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
-								/>
-								<RangeSlider 
-									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
-									defaultValue={ contentBottomSpacing }
-									defaultUnit={ getSettingUnit( 'contentBottomSpacing', currentDevice, atts ) }
-									min={ 0 }
-									max={ 150 }
-									responsive={true}
-									reset={true}
-									units={['px', 'em', 'rem']}
-									onChange={ ( value ) => {
-										updateAttribute( 'contentBottomSpacing', {
-											value: value,
-											unit: getSettingUnit( 'contentBottomSpacing', currentDevice, atts )
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'contentBottomSpacing', value: value } );
-									} }
-									onChangeUnit={ ( value ) => {
-										updateAttribute( 'contentBottomSpacing', {
-											value: contentBottomSpacing,
-											unit: value,
-										}, currentDevice );
-
-										setUpdateCss( { settingId: 'contentBottomSpacing', value: value } );								
-									} }
-									onClickReset={ () => {
-										updateAttribute( 'contentBottomSpacing', {
-											value: getSettingDefaultValue( 'contentBottomSpacing', currentDevice, attributesDefaults ),
-											unit: getSettingDefaultUnit( 'contentBottomSpacing', currentDevice, attributesDefaults )
-										}, currentDevice );							
-
-										setUpdateCss( { settingId: 'contentBottomSpacing', value: getSettingDefaultValue( 'contentBottomSpacing', currentDevice, attributesDefaults ) } );								
-									} }
-								/>
-							</PanelBody>
 							<PanelBody 
 								title={ __( 'Name', 'athemes-blocks' ) } 
 								initialOpen={false}
@@ -1402,16 +1315,16 @@ const Edit = (props) => {
 				}
 
 				// Alignment.
-				blockProps.className += ` at-block-testimonials--${alignment}`;	
+				blockProps.className += ` at-block-team--${alignment}`;	
 				
 				// Vertical Alignment.
-				blockProps.className += ` at-block-testimonials--vertical-alignment-${verticalAlignment}`;
+				blockProps.className += ` at-block-team--vertical-alignment-${verticalAlignment}`;
 
 				// Image Position.
-				blockProps.className += ` at-block-testimonials--image-${imagePosition}`;
+				blockProps.className += ` at-block-team--image-${imagePosition}`;
 
 				// Image Style.
-				blockProps.className += ` at-block-testimonials--image-style-${imageStyle}`;
+				blockProps.className += ` at-block-team--image-style-${imageStyle}`;
 
 				// Reponsive display.
 				if (hideOnDesktop) {
@@ -1465,11 +1378,11 @@ const Edit = (props) => {
 							<Swiper
 								ref={ swiperRef }
 								modules={[Pagination, Navigation, Autoplay]} 
-								className="at-block-testimonials__swiper" 
+								className="at-block-team__swiper" 
 								{ ...swiperOptions } 
 							>
 								{
-									Array.from({ length: testimonialsAmount }, (_, index) => {
+									Array.from({ length: teamMembersAmount }, (_, index) => {
 
 										// Image.
 										const image = getInnerSettingValue( `image${index + 1}`, 'image', '', atts );
@@ -1495,40 +1408,29 @@ const Edit = (props) => {
 										const hasImage = image && imageUrlToDisplay ? true : false;
 
 										// Other content.
-										const testimonialText = atts[`testimonialText${index + 1}`];
 										const name = atts[`name${index + 1}`];
 										const company = atts[`company${index + 1}`];
 
 										return (
-											<SwiperSlide className="at-block-testimonials__item swiper-slide">
-												<div className="at-block-testimonials__item-inner">
+											<SwiperSlide className="at-block-team__item swiper-slide">
+												<div className="at-block-team__item-inner">
 													{
 														(imagePosition === 'top' || imagePosition === 'left' || imagePosition === 'right') && (
 															<>
 																{
 																	hasImage && (
-																		<div className="at-block-testimonials__item-image-wrapper">
-																			<div className="at-block-testimonials__item-image">
+																		<div className="at-block-team__item-image-wrapper">
+																			<div className="at-block-team__item-image">
 																				<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
 																			</div>
 																		</div>
 																	)
 																}
-																<div className="at-block-testimonials__item-content">
-																	<RichText
-																		tagName="div"
-																		className="at-block-testimonials__item-text"
-																		placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
-																		value={ testimonialText }
-																		allowedFormats={['core/bold', 'core/italic']}
-																		onChange={ ( value ) => {
-																			setAttributes( { [`testimonialText${index + 1}`]: value } );
-																		} }
-																	/>
+																<div className="at-block-team__item-content">
 																	<div>
 																		<RichText
 																			tagName="div"
-																			className="at-block-testimonials__item-name"
+																			className="at-block-team__item-name"
 																			value={ name }
 																			placeholder={ __( 'Name', 'athemes-blocks' ) }
 																			allowedFormats={['core/bold', 'core/italic']}
@@ -1538,7 +1440,7 @@ const Edit = (props) => {
 																		/>
 																		<RichText
 																			tagName="div"
-																			className="at-block-testimonials__item-company"
+																			className="at-block-team__item-company"
 																			value={ company }
 																			placeholder={ __( 'Company', 'athemes-blocks' ) }
 																			allowedFormats={['core/bold', 'core/italic']}
@@ -1554,22 +1456,12 @@ const Edit = (props) => {
 													{
 														imagePosition === 'bottom' && (
 															<>
-																<RichText
-																	tagName="div"
-																	className="at-block-testimonials__item-text"
-																	placeholder={ __( 'Testimonial text', 'athemes-blocks' ) }
-																	value={ testimonialText }
-																	allowedFormats={['core/bold', 'core/italic']}
-																	onChange={ ( value ) => {
-																		setAttributes( { [`testimonialText${index + 1}`]: value } );
-																	} }
-																/>
-																<div className="at-block-testimonials__item-content">
+																<div className="at-block-team__item-content">
 																	{
 																		hasImage && (
 																			<div>
-																				<div className="at-block-testimonials__item-image-wrapper">
-																					<div className="at-block-testimonials__item-image">
+																				<div className="at-block-team__item-image-wrapper">
+																					<div className="at-block-team__item-image">
 																						<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
 																					</div>
 																				</div>
@@ -1579,7 +1471,7 @@ const Edit = (props) => {
 																	<div>
 																		<RichText
 																			tagName="div"
-																			className="at-block-testimonials__item-name"
+																			className="at-block-team__item-name"
 																			value={ name }
 																			placeholder={ __( 'Name', 'athemes-blocks' ) }
 																			allowedFormats={['core/bold', 'core/italic']}
@@ -1589,7 +1481,7 @@ const Edit = (props) => {
 																		/>
 																		<RichText
 																			tagName="div"
-																			className="at-block-testimonials__item-company"
+																			className="at-block-team__item-company"
 																			value={ company }
 																			placeholder={ __( 'Company', 'athemes-blocks' ) }
 																			allowedFormats={['core/bold', 'core/italic']}
@@ -1611,7 +1503,7 @@ const Edit = (props) => {
 							</Swiper>
 
 							{
-								( ( testimonialsAmount > 1 && testimonialsAmount > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ) && (
+								( ( teamMembersAmount > 1 && teamMembersAmount > columns ) && ( carouselNavigation === 'arrows' || carouselNavigation === 'both' ) && displayCarouselNavigation ) && (
 									<>
 										<div className="at-block-nav at-block-nav--next" onClick={ swiperNavigationNextHandler }></div>
 										<div className="at-block-nav at-block-nav--prev" onClick={ swiperNavigationPrevHandler }></div>

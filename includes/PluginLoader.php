@@ -93,6 +93,7 @@ class PluginLoader {
             'Icon',
             'Image',
             'Testimonials',
+            'Team',
             'PostGrid',
             'TaxonomyGrid',
         );
