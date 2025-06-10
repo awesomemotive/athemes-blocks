@@ -97,6 +97,7 @@ class PluginLoader {
             'TeamMember',
             'PostGrid',
             'TaxonomyGrid',
+            'GoogleMaps',
         );
 
         foreach ( $blocks as $block ) {
