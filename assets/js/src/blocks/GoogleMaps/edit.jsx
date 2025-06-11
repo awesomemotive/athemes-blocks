@@ -2,8 +2,9 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from "@wordpress/data";
 import { Panel, PanelBody } from '@wordpress/components';
-import { InspectorControls, useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText, BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
+import { alignNone } from '@wordpress/icons';
 
 import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
 import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
@@ -71,31 +72,6 @@ const Edit = (props) => {
 	useEffect(() => {
 		setAttributes({ clientId: clientId });
 	}, [clientId]);
-
-	// Prevent the default click event handler for the block if the html tag is 'a'.
-	const blockRef = useRef(null);
-
-	useEffect(() => {
-		if ( blockRef === null ) {
-			return;
-		}
-		
-		if (blockRef.current) {
-			const handleClick = (event) => {
-				event.preventDefault();
-			};
-
-			if ( blockRef.current ) {
-				blockRef.current.addEventListener('click', handleClick);
-			}
-
-			return () => {
-				if ( blockRef.current ) {
-					blockRef.current.removeEventListener('click', handleClick);
-				}
-			};
-		}
-	}, []);
 
 	// Languages options.
 	const languages = typeof athemesBlocksGoogleMapsLanguages === 'object' ? 
@@ -223,8 +199,11 @@ const Edit = (props) => {
 					className: blockPropsClassName
 				});
 
-				// Block HTML tag.
-				let Tag = 'div';
+				// Block alignment.
+				if (attributes.align) {
+					blockProps.className += ` align${attributes.align}`;
+					blockProps['data-align'] = attributes.align;
+				}
 
 				if (hideOnDesktop) {
 					blockProps.className += ' atb-hide-desktop';
@@ -242,7 +221,32 @@ const Edit = (props) => {
 				blockProps = blockPropsWithAnimation(blockProps, attributes);
 				
 				return (
-					<Tag { ...blockProps } ref={useMergeRefs([blockProps.ref, blockRef])}>
+					<div { ...blockProps }>
+						<BlockControls>
+							<AlignmentToolbar
+								label={ __( 'Align', 'athemes-blocks' ) }
+								alignmentControls={[
+									{
+										align: 'none',
+										icon: alignNone,
+										title: __( 'None', 'athemes-blocks' )
+									},
+									{
+										align: 'wide',
+										icon: 'align-wide',
+										title: __( 'Wide Width', 'athemes-blocks' )
+									},
+									{
+										align: 'full',
+										icon: 'align-full-width',
+										title: __( 'Full Width', 'athemes-blocks' )
+									}
+								]}
+								value={attributes.align}
+								onChange={(align) => setAttributes({ align })}
+							/>
+						</BlockControls>
+
 						<div 
 							style={{ position: 'relative' }}
 							onClick={(e) => e.preventDefault()}
@@ -257,7 +261,7 @@ const Edit = (props) => {
 								src={`https://maps.google.com/maps?q=${encodeURIComponent(location)}&z=${zoom}&t=${satelliteView ? 'k' : 'm'}&hl=${language}&output=embed`}
 							/>
 						</div>
-					</Tag>
+					</div>
 				);
 			})()}
 		</>

@@ -17,6 +17,15 @@ use AThemes_Blocks\Blocks\Helper\Attributes;
 
 return array_merge(
     Attributes::get_block_core_attributes(),
+
+    // ### Block Controls #######################
+    array(
+        'align' => array(
+            'type' => 'string',
+            'default' => 'none'
+        )
+    ),
+
     array(
         // General - Map Settings -----------------------------
         'location' => array(

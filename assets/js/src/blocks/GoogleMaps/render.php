@@ -41,6 +41,11 @@ $wrapper_classes = array(
     'at-block-google-maps' 
 );
 
+// Add alignment class if set
+if ( ! empty( $attributes['align'] ) ) {
+    $wrapper_classes[] = 'align' . $attributes['align'];
+}
+
 // Visibility classes
 if ( ! empty( $hideOnDesktop ) ) {
     $wrapper_classes[] = 'atb-hide-desktop';
