@@ -17,13 +17,49 @@ use AThemes_Blocks\Blocks\Helper\Attributes;
 
 return array_merge(
     Attributes::get_block_core_attributes(),
+    array(
+        // General - Map Settings -----------------------------
+        'location' => array(
+            'type' => 'string',
+            'default' => '400 Executive Drive, Suite 208, West Palm Beach, Florida 33401, USA',
+        ),
+        'zoom' => array(
+            'type' => 'number',
+            'default' => 12,
+        ),
+        'height' => array(
+            'type' => 'object',
+            'default' => array(
+                'desktop' => array(
+                    'value' => 300,
+                    'unit' => 'px',
+                ),
+                'tablet' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+                'mobile' => array(
+                    'value' => '',
+                    'unit' => 'px',
+                ),
+            ),
+            'css' => array(
+                'selectors' => array(
+                    '{{WRAPPER}}' => '{{VALUE}}{{UNIT}};',
+                ),
+                'property' => '--atb-google-maps-height',
+            ),
+        ),
+        'satelliteView' => array(
+            'type' => 'boolean',
+            'default' => false,
+        ),
+        'language' => array(
+            'type' => 'boolean',
+            'default' => 'en',
+        ),
+    ),
     
-    // General - Content -----------------------------
-   
-    
-    // Style - Content -----------------------------
-    
-
     // Advanced -----------------------------
     Attributes::get_block_advanced_panel_attributes(),
 );

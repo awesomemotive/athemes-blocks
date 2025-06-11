@@ -38,6 +38,7 @@ class BlockEditorAssets {
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_icon_libraries' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_available_image_sizes' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_color_palette' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_with_google_maps_languages' ) );
     }
 
     /**
@@ -227,6 +228,100 @@ class BlockEditorAssets {
             'athemes-blocks-block-editor',
             'athemesBlocksColorPalette',
             $color_palette
+        );
+    }
+
+    /**
+     * Localize block editor with Google Maps languages.
+     * 
+     * @return void
+     */
+    public function localize_block_editor_with_google_maps_languages(): void {
+
+        /**
+         * Filter the Google Maps languages.
+         * 
+         * @param array<string, string> $languages The Google Maps languages.
+         * @return array<string, string> The filtered Google Maps languages.
+         */
+        $languages = apply_filters( 'athemes_blocks_google_maps_languages', array(
+            'af' => 'Afrikaans',
+            'sq' => 'Albanian',
+            'am' => 'Amharic',
+            'ar' => 'Arabic',
+            'hy' => 'Armenian',
+            'az' => 'Azerbaijani',
+            'eu' => 'Basque',
+            'be' => 'Belarusian',
+            'bn' => 'Bengali',
+            'bs' => 'Bosnian',
+            'bg' => 'Bulgarian',
+            'my' => 'Burmese',
+            'ca' => 'Catalan',
+            'zh' => 'Chinese',
+            'hr' => 'Croatian',
+            'cs' => 'Czech',
+            'da' => 'Danish',
+            'nl' => 'Dutch',
+            'en' => 'English',
+            'et' => 'Estonian',
+            'fa' => 'Farsi',
+            'fi' => 'Finnish',
+            'fr' => 'French',
+            'gl' => 'Galician',
+            'ka' => 'Georgian',
+            'de' => 'German',
+            'el' => 'Greek',
+            'gu' => 'Gujarati',
+            'iw' => 'Hebrew',
+            'hi' => 'Hindi',
+            'hu' => 'Hungarian',
+            'is' => 'Icelandic',
+            'id' => 'Indonesian',
+            'it' => 'Italian',
+            'ja' => 'Japanese',
+            'kn' => 'Kannada',
+            'kk' => 'Kazakh',
+            'km' => 'Khmer',
+            'ko' => 'Korean',
+            'ky' => 'Kyrgyz',
+            'lo' => 'Lao',
+            'lv' => 'Latvian',
+            'lt' => 'Lithuanian',
+            'mk' => 'Macedonian',
+            'ms' => 'Malay',
+            'ml' => 'Malayalam',
+            'mr' => 'Marathi',
+            'mn' => 'Mongolian',
+            'ne' => 'Nepali',
+            'no' => 'Norwegian',
+            'pl' => 'Polish',
+            'pt' => 'Portuguese',
+            'pa' => 'Punjabi',
+            'ro' => 'Romanian',
+            'ru' => 'Russian',
+            'sr' => 'Serbian',
+            'si' => 'Sinhalese',
+            'sk' => 'Slovak',
+            'sl' => 'Slovenian',
+            'es' => 'Spanish',
+            'sw' => 'Swahili',
+            'sv' => 'Swedish',
+            'ta' => 'Tamil',
+            'te' => 'Telugu',
+            'th' => 'Thai',
+            'tr' => 'Turkish',
+            'uk' => 'Ukrainian',
+            'ur' => 'Urdu',
+            'uz' => 'Uzbek',
+            'vi' => 'Vietnamese',
+            'zu' => 'Zulu'
+        ) );
+
+        wp_localize_script(
+            'athemes-blocks-block-editor',
+            'athemesBlocksGoogleMapsLanguages',
+            $languages
         );
     }
 }

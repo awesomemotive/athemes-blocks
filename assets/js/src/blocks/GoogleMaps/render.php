@@ -24,6 +24,12 @@ $clientId = $attributes['clientId'];
 $content = $attributes['content'] ?? '';
 $htmlTag = 'div';
 
+$location = isset( $attributes['location'] ) ? $attributes['location'] : $atts_defaults['location']['default'];
+$zoom = isset( $attributes['zoom'] ) ? $attributes['zoom'] : $atts_defaults['zoom']['default'];
+$heightDesktop = Settings::get_setting( 'height', $attributes, $atts_defaults, 'desktop' );
+$satellite_view = isset( $attributes['satelliteView'] ) ? $attributes['satelliteView'] : $atts_defaults['satelliteView']['default'];
+$language = isset( $attributes['language'] ) ? $attributes['language'] : $atts_defaults['language']['default'];
+
 $hideOnDesktop = Settings::get_setting( 'hideOnDesktop', $attributes, $atts_defaults );
 $hideOnTablet = Settings::get_setting( 'hideOnTablet', $attributes, $atts_defaults );
 $hideOnMobile = Settings::get_setting( 'hideOnMobile', $attributes, $atts_defaults );
@@ -56,10 +62,31 @@ $wrapper_attributes = array_merge( $wrapper_attributes, $animation_markup_data['
 // Mount the class attribute.
 $wrapper_attributes['class'] = implode( ' ', $wrapper_classes );
 
+// Build the iframe src URL
+$map_src = sprintf(
+    'https://maps.google.com/maps?q=%s&z=%d&t=%s&hl=%s&output=embed',
+    urlencode( $location ),
+    intval( $zoom ),
+    $satellite_view ? 'k' : 'm',
+    esc_attr( $language )
+);
+
 // Output.
 echo sprintf(
-    '<%1$s %2$s>%3$s</%1$s>',
+    '<%1$s %2$s>
+        <iframe
+            title="%3$s"
+            class="at-block-google-maps__iframe"
+            width="100%%"
+            height="%4$s"
+            loading="lazy"
+            allowfullscreen
+            src="%5$s"
+        ></iframe>
+    </%1$s>',
     $htmlTag,
     get_block_wrapper_attributes( $wrapper_attributes ),
-    'xxx'
+    esc_attr__( 'Google Maps', 'athemes-blocks' ),
+    esc_attr( $heightDesktop ),
+    esc_url( $map_src )
 );

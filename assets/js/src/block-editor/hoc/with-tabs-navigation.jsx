@@ -4,7 +4,13 @@ import { useSelect } from '@wordpress/data';
 
 import { TabsNavigation } from '../controls/tabs/tabs-navigation';
 
-export const withTabsNavigation = (WrappedComponent) => {
+export const withTabsNavigation = (WrappedComponent, tabs = ['general', 'style', 'advanced']) => {
+    const tabsLabels = {
+        general: __( 'General', 'botiga-pro' ),
+        style: __( 'Style', 'botiga-pro' ),
+        advanced: __( 'Advanced', 'botiga-pro' ),
+    }
+    
     return (props) => {
         const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
 
@@ -12,11 +18,10 @@ export const withTabsNavigation = (WrappedComponent) => {
             <>
                 <InspectorControls>
                     <TabsNavigation
-                        options={[
-                            { label: __( 'General', 'botiga-pro' ), value: 'general' },
-                            { label: __( 'Style', 'botiga-pro' ), value: 'style' },
-                            { label: __( 'Advanced', 'botiga-pro' ), value: 'advanced' },
-                        ]}
+                        options={tabs.map((tab) => ({
+                            label: tabsLabels[tab],
+                            value: tab,
+                        }))}
                     />
                 </InspectorControls>
 
