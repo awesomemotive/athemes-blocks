@@ -1,5 +1,9 @@
 node_modules
+/assets/vendor/
 /assets/js/blocks/
+assets/js/**/*.js
+assets/js/**/*.js.map
+!assets/js/src/**/*.js
 /test-results/
 /playwright-report/
 /test-results/

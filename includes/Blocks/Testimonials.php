@@ -51,6 +51,6 @@ class Testimonials extends BlockBase {
      * @return void
      */
     public function register_swiper_script(): void {
-        wp_register_script( 'athemes-blocks-modularized-swiper', ATHEMES_BLOCKS_URL . 'assets/vendor/swiper/modularized-swiper.min.js', array(), ATHEMES_BLOCKS_VERSION, true );
+        wp_register_script( 'athemes-blocks-modularized-swiper', ATHEMES_BLOCKS_URL . 'assets/vendor/swiper/modularized-swiper.js', array(), ATHEMES_BLOCKS_VERSION, true );
     }
 }

@@ -18,6 +18,9 @@ use AThemes_Blocks\BlocksCommonCss;
 use AThemes_Blocks\BlocksCommonScripts;
 use AThemes_Blocks\Blocks\Helper\Settings;
 use AThemes_Blocks\Integration\Themes\Sydney as SydneyIntegration;
+use AThemes_Blocks\Admin\PluginDashboard\MenuPages as PluginDashboardMenuPages;
+use AThemes_Blocks\Admin\PluginDashboard\Assets as PluginDashboardAssets;
+use AThemes_Blocks\Admin\PluginDashboard\CustomCSS as PluginDashboardCustomCSS;
 
 class PluginLoader {
 
@@ -76,6 +79,12 @@ class PluginLoader {
             return;
         }
 
+        // Plugin Dashboard.
+        new PluginDashboardMenuPages();
+        new PluginDashboardAssets();
+        new PluginDashboardCustomCSS();
+
+        // Block Editor.
         new BlockEditorAssets();
     }
 
