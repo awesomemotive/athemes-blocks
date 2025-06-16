@@ -53,7 +53,6 @@ class PluginInstallationStatusRoute {
      * @return bool
      */
     public function check_permission(): bool {
-        return true;
         return current_user_can( 'activate_plugins' );
     }
 
