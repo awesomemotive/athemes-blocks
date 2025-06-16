@@ -2,7 +2,11 @@ import { css } from '@emotion/react';
 
 const styles = (theme) => css`
     position: relative;
-    width: calc( 100% - 48px );
+    width: 100%;
+
+    * {
+        box-sizing: border-box;
+    }
 `;
 
 export { styles };
