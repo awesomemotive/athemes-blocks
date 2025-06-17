@@ -28,6 +28,7 @@ const PageBlocks = () => {
                 { Object.entries( blocksData ).map( ( [ blockId, blockData ] ) => (
                     <BlocksCard 
                         key={ blockId }
+                        blockSlug={ blockId }
                         title={ blockData.title }
                         description={ blockData.description }
                         documentation={ blockData.documentation }

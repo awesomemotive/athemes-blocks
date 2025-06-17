@@ -1,6 +1,9 @@
 /** @jsx jsx */;
 import { css, jsx, ThemeProvider, useTheme } from '@emotion/react';
+import { useState } from 'react';
+
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
 import { ToggleControl, Tooltip } from '@wordpress/components';
 
 import { CustomIcon } from '../../icons/icons.jsx';
@@ -32,21 +35,67 @@ const styles = (theme) => css`
 `;
 
 const BlocksCard = ( props ) => {
-    const { title, description, documentation, children, hasSwitchToggle = false, switchToggleChecked = false } = props;
+    const { title, description, documentation, children, hasSwitchToggle = false, switchToggleChecked = false, blockSlug } = props;
+    const [ isSwitchToggleChecked, setIsSwitchToggleChecked ] = useState( switchToggleChecked );
+
+    const swithToggleOnChangeHandler = () => {
+        // Get current enabled blocks
+        apiFetch( { 
+            path: '/wp-json/wp/v2/settings',
+            method: 'GET',
+            headers: {
+                'X-WP-Nonce': wpApiSettings ? wpApiSettings.nonce : ''
+            }
+        } ).then( ( response ) => {
+
+            // Parse the string into an array if it's a string.
+            const currentEnabledBlocks = typeof response.athemes_blocks_enabled_blocks === 'string' 
+                ? JSON.parse(response.athemes_blocks_enabled_blocks)
+                : (response.athemes_blocks_enabled_blocks || []);
+            
+            let updatedEnabledBlocks;
+            if ( isSwitchToggleChecked ) {
+                // Remove the block from enabled list.
+                updatedEnabledBlocks = currentEnabledBlocks.filter( slug => slug !== blockSlug );
+            } else {
+                // Add the block to enabled list.
+                updatedEnabledBlocks = [ ...currentEnabledBlocks, blockSlug ];
+            }
+
+            // Update the state.
+            setIsSwitchToggleChecked( !isSwitchToggleChecked );
+
+            // Save to database.
+            apiFetch( {
+                path: '/wp-json/wp/v2/settings',
+                method: 'POST',
+                headers: {
+                    'X-WP-Nonce': wpApiSettings ? wpApiSettings.nonce : ''
+                },
+                data: {
+                    'athemes_blocks_enabled_blocks': JSON.stringify(updatedEnabledBlocks)
+                }
+            } );
+        } );
+    }
 
     return (
         <div className="atb-dashboard__blocks-card" css={ styles }>
-            <h3 className="atb-dashboard__blocks-card-title">
-                { title }
-                {
-                    hasSwitchToggle && (
-                        <ToggleControl
-                            checked={ switchToggleChecked }
-                            onChange={ () => {} }
-                        />
-                    )
-                }
-            </h3>
+            {
+                title && (
+                    <h3 className="atb-dashboard__blocks-card-title">
+                        { title }
+                        {
+                            hasSwitchToggle && (
+                                <ToggleControl
+                                    checked={ isSwitchToggleChecked }
+                                    onChange={ swithToggleOnChangeHandler }
+                                />
+                            )
+                        }
+                    </h3>       
+                )
+            }
             {
                 description && (
                     <p className="atb-dashboard__blocks-card-description">

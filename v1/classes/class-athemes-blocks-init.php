@@ -40,7 +40,7 @@ if ( ! class_exists( 'ATBLOCKS_Init' ) ) {
             wp_register_script(
                 'athemes-blocks-editor',
                 plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), 
-                isset($pagenow) && $pagenow === 'widgets.php' ? array( 'wp-blocks', 'wp-i18n', 'wp-element' ) : array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+                isset($pagenow) && $pagenow === 'widgets.php' ? array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-api' ) : array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-api' ),
                 ATBLOCKS_VERSION,
                 true
             );

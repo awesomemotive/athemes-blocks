@@ -44,7 +44,7 @@ class Assets {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {
-        wp_enqueue_script( 'at-blocks-plugin-dashboard', ATHEMES_BLOCKS_URL . 'assets/js/plugin-dashboard/dashboard.js', array( 'wp-element', 'wp-i18n', 'wp-components', 'wp-hooks' ), ATHEMES_BLOCKS_VERSION, true );
+        wp_enqueue_script( 'at-blocks-plugin-dashboard', ATHEMES_BLOCKS_URL . 'assets/js/plugin-dashboard/dashboard.js', array( 'wp-element', 'wp-i18n', 'wp-components', 'wp-hooks', 'wp-api' ), ATHEMES_BLOCKS_VERSION, true );
 		wp_enqueue_style( 'wp-components' );
     }
 
@@ -67,9 +67,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_enabled_blocks(): void {
-		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksEnabledBlocks', array(
-			'flex-container', 'text', 'image'
-		) );
+		$enabled_blocks = get_option( 'athemes_blocks_enabled_blocks' );
+
+		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksEnabledBlocks', json_decode( $enabled_blocks, true ) );
 	}
 
 	/**

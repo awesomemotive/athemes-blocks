@@ -31,6 +31,8 @@ class MenuPages {
      */
     public function init_hooks(): void {
         add_action( 'admin_menu', array( $this, 'add_menu_pages' ), 99 );
+        add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'rest_api_init', array( $this, 'register_settings' ) );
     }
 
     /**
@@ -70,6 +72,29 @@ class MenuPages {
             1
         );
     }
+
+    /**
+	 * Register settings.
+	 * 
+	 * @return void
+	 */
+	public function register_settings() {
+
+        // The general settings data.
+		register_setting(
+			'general',
+			'athemes_blocks_enabled_blocks',
+			array(
+				'type'              => 'string',
+				'description'       => __( 'The enabled blocks data.', 'athemes-blocks' ),
+				'sanitize_callback' => function( $input ) {
+					return $input;
+				},
+				'show_in_rest'      => true,
+				'default'           => wp_json_encode( array( 'flex-container', 'text', 'heading' ) ),
+			)
+		);
+	}
 
     /**
      * Render the options page.

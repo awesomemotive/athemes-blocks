@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { ToggleControl } from '@wordpress/components';
+import apiFetch from '@wordpress/api-fetch';
 
 import { fetchData } from '../../utils/fetch.jsx';
 
@@ -41,41 +42,132 @@ const ProductsCard = ( props ) => {
     const { image, title, pluginSlug, pluginStatus } = props;
     const [ isActive, setIsActive ] = useState( pluginStatus === 'active' );
     const [ isInactive, setIsInactive ] = useState( pluginStatus === 'inactive' );
+    const [ isInstalling, setIsInstalling ] = useState( false );
+    const [ isActivating, setIsActivating ] = useState( false );
+    const [ hasError, setHasError ] = useState( false );
+    const [ errorMessage, setErrorMessage ] = useState( '' );
 
-    const getPluginStatus = async () => {
-        const data = await fetchData( 'plugin-installer/plugin-status', { plugin: pluginSlug }, 'GET' );
+    const installPluginHandler = async ( e ) => {
+        e.preventDefault();
 
-        setIsActive( data.status === 'active' );
-        return data.status;
+        setIsInstalling( true );
+        setHasError( false );
+        setErrorMessage( '' );
+
+        try {
+            const data = await apiFetch( {
+                path: '/wp-json/athemes-blocks/v1/plugin-installer',
+                method: 'POST',
+                data: {
+                    plugin: pluginSlug,
+                    action: 'install'
+                },
+                headers: {
+                    'X-WP-Nonce': wpApiSettings ? wpApiSettings.nonce : ''
+                }
+            } );
+
+            if ( data.status === 'success' ) {
+                setIsInstalling( false );
+                setIsActive( true );
+            } else {
+                throw new Error( data.message || __( 'Failed to install plugin.', 'athemes-blocks' ) );
+            }
+        } catch ( error ) {
+            setHasError( true );
+            setErrorMessage( error.message || __( 'An error occurred while installing the plugin.', 'athemes-blocks' ) );
+            setIsInstalling( false );
+            setIsActive( false );
+            setIsInactive( false );
+        }
     };
-    
-    useEffect( () => {
-        // getPluginStatus().then( ( status ) => {
-        //     console.log(status);
-        //     setIsActive( status === 'active' );
-        // } );
-        console.log(isActive);
-    }, [] );
 
-    console.log(isActive);
+    const activatePluginHandler = async ( e ) => {
+        e.preventDefault();
+
+        setIsActivating( true );
+        setHasError( false );
+        setErrorMessage( '' );
+
+        try {
+            const data = await apiFetch( {
+                path: '/wp-json/athemes-blocks/v1/plugin-installer',
+                method: 'POST',
+                data: {
+                    plugin: pluginSlug,
+                    action: 'activate'
+                },
+                headers: {
+                    'X-WP-Nonce': wpApiSettings ? wpApiSettings.nonce : ''
+                }
+            } );
+
+            if ( data.status === 'success' ) {
+                setIsActivating( false );
+                setIsActive( true );
+                setIsInactive( false );
+            } else {
+                throw new Error( data.message || __( 'Failed to activate plugin.', 'athemes-blocks' ) );
+            }
+        } catch ( error ) {
+            setHasError( true );
+            setErrorMessage( error.message || __( 'An error occurred while activating the plugin.', 'athemes-blocks' ) );
+            setIsActivating( false );
+            setIsInstalling( false );
+            setIsActive( false );
+            setIsInactive( true );
+        }
+    };
+
+    // Hide error message after 3 seconds.
+    useEffect(() => {
+        let timeoutId;
+        if (hasError) {
+            timeoutId = setTimeout(() => {
+                setHasError(false);
+                setErrorMessage('');
+            }, 3000);
+        }
+
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [hasError]);
 
     return (
         <div className="atb-dashboard__products-card" css={ styles }>
             <img src={ image } width={40} height={40} alt={ title } />
             { title }
             {
+                isInstalling && (
+                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--installing">{ __( 'Installing...', 'athemes-blocks' ) }</p>
+                )
+            }
+            {
+                isActivating && (
+                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--activating">{ __( 'Activating...', 'athemes-blocks' ) }</p>
+                )
+            }
+            {
                 isActive && (
                     <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--active">{ __( 'Active', 'athemes-blocks' ) }</p>
                 )
             }
             {
-                isInactive && (
-                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--inactive">{ __( 'Activate', 'athemes-blocks' ) }</p>
+                isInactive && !isActivating && (
+                    <a className="atb-dashboard__products-card-action atb-dashboard__products-card-action--inactive" href="#" onClick={ activatePluginHandler }>{ __( 'Activate', 'athemes-blocks' ) }</a>
                 )
             }
             {
-                !isActive && !isInactive && (
-                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--install">{ __( 'Install', 'athemes-blocks' ) }</p>
+                !isActive && !isInactive && !isInstalling && !isActivating && !hasError && (
+                    <a className="atb-dashboard__products-card-action atb-dashboard__products-card-action--install" href="#" onClick={ installPluginHandler }>{ __( 'Install', 'athemes-blocks' ) }</a>
+                )
+            }
+            {
+                hasError && (
+                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--error">{ errorMessage }</p>
                 )
             }
         </div>

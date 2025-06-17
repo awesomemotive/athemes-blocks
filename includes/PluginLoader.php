@@ -78,12 +78,14 @@ class PluginLoader {
     public function load_admin(): void {
         new PluginInstallerLoader();
 
+        // Plugin Dashboard (not only admin).
+        new PluginDashboardMenuPages();
+
         if ( ! is_admin() ) {
             return;
         }
 
         // Plugin Dashboard.
-        new PluginDashboardMenuPages();
         new PluginDashboardAssets();
         new PluginDashboardCustomCSS();
 
