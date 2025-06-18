@@ -22,6 +22,7 @@ use AThemes_Blocks\Admin\PluginDashboard\MenuPages as PluginDashboardMenuPages;
 use AThemes_Blocks\Admin\PluginDashboard\Assets as PluginDashboardAssets;
 use AThemes_Blocks\Admin\PluginDashboard\CustomCSS as PluginDashboardCustomCSS;
 use AThemes_Blocks\Services\PluginInstaller\Loader as PluginInstallerLoader;
+use AThemes_Blocks\Services\Settings\Loader as SettingsLoader;
 
 class PluginLoader {
 
@@ -33,6 +34,9 @@ class PluginLoader {
 
         // Load translation textdomain
         $this->load_textdomain();
+
+        // Load services.
+        $this->load_services();
 
         // Load blocks.
         $this->load_blocks();
@@ -71,13 +75,22 @@ class PluginLoader {
     }
 
     /**
+     * Load services.
+     * 
+     * @return void
+     */
+    public function load_services(): void {
+        new PluginInstallerLoader();
+        new SettingsLoader();
+    }
+
+    /**
      * Load admin only stuff.
      * 
      * @return void
      */
     public function load_admin(): void {
-        new PluginInstallerLoader();
-
+        
         // Plugin Dashboard (not only admin).
         new PluginDashboardMenuPages();
 

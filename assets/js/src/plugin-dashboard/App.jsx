@@ -10,7 +10,9 @@ import { __ } from '@wordpress/i18n';
 
 import { styles } from './app-styles.jsx';
 
+import { SettingsSavedMessages } from './components/SettingsSavedMessages/SettingsSavedMessages.jsx';
 import { TopBar } from './components/TopBar/TopBar.jsx';
+import { MainNavigation } from './components/MainNavigation/MainNavigation.jsx';
 
 const useQuery = () => {
 	const { search } = useLocation();
@@ -20,17 +22,23 @@ const useQuery = () => {
 
 export function App() {
 	const query = useQuery();
-	console.log(123123, query.get('path'));
+
 	return (
 		<ThemeProvider theme={ theme }>
 			<div className="atb-dashboard" css={ styles }>
-				<TopBar 
-					navigationLinks={ [
-						{ title: __( 'Blocks' ), id: 'blocks', path: 'blocks' },
-						{ title: __( 'Settings' ), id: 'settings', path: 'settings-editor-options' },
-					] }	
-				/>
-				<PagesRouter page={query.get('path')} />
+				<TopBar /> 
+				
+				<div className="atb-dashboard__pages-wrapper atb-dashboard__card">
+					<MainNavigation 
+						links={ [
+							{ title: __( 'Blocks' ), id: 'blocks', path: 'blocks' },
+							{ title: __( 'Settings' ), id: 'settings', path: 'settings-editor-options' },
+						] }
+					/>
+					<PagesRouter page={query.get('path')} />
+				</div>
+				
+				<SettingsSavedMessages />
 			</div>
 		</ThemeProvider>
 	);

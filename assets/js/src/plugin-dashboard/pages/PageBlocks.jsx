@@ -14,8 +14,8 @@ const quickLinks = athemesBlocksQuickLinks || {};
 
 const styles = (theme) => css`
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(200px, 3fr) minmax(363px, 1fr);
+    gap: 24px;
     align-items: flex-start;
     max-width: ${theme.containerMaxWidth}px;
     margin: 0 auto;
@@ -39,7 +39,7 @@ const PageBlocks = () => {
             </GridList>
 
             <GridList columns={1} gap={16} >
-                <BlocksCard title={ __( 'Suggested Products', 'athemes-blocks' ) }>
+                <BlocksCard title={ __( 'Suggested Products', 'athemes-blocks' ) } className="atb-dashboard__blocks-card--suggested-products">
                     { Object.keys( suggestedProducts ).map( ( productId ) => (
                         <ProductsCard
                             key={ productId }
@@ -50,13 +50,15 @@ const PageBlocks = () => {
                         />
                     ) ) }
                 </BlocksCard>
-                <BlocksCard title={ __( 'Quick Links', 'athemes-blocks' ) }>
+                <BlocksCard title={ __( 'Quick Links', 'athemes-blocks' ) } className="atb-dashboard__blocks-card--quick-links">
                     { Object.keys( quickLinks ).map( ( linkId ) => (
                         <LinksCard
                             key={ linkId }
                             title={ quickLinks[ linkId ].title }
+                            description={ quickLinks[ linkId ].description }
                             linkUrl={ quickLinks[ linkId ].link_url }
                             linkLabel={ quickLinks[ linkId ].link_label }
+                            linkStyle={ quickLinks[ linkId ].link_style }
                             isActive={ quickLinks[ linkId ].is_active }
                         />
                     ) ) }

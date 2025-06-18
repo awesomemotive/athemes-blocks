@@ -94,6 +94,29 @@ class MenuPages {
 				'default'           => wp_json_encode( array( 'flex-container', 'text', 'heading' ) ),
 			)
 		);
+
+        register_setting(
+            'general',
+            'athemes_blocks_dashboard_settings',
+            array(
+                'type'              => 'string',
+                'description'       => __( 'The settings data.', 'athemes-blocks' ),
+                'sanitize_callback' => function( $input ) {
+                    return $input;
+                },
+                'show_in_rest'      => true,
+                'default'           => wp_json_encode( array(
+                    'editor_options' => array(
+                        'content_width' => 1200,
+                        'container_padding' => 15,
+                        'container_items_gap' => 15,
+                    ),
+                    'performance' => array(
+                        'load_google_fonts_locally' => false,
+                    ),
+                ) ),
+            )
+        );
 	}
 
     /**

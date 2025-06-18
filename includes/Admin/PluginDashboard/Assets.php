@@ -34,6 +34,7 @@ class Assets {
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_topbar_data' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_enabled_blocks' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_blocks_data' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_dashboard_settings' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_suggested_products' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_quick_links' ) );
     }
@@ -84,57 +85,67 @@ class Assets {
 				'description' => __( 'Arrange multiple blocks flexibly with customizable layout options', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/flex-container/',
 			),
-			'text' => array(
-				'title' => __( 'Text', 'athemes-blocks' ),
-				'description' => __( 'Add text blocks to your page', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/text/',
-			),
-			'image' => array(
-				'title' => __( 'Image', 'athemes-blocks' ),
-				'description' => __( 'Add image blocks to your page', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/image/',
-			),
 			'heading' => array(
 				'title' => __( 'Heading', 'athemes-blocks' ),
-				'description' => __( 'Add heading blocks to your page', 'athemes-blocks' ),
+				'description' => __( 'Add prominent headings to structure content sections effectively', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/heading/',
 			),
 			'button' => array(
 				'title' => __( 'Button', 'athemes-blocks' ),
-				'description' => __( 'Add button blocks to your page', 'athemes-blocks' ),
+				'description' => __( 'Create engaging call-to-action buttons with customizable styles and link options', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/button/',
+			),
+			'text' => array(
+				'title' => __( 'Text', 'athemes-blocks' ),
+				'description' => __( 'Insert and format text content to convey information or messages clearly', 'athemes-blocks' ),
+				'documentation' => 'https://athemes.com/documentation/text/',
 			),
 			'icon' => array(
 				'title' => __( 'Icon', 'athemes-blocks' ),
-				'description' => __( 'Add icon blocks to your page', 'athemes-blocks' ),
+				'description' => __( 'Add icons to visually highlight key points, features, or calls to action', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/icon/',
 			),
+			'image' => array(
+				'title' => __( 'Image', 'athemes-blocks' ),
+				'description' => __( 'Showcase images to visually represent products, services, or content sections', 'athemes-blocks' ),
+				'documentation' => 'https://athemes.com/documentation/image/',
+			),
 			'testimonials' => array(
-				'title' => __( 'Testimonials', 'athemes-blocks' ),
-				'description' => __( 'Add testimonials blocks to your page', 'athemes-blocks' ),
+				'title' => __( 'Testimonial', 'athemes-blocks' ),
+				'description' => __( 'Display customer feedback, reviews, or quotes to build social proof', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/testimonials/',
 			),
-			'team-member' => array(
-				'title' => __( 'Team Member', 'athemes-blocks' ),
-				'description' => __( 'Add team member blocks to your page', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/team-member/',
+			'google-maps' => array(
+				'title' => __( 'Google Maps', 'athemes-blocks' ),
+				'description' => __( 'Integrate interactive maps to pinpoint locations or provide directions', 'athemes-blocks' ),
+				'documentation' => 'https://athemes.com/documentation/google-maps/',
 			),
 			'post-grid' => array(
 				'title' => __( 'Post Grid', 'athemes-blocks' ),
-				'description' => __( 'Add post grid blocks to your page', 'athemes-blocks' ),
+				'description' => __( 'Display multiple posts in a structured grid layout with various styling options', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/post-grid/',
 			),
 			'taxonomy-grid' => array(
 				'title' => __( 'Taxonomy Grid', 'athemes-blocks' ),
-				'description' => __( 'Add taxonomy grid blocks to your page', 'athemes-blocks' ),
+				'description' => __( 'Arrange categories, tags, or terms in a visually organized grid layout', 'athemes-blocks' ),
 				'documentation' => 'https://athemes.com/documentation/taxonomy-grid/',
 			),
-			'google-maps' => array(
-				'title' => __( 'Google Maps', 'athemes-blocks' ),
-				'description' => __( 'Add google maps blocks to your page', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/google-maps/',
+			'team-member' => array(
+				'title' => __( 'Team Member', 'athemes-blocks' ),
+				'description' => __( 'Highlight team members with a beautiful profile card', 'athemes-blocks' ),
+				'documentation' => 'https://athemes.com/documentation/team-member/',
 			),
 		) );
+	}
+
+	/**
+	 * Localize dashboard with dashboard settings.
+	 * 
+	 * @return void
+	 */
+	public function localize_dashboard_with_dashboard_settings(): void {
+		$settings = get_option( 'athemes_blocks_dashboard_settings' );
+		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksDashboardSettings', json_decode( $settings, true ) );
 	}
 
 	/**
@@ -194,35 +205,40 @@ class Assets {
 	public function localize_dashboard_with_quick_links(): void {
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksQuickLinks', array(
 			'priority-support' => array(
-				'title' => __( 'Priority Support', 'athemes-blocks' ),
-				'description' => __( 'Get priority support for your website', 'athemes-blocks' ),
+				'title' => __( 'Priority support', 'athemes-blocks' ),
+				'description' => __( 'We aim to answer all priority support requests within 2-3 hours.', 'athemes-blocks' ),
 				'link_label' => __( 'Get Premium Support', 'athemes-blocks' ),
 				'link_url' => 'https://athemes.com/priority-support/',
+				'link_style' => 'underline',
 				'is_active' => true,
 			),
 			'leave-a-review' => array(
-				'title' => __( 'Leave a Review', 'athemes-blocks' ),
-				'description' => __( 'Leave a review for AThemes Blocks', 'athemes-blocks' ),
-				'link_label' => __( 'Leave a Review', 'athemes-blocks' ),
+				'title' => __( 'Leave a review', 'athemes-blocks' ),
+				'description' => __( 'It makes us happy to hear from our users. We would appreciate a review.', 'athemes-blocks' ),
+				'link_label' => __( 'Submit a Review', 'athemes-blocks' ),
 				'link_url' => 'https://wordpress.org/support/plugin/athemes-blocks/reviews/',
+				'link_style' => 'button',
 			),
 			'knowledge-base' => array(
-				'title' => __( 'Knowledge Base', 'athemes-blocks' ),
-				'description' => __( 'Find answers to your questions in our knowledge base', 'athemes-blocks' ),
-				'link_label' => __( 'View Knowledge Base', 'athemes-blocks' ),
+				'title' => __( 'Knowledge base', 'athemes-blocks' ),
+				'description' => __( 'Browse documentation, reference material, and tutorials for Botiga Theme.', 'athemes-blocks' ),
+				'link_label' => __( 'View All', 'athemes-blocks' ),
 				'link_url' => 'https://athemes.com/knowledge-base/',
+				'link_style' => 'button',
 			),
 			'have-an-idea-feedback' => array(
-				'title' => __( 'Have an Idea or Feedback?', 'athemes-blocks' ),
-				'description' => __( 'Let us know what you think about AThemes Blocks', 'athemes-blocks' ),
-				'link_label' => __( 'Submit Feedback', 'athemes-blocks' ),
+				'title' => __( 'Have an idea or feedback?', 'athemes-blocks' ),
+				'description' => __( 'Browse documentation, reference material, and tutorials for Botiga Theme.', 'athemes-blocks' ),
+				'link_label' => __( 'Suggest an Idea', 'athemes-blocks' ),
 				'link_url' => 'https://athemes.com/have-an-idea-feedback/',
+				'link_style' => 'underline',
 			),
 			'join-facebook-community' => array(
-				'title' => __( 'Join Our Facebook Community', 'athemes-blocks' ),
-				'description' => __( 'Join our Facebook community to get support and stay updated', 'athemes-blocks' ),
-				'link_label' => __( 'Join Our Facebook Community', 'athemes-blocks' ),
+				'title' => __( 'Join our Facebook community', 'athemes-blocks' ),
+				'description' => __( 'Want to share your awesome project or just say hi? Join our wonderful community!', 'athemes-blocks' ),
+				'link_label' => __( 'Join Now', 'athemes-blocks' ),
 				'link_url' => 'https://www.facebook.com/groups/athemesblocks/',
+				'link_style' => 'button',
 			),
 		) );
 	}

@@ -7,6 +7,17 @@ const styles = (theme) => css`
     * {
         box-sizing: border-box;
     }
+
+    .atb-dashboard__card {
+        background-color: ${theme.colors.backgroundColorLight};
+        border-radius: 10px;
+        padding: 16px;
+    }
+
+    .atb-dashboard__pages-wrapper {
+        max-width: ${theme.containerMaxWidth}px;
+        margin: 0 auto;
+    }
 `;
 
 export { styles };

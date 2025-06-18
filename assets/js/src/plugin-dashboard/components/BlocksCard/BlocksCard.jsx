@@ -12,9 +12,10 @@ const styles = (theme) => css`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    gap: 15px;
+    gap: 24px;
     padding: 24px;
     background-color: ${theme.colors.backgroundColorLight};
+    border: 1px solid ${theme.colors.borderColorGray};
     border-radius: 10px;
     box-shadow: 2px 2px 4px 0px #00285005;
 
@@ -23,19 +24,52 @@ const styles = (theme) => css`
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        font-size: 16px;
+        font-size: ${theme.fontSize.cardTitle};
+        line-height: ${theme.lineHeight.cardTitle};
         font-weight: 600;
         color: ${theme.colors.textColorDark};
+        margin: 0;
+
+        .components-base-control {
+            margin: 0;
+        }
+    }
+
+    .atb-dashboard__blocks-card-description {
+        font-size: ${theme.fontSize.cardDescription};
+        line-height: ${theme.lineHeight.cardDescription};
+        color: ${theme.colors.textColorGray};
         margin: 0;
     }
 
     .atb-dashboard__blocks-card-icon {
         display: inline-flex;
+        padding: 4px 0;
+    }
+
+    // Suggested Products.
+    &.atb-dashboard__blocks-card--suggested-products {
+        gap: 16px;
+
+        .atb-dashboard__blocks-card-title {
+            font-size: ${theme.fontSize.cardHeading};
+            line-height: ${theme.lineHeight.cardHeading};
+        }
+    }
+
+    // Quick Links.
+    &.atb-dashboard__blocks-card--quick-links {
+        gap: 16px;
+        
+        .atb-dashboard__blocks-card-title {
+            font-size: ${theme.fontSize.cardHeading};
+            line-height: ${theme.lineHeight.cardHeading};
+        }
     }
 `;
 
 const BlocksCard = ( props ) => {
-    const { title, description, documentation, children, hasSwitchToggle = false, switchToggleChecked = false, blockSlug } = props;
+    const { title, className, description, documentation, children, hasSwitchToggle = false, switchToggleChecked = false, blockSlug } = props;
     const [ isSwitchToggleChecked, setIsSwitchToggleChecked ] = useState( switchToggleChecked );
 
     const swithToggleOnChangeHandler = () => {
@@ -80,7 +114,7 @@ const BlocksCard = ( props ) => {
     }
 
     return (
-        <div className="atb-dashboard__blocks-card" css={ styles }>
+        <div className={ `atb-dashboard__blocks-card ${className}` } css={ styles }>
             {
                 title && (
                     <h3 className="atb-dashboard__blocks-card-title">

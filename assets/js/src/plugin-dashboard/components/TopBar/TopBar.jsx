@@ -1,10 +1,7 @@
 /** @jsx jsx */;
 import { css, jsx, useTheme } from '@emotion/react';
 
-import { Icon } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
-
-import { Navigation } from '../Navigation/Navigation.jsx';
 
 const topBarData = athemesBlocksTopBarData || {};
 
@@ -26,7 +23,6 @@ const styles = (theme) => css`
 `;
 
 const TopBar = ( props ) => {
-    const { navigationLinks } = props;
     const theme = useTheme();
 
     return (
@@ -35,9 +31,6 @@ const TopBar = ( props ) => {
                 <a href="https://athemes.com" target="_blank">
                     <img src={ topBarData.logo } width={95} height="auto" alt="aThemes" />
                 </a>
-            </div>
-            <div className="atb-dashboard__top-bar-item atb-dashboard__top-bar-item--navigation">
-                <Navigation links={ navigationLinks } />
             </div>
             <div className="atb-dashboard__top-bar-item atb-dashboard__top-bar-item--version">
                 <span>{ topBarData.version }</span>

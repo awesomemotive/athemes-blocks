@@ -8,6 +8,7 @@ import { ToggleControl } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
 import { fetchData } from '../../utils/fetch.jsx';
+import { CustomIcon } from '../../icons/icons.jsx';
 
 const styles = (theme) => css`
     display: flex;
@@ -21,11 +22,23 @@ const styles = (theme) => css`
     border-radius: 10px;
     box-shadow: 2px 2px 4px 0px #00285005;
 
-    .atb-dashboard__products-card-action {
-        font-size: 12px;
+    .atb-dashboard__products-card-title {
+        font-size: ${theme.fontSize.cardTitle};
+        line-height: ${theme.lineHeight.cardTitle};
         font-weight: 600;
         color: ${theme.colors.textColorDark};
         margin: 0;
+    }
+
+    .atb-dashboard__products-card-action {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: ${theme.fontSize.cardAction};
+        line-height: ${theme.lineHeight.cardAction};
+        font-weight: 600;
+        color: ${theme.colors.textColorDark};
+        margin: 0 0 0 auto;
 
         &--active {
             color: ${theme.colors.success};
@@ -139,7 +152,7 @@ const ProductsCard = ( props ) => {
     return (
         <div className="atb-dashboard__products-card" css={ styles }>
             <img src={ image } width={40} height={40} alt={ title } />
-            { title }
+            <p className="atb-dashboard__products-card-title">{ title }</p>
             {
                 isInstalling && (
                     <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--installing">{ __( 'Installing...', 'athemes-blocks' ) }</p>
@@ -152,7 +165,10 @@ const ProductsCard = ( props ) => {
             }
             {
                 isActive && (
-                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--active">{ __( 'Active', 'athemes-blocks' ) }</p>
+                    <p className="atb-dashboard__products-card-action atb-dashboard__products-card-action--active">
+                        { __( 'Activated', 'athemes-blocks' ) }
+                        <CustomIcon icon="check" />
+                    </p>
                 )
             }
             {

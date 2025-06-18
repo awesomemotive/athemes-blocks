@@ -1,7 +1,8 @@
 import { useState, createContext, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const GlobalContext = createContext();
+export const PageContext = createContext();
+export const SnackBarContext = createContext();
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -12,15 +13,15 @@ const useQuery = () => {
 }
 
 export const GlobalContextProvider = ({ children }) => {
-    const query = useQuery();
+	const query = useQuery();
+	const [activePage, setActivePage] = useState(query.get('path'));
+	const [displaySnackBar, setDisplaySnackBar] = useState(false);
 
-    const [ activePage, setActivePage ] = useState( query.get('path') );
-
-    return (
-        <GlobalContext.Provider value={ [ activePage, setActivePage ] }> 
-            { children }
-        </GlobalContext.Provider>
-    );
+	return (
+		<PageContext.Provider value={[activePage, setActivePage]}>
+			<SnackBarContext.Provider value={[displaySnackBar, setDisplaySnackBar]}>
+				{children}
+			</SnackBarContext.Provider>
+		</PageContext.Provider>
+	);
 }
-
-export default GlobalContext;

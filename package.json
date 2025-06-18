@@ -38,6 +38,7 @@
 		"@wordpress/hooks": "^4.20.0",
 		"@wordpress/icons": "^9.13.0",
 		"@wordpress/scripts": "^27.7.0",
+		"lodash": "^4.17.21",
 		"react-router-dom": "^7.1.5",
 		"archiver": "^6.0.0",
 		"babel-loader": "^10.0.0",
