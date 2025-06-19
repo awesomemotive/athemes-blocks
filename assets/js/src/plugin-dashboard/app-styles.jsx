@@ -8,6 +8,13 @@ const styles = (theme) => css`
         box-sizing: border-box;
     }
 
+    a {
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
     .atb-dashboard__card {
         background-color: ${theme.colors.backgroundColorLight};
         border-radius: 10px;

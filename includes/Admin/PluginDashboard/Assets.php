@@ -174,24 +174,6 @@ class Assets {
 				'plugin_slug' => 'merchant/merchant.php',
 				'plugin_status' => PluginInstallerHelper::get_plugin_status( 'merchant/merchant.php' ),
 			),
-			'wp-mail-smtp' => array(
-				'title' => __( 'WP Mail SMTP', 'athemes-blocks' ),
-				'image' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/wp-mail-smtp-logo.png',
-				'plugin_slug' => 'wp-mail-smtp/wp_mail_smtp.php',
-				'plugin_status' => PluginInstallerHelper::get_plugin_status( 'wp-mail-smtp/wp_mail_smtp.php' ),
-			),
-			'easy-wp-smtp' => array(
-				'title' => __( 'Easy WP SMTP', 'athemes-blocks' ),
-				'image' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/easy-wp-smtp-logo.png',
-				'plugin_slug' => 'easy-wp-smtp/easy-wp-smtp.php',
-				'plugin_status' => PluginInstallerHelper::get_plugin_status( 'easy-wp-smtp/easy-wp-smtp.php' ),
-			),
-			'sugar-calendar' => array(
-				'title' => __( 'Sugar Calendar', 'athemes-blocks' ),
-				'image' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/sugar-calendar-logo.png',
-				'plugin_slug' => 'sugar-calendar/sugar-calendar.php',
-				'plugin_status' => PluginInstallerHelper::get_plugin_status( 'sugar-calendar/sugar-calendar.php' ),
-			),
 		) );
 		
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksSuggestedProducts', $suggested_products );

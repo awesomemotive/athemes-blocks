@@ -17,6 +17,7 @@ use AThemes_Blocks\Admin\BlockEditorAssets;
 use AThemes_Blocks\BlocksCommonCss;
 use AThemes_Blocks\BlocksCommonScripts;
 use AThemes_Blocks\Blocks\Helper\Settings;
+use AThemes_Blocks\Blocks\Helper\Functions as BlocksHelper;
 use AThemes_Blocks\Integration\Themes\Sydney as SydneyIntegration;
 use AThemes_Blocks\Admin\PluginDashboard\MenuPages as PluginDashboardMenuPages;
 use AThemes_Blocks\Admin\PluginDashboard\Assets as PluginDashboardAssets;
@@ -41,6 +42,9 @@ class PluginLoader {
         // Load blocks.
         $this->load_blocks();
 
+        // Apply plugin settings.
+        $this->apply_plugin_settings();
+
         // Load integration.
         $this->load_integration();
 
@@ -52,6 +56,44 @@ class PluginLoader {
 
         // Load blocks common scripts.
         $this->load_blocks_common_scripts();
+    }
+
+    /**
+     * Apply plugin settings.
+     * 
+     * @return void
+     */
+    public function apply_plugin_settings(): void {
+        $settings = get_option( 'athemes_blocks_dashboard_settings' );
+        if ( ! $settings ) {
+            return;
+        }
+
+        $settings_list = json_decode( $settings, true );
+        if ( ! $settings_list ) {
+            return;
+        }
+
+        // Container block.
+        add_filter( 'athemes_blocks_flex_container_attributes_values', function( $attributes_values ) use ( $settings_list ) {
+
+            // Content box width.
+            if ( isset( $settings_list['editor_options']['container_content_width'] ) ) {
+                $attributes_values['contentBoxWidth']['desktop'] = (int) $settings_list['editor_options']['container_content_width'];
+            }
+
+            // Columns gap.
+            if ( isset( $settings_list['editor_options']['container_columns_gap'] ) ) {
+                $attributes_values['columnsGap']['desktop'] = (int) $settings_list['editor_options']['container_columns_gap'];
+            }
+
+            // Rows gap.
+            if ( isset( $settings_list['editor_options']['container_rows_gap'] ) ) {
+                $attributes_values['rowsGap']['desktop'] = (int) $settings_list['editor_options']['container_rows_gap'];
+            }
+
+            return $attributes_values;
+        } );
     }
 
     /**
@@ -112,22 +154,9 @@ class PluginLoader {
      * @return void
      */
     public function load_blocks(): void {
-        $blocks = array(
-            'FlexContainer',
-            'Heading',
-            'Text',
-            'Button',
-            'Icon',
-            'Image',
-            'Testimonials',
-            // 'Team',
-            'TeamMember',
-            'PostGrid',
-            'TaxonomyGrid',
-            'GoogleMaps',
-        );
+        $enabled_blocks = BlocksHelper::get_enabled_blocks_list();
 
-        foreach ( $blocks as $block ) {
+        foreach ( $enabled_blocks as $block ) {
             $block_class = 'AThemes_Blocks\Blocks\\' . $block;
             new $block_class();
         }

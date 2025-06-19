@@ -15,10 +15,11 @@ const useQuery = () => {
 export const GlobalContextProvider = ({ children }) => {
 	const query = useQuery();
 	const [activePage, setActivePage] = useState(query.get('path'));
+	const [activeSection, setActiveSection] = useState(query.get('section'));
 	const [displaySnackBar, setDisplaySnackBar] = useState(false);
 
 	return (
-		<PageContext.Provider value={[activePage, setActivePage]}>
+		<PageContext.Provider value={[activePage, setActivePage, activeSection, setActiveSection]}>
 			<SnackBarContext.Provider value={[displaySnackBar, setDisplaySnackBar]}>
 				{children}
 			</SnackBarContext.Provider>

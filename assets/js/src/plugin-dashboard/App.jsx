@@ -12,7 +12,7 @@ import { styles } from './app-styles.jsx';
 
 import { SettingsSavedMessages } from './components/SettingsSavedMessages/SettingsSavedMessages.jsx';
 import { TopBar } from './components/TopBar/TopBar.jsx';
-import { MainNavigation } from './components/MainNavigation/MainNavigation.jsx';
+import { MainNavigation } from './components/Navigation/MainNavigation.jsx';
 
 const useQuery = () => {
 	const { search } = useLocation();
@@ -32,7 +32,7 @@ export function App() {
 					<MainNavigation 
 						links={ [
 							{ title: __( 'Blocks' ), id: 'blocks', path: 'blocks' },
-							{ title: __( 'Settings' ), id: 'settings', path: 'settings-editor-options' },
+							{ title: __( 'Settings' ), id: 'settings', path: 'settings', section: 'editor-options' },
 						] }
 					/>
 					<PagesRouter page={query.get('path')} />

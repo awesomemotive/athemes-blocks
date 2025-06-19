@@ -66,6 +66,11 @@ const styles = (theme) => css`
             line-height: ${theme.lineHeight.cardHeading};
         }
     }
+
+    // Settings.
+    &.atb-dashboard__blocks-card--settings {
+        gap: 41px;
+    }
 `;
 
 const BlocksCard = ( props ) => {
@@ -73,6 +78,7 @@ const BlocksCard = ( props ) => {
     const [ isSwitchToggleChecked, setIsSwitchToggleChecked ] = useState( switchToggleChecked );
 
     const swithToggleOnChangeHandler = () => {
+
         // Get current enabled blocks
         apiFetch( { 
             path: '/wp-json/wp/v2/settings',

@@ -107,9 +107,9 @@ class MenuPages {
                 'show_in_rest'      => true,
                 'default'           => wp_json_encode( array(
                     'editor_options' => array(
-                        'content_width' => 1200,
-                        'container_padding' => 15,
-                        'container_items_gap' => 15,
+                        'container_content_width' => 1200,
+                        'container_columns_gap' => 15,
+                        'container_rows_gap' => 15,
                     ),
                     'performance' => array(
                         'load_google_fonts_locally' => false,

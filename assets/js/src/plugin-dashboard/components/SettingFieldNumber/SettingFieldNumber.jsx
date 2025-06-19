@@ -8,7 +8,7 @@ const SettingFieldNumber = ( { value, onChange } ) => {
     return (
         <NumberControl
             __next40pxDefaultSize
-            label="Value"
+            label=""
             value={inputValue}
             onChange={(value) => {
                 setInputValue( value );

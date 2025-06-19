@@ -91,4 +91,74 @@ class Functions {
 
         return $icons_list[$icon_name];
     }
+
+    /**
+     * Get the list of enabled blocks.
+     * 
+     * @return array<string>
+     */
+    public static function get_enabled_blocks_list(): array {
+        $enabled_blocks = get_option( 'athemes_blocks_enabled_blocks' );
+
+        if ( ! $enabled_blocks ) {
+            return array();
+        }
+
+        $enabled_blocks_list = json_decode( $enabled_blocks, true );
+
+        $blocks = array();
+        foreach ( $enabled_blocks_list as $block ) {
+            switch ( $block ) {
+                case 'flex-container':
+                    $blocks[] = 'FlexContainer';
+                    break;
+
+                case 'heading':
+                    $blocks[] = 'Heading';
+                    break;
+
+                case 'text':
+                    $blocks[] = 'Text';
+                    break;
+
+                case 'button':
+                    $blocks[] = 'Button';
+                    break;
+
+                case 'icon':
+                    $blocks[] = 'Icon';
+                    break;
+
+                case 'image':
+                    $blocks[] = 'Image';
+                    break;
+
+                case 'testimonials':
+                    $blocks[] = 'Testimonials';
+                    break;
+
+                case 'team':
+                    $blocks[] = 'Team';
+                    break;
+
+                case 'team-member':
+                    $blocks[] = 'TeamMember';
+                    break;
+
+                case 'post-grid':
+                    $blocks[] = 'PostGrid';
+                    break;
+
+                case 'taxonomy-grid':
+                    $blocks[] = 'TaxonomyGrid';
+                    break;
+
+                case 'google-maps':
+                    $blocks[] = 'GoogleMaps';
+                    break;
+            }
+        }
+
+        return $blocks;
+    }
 }
