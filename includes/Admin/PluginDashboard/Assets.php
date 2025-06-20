@@ -31,7 +31,7 @@ class Assets {
      */
     public function init_hooks(): void {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_topbar_data' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_general_data' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_enabled_blocks' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_blocks_data' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_dashboard_with_dashboard_settings' ) );
@@ -50,15 +50,26 @@ class Assets {
     }
 
 	/**
-	 * Localize dashboard with topbar data.
+	 * Localize dashboard with general data.
 	 * 
 	 * @return void
 	 */
-	public function localize_dashboard_with_topbar_data(): void {
-		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksTopBarData', array(
-			'logo' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/athemes-logo.png',
-			'version' => ATHEMES_BLOCKS_VERSION,
-			'website_url' => 'https://athemes.com',
+	public function localize_dashboard_with_general_data(): void {
+		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksGeneralData', array(
+			'topbar' => array(
+				'logo' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/athemes-logo.png',
+				'version' => ATHEMES_BLOCKS_VERSION,
+				'website_url' => 'https://athemes.com',
+			),
+			'hero' => array(
+				'title' => __( 'Welcome to aThemes Blocks 👋', 'athemes-blocks' ),
+				'description' => __( 'We’re glad to see you :)', 'athemes-blocks' ),
+				'button_label' => __( 'Create New Pages', 'athemes-blocks' ),
+				'button_url' => 'https://athemes.com',
+				'image' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/dashboard-hero.png',
+			),
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'atb_dashboard_notifications_read' ),
 		) );
 	}
 

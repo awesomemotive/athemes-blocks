@@ -25,7 +25,7 @@ const lastSavedValues = new Map();
  * @param {Function} setDisplaySnackBar - The function to set the display snackbar.
  * @returns {Promise<void>}
  */
-const saveSettingValue = (settingGroup, settingId, value, setDisplaySnackBar) => {
+const saveSettingValue = (settingGroup, settingId, value, setDisplaySnackBar, setSettings) => {
     const fieldKey = `${settingGroup}-${settingId}`;
     
     // If there's already a save in progress for this field, wait for it to complete
@@ -56,6 +56,14 @@ const saveSettingValue = (settingGroup, settingId, value, setDisplaySnackBar) =>
 
         setDisplaySnackBar( true );
 
+        setSettings( (prevSettings) => ({
+            ...prevSettings,
+            [settingGroup]: {
+                ...prevSettings[settingGroup],
+                [settingId]: value
+            }
+        }));
+
         return response;
     })
     .catch(error => {
@@ -79,8 +87,8 @@ const saveSettingValue = (settingGroup, settingId, value, setDisplaySnackBar) =>
  */
 const createDebouncedSave = (settingGroup, settingId) => {
     const fieldKey = `${settingGroup}-${settingId}`;
-    return debounce((value, setDisplaySnackBar) => {
-        return saveSettingValue(settingGroup, settingId, value, setDisplaySnackBar);
+    return debounce((value, setDisplaySnackBar, setSettings) => {
+        return saveSettingValue(settingGroup, settingId, value, setDisplaySnackBar, setSettings);
     }, 400);
 };
 
@@ -100,28 +108,16 @@ const debouncedSaves = new Map();
  * @param {Function} setDisplaySnackBar - The function to set the display snackbar.
  * @returns {Promise<void>} The result of the save operation.
  */
-const saveSettingValueDebounced = (settingGroup, settingId, value, setDisplaySnackBar) => {
+const saveSettingValueDebounced = (settingGroup, settingId, value, setDisplaySnackBar, setSettings) => {
     const fieldKey = `${settingGroup}-${settingId}`;
     if (!debouncedSaves.has(fieldKey)) {
         debouncedSaves.set(fieldKey, createDebouncedSave(settingGroup, settingId));
     }
     
-    return debouncedSaves.get(fieldKey)(value, setDisplaySnackBar);
-};
-
-/**
- * Get the setting value from the database.
- * 
- * @param {string} settingGroup - The setting group.
- * @param {string} settingId - The setting ID.
- * @returns {any} The setting value.
- */
-const getSettingValueFromDatabase = (settingGroup, settingId) => {
-    return athemesBlocksDashboardSettings?.[settingGroup]?.[settingId] || null;
+    return debouncedSaves.get(fieldKey)(value, setDisplaySnackBar, setSettings);
 };
 
 export {
     saveSettingValue,
     saveSettingValueDebounced, 
-    getSettingValueFromDatabase,
 };

@@ -1,6 +1,8 @@
 /** @jsx jsx */;
 import { css, jsx, ThemeProvider, useTheme } from '@emotion/react';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { EnabledBlocksContext } from '../../contexts/GlobalContext.jsx';
 
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
@@ -76,6 +78,7 @@ const styles = (theme) => css`
 const BlocksCard = ( props ) => {
     const { title, className, description, documentation, children, hasSwitchToggle = false, switchToggleChecked = false, blockSlug } = props;
     const [ isSwitchToggleChecked, setIsSwitchToggleChecked ] = useState( switchToggleChecked );
+    const [ enabledBlocks, setEnabledBlocks ] = useContext( EnabledBlocksContext );
 
     const swithToggleOnChangeHandler = () => {
 
@@ -115,6 +118,8 @@ const BlocksCard = ( props ) => {
                 data: {
                     'athemes_blocks_enabled_blocks': JSON.stringify(updatedEnabledBlocks)
                 }
+            } ).then( ( response ) => {
+                setEnabledBlocks( updatedEnabledBlocks );
             } );
         } );
     }

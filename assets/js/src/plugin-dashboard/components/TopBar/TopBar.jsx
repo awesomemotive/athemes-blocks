@@ -5,8 +5,6 @@ import { __ } from '@wordpress/i18n';
 
 import { CustomIcon } from '../../icons/icons.jsx';
 
-const topBarData = athemesBlocksTopBarData || {};
-
 const styles = (theme) => css`
     position: relative;
     width: 100%;
@@ -49,6 +47,11 @@ const styles = (theme) => css`
                 text-align: center;
             }
 
+            svg {
+                width: 13px;
+                height: 11px;
+            }
+
             &:before,
             &:after {
                 content: '';
@@ -84,17 +87,18 @@ const styles = (theme) => css`
 `;
 
 const TopBar = ( props ) => {
+    const { logo, version, websiteUrl } = props;
     const theme = useTheme();
 
     return (
         <div className="atb-dashboard__top-bar" css={ styles(theme) }>
             <div className="atb-dashboard__top-bar-item atb-dashboard__top-bar-item--logo">
-                <a href="https://athemes.com" target="_blank">
-                    <img src={ topBarData.logo } width={95} height="auto" alt="aThemes" />
+                <a href={ websiteUrl } target="_blank">
+                    <img src={ logo } width={95} height="auto" alt="aThemes" />
                 </a>
             </div>
             <div className="atb-dashboard__top-bar-item atb-dashboard__top-bar-item--version">
-                <span>{ topBarData.version }</span>
+                <span>{ version }</span>
             </div>
             <div className="atb-dashboard__top-bar-item">
                 <div className="atb-dashboard__top-bar-item-notification">
@@ -103,7 +107,7 @@ const TopBar = ( props ) => {
                 </div>
             </div>
             <div className="atb-dashboard__top-bar-item atb-dashboard__top-bar-item--website">
-                <a href={ topBarData.website_url } target="_blank">
+                <a href={ websiteUrl } target="_blank">
                     { __( 'Website', 'a-themes-blocks' ) }
                     <CustomIcon icon="external-link" />
                 </a>

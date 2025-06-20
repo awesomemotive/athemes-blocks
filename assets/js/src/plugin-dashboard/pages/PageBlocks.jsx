@@ -1,5 +1,8 @@
 /** @jsx jsx */;
 import { css, jsx, ThemeProvider, useTheme } from '@emotion/react';
+import { useContext } from 'react';
+import { EnabledBlocksContext } from '../contexts/GlobalContext.jsx';
+
 import { __ } from '@wordpress/i18n';
 
 import { BlocksCard } from '../components/BlocksCard/BlocksCard.jsx';
@@ -7,7 +10,6 @@ import { ProductsCard } from '../components/ProductsCard/ProductsCard.jsx';
 import { LinksCard } from '../components/LinksCard/LinksCard.jsx';
 import { GridList } from '../components/GridList/GridList.jsx';
 
-const enabledBlocks = athemesBlocksEnabledBlocks || {};
 const blocksData = athemesBlocksBlocksData || {};
 const suggestedProducts = athemesBlocksSuggestedProducts || {};
 const quickLinks = athemesBlocksQuickLinks || {};
@@ -22,6 +24,8 @@ const styles = (theme) => css`
 `;
 
 const PageBlocks = () => {
+    const [enabledBlocks, setEnabledBlocks] = useContext( EnabledBlocksContext );
+
     return (
         <div className="atb-dashboard__page atb-dashboard__page--blocks" css={ styles }>
             <GridList columns={2} gap={16}>

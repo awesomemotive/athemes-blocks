@@ -18,7 +18,7 @@ const styles = (theme) => css`
     width: 100%;
     padding: 16px;
     background-color: ${theme.colors.backgroundColorLight};
-    border: 1px solid ${theme.colors.borderColorGray};
+    border: 1px solid ${theme.colors.borderColorLightGray};
     border-radius: 10px;
     box-shadow: 2px 2px 4px 0px #00285005;
 

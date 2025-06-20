@@ -22,6 +22,7 @@ use AThemes_Blocks\Integration\Themes\Sydney as SydneyIntegration;
 use AThemes_Blocks\Admin\PluginDashboard\MenuPages as PluginDashboardMenuPages;
 use AThemes_Blocks\Admin\PluginDashboard\Assets as PluginDashboardAssets;
 use AThemes_Blocks\Admin\PluginDashboard\CustomCSS as PluginDashboardCustomCSS;
+use AThemes_Blocks\Admin\PluginDashboard\NotificationsSidebar as PluginDashboardNotificationsSidebar;
 use AThemes_Blocks\Services\PluginInstaller\Loader as PluginInstallerLoader;
 use AThemes_Blocks\Services\Settings\Loader as SettingsLoader;
 
@@ -143,6 +144,7 @@ class PluginLoader {
         // Plugin Dashboard.
         new PluginDashboardAssets();
         new PluginDashboardCustomCSS();
+        new PluginDashboardNotificationsSidebar();
 
         // Block Editor.
         new BlockEditorAssets();

@@ -39,6 +39,9 @@ class CustomCSS {
 	public function hide_notices() {
         ?>
         <style>
+            body.toplevel_page_at-blocks {
+                background-color: #F6F6F8;
+            }
             body.toplevel_page_at-blocks #wpcontent {
                 padding: 0;
             }

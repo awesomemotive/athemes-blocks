@@ -4,15 +4,16 @@ import { __ } from '@wordpress/i18n';
 import { __experimentalNumberControl as NumberControl, ToggleControl } from '@wordpress/components';
 import { useContext } from 'react';
 
-import { SnackBarContext } from '../contexts/GlobalContext.jsx';
+import { SnackBarContext, SettingsContext } from '../contexts/GlobalContext.jsx';
 
 import { Setting } from '../components/Setting/Setting.jsx';
 
 import { SettingFieldNumber } from '../components/SettingFieldNumber/SettingFieldNumber.jsx';
-import { saveSettingValueDebounced, getSettingValueFromDatabase } from '../utils/settings.jsx';
+import { saveSettingValueDebounced } from '../utils/settings.jsx';
 
 const PageSettingsEditorOptions = () => {
     const [ displaySnackBar, setDisplaySnackBar ] = useContext( SnackBarContext );
+    const [ settings, setSettings ] = useContext( SettingsContext );
 
     return (
         <>
@@ -21,7 +22,7 @@ const PageSettingsEditorOptions = () => {
                 description={ __( 'Set the default content width for the editor.', 'athemes-blocks' ) }
             >
                 <SettingFieldNumber 
-                    value={parseInt( getSettingValueFromDatabase( 'editor_options', 'container_content_width' ) )}
+                    value={parseInt( settings.editor_options.container_content_width )}
                     min={0}
                     max={2000}
                     onChange={(value) => {
@@ -29,7 +30,8 @@ const PageSettingsEditorOptions = () => {
                             'editor_options', 
                             'container_content_width', 
                             value,
-                            setDisplaySnackBar
+                            setDisplaySnackBar,
+                            setSettings
                         );
                     }}
                 />
@@ -42,13 +44,14 @@ const PageSettingsEditorOptions = () => {
                     __next40pxDefaultSize
                     min={0}
                     max={200}
-                    value={parseInt( getSettingValueFromDatabase( 'editor_options', 'container_columns_gap' ) )}
+                    value={parseInt( settings.editor_options.container_columns_gap )}
                     onChange={(value) => {
                         saveSettingValueDebounced( 
                             'editor_options', 
                             'container_columns_gap', 
                             value,
-                            setDisplaySnackBar
+                            setDisplaySnackBar,
+                            setSettings
                         );
                     }}
                 />
@@ -61,13 +64,14 @@ const PageSettingsEditorOptions = () => {
                     __next40pxDefaultSize
                     min={0}
                     max={200}
-                    value={parseInt( getSettingValueFromDatabase( 'editor_options', 'container_rows_gap' ) )}
+                    value={parseInt( settings.editor_options.container_rows_gap )}
                     onChange={(value) => {
                         saveSettingValueDebounced( 
                             'editor_options', 
                             'container_rows_gap', 
                             value,
-                            setDisplaySnackBar
+                            setDisplaySnackBar,
+                            setSettings
                         );
                     }}
                 />

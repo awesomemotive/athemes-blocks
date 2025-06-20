@@ -33,6 +33,8 @@ class MenuPages {
         add_action( 'admin_menu', array( $this, 'add_menu_pages' ), 99 );
         add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'register_settings' ) );
+
+        add_action( 'admin_footer', array( $this, 'adjust_menu_items_display' ) );
     }
 
     /**
@@ -54,21 +56,21 @@ class MenuPages {
 
         add_submenu_page(
             'at-blocks',
-            esc_html__('Dashboard', 'athemes-blocks'), 
-            esc_html__('Dashboard', 'athemes-blocks'), 
+            esc_html__('Blocks', 'athemes-blocks'), 
+            esc_html__('Blocks', 'athemes-blocks'), 
             'manage_options',
-            get_admin_url() . 'admin.php?page=at-blocks&path=dashboard',
-            '',
+            'at-blocks&path=blocks',
+            array( $this, 'render_menu_page' ),
             0
         );
 
         add_submenu_page(
             'at-blocks',
-            esc_html__('Blocks', 'athemes-blocks'), 
-            esc_html__('Blocks', 'athemes-blocks'), 
+            esc_html__('Settings', 'athemes-blocks'), 
+            esc_html__('Settings', 'athemes-blocks'), 
             'manage_options',
-            get_admin_url() . 'admin.php?page=at-blocks&path=blocks',
-            '',
+            'at-blocks&path=settings&section=editor-options',
+            array( $this, 'render_menu_page' ),
             1
         );
     }
@@ -126,5 +128,49 @@ class MenuPages {
      */
     public function render_menu_page(): void {
         echo '<div id="at-blocks-root"></div>';
+
+        /**
+         * Action hook to render anything after the menu page content.
+         * 
+         * @return void
+         */
+        do_action( 'athemes_blocks_after_render_menu_page' );
+    }
+
+    /**
+     * Adjust menu items display.
+     * 
+     * @return void
+     */
+    public function adjust_menu_items_display(): void {
+        $css = '
+            #toplevel_page_at-blocks a[href="admin.php?page=at-blocks"] {
+                display: none;
+            }
+        ';
+
+        if ( isset( $_GET['path'] ) && $_GET['path'] === 'blocks' ) {
+            $css .= '
+                #toplevel_page_at-blocks a[href="admin.php?page=at-blocks&path=blocks"] {
+                    font-weight: 600;
+                    color: #FFF;
+                }
+            ';
+        }
+        
+        if ( isset( $_GET['path'] ) && $_GET['path'] === 'settings' && isset( $_GET['section'] ) && $_GET['section'] === 'editor-options' ) {
+            $css .= '
+                #toplevel_page_at-blocks a[href="admin.php?page=at-blocks&path=settings&section=editor-options"] {
+                    font-weight: 600;
+                    color: #FFF;
+                }
+            ';
+        }
+
+        ?>
+        <style>
+            <?php echo $css; ?>
+        </style>
+        <?php
     }
 }
