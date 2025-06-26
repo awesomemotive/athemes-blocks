@@ -21,7 +21,7 @@ use aThemes_Blocks\Blocks\Helper\Functions;
 use aThemes_Blocks\Blocks\Helper\Swiper;
 use AThemes_Blocks\Blocks\Helper\TaxonomyGrid as TaxonomyGridHelper;
 
-$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/TaxonomyGrid/attributes.php' );
+$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'build/blocks/TaxonomyGrid/attributes.php' );
 
 // Extract the settings values.
 $clientId = $attributes['clientId'];

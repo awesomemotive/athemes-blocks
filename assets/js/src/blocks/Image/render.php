@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
 
-$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Image/attributes.php' );
+$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'build/blocks/Image/attributes.php' );
 
 // Extract the settings values.
 $clientId = $attributes['clientId'];

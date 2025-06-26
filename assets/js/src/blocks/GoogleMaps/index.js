@@ -5,6 +5,8 @@ import save from './save';
 import metadata from './block.json';
 import { Icon, starEmpty } from '@wordpress/icons';
 
+import './style.scss';
+
 registerBlockType( metadata.name, {
 	icon: {
 		src: (

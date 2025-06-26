@@ -1,4 +1,9 @@
 .at-block-flex-container {
+    min-height: var(--atb-min-height, 100%);
+    box-sizing: border-box;
+    column-gap: var(--atb-container-columns-gap, 15px);
+    row-gap: var(--atb-container-rows-gap, 15px);
+    
     > * {
         width: 100%;
     }
@@ -12,10 +17,6 @@
         margin-top: 0;
     }
 
-    min-height: var(--atb-min-height, 100%);
-    box-sizing: border-box;
-    column-gap: var(--atb-container-columns-gap, 15px);
-    row-gap: var(--atb-container-rows-gap, 15px);
 
     // For parent container margin-left and margin-right.
     &.at-block:not(.is-child-container) {

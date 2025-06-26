@@ -19,7 +19,7 @@ use aThemes_Blocks\Blocks\Helper\Settings;
 use aThemes_Blocks\Blocks\Helper\Functions;
 use aThemes_Blocks\Blocks\Helper\Swiper;
 
-$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'assets/js/src/blocks/Testimonials/attributes.php' );
+$atts_defaults = require( ATHEMES_BLOCKS_PATH . 'build/blocks/Testimonials/attributes.php' );
 
 // Extract the settings values.
 $clientId = $attributes['clientId'];

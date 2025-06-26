@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+use AThemes_Blocks\Blocks\Helper\Functions as BlocksHelperFunctions;
+
 class MenuPages {
 
     /**
@@ -93,7 +95,7 @@ class MenuPages {
 					return $input;
 				},
 				'show_in_rest'      => true,
-				'default'           => wp_json_encode( array( 'flex-container', 'text', 'heading' ) ),
+				'default'           => wp_json_encode( BlocksHelperFunctions::get_enabled_blocks_default_list() ),
 			)
 		);
 

@@ -93,12 +93,21 @@ class Functions {
     }
 
     /**
+     * Get enabled blocks default list.
+     * 
+     * @return array<string>
+     */
+    public static function get_enabled_blocks_default_list(): array {
+        return array( 'flex-container', 'text', 'heading', 'button', 'icon', 'image', 'testimonials', 'team-member', 'post-grid', 'taxonomy-grid', 'google-maps' );
+    }
+
+    /**
      * Get the list of enabled blocks.
      * 
      * @return array<string>
      */
     public static function get_enabled_blocks_list(): array {
-        $enabled_blocks = get_option( 'athemes_blocks_enabled_blocks' );
+        $enabled_blocks = get_option( 'athemes_blocks_enabled_blocks', wp_json_encode( self::get_enabled_blocks_default_list() ) );
 
         if ( ! $enabled_blocks ) {
             return array();

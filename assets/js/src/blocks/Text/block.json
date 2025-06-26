@@ -10,5 +10,5 @@
 	"textdomain": "athemes-blocks",
 	"render": "file:./render.php",
 	"editorScript": "file:./index.js",
-	"style": "file:./style.css"
+	"style": "file:./style-index.css"
 }

@@ -48,7 +48,7 @@ abstract class BlockBase {
      */
     public function register_block_type(): void {
         register_block_type_from_metadata( 
-			ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/block.json',
+			ATHEMES_BLOCKS_PATH . 'build/blocks/'. $this->id .'/block.json',
             array()
 		);
     }
@@ -59,7 +59,7 @@ abstract class BlockBase {
      * @return void
      */
     public function localize_block_attributes(): void {
-        $attributes = require ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/attributes.php';
+        $attributes = require ATHEMES_BLOCKS_PATH . 'build/blocks/'. $this->id .'/attributes.php';
 
         wp_localize_script( 'wp-block-editor', $this->id . 'BlockData', array(
             'attributes' => $attributes,
@@ -81,7 +81,7 @@ abstract class BlockBase {
 
         $attributes = $block['attrs'];
         $block_id = $attributes['clientId'] ?? '';
-        $default_attributes = require ATHEMES_BLOCKS_PATH . 'assets/js/blocks/'. $this->id .'/attributes.php';
+        $default_attributes = require ATHEMES_BLOCKS_PATH . 'build/blocks/'. $this->id .'/attributes.php';
 
         $css = new BlockCss( $attributes, $block_id, $default_attributes );
         $style_tag = $css->get_block_style_tag();

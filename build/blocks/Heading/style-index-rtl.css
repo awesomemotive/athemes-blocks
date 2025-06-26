@@ -1,0 +1,13 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/@wordpress/scripts/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/@wordpress/scripts/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./assets/js/src/blocks/Heading/style.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.at-block-heading {
+  box-sizing: border-box;
+}
+.at-block-heading h1, .at-block-heading h2, .at-block-heading h3, .at-block-heading h4, .at-block-heading h5, .at-block-heading h6, .at-block-heading p, .at-block-heading span {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.at-block-heading h1:not(.has-text-color), .at-block-heading h1:not(.bt-has-text-color), .at-block-heading h2:not(.has-text-color), .at-block-heading h2:not(.bt-has-text-color), .at-block-heading h3:not(.has-text-color), .at-block-heading h3:not(.bt-has-text-color), .at-block-heading h4:not(.has-text-color), .at-block-heading h4:not(.bt-has-text-color), .at-block-heading h5:not(.has-text-color), .at-block-heading h5:not(.bt-has-text-color), .at-block-heading h6:not(.has-text-color), .at-block-heading h6:not(.bt-has-text-color), .at-block-heading p:not(.has-text-color), .at-block-heading p:not(.bt-has-text-color), .at-block-heading span:not(.has-text-color), .at-block-heading span:not(.bt-has-text-color) {
+  color: inherit;
+}
