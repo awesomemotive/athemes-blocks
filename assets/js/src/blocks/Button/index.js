@@ -3,20 +3,13 @@ import { registerBlockType } from '@wordpress/blocks';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
-import { Icon, button } from '@wordpress/icons';
+import { icons } from '../../utils/icons';
 
 import './style.scss';
 import './editor.scss';
 
 registerBlockType( metadata.name, {
-	icon: {
-		src: (
-			<Icon
-				icon={ button }
-				className="icon"
-			/>
-		),
-	},
+	icon: icons.buttonBlock,
 
 	/**
 	 * @see ./attributes.js

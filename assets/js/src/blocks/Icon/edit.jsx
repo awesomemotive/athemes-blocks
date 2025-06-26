@@ -25,6 +25,8 @@ import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue } from '../../utils/settings';
 
+import { icons } from '../../utils/icons';
+
 const attributesDefaults = IconBlockData.attributes;
 
 const Edit = (props) => {
@@ -158,9 +160,9 @@ const Edit = (props) => {
 									label={ __( 'Alignment', 'athemes-blocks' ) }
 									defaultValue={ alignment }
 									options={[
-										{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
+										{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignLeft },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+										{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignRight },
 									]}
 									responsive={true}
 									reset={true}

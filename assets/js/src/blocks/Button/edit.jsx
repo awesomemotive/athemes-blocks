@@ -32,6 +32,8 @@ import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefa
 import buttonPresets from './presets';
 import buttonPresetsImages from './presets-images';
 
+import { icons } from '../../utils/icons';
+
 const attributesDefaults = ButtonBlockData.attributes;
 
 const Edit = (props) => {
@@ -234,10 +236,10 @@ const Edit = (props) => {
 									label={ __( 'Alignment', 'athemes-blocks' ) }
 									defaultValue={ alignment }
 									options={[
-										{ label: __( 'Left', 'athemes-blocks' ), value: 'flex-start' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'Right', 'athemes-blocks' ), value: 'flex-end' },
-										{ label: __( 'Full Width', 'athemes-blocks' ), value: 'full-width' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignLeft },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignRight },
+										{ label: __( 'Full Width', 'athemes-blocks' ), value: 'full-width', icon: icons.stretchHorizontal },
 									]}
 									responsive={true}
 									reset={true}

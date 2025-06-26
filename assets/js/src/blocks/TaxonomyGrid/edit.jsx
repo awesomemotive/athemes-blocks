@@ -40,6 +40,8 @@ import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefa
 import cardPresets from './presets';
 import cardPresetsImages from './presets-images';
 
+import { icons } from '../../utils/icons';
+
 const attributesDefaults = TaxonomyGridBlockData.attributes;
 
 const Edit = (props) => {
@@ -966,10 +968,10 @@ const Edit = (props) => {
 											label={ __( 'Vertical Alignment', 'athemes-blocks' ) }
 											defaultValue={ cardVerticalAlignment }
 											options={[
-												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
-												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
-												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
+												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch', icon: icons.stretchVertical },
 											]}
 											responsive={false}
 											reset={true}
@@ -994,9 +996,9 @@ const Edit = (props) => {
 									label={ __( 'Horizontal Alignment', 'athemes-blocks' ) }
 									defaultValue={ cardHorizontalAlignment }
 									options={[
-										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left', icon: icons.alignLeft },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right', icon: icons.alignRight },
 									]}
 									responsive={false}
 									reset={true}

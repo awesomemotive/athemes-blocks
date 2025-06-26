@@ -3,20 +3,13 @@ import { registerBlockType } from '@wordpress/blocks';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
-import { Icon, arrowRight } from '@wordpress/icons';
+import { icons } from '../../utils/icons';
 
 import './style.scss';
 import './editor.scss';
 
 registerBlockType( metadata.name, {
-	icon: {
-		src: (
-			<Icon
-				icon={ arrowRight }
-				className="icon"
-			/>
-		),
-	},
+	icon: icons.teamMemberBlock,
 
 	/**
 	 * @see ./attributes.js

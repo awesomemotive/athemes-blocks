@@ -5,6 +5,7 @@ import { useState, useEffect } from '@wordpress/element';
 import {
     BaseControl,
     __experimentalToggleGroupControl as ToggleGroupControl,
+    __experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption, 
 } from '@wordpress/components';
 import { DeviceSwitcher } from '../../controls-auxiliary/device-switcher/device-switcher-control';
@@ -53,11 +54,20 @@ export function RadioButtons( props ) {
                 {
                     options.map( ( option, index ) => {
                         return(
-                            <ToggleGroupControlOption
-                                key={index}
-                                label={option.label}
-                                value={option.value}
-                            />
+                            option.icon ? (
+                                <ToggleGroupControlOptionIcon
+                                    key={index}
+                                    icon={option.icon}
+                                    label={option.label}
+                                    value={option.value}
+                                />
+                            ) : (
+                                <ToggleGroupControlOption
+                                    key={index}
+                                    label={option.label}
+                                    value={option.value}
+                                />
+                            )
                         );
                     })
                 }            

@@ -27,6 +27,8 @@ import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefa
 
 import LayoutSelector from './layout-selector';
 
+import { icons } from '../../utils/icons';
+
 const attributesDefaults = FlexContainerBlockData.attributes;
 
 const Edit = (props) => {
@@ -240,7 +242,7 @@ const Edit = (props) => {
 											label={ __( 'Container Width', 'athemes-blocks' ) }
 											defaultValue={ containerWidth }
 											options={[
-												{ label: __( 'Full Width', 'athemes-blocks' ), value: 'full-width' },
+												{ label: __( 'Full', 'athemes-blocks' ), value: 'full-width' },
 												{ label: __( 'Boxed', 'athemes-blocks' ), value: 'boxed' },
 												{ label: __( 'Custom', 'athemes-blocks' ), value: 'custom' },
 											]}
@@ -576,10 +578,10 @@ const Edit = (props) => {
 											label={ __( 'Direction', 'athemes-blocks' ) }
 											defaultValue={ direction }
 											options={[
-												{ label: __( 'Row', 'athemes-blocks' ), value: 'row' },
-												{ label: __( 'Column', 'athemes-blocks' ), value: 'column' },
-												{ label: __( 'Row Reverse', 'athemes-blocks' ), value: 'row-reverse' },
-												{ label: __( 'Column Reverse', 'athemes-blocks' ), value: 'column-reverse' },
+												{ label: __( 'Row', 'athemes-blocks' ), value: 'row', icon: icons.arrowRight },
+												{ label: __( 'Column', 'athemes-blocks' ), value: 'column', icon: icons.arrowDown },
+												{ label: __( 'Row Reverse', 'athemes-blocks' ), value: 'row-reverse', icon: icons.arrowLeft },
+												{ label: __( 'Column Reverse', 'athemes-blocks' ), value: 'column-reverse', icon: icons.arrowUp },
 											]}
 											responsive={true}
 											reset={true}
@@ -700,10 +702,10 @@ const Edit = (props) => {
 									label={ __( 'Align Items', 'athemes-blocks' ) }
 									defaultValue={ alignItems }
 									options={[
-										{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
-										{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
+										{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+										{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
+										{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch', icon: icons.stretchVertical },
 									]}
 									responsive={true}
 									reset={true}
@@ -728,10 +730,10 @@ const Edit = (props) => {
 											label={ __( 'Justify Items', 'athemes-blocks' ) }
 											defaultValue={ justifyItems }
 											options={[
-												{ label: __( 'Start', 'athemes-blocks' ), value: 'start' },
-												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'End', 'athemes-blocks' ), value: 'end' },
-												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch' },
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'start', icon: icons.alignLeft },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'end', icon: icons.alignRight },
+												{ label: __( 'Stretch', 'athemes-blocks' ), value: 'stretch', icon: icons.stretchHorizontal },
 											]}
 											responsive={true}
 											reset={true}
@@ -758,12 +760,10 @@ const Edit = (props) => {
 											label={ __( 'Justify Content', 'athemes-blocks' ) }
 											defaultValue={ justifyContent }
 											options={[
-												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
-												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
-												{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between' },
-												{ label: __( 'Space Around', 'athemes-blocks' ), value: 'space-around' },
-												{ label: __( 'Space Evenly', 'athemes-blocks' ), value: 'space-evenly' },
+												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
+												{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between', icon: icons.spaceBetween },
 											]}
 											responsive={true}
 											reset={true}
@@ -790,9 +790,9 @@ const Edit = (props) => {
 											label={ __( 'Wrap', 'athemes-blocks' ) }
 											defaultValue={ wrap }
 											options={[
-												{ label: __( 'Wrap', 'athemes-blocks' ), value: 'wrap' },
-												{ label: __( 'No Wrap', 'athemes-blocks' ), value: 'nowrap' },
-												{ label: __( 'Wrap Reverse', 'athemes-blocks' ), value: 'wrap-reverse' },
+												{ label: __( 'Wrap', 'athemes-blocks' ), value: 'wrap', icon: icons.arrowDown },
+												{ label: __( 'No Wrap', 'athemes-blocks' ), value: 'nowrap', icon: icons.arrowRight },
+												{ label: __( 'Wrap Reverse', 'athemes-blocks' ), value: 'wrap-reverse', icon: icons.arrowUp },
 											]}
 											responsive={true}
 											reset={true}
@@ -819,12 +819,10 @@ const Edit = (props) => {
 											label={ __( 'Align Content', 'athemes-blocks' ) }
 											defaultValue={ alignContent }
 											options={[
-												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start' },
-												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end' },
-												{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between' },
-												{ label: __( 'Space Around', 'athemes-blocks' ), value: 'space-around' },
-												{ label: __( 'Space Evenly', 'athemes-blocks' ), value: 'space-evenly' },
+												{ label: __( 'Flex Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+												{ label: __( 'Flex End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
+												{ label: __( 'Space Between', 'athemes-blocks' ), value: 'space-between', icon: icons.spaceBetween },
 											]}
 											responsive={true}
 											reset={true}

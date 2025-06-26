@@ -33,6 +33,8 @@ import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
 import { blockPropsWithAnimation } from '../../utils/block-animations';
 import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingUnit, getDimensionsSettingDefaultValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue } from '../../utils/settings';
 
+import { icons } from '../../utils/icons';
+
 const attributesDefaults = TestimonialsBlockData.attributes;
 
 const Edit = (props) => {
@@ -387,9 +389,9 @@ const Edit = (props) => {
 									label={ __( 'Horizontal Alignment', 'athemes-blocks' ) }
 									defaultValue={ alignment }
 									options={[
-										{ label: __( 'Start', 'athemes-blocks' ), value: 'left' },
-										{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-										{ label: __( 'End', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left', icon: icons.alignLeft },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right', icon: icons.alignRight },
 									]}
 									responsive={false}
 									reset={true}
@@ -406,9 +408,9 @@ const Edit = (props) => {
 											label={ __( 'Vertical Alignment', 'athemes-blocks' ) }
 											defaultValue={ verticalAlignment }
 											options={[
-												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start' },
-												{ label: __( 'Center', 'athemes-blocks' ), value: 'center' },
-												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end' },
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
 											]}
 											responsive={false}
 											reset={true}
