@@ -6,6 +6,7 @@ import metadata from './block.json';
 import { Icon, grid } from '@wordpress/icons';
 
 import './style.scss';
+import './editor.scss';
 
 registerBlockType( metadata.name, {
 	icon: {
