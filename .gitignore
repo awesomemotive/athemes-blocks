@@ -10,6 +10,7 @@ assets/js/**/*.js.map
 /playwright/.cache/
 /vendor/
 /docs/
+/build/
 **.code-workspace
 **.vscode
 .DS_Store
