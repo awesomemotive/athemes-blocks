@@ -245,9 +245,9 @@ if ( $query ) {
 }
 
 // Output.
-echo sprintf(
+echo Functions::render_block_output( sprintf(
     '<%1$s %2$s>%3$s</%1$s>',
     'div',
     get_block_wrapper_attributes( $wrapper_attributes ),
     $output
-);
+) );

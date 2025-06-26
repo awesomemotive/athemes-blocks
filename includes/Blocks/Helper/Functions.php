@@ -11,6 +11,107 @@ namespace AThemes_Blocks\Blocks\Helper;
 class Functions {
 
     /**
+     * Render block output.
+     * 
+     * @param string $output The output.
+     * @param array<string, mixed> $allowed_html The allowed HTML.
+     * 
+     * @return string
+     */
+    public static function render_block_output( $output, $allowed_html = array() ): string {
+        $allowed_post_tags = wp_kses_allowed_html( 'post' );
+        
+        $allowed_html = array_merge( 
+            $allowed_html, 
+            $allowed_post_tags, 
+            array(
+                'svg'     => array(
+                    'class'           => true,
+                    'xmlns'           => true,
+                    'width'           => true,
+                    'height'          => true,
+                    'viewbox'         => true,
+                    'aria-hidden'     => true,
+                    'role'            => true,
+                    'focusable'       => true,
+                    'fill'            => true,
+                    'stroke'          => true,
+                    'stroke-linecap'  => true,
+                    'stroke-linejoin' => true,
+                    'stroke-width'    => true,
+                ),
+                'g'       => array(
+                    'id'        => true,
+                    'class'     => true,
+                    'clip-path' => true,
+                    'style'     => true,
+                ),
+                'path'    => array(
+                    'fill'      => true,
+                    'fill-rule' => true,
+                    'd'         => true,
+                    'transform' => true,
+                    'stroke'    => true,
+                    'stroke-width' => true,
+                    'stroke-linejoin' => true,
+                    'clip-rule' => true,
+                ),
+                'polyline'    => array(
+                    'points'    => true,
+                    'fill'      => true,
+                    'fill-rule' => true,
+                    'd'         => true,
+                    'transform' => true,
+                    'stroke'    => true,
+                    'stroke-width' => true,
+                    'stroke-linejoin' => true,
+                ),
+                'polygon' => array(
+                    'fill'      => true,
+                    'fill-rule' => true,
+                    'points'    => true,
+                    'transform' => true,
+                    'focusable' => true,
+                    'stroke'    => true,
+                    'stroke-width' => true,
+                ),
+                'rect'    => array(
+                    'x'      => true,
+                    'y'      => true,
+                    'rx'     => true,
+                    'width'  => true,
+                    'height' => true,
+                    'transform' => true,
+                    'fill'      => true,
+                    'stroke'    => true,
+                    'stroke-width' => true,
+                ),
+                'circle'    => array(
+                    'cx'      => true,
+                    'cy'      => true,
+                    'r'      => true,
+                    'width'  => true,
+                    'height' => true,
+                    'transform' => true,
+                    'fill'      => true,
+                    'stroke'    => true,
+                    'stroke-width' => true,
+                ),
+                'clipPath'   => array(
+                    'id'    => true,
+                    'class' => true,
+                    'style' => true,
+                ),
+                'defs'   => array(
+                    'id'    => true,
+                ),
+            )
+        );
+
+        return wp_kses( $output, $allowed_html );
+    }
+
+    /**
      * Add animation markup to the wrapper attributes.
      * 
      * @param array<string, mixed> $wrapper_attributes The wrapper attributes.

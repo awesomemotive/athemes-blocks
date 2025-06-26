@@ -76,8 +76,21 @@ $map_src = sprintf(
     esc_attr( $language )
 );
 
+// Include iframe in the allowed tags for the output.
+$extra_allowed_tags = array(
+    'iframe' => array(
+        'title' => array(),
+        'class' => array(),
+        'width' => array(),
+        'height' => array(),
+        'loading' => array(),
+        'allowfullscreen' => array(),
+        'src' => array(),
+    ),
+);
+
 // Output.
-echo sprintf(
+echo Functions::render_block_output( sprintf(
     '<%1$s %2$s>
         <iframe
             title="%3$s"
@@ -94,4 +107,4 @@ echo sprintf(
     esc_attr__( 'Google Maps', 'athemes-blocks' ),
     esc_attr( $heightDesktop ),
     esc_url( $map_src )
-);
+), $extra_allowed_tags );

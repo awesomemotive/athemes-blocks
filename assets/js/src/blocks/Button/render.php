@@ -101,6 +101,7 @@ if ( ! empty( $linkNoFollow ) && ! empty( $linkUrl ) ) {
 $htmlTag = ! empty( $linkUrl ) ? 'a' : 'div';
 
 // Output.
+ob_start();
 echo '<div ' . get_block_wrapper_attributes( $wrapper_attributes ) . '>';
     echo '<' . $htmlTag . ' ' . implode( ' ', $link_attributes ) . '>';
         if ( ! empty( $icon ) && $iconPosition === 'before' && $enableIcon ) {
@@ -116,3 +117,6 @@ echo '<div ' . get_block_wrapper_attributes( $wrapper_attributes ) . '>';
         }
     echo '</' . $htmlTag . '>';
 echo '</div>';
+$output = ob_get_clean();
+
+echo Functions::render_block_output( $output );

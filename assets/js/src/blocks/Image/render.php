@@ -101,9 +101,9 @@ $wrapper_attributes = array_merge( $wrapper_attributes, $animation_markup_data['
 $wrapper_attributes['class'] = implode( ' ', $wrapper_classes );
 
 // Output.
-echo sprintf(
+echo Functions::render_block_output( sprintf(
     '<%1$s %2$s>%3$s</%1$s>',
     $htmlTag,
     get_block_wrapper_attributes( $wrapper_attributes ),
     $image_output
-);
+) );
