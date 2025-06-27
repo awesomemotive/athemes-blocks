@@ -14,8 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AThemes_Blocks\Admin\BlockEditorAssets;
-use AThemes_Blocks\BlocksCommonCss;
-use AThemes_Blocks\BlocksCommonScripts;
+use AThemes_Blocks\Blocks\Common\CommonCss as BlocksCommonCss;
+use AThemes_Blocks\Blocks\Common\CommonScripts as BlocksCommonScripts;
+use AThemes_Blocks\Blocks\Common\RegisterBlocksCategory;
 use AThemes_Blocks\Blocks\Helper\Settings;
 use AThemes_Blocks\Blocks\Helper\Functions as BlocksHelper;
 use AThemes_Blocks\Integration\Themes\Sydney as SydneyIntegration;
@@ -57,6 +58,9 @@ class PluginLoader {
 
         // Load blocks common scripts.
         $this->load_blocks_common_scripts();
+
+        // Load blocks category.
+        $this->load_blocks_category();
     }
 
     /**
@@ -180,5 +184,14 @@ class PluginLoader {
      */
     public function load_blocks_common_scripts(): void {
         new BlocksCommonScripts();
+    }
+
+    /**
+     * Load blocks category.
+     * 
+     * @return void
+     */
+    public function load_blocks_category(): void {
+        new RegisterBlocksCategory();
     }
 }
