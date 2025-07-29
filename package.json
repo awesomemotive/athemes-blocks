@@ -22,6 +22,7 @@
 		"athemes-blocks.php",
 		"assets",
 		"includes",
+		"build",
 		"languages",
 		"vendor/autoload.php",
 		"vendor/composer"
