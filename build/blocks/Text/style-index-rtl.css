@@ -1,15 +1,1 @@
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/@wordpress/scripts/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/@wordpress/scripts/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./assets/js/src/blocks/Text/style.scss ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-.at-block-text {
-  box-sizing: border-box;
-}
-.at-block-text--has-drop-cap::first-letter {
-  float: right;
-  font-size: 2em;
-  margin-left: 0.4em;
-}
-
-span.at-block-text {
-  display: block;
-}
+.at-block-text{box-sizing:border-box}.at-block-text--has-drop-cap:first-letter{float:right;font-size:2em;margin-left:.4em}span.at-block-text{display:block}
