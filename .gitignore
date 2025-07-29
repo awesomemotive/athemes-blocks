@@ -16,3 +16,5 @@ assets/js/**/*.js.map
 .DS_Store
 .idea
 **.hot-update.json
+package.json
+*.zip
