@@ -18,3 +18,4 @@ assets/js/**/*.js.map
 **.hot-update.json
 package.json
 *.zip
+.cursorignore
