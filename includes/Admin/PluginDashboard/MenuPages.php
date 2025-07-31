@@ -116,7 +116,7 @@ class MenuPages {
                         'container_rows_gap' => 15,
                     ),
                     'performance' => array(
-                        'load_google_fonts_locally' => false,
+                        'load_google_fonts_locally' => true,
                     ),
                 ) ),
             )

@@ -195,6 +195,14 @@ class GoogleFontsService {
 		// Join font families with | and add display=swap
 		$url = 'https://fonts.googleapis.com/css?family=' . implode( '|', self::$font_families ) . '&display=swap';
 
+		$settings = json_decode( get_option( 'athemes_blocks_dashboard_settings' ), true );
+		$load_google_fonts_locally = ! empty( $settings['performance']['load_google_fonts_locally'] );
+		
+		if ( $load_google_fonts_locally ) {
+			require_once ATHEMES_BLOCKS_PATH . 'includes\Services\wptt-webfont-loader.php';
+			$url = wptt_get_webfont_url( $url );
+		}
+		
 		return $url;
 	}
-} 
+}
