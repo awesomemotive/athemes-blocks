@@ -22,7 +22,7 @@ import './style.scss';
  *
  */
 registerBlockType( 'athemes/athemes-blocks-block-container', {
-	title: __( 'Container Block', 'athemes-blocks' ),
+	title: __( 'Legacy Container Block', 'athemes-blocks' ),
 	icon: athemes_icons( 'container-block' ),
 	description: __( 'A style wrapper to combine different blocks in a single row.', 'athemes-blocks' ),
 	category: 'common',
