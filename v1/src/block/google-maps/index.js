@@ -28,7 +28,7 @@ import attributes from './attributes.js';
  */
 registerBlockType( 'athemes/athemes-blocks-block-google-maps', {
   apiVersion: 2,
-	title: __( 'Google Maps Block', 'athemes-blocks' ),
+	title: __( 'Legacy Google Maps Block', 'athemes-blocks' ),
 	icon: athemes_icons( 'google-maps-block' ),
 	description: __( 'A simple Google Maps block.', 'athemes-blocks' ),
 	category: 'common',
