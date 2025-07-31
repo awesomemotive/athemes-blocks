@@ -23,7 +23,10 @@
 		"assets",
 		"includes",
 		"build",
-		"v1",
+		"v1/classes",
+		"v1/dist",
+		"v1/assets/js/parallax.min.js",
+		"v1/assets/vendor/ofi/ofi.min.js",
 		"languages",
 		"vendor/autoload.php",
 		"vendor/composer"
