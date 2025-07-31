@@ -162,7 +162,7 @@ class NotificationsSidebar {
      * @return array<object>
      */
     private function fetch_notifications(): array {
-        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7085&per_page=3' );
+        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
         $this->notifications = ! is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
 
         if ( ! $this->notifications ) {
