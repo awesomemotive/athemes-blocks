@@ -52,7 +52,7 @@ class MenuPages {
             'manage_options', 
             'at-blocks', 
             array( $this, 'render_menu_page' ),
-            'dashicons-admin-generic',
+            ATHEMES_BLOCKS_URL . 'assets/img/dashboard/admin-logo.svg',
             58.9
         );
 
