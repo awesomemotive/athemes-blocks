@@ -23,6 +23,7 @@
 		"assets",
 		"includes",
 		"build",
+		"v1",
 		"languages",
 		"vendor/autoload.php",
 		"vendor/composer"
