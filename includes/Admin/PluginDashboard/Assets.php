@@ -197,6 +197,7 @@ class Assets {
 	 */
 	public function localize_dashboard_with_quick_links(): void {
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksQuickLinks', array(
+			/* Remove this for now until we have a priority support system.
 			'priority-support' => array(
 				'title' => __( 'Priority support', 'athemes-blocks' ),
 				'description' => __( 'We aim to answer all priority support requests within 2-3 hours.', 'athemes-blocks' ),
@@ -205,6 +206,7 @@ class Assets {
 				'link_style' => 'underline',
 				'is_active' => true,
 			),
+			*/
 			'leave-a-review' => array(
 				'title' => __( 'Leave a review', 'athemes-blocks' ),
 				'description' => __( 'It makes us happy to hear from our users. We would appreciate a review.', 'athemes-blocks' ),
