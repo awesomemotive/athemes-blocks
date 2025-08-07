@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       aThemes Blocks
  * Description:       aThemes Blocks is a Gutenberg plugin extending the WordPress editor with awesome blocks.
- * Version:           2.0.0
+ * Version:           1.1.0
  * Author:            aThemes
  * Author URI:        https://athemes.com
  * License:           GPL-2.0+
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AThemes_Blocks\PluginLoader;
 
-define( 'ATHEMES_BLOCKS_VERSION', '2.0.0' );
+define( 'ATHEMES_BLOCKS_VERSION', '1.1.0' );
 define( 'ATHEMES_BLOCKS_FILE', __FILE__ );
 define( 'ATHEMES_BLOCKS_PATH', plugin_dir_path( ATHEMES_BLOCKS_FILE ) );
 define( 'ATHEMES_BLOCKS_URL', plugin_dir_url( ATHEMES_BLOCKS_FILE ) );
