@@ -17,7 +17,21 @@ const useQuery = () => {
 export const GlobalContextProvider = ({ children }) => {
 	const query = useQuery();
 	const [activePage, setActivePage] = useState(query.get('path'));
-	const [activeSection, setActiveSection] = useState(query.get('section'));
+	
+	// Set default activeSection to 'editor-options' when on settings page with no section specified.
+	const getDefaultActiveSection = () => {
+		const section = query.get('section');
+		const path = query.get('path');
+		
+		// If we're on the settings page and no section is specified, default to 'editor-options'.
+		if (path === 'settings' && !section) {
+			return 'editor-options';
+		}
+		
+		return section;
+	};
+	
+	const [activeSection, setActiveSection] = useState(getDefaultActiveSection());
 	const [displaySnackBar, setDisplaySnackBar] = useState(false);
 	const [enabledBlocks, setEnabledBlocks] = useState( athemesBlocksEnabledBlocks || [] );
 	const [settings, setSettings] = useState( athemesBlocksDashboardSettings || {} );

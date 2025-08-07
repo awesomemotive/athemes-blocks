@@ -89,7 +89,7 @@ const styles = (theme) => css`
 const MainNavigation = ( props ) => {
     const { links } = props;
     const theme = useTheme();
-    const [ activePage, setActivePage ] = useContext( PageContext );
+    const [ activePage, setActivePage, activeSection, setActiveSection ] = useContext( PageContext );
     
     return (
         <div className="atb-dashboard__main-navigation" css={ styles(theme) }>
@@ -100,7 +100,10 @@ const MainNavigation = ( props ) => {
                             <Link 
                                 to={ `?page=at-blocks&path=${ link.path }${ link.section ? `&section=${ link.section }` : '' }` }
                                 onClick={ () => { 
-                                    setActivePage( link.path ); 
+                                    setActivePage( link.path );
+                                    if ( link.section ) {
+                                        setActiveSection( link.section );
+                                    }
                                 } }
                             >
                                 {
