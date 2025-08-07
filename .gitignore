@@ -19,3 +19,7 @@ assets/js/**/*.js.map
 package.json
 *.zip
 .cursorignore
+
+# Claude Code files
+.claude/
+CLAUDE.md
