@@ -5,7 +5,7 @@ const styles = (theme) => css`
     position: relative;
     max-width: ${ theme.containerMaxWidth }px;
     margin: 0 auto;
-    padding: 60px;
+    padding: 60px 60px 60px 0;
     z-index: 0;
 
     .atb-dashboard__hero-title {
