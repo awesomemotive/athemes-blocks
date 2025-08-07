@@ -36,6 +36,10 @@ class InstallPlugin {
             require_once wp_normalize_path( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
         }
 
+        if ( ! function_exists( 'request_filesystem_credentials' ) ) {
+            require_once wp_normalize_path( ABSPATH . 'wp-admin/includes/file.php' );
+        }
+
         $upgrader = new \Plugin_Upgrader( new SilentUpgradeSkin() );
         
         // Get plugin information first
