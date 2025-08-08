@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AThemes_Blocks\Services\PluginInstaller\Helpers\Plugin as PluginInstallerHelper;
 
 class Assets {
+
+	/**
+	 * Check if current screen is the aThemes Blocks plugin dashboard.
+	 *
+	 * @return bool
+	 */
+	private function is_plugin_dashboard_page(): bool {
+		return isset( $_GET['page'] ) && $_GET['page'] === 'at-blocks';
+	}
 	
 	/**
 	 * Constructor.
@@ -45,6 +54,9 @@ class Assets {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
         wp_enqueue_script( 'at-blocks-plugin-dashboard', ATHEMES_BLOCKS_URL . 'assets/js/plugin-dashboard/dashboard.js', array( 'wp-element', 'wp-i18n', 'wp-components', 'wp-hooks', 'wp-api' ), ATHEMES_BLOCKS_VERSION, true );
 		wp_enqueue_style( 'wp-components' );
     }
@@ -55,6 +67,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_general_data(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksGeneralData', array(
 			'topbar' => array(
 				'logo' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/athemes-logo.png',
@@ -79,6 +94,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_enabled_blocks(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 		$enabled_blocks = get_option( 'athemes_blocks_enabled_blocks' );
 
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksEnabledBlocks', json_decode( $enabled_blocks, true ) );
@@ -90,6 +108,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_blocks_data(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksBlocksData', array(
 			'flex-container' => array(
 				'title' => __( 'Flex Container', 'athemes-blocks' ),
@@ -155,6 +176,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_dashboard_settings(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 		$settings = get_option( 'athemes_blocks_dashboard_settings' );
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksDashboardSettings', json_decode( $settings, true ) );
 	}
@@ -165,6 +189,10 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_suggested_products(): void {
+
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 
 		/**
 		 * Filter the suggested products for the dashboard.
@@ -196,6 +224,9 @@ class Assets {
 	 * @return void
 	 */
 	public function localize_dashboard_with_quick_links(): void {
+		if ( ! $this->is_plugin_dashboard_page() ) {
+			return;
+		}
 		wp_localize_script( 'at-blocks-plugin-dashboard', 'athemesBlocksQuickLinks', array(
 			/* Remove this for now until we have a priority support system.
 			'priority-support' => array(
