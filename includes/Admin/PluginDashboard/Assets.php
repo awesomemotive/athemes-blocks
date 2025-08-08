@@ -94,57 +94,57 @@ class Assets {
 			'flex-container' => array(
 				'title' => __( 'Flex Container', 'athemes-blocks' ),
 				'description' => __( 'Arrange multiple blocks flexibly with customizable layout options', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/flex-container/',
+				'documentation' => 'https://docs.athemes.com/article/flex-container-block/',
 			),
 			'heading' => array(
 				'title' => __( 'Heading', 'athemes-blocks' ),
 				'description' => __( 'Add prominent headings to structure content sections effectively', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/heading/',
+				'documentation' => 'https://docs.athemes.com/article/heading-block/',
 			),
 			'button' => array(
 				'title' => __( 'Button', 'athemes-blocks' ),
 				'description' => __( 'Create engaging call-to-action buttons with customizable styles and link options', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/button/',
+				'documentation' => 'https://docs.athemes.com/article/button-block/',
 			),
 			'text' => array(
 				'title' => __( 'Text', 'athemes-blocks' ),
 				'description' => __( 'Insert and format text content to convey information or messages clearly', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/text/',
+				'documentation' => 'https://docs.athemes.com/article/text-block/',
 			),
 			'icon' => array(
 				'title' => __( 'Icon', 'athemes-blocks' ),
 				'description' => __( 'Add icons to visually highlight key points, features, or calls to action', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/icon/',
+				'documentation' => 'https://docs.athemes.com/article/icon-block/',
 			),
 			'image' => array(
 				'title' => __( 'Image', 'athemes-blocks' ),
 				'description' => __( 'Showcase images to visually represent products, services, or content sections', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/image/',
+				'documentation' => 'https://docs.athemes.com/article/image-block/',
 			),
 			'testimonials' => array(
 				'title' => __( 'Testimonial', 'athemes-blocks' ),
 				'description' => __( 'Display customer feedback, reviews, or quotes to build social proof', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/testimonials/',
+				'documentation' => 'https://docs.athemes.com/article/testimonial-block/',
 			),
 			'google-maps' => array(
 				'title' => __( 'Google Maps', 'athemes-blocks' ),
 				'description' => __( 'Integrate interactive maps to pinpoint locations or provide directions', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/google-maps/',
+				'documentation' => 'https://docs.athemes.com/article/google-maps-block/',
 			),
 			'post-grid' => array(
 				'title' => __( 'Post Grid', 'athemes-blocks' ),
 				'description' => __( 'Display multiple posts in a structured grid layout with various styling options', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/post-grid/',
+				'documentation' => 'https://docs.athemes.com/article/post-grid-block/',
 			),
 			'taxonomy-grid' => array(
 				'title' => __( 'Taxonomy Grid', 'athemes-blocks' ),
 				'description' => __( 'Arrange categories, tags, or terms in a visually organized grid layout', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/taxonomy-grid/',
+				'documentation' => 'https://docs.athemes.com/article/taxonomy-grid-block/',
 			),
 			'team-member' => array(
 				'title' => __( 'Team Member', 'athemes-blocks' ),
 				'description' => __( 'Highlight team members with a beautiful profile card', 'athemes-blocks' ),
-				'documentation' => 'https://athemes.com/documentation/team-member/',
+				'documentation' => 'https://docs.athemes.com/article/team-block/',
 			),
 		) );
 	}
