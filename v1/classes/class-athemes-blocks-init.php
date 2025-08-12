@@ -207,14 +207,22 @@ if ( ! class_exists( 'ATBLOCKS_Init' ) ) {
 
             if( in_array( $block['blockName'], $athemes_blocks ) ) {
 
-                // Container Block
-                if( $block['blockName'] == 'athemes/athemes-blocks-block-container' ) {
-                    $css .= ATBLOCKS_Css_Output::get_container_block_css( $block['attrs'], 'athemes-blocks-block-' . $block['attrs']['block_id'] );
+                // Container Block.
+                if ( $block['blockName'] == 'athemes/athemes-blocks-block-container' ) {
+                    // Guard against missing block_id on legacy content.
+                    $block_id = isset( $block['attrs']['block_id'] ) ? $block['attrs']['block_id'] : '';
+                    if ( $block_id !== '' ) {
+                        $css .= ATBLOCKS_Css_Output::get_container_block_css( $block['attrs'], 'athemes-blocks-block-' . $block_id );
+                    }
                 }
 
-                // Google Maps Block
-                if( $block['blockName'] == 'athemes/athemes-blocks-block-google-maps' ) {
-                    $css .= ATBLOCKS_Css_Output::get_google_maps_block_css( $block['attrs'], 'athemes-blocks-block-' . $block['attrs']['block_id'] );
+                // Google Maps Block.
+                if ( $block['blockName'] == 'athemes/athemes-blocks-block-google-maps' ) {
+                    // Guard against missing block_id on legacy content.
+                    $block_id = isset( $block['attrs']['block_id'] ) ? $block['attrs']['block_id'] : '';
+                    if ( $block_id !== '' ) {
+                        $css .= ATBLOCKS_Css_Output::get_google_maps_block_css( $block['attrs'], 'athemes-blocks-block-' . $block_id );
+                    }
                 }
 
             }
