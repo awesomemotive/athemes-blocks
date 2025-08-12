@@ -79,8 +79,8 @@ class Assets {
 			'hero' => array(
 				'title' => __( 'Welcome to aThemes Blocks 👋', 'athemes-blocks' ),
 				'description' => __( 'We’re glad to see you :)', 'athemes-blocks' ),
-				'button_label' => __( 'Create New Pages', 'athemes-blocks' ),
-				'button_url' => 'https://athemes.com',
+				'button_label' => __( 'Create New Page', 'athemes-blocks' ),
+				'button_url' => admin_url( 'post-new.php?post_type=page' ),
 				'image' => ATHEMES_BLOCKS_URL . 'assets/img/dashboard/dashboard-hero.png',
 			),
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
