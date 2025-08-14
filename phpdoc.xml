@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
+>
+    <paths>
+        <output>docs/reference</output>
+        <cache>docs/cache</cache>
+    </paths>
+    <version number="2.0.0">
+        <api format="php">
+            <source dsn=".">
+                <path>athemes-blocks.php</path>
+                <path>includes/*</path>
+            </source>
+            <ignore>
+                <path>./vendor/*</path>
+                <path>./node_modules/*</path>
+                <path>./build/*</path>
+                <path>./tests/*</path>
+            </ignore>
+        </api>
+    </version>
+</phpdocumentor>

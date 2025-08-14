@@ -1,0 +1,919 @@
+import { __ } from '@wordpress/i18n';
+import { useRefEffect } from '@wordpress/compose';
+import { useEffect, useMemo, useRef, useState, useCallback } from '@wordpress/element';
+import { useSelect, useDispatch } from "@wordpress/data";
+import { Panel, PanelBody, ResizableBox } from '@wordpress/components';
+import { InspectorControls, useBlockProps, InnerBlocks, RichText, MediaPlaceholder, BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
+import { useMergeRefs } from '@wordpress/compose';
+import { alignNone } from '@wordpress/icons';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css/bundle';
+
+import { RadioButtons } from '../../block-editor/controls/radio-buttons/radio-buttons';
+import { RangeSlider } from '../../block-editor/controls/range-slider/range-slider';
+import { Select } from '../../block-editor/controls/select/select';
+import { SwitchToggle } from '../../block-editor/controls/switch-toggle/switch-toggle';
+import { ColorPicker } from '../../block-editor/controls/color-picker/color-picker';
+import { Typography } from '../../block-editor/controls/typography/typography';
+import { Icon } from '../../block-editor/controls/icon/icon';
+import { Link } from '../../block-editor/controls/link/link';
+import { ImageUpload } from '../../block-editor/controls/image-upload/image-upload';
+import { Border } from '../../block-editor/controls/border/border';
+import { Dimensions } from '../../block-editor/controls/dimensions/dimensions';
+
+import { createAttributeUpdater, createInnerControlAttributeUpdater } from '../../utils/block-attributes';
+import { withTabsNavigation } from '../../block-editor/hoc/with-tabs-navigation';
+import { withAdvancedTab } from '../../block-editor/hoc/with-advanced-tab';
+import { withDynamicCSS } from '../../block-editor/hoc/with-dynamic-css';
+import { withPersistentPanelToggle } from '../../block-editor/hoc/with-persistent-panel-toggle';
+import { withGoogleFonts } from '../../block-editor/hoc/with-google-fonts';
+
+import { blockPropsWithAnimation } from '../../utils/block-animations';
+import { getSettingValue, getSettingUnit, getSettingDefaultValue, getSettingDefaultUnit, getInnerSettingValue, getColorPickerSettingDefaultValue, getColorPickerSettingValue, getDimensionsSettingValue, getDimensionsSettingUnit, getDimensionsSettingDefaultValue, getDimensionsSettingDirectionsValue, getDimensionsSettingConnectValue } from '../../utils/settings';
+
+import { icons } from '../../utils/icons';
+
+const attributesDefaults = TeamMemberBlockData.attributes;
+
+const Edit = (props) => {
+	const { attributes, setAttributes, clientId, setUpdateCss, isPanelOpened, onTogglePanelBodyHandler } = props;
+	const { content } = attributes;
+	const atts = attributes;
+	const updateAttribute = createAttributeUpdater(attributes, setAttributes);
+	const updateImageInnerControlAttribute = createInnerControlAttributeUpdater('image', attributes, setAttributes);
+	const currentDevice = useSelect((select) => select('core/edit-post').__experimentalGetPreviewDeviceType().toLowerCase());
+	const currentTab = useSelect((select) => select('persistent-tabs-store').getCurrentTab());
+	const swiperRef = useRef(null);
+	const swiperInstanceRef = useRef(null);
+
+	const {
+		// General.
+		alignment,
+		verticalAlignment,
+		contentGap,
+		imagePosition,
+		imageStyle,
+		imageSize,
+		imageWidth,
+
+		// Style.
+		nameColor,
+		nameBottomSpacing,
+		companyColor,
+		companyBottomSpacing,
+		cardBackgroundColor,
+		cardPadding,
+		cardMargin,
+
+		// Advanced.
+		hideOnDesktop,
+		hideOnTablet,
+		hideOnMobile,
+	} = useMemo(() => {
+		return {
+			// General.
+			alignment: atts.alignment,
+			verticalAlignment: getSettingValue('verticalAlignment', 'desktop', atts),
+			imagePosition: atts.imagePosition,
+			imageStyle: atts.imageStyle,
+			imageSize: atts.imageSize,
+			imageWidth: getSettingValue('imageWidth', currentDevice, atts),
+
+			// Style.
+			nameColor: getSettingValue('nameColor', 'desktop', atts),
+			nameBottomSpacing: getSettingValue('nameBottomSpacing', 'desktop', atts),
+			companyColor: getSettingValue('companyColor', 'desktop', atts),
+			companyBottomSpacing: getSettingValue('companyBottomSpacing', 'desktop', atts),
+			cardBackgroundColor: getSettingValue('cardBackgroundColor', 'desktop', atts),
+			contentGap: getSettingValue('contentGap', currentDevice, atts),
+			cardPadding: getDimensionsSettingValue('cardPadding', currentDevice, atts),
+			cardMargin: getDimensionsSettingValue('cardMargin', currentDevice, atts),
+
+			// Advanced.
+			hideOnDesktop: getSettingValue('hideOnDesktop', 'desktop', atts),
+			hideOnTablet: getSettingValue('hideOnTablet', 'desktop', atts),
+			hideOnMobile: getSettingValue('hideOnMobile', 'desktop', atts),
+		};
+	}, [atts, currentDevice]);
+
+	// Save the Client ID to attributes.
+	useEffect(() => {
+		setAttributes({ clientId: clientId });
+	}, [clientId]);
+
+	let blockPropsClassName = `at-block at-block-team-member`;
+
+	let blockProps = useBlockProps({
+		className: blockPropsClassName
+	});
+
+	// Prevent the default click event handler for the block if the html tag is 'a'.
+	const ref = useRefEffect( ( node ) => {
+		if (node === null) {
+			return;
+		}
+
+		const handleClick = (event) => {
+			event.preventDefault();
+		};
+
+		if (node) {
+			node.addEventListener('click', handleClick);
+		}
+
+		return () => {
+			if (node) {
+				node.removeEventListener('click', handleClick);
+			}
+		};
+	}, []);
+
+	// Merge the refs.
+	const mergedRefs = useMergeRefs([blockProps.ref, ref]);
+
+	return (
+		<>
+			<InspectorControls>
+				{
+					currentTab === 'general' && (
+						<Panel>
+							<PanelBody 
+								title={ __( 'Content', 'athemes-blocks' ) }
+								initialOpen={false}
+								opened={ isPanelOpened( 'content', true ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'content' ) }
+							>
+								<RangeSlider 
+									label={ __( 'Content Gap', 'athemes-blocks' ) }
+									defaultValue={ contentGap }
+									defaultUnit={ getSettingUnit( 'contentGap', currentDevice, atts ) }
+									min={ 1 }
+									max={ {
+										px: 150,
+										em: 20,
+										rem: 20
+									} }
+									responsive={true}
+									reset={true}
+									units={['px', 'em', 'rem']}
+									onChange={ ( value ) => {
+										updateAttribute( 'contentGap', {
+											value: value,
+											unit: getSettingUnit( 'contentGap', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'contentGap', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'contentGap', {
+											value: contentGap,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'contentGap', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'contentGap', {
+											value: getSettingDefaultValue( 'contentGap', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'contentGap', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'contentGap', value: getSettingDefaultValue( 'contentGap', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+								<RadioButtons 
+									label={ __( 'Horizontal Alignment', 'athemes-blocks' ) }
+									defaultValue={ alignment }
+									options={[
+										{ label: __( 'Start', 'athemes-blocks' ), value: 'left', icon: icons.alignLeft },
+										{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignCenter },
+										{ label: __( 'End', 'athemes-blocks' ), value: 'right', icon: icons.alignRight },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ alignment: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ alignment: attributesDefaults.alignment.default.value });										
+									} }
+								/>
+								{
+									( imagePosition === 'left' || imagePosition === 'right' ) && (
+										<RadioButtons 
+											label={ __( 'Vertical Alignment', 'athemes-blocks' ) }
+											defaultValue={ verticalAlignment }
+											options={[
+												{ label: __( 'Start', 'athemes-blocks' ), value: 'flex-start', icon: icons.alignTop },
+												{ label: __( 'Center', 'athemes-blocks' ), value: 'center', icon: icons.alignMiddle },
+												{ label: __( 'End', 'athemes-blocks' ), value: 'flex-end', icon: icons.alignBottom },
+											]}
+											responsive={false}
+											reset={true}
+											onChange={ ( value ) => {
+												updateAttribute( 'verticalAlignment', {
+													value: value
+												}, 'desktop' );
+
+												setUpdateCss( { settingId: 'verticalAlignment', value: value } );
+											} }
+											onClickReset={ () => {
+												updateAttribute( 'verticalAlignment', {
+													value: getSettingDefaultValue( 'verticalAlignment', 'desktop', attributesDefaults )
+												}, 'desktop' );
+												
+												setUpdateCss( { settingId: 'verticalAlignment', value: getSettingDefaultValue( 'verticalAlignment', 'desktop', attributesDefaults ) } );
+											} }
+										/>
+									)
+								}
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Image', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'image' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'image' ) }
+							>
+								<ImageUpload
+									label=""
+									settingId="image"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['image']}
+								/>
+								<RadioButtons 
+									label={ __( 'Position', 'athemes-blocks' ) }
+									defaultValue={ imagePosition }
+									options={[
+										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ imagePosition: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ imagePosition: getSettingDefaultValue( 'imagePosition', '', attributesDefaults ) });
+									} }
+								/>
+								<RadioButtons 
+									label={ __( 'Style', 'athemes-blocks' ) }
+									defaultValue={ imageStyle }
+									options={[
+										{ label: __( 'Normal', 'athemes-blocks' ), value: 'normal' },
+										{ label: __( 'Circle', 'athemes-blocks' ), value: 'circle' },
+										{ label: __( 'Square', 'athemes-blocks' ), value: 'square' },
+										{ label: __( 'Rounded', 'athemes-blocks' ), value: 'rounded' },
+									]}
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ imageStyle: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ imageStyle: getSettingDefaultValue( 'imageStyle', '', attributesDefaults ) });
+									} }
+								/>
+								<Select
+									label={ __( 'Size', 'athemes-blocks' ) }
+									options={[
+										{ label: __( 'Thumbnail', 'athemes-blocks' ), value: 'thumbnail' },
+										{ label: __( 'Medium', 'athemes-blocks' ), value: 'medium' },
+										{ label: __( 'Large', 'athemes-blocks' ), value: 'large' },
+										{ label: __( 'Full', 'athemes-blocks' ), value: 'full' },
+									]}
+									value={ imageSize }
+									responsive={false}
+									reset={true}
+									onChange={ ( value ) => {
+										setAttributes({ imageSize: value });
+									} }
+									onClickReset={ () => {
+										setAttributes({ imageSize: getSettingDefaultValue( 'imageSize', '', attributesDefaults ) });
+									} }
+								/>
+								<RangeSlider 
+									label={ __( 'Width', 'athemes-blocks' ) }
+									defaultValue={ imageWidth }
+									defaultUnit={ getSettingUnit( 'imageWidth', currentDevice, atts ) }
+									min={ {
+										px: 1,
+										em: 0.1,
+										rem: 0.1,
+										percent: 1,
+										vw: 1,
+										vh: 1,
+									} }
+									max={ {
+										px: 600,
+										em: 100,
+										rem: 100,
+										percent: 100,
+										vw: 100,
+										vh: 100,
+									} }
+									responsive={ true }
+									reset={ true }
+									units={['px', '%', 'vw', 'vh']}
+									onChange={ ( value ) => {
+										updateAttribute( 'imageWidth', {
+											value: value,
+											unit: getSettingUnit( 'imageWidth', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageWidth', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'imageWidth', {
+											value: getSettingValue( 'imageWidth', currentDevice, atts ),
+											unit: value
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'imageWidth', value: value } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'imageWidth', {
+											value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'imageWidth', currentDevice, attributesDefaults )
+										}, currentDevice ); 
+
+										setUpdateCss( { settingId: 'imageWidth', value: getSettingDefaultValue( 'imageWidth', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+						</Panel>
+					)
+				}
+				{
+					currentTab === 'style' && (
+						<Panel>
+							<PanelBody 
+								title={ __( 'Name', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'name' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'name' ) }
+							>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ nameColor }
+									hover={false}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'nameColor', {
+											value: {
+												defaultState: value,
+												hoverState: getColorPickerSettingValue( 'nameColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'nameColor', value: getColorPickerSettingValue( 'nameColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'nameColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'nameColor', 'desktop', 'defaultState', atts ),
+												hoverState: value	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'nameColor', value: getColorPickerSettingValue( 'nameColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'nameColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'nameColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'nameColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'nameColor', value: getColorPickerSettingDefaultValue( 'nameColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<Typography
+									label={ __( 'Typography', 'athemes-blocks' ) }
+									settingId="nameTypography"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+								/>
+								<RangeSlider 
+									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+									defaultValue={ nameBottomSpacing }
+									defaultUnit={ getSettingUnit( 'nameBottomSpacing', currentDevice, atts ) }
+									min={ 0 }
+									max={ 150 }
+									responsive={true}
+									reset={true}
+									units={['px', 'em', 'rem']}
+									onChange={ ( value ) => {
+										updateAttribute( 'nameBottomSpacing', {
+											value: value,
+											unit: getSettingUnit( 'nameBottomSpacing', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'nameBottomSpacing', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'nameBottomSpacing', {
+											value: nameBottomSpacing,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'nameBottomSpacing', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'nameBottomSpacing', {
+											value: getSettingDefaultValue( 'nameBottomSpacing', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'nameBottomSpacing', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'nameBottomSpacing', value: getSettingDefaultValue( 'nameBottomSpacing', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Company', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'company' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'company' ) }
+							>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ companyColor }
+									hover={false}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'companyColor', {
+											value: {
+												defaultState: value,
+												hoverState: getColorPickerSettingValue( 'companyColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'companyColor', value: getColorPickerSettingValue( 'companyColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'companyColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'companyColor', 'desktop', 'defaultState', atts ),
+												hoverState: value	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'companyColor', value: getColorPickerSettingValue( 'companyColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'companyColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'companyColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'companyColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'companyColor', value: getColorPickerSettingDefaultValue( 'companyColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+								<Typography
+									label={ __( 'Typography', 'athemes-blocks' ) }
+									settingId="companyTypography"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'textTransform', 'textDecoration', 'lineHeight', 'letterSpacing']}
+								/>
+								<RangeSlider 
+									label={ __( 'Bottom Spacing', 'athemes-blocks' ) }
+									defaultValue={ companyBottomSpacing }
+									defaultUnit={ getSettingUnit( 'companyBottomSpacing', currentDevice, atts ) }
+									min={ 0 }
+									max={ 150 }
+									responsive={true}
+									reset={true}
+									units={['px', 'em', 'rem']}
+									onChange={ ( value ) => {
+										updateAttribute( 'companyBottomSpacing', {
+											value: value,
+											unit: getSettingUnit( 'companyBottomSpacing', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'companyBottomSpacing', value: value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'companyBottomSpacing', {
+											value: companyBottomSpacing,
+											unit: value,
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'companyBottomSpacing', value: value } );								
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'companyBottomSpacing', {
+											value: getSettingDefaultValue( 'companyBottomSpacing', currentDevice, attributesDefaults ),
+											unit: getSettingDefaultUnit( 'companyBottomSpacing', currentDevice, attributesDefaults )
+										}, currentDevice );							
+
+										setUpdateCss( { settingId: 'companyBottomSpacing', value: getSettingDefaultValue( 'companyBottomSpacing', currentDevice, attributesDefaults ) } );								
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Background', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'background' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'background' ) }
+							>
+								<ColorPicker
+									label={ __( 'Color', 'athemes-blocks' ) }
+									value={ cardBackgroundColor }
+									hover={false}
+									responsive={false}
+									reset={true}
+									defaultStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'cardBackgroundColor', {
+											value: {
+												defaultState: value,
+												hoverState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'hoverState', atts )
+											}
+										}, 'desktop' );
+
+										setUpdateCss( { settingId: 'cardBackgroundColor', value: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'defaultState', atts ) } );
+									} }
+									hoverStateOnChangeComplete={ ( value ) => {
+										updateAttribute( 'cardBackgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'defaultState', atts ),
+												hoverState: value	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'cardBackgroundColor', value: getColorPickerSettingValue( 'cardBackgroundColor', 'desktop', 'hoverState', atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'cardBackgroundColor', {
+											value: {
+												defaultState: getColorPickerSettingDefaultValue( 'cardBackgroundColor', 'desktop', 'defaultState', attributesDefaults ),
+												hoverState: getColorPickerSettingDefaultValue( 'cardBackgroundColor', 'desktop', 'hoverState', attributesDefaults )	
+											}
+										}, 'desktop' );
+										
+										setUpdateCss( { settingId: 'cardBackgroundColor', value: getColorPickerSettingDefaultValue( 'cardBackgroundColor', 'desktop', 'defaultState', attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Border', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'border' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'border' ) }
+							>
+								<Border
+									label=""
+									settingId="cardBorder"
+									attributes={ atts }
+									setAttributes={ setAttributes }
+									attributesDefaults={ attributesDefaults }
+									setUpdateCss={ setUpdateCss }
+									subFields={['borderStyle', 'borderWidth', 'borderRadius', 'borderColor']}
+								/>
+							</PanelBody>
+							<PanelBody 
+								title={ __( 'Spacing', 'athemes-blocks' ) } 
+								initialOpen={false}
+								opened={ isPanelOpened( 'spacing' ) }
+								onToggle={ () => onTogglePanelBodyHandler( 'spacing' ) }
+							>
+								<Dimensions
+									label={ __( 'Padding', 'athemes-blocks' ) }
+									directions={[
+										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+									]}
+									value={ cardPadding }
+									defaultUnit={ getSettingUnit('cardPadding', currentDevice, atts) }
+									directionsValue={ getDimensionsSettingDirectionsValue('cardPadding', currentDevice, atts) }
+									connect={ getDimensionsSettingConnectValue('cardPadding', currentDevice, atts) }
+									responsive={ true }
+									units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'cardPadding', {
+											value: value.value,
+											unit: getSettingUnit( 'cardPadding', currentDevice, atts ),
+											connect: getDimensionsSettingConnectValue( 'cardPadding', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardPadding', value: value.value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'cardPadding', {
+											value: getSettingValue( 'cardPadding', currentDevice, atts ),
+											unit: value,
+											connect: getDimensionsSettingConnectValue( 'cardPadding', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardPadding', value: getSettingValue( 'cardPadding', currentDevice, atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'cardPadding', getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ), currentDevice );
+
+										setUpdateCss( { settingId: 'cardPadding', value: getDimensionsSettingDefaultValue( 'cardPadding', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+								<Dimensions
+									label={ __( 'Margin', 'athemes-blocks' ) }
+									directions={[
+										{ label: __( 'Top', 'athemes-blocks' ), value: 'top' },
+										{ label: __( 'Right', 'athemes-blocks' ), value: 'right' },
+										{ label: __( 'Bottom', 'athemes-blocks' ), value: 'bottom' },
+										{ label: __( 'Left', 'athemes-blocks' ), value: 'left' },
+									]}
+									value={ cardMargin }
+									defaultUnit={ getSettingUnit('cardMargin', currentDevice, atts) }
+									directionsValue={ getDimensionsSettingDirectionsValue('cardMargin', currentDevice, atts) }
+									connect={ getDimensionsSettingConnectValue('cardMargin', currentDevice, atts) }
+									responsive={ true }
+									units={['px', '%', 'em', 'rem', 'vh', 'vw']}
+									reset={true}
+									onChange={ ( value ) => {
+										updateAttribute( 'cardMargin', {
+											value: value.value,
+											unit: getSettingUnit( 'cardMargin', currentDevice, atts ),
+											connect: getDimensionsSettingConnectValue( 'cardMargin', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: value.value } );
+									} }
+									onChangeUnit={ ( value ) => {
+										updateAttribute( 'cardMargin', {
+											value: getSettingValue( 'cardMargin', currentDevice, atts ),
+											unit: value,
+											connect: getDimensionsSettingConnectValue( 'cardMargin', currentDevice, atts )
+										}, currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: getSettingValue( 'cardMargin', currentDevice, atts ) } );
+									} }
+									onClickReset={ () => {
+										updateAttribute( 'cardMargin', getDimensionsSettingDefaultValue( 'cardMargin', currentDevice, attributesDefaults ), currentDevice );
+
+										setUpdateCss( { settingId: 'cardMargin', value: getDimensionsSettingDefaultValue( 'cardMargin', currentDevice, attributesDefaults ) } );
+									} }
+								/>
+							</PanelBody>
+						</Panel>
+					)
+				}
+			</InspectorControls>
+			
+			{(() => {
+				// Block HTML tag.
+				let Tag = 'div';
+
+				// Block alignment.
+				if (attributes.align) {
+					blockProps.className += ` align${attributes.align}`;
+					blockProps['data-align'] = attributes.align;
+				}
+
+				// Alignment.
+				blockProps.className += ` at-block-team-member--${alignment}`;	
+				
+				// Vertical Alignment.
+				blockProps.className += ` at-block-team-member--vertical-alignment-${verticalAlignment}`;
+
+				// Image Position.
+				blockProps.className += ` at-block-team-member--image-${imagePosition}`;
+
+				// Image Style.
+				blockProps.className += ` at-block-team-member--image-style-${imageStyle}`;
+
+				// Reponsive display.
+				if (hideOnDesktop) {
+					blockProps.className += ' atb-hide-desktop';
+				}
+
+				if (hideOnTablet) {
+					blockProps.className += ' atb-hide-tablet';
+				}
+
+				if (hideOnMobile) {
+					blockProps.className += ' atb-hide-mobile';
+				}
+
+				// Animation.
+				blockProps = blockPropsWithAnimation(blockProps, attributes);
+				
+				// Display the image.
+				return (
+					<Tag {...blockProps}>
+						<BlockControls>
+							<AlignmentToolbar
+								label={ __( 'Align', 'athemes-blocks' ) }
+								alignmentControls={[
+									{
+										align: 'none',
+										icon: alignNone,
+										title: __( 'None', 'athemes-blocks' )
+									},
+									{
+										align: 'wide',
+										icon: 'align-wide',
+										title: __( 'Wide Width', 'athemes-blocks' )
+									},
+									{
+										align: 'full',
+										icon: 'align-full-width',
+										title: __( 'Full Width', 'athemes-blocks' )
+									}
+								]}
+								value={attributes.align}
+								onChange={(align) => setAttributes({ align })}
+							/>
+						</BlockControls>
+						
+						{(() => {
+
+							// Image.
+							const image = getInnerSettingValue( 'image', 'image', '', atts );
+
+							let imageUrlToDisplay = '';
+							let imageWidth = 0;
+							let imageHeight = 0;
+
+							if ( image.sizes && image.sizes[imageSize] ) {
+								imageUrlToDisplay = image.sizes[imageSize].url;
+								imageWidth = image.sizes[imageSize].width;
+								imageHeight = image.sizes[imageSize].height;
+							} else if ( image.media_details && image.media_details.sizes[imageSize] ) {
+								imageUrlToDisplay = image.media_details.sizes[imageSize].source_url;
+								imageWidth = image.media_details.sizes[imageSize].width;
+								imageHeight = image.media_details.sizes[imageSize].height;
+							} else {
+								imageUrlToDisplay = imageUrlToDisplay;
+								imageWidth = image.width;
+								imageHeight = image.height;
+							}
+
+							const hasImage = image && imageUrlToDisplay ? true : false;
+
+							// Other content.
+							const name = atts['name'];
+							const company = atts['company'];
+
+							return (
+								<div className="at-block-team-member__item">
+									<div className="at-block-team-member__item-inner">
+										{
+											(imagePosition === 'top' || imagePosition === 'left' || imagePosition === 'right') && (
+												<>
+													{
+														hasImage && (
+															<div className="at-block-team-member__item-image-wrapper">
+																<div className="at-block-team-member__item-image">
+																	<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
+																</div>
+															</div>
+														)
+													}
+													<div className="at-block-team-member__item-content">
+														<div>
+															<RichText
+																tagName="div"
+																className="at-block-team-member__item-name"
+																value={ name }
+																placeholder={ __( 'Name', 'athemes-blocks' ) }
+																allowedFormats={['core/bold', 'core/italic']}
+																onChange={ ( value ) => {
+																	setAttributes( { ['name']: value } );
+																} }
+															/>
+															<RichText
+																tagName="div"
+																className="at-block-team-member__item-company"
+																value={ company }
+																placeholder={ __( 'Company', 'athemes-blocks' ) }
+																allowedFormats={['core/bold', 'core/italic']}
+																onChange={ ( value ) => {
+																	setAttributes( { ['company']: value } );
+																} }
+															/>
+															<InnerBlocks
+																template={[['core/social-links', {}, [
+																	['core/social-link', {
+																		url: 'https://www.facebook.com',
+																		service: 'facebook'
+																	}],
+																	['core/social-link', {
+																		url: 'https://www.twitter.com',
+																		service: 'twitter'
+																	}],
+																	['core/social-link', {
+																		url: 'https://www.linkedin.com',
+																		service: 'linkedin'
+																	}]
+																]]]}
+																templateLock="all"
+																orientation="vertical"
+																allowedBlocks={['core/social-links']}
+															/>
+														</div>
+													</div>
+												</>
+											)
+										}
+										{
+											imagePosition === 'bottom' && (
+												<>
+													<div className="at-block-team-member__item-content">
+														<div>
+															<RichText
+																tagName="div"
+																className="at-block-team-member__item-name"
+																value={ name }
+																placeholder={ __( 'Name', 'athemes-blocks' ) }
+																allowedFormats={['core/bold', 'core/italic']}
+																onChange={ ( value ) => {
+																	setAttributes( { ['name']: value } );
+																} }
+															/>
+															<RichText
+																tagName="div"
+																className="at-block-team-member__item-company"
+																value={ company }
+																placeholder={ __( 'Company', 'athemes-blocks' ) }
+																allowedFormats={['core/bold', 'core/italic']}
+																onChange={ ( value ) => {
+																	setAttributes( { ['company']: value } );
+																} }
+															/>
+															<InnerBlocks
+																template={[['core/social-links', {}, [
+																	['core/social-link', {
+																		url: 'https://www.facebook.com',
+																		service: 'facebook'
+																	}],
+																	['core/social-link', {
+																		url: 'https://www.twitter.com',
+																		service: 'twitter'
+																	}],
+																	['core/social-link', {
+																		url: 'https://www.linkedin.com',
+																		service: 'linkedin'
+																	}]
+																]]]}
+																templateLock="all"
+																orientation="vertical"
+																allowedBlocks={['core/social-links']}
+															/>
+														</div>
+														{
+															hasImage && (
+																<div>
+																	<div className="at-block-team-member__item-image-wrapper">
+																		<div className="at-block-team-member__item-image">
+																			<img src={imageUrlToDisplay} width={imageWidth} height={imageHeight} alt={image.alt} />
+																		</div>
+																	</div>
+																</div>
+															)
+														}
+													</div>
+												</>														
+											)
+										}
+										
+									</div>
+								</div>
+							);
+						})()}
+					</Tag>
+				);
+			})()}
+		</>
+	);
+};
+
+export default withDynamicCSS(
+	withTabsNavigation(
+		withPersistentPanelToggle(	
+			withAdvancedTab(
+				withGoogleFonts(Edit),
+				attributesDefaults
+			)
+		)
+	),
+	attributesDefaults
+);

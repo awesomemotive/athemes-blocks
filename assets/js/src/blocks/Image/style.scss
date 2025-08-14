@@ -1,0 +1,30 @@
+.at-block-image {
+    box-sizing: border-box;
+    display: flex;
+    text-decoration: none;
+
+    &__image-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--atb-image-caption-gap, 0px);
+        width: var(--atb-image-width, 100%);
+        max-width: var(--atb-image-max-width, 100%);
+
+        img {
+            width: 100%;
+            height: var(--atb-image-height, auto);
+        }
+    }
+
+    &__caption {
+        padding: 15px;
+
+        .at-block-image__caption-text {
+            margin: 0;
+        }
+    }
+}
+
+a.at-block-image {
+    text-decoration: none !important;
+}

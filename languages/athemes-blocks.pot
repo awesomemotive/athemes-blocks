@@ -1,287 +1,3266 @@
-# Copyright (C) 2021 aThemes
+# Copyright (C) 2025 aThemes
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: aThemes Blocks 1.0.4\n"
+"Project-Id-Version: aThemes Blocks 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/athemes-blocks\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-28T17:07:34+00:00\n"
+"POT-Creation-Date: 2025-05-22T10:13:28-03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: athemes-blocks\n"
 
 #. Plugin Name of the plugin
+#: athemes-blocks.php
 msgid "aThemes Blocks"
 msgstr ""
 
 #. Description of the plugin
+#: athemes-blocks.php
 msgid "aThemes Blocks is a Gutenberg plugin extending the WordPress editor with awesome blocks."
 msgstr ""
 
 #. Author of the plugin
+#: athemes-blocks.php
 msgid "aThemes"
 msgstr ""
 
 #. Author URI of the plugin
+#: athemes-blocks.php
 msgid "https://athemes.com"
 msgstr ""
 
-#: athemes-blocks.php:36
+#: assets/js/blocks/PostGrid/attributes.php:165
+#: assets/js/src/blocks/PostGrid/attributes.php:165
+msgid "Read More"
+msgstr ""
+
+#. Translators: 1. WordPress version
+#: athemes-blocks.php:47
+#: v1/athemes-blocks.php:36
+#, php-format
 msgid "aThemes Blocks plugin requires PHP version %s+. Please update your server PHP version to get the plugin working."
 msgstr ""
 
-#: athemes-blocks.php:46
+#. Translators: 1. WordPress version
+#: athemes-blocks.php:64
+#: v1/athemes-blocks.php:46
+#, php-format
 msgid "aThemes Blocks plugin requires WordPress version %s+. Please update the WordPress version to get the plugin working."
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:25
-msgid "Container Block"
+#: assets/js/blocks/blocks/Button/index/index.js:69
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:69
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:52
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:69
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:69
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:69
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:69
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:69
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:69
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:69
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:52
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:69
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:69
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:69
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:69
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:69
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:43
+#: assets/js/src/block-editor/controls/border/border.jsx:47
+#: assets/js/src/block-editor/controls/color-picker/color-picker.jsx:46
+#: assets/js/src/block-editor/controls/typography/typography.jsx:280
+#: assets/js/src/block-editor/controls/typography/typography.jsx:316
+#: assets/js/src/block-editor/controls/typography/typography.jsx:354
+#: assets/js/src/blocks/Button/edit.jsx:138
+msgid "Default"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:27
-msgid "A style wrapper to combine different blocks in a single row."
+#: assets/js/blocks/blocks/Button/index/index.js:69
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:69
+#: assets/js/blocks/blocks/Heading/index/index.js:52
+#: assets/js/blocks/blocks/Icon/index/index.js:69
+#: assets/js/blocks/blocks/Image/index/index.js:69
+#: assets/js/blocks/blocks/PostGrid/index/index.js:69
+#: assets/js/blocks/blocks/Testimonials/index/index.js:69
+#: assets/js/blocks/blocks/Text/index/index.js:69
+#: assets/js/blocks/Button/index.js:69
+#: assets/js/blocks/FlexContainer/index.js:69
+#: assets/js/blocks/Heading/index.js:52
+#: assets/js/blocks/Icon/index.js:69
+#: assets/js/blocks/Image/index.js:69
+#: assets/js/blocks/PostGrid/index.js:69
+#: assets/js/blocks/Testimonials/index.js:69
+#: assets/js/blocks/Text/index.js:69
+#: assets/js/src/block-editor/controls/color-picker/color-picker.jsx:79
+msgid "Hover"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:30
-msgid "wrapper"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:109
+msgid "Font family"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:31
-msgid "athemes"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:140
+msgid "Weight"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:32
-msgid "container"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:173
+msgid "Font size"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:33
-msgid "section"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:46
-msgid "Lorem ipsum dolor"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/index.js:53
-msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id tempus metus. Donec vestibulum, purus at eleifend maximus."
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:159
-#: src/components/global-advanced-controls/index.js:24
-msgid "General"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:167
-#: src/block/container/edit.js:175
-#: src/block/container/edit.js:183
-msgid "Content Width"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:192
-msgid "Border Radius"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:204
-msgid "Moves the block to backward or forward"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:206
-msgid "Z-index"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:219
-msgid "Content Alignment"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:314
-msgid "Spacing"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:323
-msgid "Paddings"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/block/container/edit.js:502
-msgid "Margins"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/panel-tabs-buttons/index.js:25
-msgid "Settings"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/panel-tabs-buttons/index.js:31
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:45
+#: assets/js/src/block-editor/controls/typography/typography.jsx:278
+#: assets/js/src/blocks/Testimonials/edit.jsx:438
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/panel-tabs-buttons/index.js:31
 msgid "Style"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/panel-tabs-buttons/index.js:37
-msgid "Advanced"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:281
+msgid "Italic"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/responsive-controls/index.js:141
-msgid "Units"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:282
+msgid "Oblique"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/responsive-controls/index.js:155
-msgid "Device"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:314
+msgid "Transform"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/advanced-control/index.js:28
-msgid "Element ID"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:83
+#: assets/js/src/block-editor/controls/typography/typography.jsx:317
+#: assets/js/src/blocks/Testimonials/edit.jsx:441
+msgid "Normal"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:36
-msgid "Background"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:318
+msgid "Capitalize"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:42
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:319
+msgid "Uppercase"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:320
+msgid "Lowercase"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:352
+msgid "Decoration"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:48
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:166
+#: assets/js/src/block-editor/controls/typography/typography.jsx:355
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:43
 msgid "None"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:48
-msgid "Color"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:356
+msgid "Underline"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:54
-msgid "Gradient"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:357
+msgid "Overline"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:60
-msgid "Image"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:358
+msgid "Line Through"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:65
-msgid "Background Color"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:390
+msgid "Line Height"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:73
-msgid "Gradient Color #1"
+#: assets/js/blocks/blocks/Button/index/index.js:100
+#: assets/js/blocks/blocks/Heading/index/index.js:100
+#: assets/js/blocks/blocks/Image/index/index.js:100
+#: assets/js/blocks/blocks/PostGrid/index/index.js:100
+#: assets/js/blocks/blocks/Testimonials/index/index.js:100
+#: assets/js/blocks/blocks/Text/index/index.js:100
+#: assets/js/blocks/Button/index.js:100
+#: assets/js/blocks/Heading/index.js:100
+#: assets/js/blocks/Image/index.js:100
+#: assets/js/blocks/PostGrid/index.js:100
+#: assets/js/blocks/Testimonials/index.js:100
+#: assets/js/blocks/Text/index.js:100
+#: assets/js/src/block-editor/controls/typography/typography.jsx:452
+msgid "Letter Spacing"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:78
-msgid "Gradient Color #2"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:49
+msgid "Solid"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:83
-msgid "Degree"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:50
+msgid "Dashed"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:92
-msgid "Color #1 position"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:51
+msgid "Dotted"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:101
-msgid "Color #2 position"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:52
+msgid "Double"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:127
-#: src/components/background-control/index.js:134
-msgid "Select a image"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:53
+msgid "Groove"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:134
-msgid "Replace image"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:54
+msgid "Ridge"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:150
-msgid "Remove Image"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:55
+msgid "Outset"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:157
-msgid "Background Image Type"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:56
+#: assets/js/src/blocks/FlexContainer/edit.jsx:488
+msgid "Hidden"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:161
-msgid "Contain"
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:87
+#: assets/js/src/blocks/Image/edit.jsx:193
+#: assets/js/src/blocks/Testimonials/edit.jsx:474
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:96
+#: v1/src/block/google-maps/edit.js:105
+#: v1/src/block/google-maps/edit.js:114
+msgid "Width"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:162
-msgid "Cover"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:166
-msgid "Background Position"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:172
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:32
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:71
+#: assets/js/src/block-editor/controls/border/border.jsx:89
+#: assets/js/src/block-editor/controls/border/border.jsx:145
+#: assets/js/src/blocks/Button/edit.jsx:430
+#: assets/js/src/blocks/PostGrid/edit.jsx:813
+#: assets/js/src/blocks/PostGrid/edit.jsx:1224
+#: assets/js/src/blocks/Testimonials/edit.jsx:423
+#: assets/js/src/blocks/Testimonials/edit.jsx:1259
+#: assets/js/src/blocks/Testimonials/edit.jsx:1298
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:173
 msgid "Top"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:173
-#: src/components/background-control/index.js:178
-msgid "Center"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:174
-msgid "Bottom"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:179
-msgid "Left"
-msgstr ""
-
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:180
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:33
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:72
+#: assets/js/src/block-editor/controls/border/border.jsx:90
+#: assets/js/src/block-editor/controls/border/border.jsx:146
+#: assets/js/src/blocks/Button/edit.jsx:239
+#: assets/js/src/blocks/Button/edit.jsx:431
+#: assets/js/src/blocks/Heading/edit.jsx:158
+#: assets/js/src/blocks/PostGrid/edit.jsx:469
+#: assets/js/src/blocks/PostGrid/edit.jsx:814
+#: assets/js/src/blocks/PostGrid/edit.jsx:1225
+#: assets/js/src/blocks/Testimonials/edit.jsx:426
+#: assets/js/src/blocks/Testimonials/edit.jsx:1260
+#: assets/js/src/blocks/Testimonials/edit.jsx:1299
+#: assets/js/src/blocks/Text/edit.jsx:243
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:181
 msgid "Right"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:187
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:34
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:73
+#: assets/js/src/block-editor/controls/border/border.jsx:91
+#: assets/js/src/block-editor/controls/border/border.jsx:147
+#: assets/js/src/blocks/Button/edit.jsx:432
+#: assets/js/src/blocks/PostGrid/edit.jsx:815
+#: assets/js/src/blocks/PostGrid/edit.jsx:1226
+#: assets/js/src/blocks/Testimonials/edit.jsx:424
+#: assets/js/src/blocks/Testimonials/edit.jsx:1261
+#: assets/js/src/blocks/Testimonials/edit.jsx:1300
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:175
+msgid "Bottom"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:35
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:74
+#: assets/js/src/block-editor/controls/border/border.jsx:92
+#: assets/js/src/block-editor/controls/border/border.jsx:148
+#: assets/js/src/blocks/Button/edit.jsx:237
+#: assets/js/src/blocks/Button/edit.jsx:433
+#: assets/js/src/blocks/Heading/edit.jsx:156
+#: assets/js/src/blocks/PostGrid/edit.jsx:468
+#: assets/js/src/blocks/PostGrid/edit.jsx:816
+#: assets/js/src/blocks/PostGrid/edit.jsx:1227
+#: assets/js/src/blocks/Testimonials/edit.jsx:425
+#: assets/js/src/blocks/Testimonials/edit.jsx:1262
+#: assets/js/src/blocks/Testimonials/edit.jsx:1301
+#: assets/js/src/blocks/Text/edit.jsx:241
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:180
+msgid "Left"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/border/border.jsx:143
+msgid "Radius"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:126
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:126
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:143
+#: assets/js/src/block-editor/controls/border/border.jsx:199
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:80
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:95
+#: assets/js/src/blocks/Button/edit.jsx:276
+#: assets/js/src/blocks/Button/edit.jsx:322
+#: assets/js/src/blocks/Button/edit.jsx:368
+#: assets/js/src/blocks/Heading/edit.jsx:188
+#: assets/js/src/blocks/Heading/edit.jsx:232
+#: assets/js/src/blocks/Icon/edit.jsx:176
+#: assets/js/src/blocks/Image/edit.jsx:410
+#: assets/js/src/blocks/PostGrid/edit.jsx:857
+#: assets/js/src/blocks/PostGrid/edit.jsx:948
+#: assets/js/src/blocks/PostGrid/edit.jsx:1039
+#: assets/js/src/blocks/PostGrid/edit.jsx:1130
+#: assets/js/src/blocks/PostGrid/edit.jsx:1176
+#: assets/js/src/blocks/Testimonials/edit.jsx:641
+#: assets/js/src/blocks/Testimonials/edit.jsx:728
+#: assets/js/src/blocks/Testimonials/edit.jsx:815
+#: assets/js/src/blocks/Testimonials/edit.jsx:1197
+#: assets/js/src/blocks/Text/edit.jsx:280
+#: assets/js/src/blocks/Text/edit.jsx:324
+#: assets/js/src/blocks/Text/edit.jsx:370
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:49
+msgid "Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:157
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/link/link.jsx:38
+#: assets/js/src/blocks/FlexContainer/edit.jsx:425
+#: assets/js/src/blocks/FlexContainer/edit.jsx:449
+#: assets/js/src/blocks/Text/edit.jsx:318
+msgid "Link"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:157
+#: assets/js/src/block-editor/controls/link/link.jsx:54
+msgid "Open in a new window"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:157
+#: assets/js/blocks/Button/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:157
+#: assets/js/src/block-editor/controls/link/link.jsx:70
+msgid "Add \"nowfollow\" attribute"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon-library/icon-library.jsx:214
+msgid "Select Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon-library/icon-library.jsx:237
+msgid "Search by icon name..."
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon/icon.jsx:40
+msgid "Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon/icon.jsx:56
+msgid "Icon Position"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon/icon.jsx:59
+msgid "Before Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon/icon.jsx:60
+msgid "After Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:240
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Button/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/block-editor/controls/icon/icon.jsx:76
+msgid "Icon Gap"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:41
+msgid "Entrance Animation"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:44
+msgid "Fade In"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:45
+#: assets/js/src/block-editor/controls/animation/animation.jsx:49
+msgid "Slide In"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:46
+msgid "Zoom In"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:47
+msgid "Rotate In"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:48
+msgid "Flip In"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:81
+msgid "Animation Duration"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:84
+msgid "Fast"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:85
+msgid "Slow"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/animation/animation.jsx:112
+msgid "Animation Delay (ms)"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:30
+#: assets/js/src/blocks/Button/edit.jsx:428
+#: assets/js/src/blocks/PostGrid/edit.jsx:811
+#: assets/js/src/blocks/PostGrid/edit.jsx:1222
+#: assets/js/src/blocks/Testimonials/edit.jsx:1257
+msgid "Padding"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:69
+#: assets/js/src/blocks/Testimonials/edit.jsx:1296
+msgid "Margin"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:108
+msgid "Z-Index"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:137
+#: assets/js/src/blocks/Testimonials/edit.jsx:1191
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:37
+msgid "Background"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:219
+msgid "Responsive"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:225
+msgid "Hide On Desktop"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:241
+msgid "Hide On Tablet"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/controls/advanced-panel/advanced-panel.jsx:257
+msgid "Hide On Mobile"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/hoc/with-advanced-tab.jsx:33
+msgid "CSS ID"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/block-editor/hoc/with-advanced-tab.jsx:38
+msgid "Add a unique ID to this block. This can be used for anchor links or custom CSS targeting."
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Button/edit.jsx:135
+#: assets/js/src/blocks/FlexContainer/edit.jsx:516
+#: assets/js/src/blocks/PostGrid/edit.jsx:658
+msgid "Layout"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:139
+msgid "Squared"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Button/edit.jsx:140
+#: assets/js/src/blocks/Testimonials/edit.jsx:444
+msgid "Rounded"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:141
+msgid "With Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:142
+msgid "Squared Outline"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:143
+msgid "Rounded Outline"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:144
+msgid "With Icon Outline"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:184
+msgid "Show Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:209
+msgid "Button ID"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Button/edit.jsx:234
+#: assets/js/src/blocks/Heading/edit.jsx:153
+#: assets/js/src/blocks/Icon/edit.jsx:151
+#: assets/js/src/blocks/Image/edit.jsx:168
+#: assets/js/src/blocks/Image/edit.jsx:385
+#: assets/js/src/blocks/Testimonials/edit.jsx:257
+#: assets/js/src/blocks/Text/edit.jsx:238
+msgid "Alignment"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Button/edit.jsx:238
+#: assets/js/src/blocks/FlexContainer/edit.jsx:706
+#: assets/js/src/blocks/FlexContainer/edit.jsx:734
+#: assets/js/src/blocks/FlexContainer/edit.jsx:764
+#: assets/js/src/blocks/FlexContainer/edit.jsx:825
+#: assets/js/src/blocks/Heading/edit.jsx:157
+#: assets/js/src/blocks/Icon/edit.jsx:155
+#: assets/js/src/blocks/Image/edit.jsx:172
+#: assets/js/src/blocks/Image/edit.jsx:389
+#: assets/js/src/blocks/PostGrid/edit.jsx:470
+#: assets/js/src/blocks/Testimonials/edit.jsx:261
+#: assets/js/src/blocks/Text/edit.jsx:242
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:174
+#: v1/src/components/background-control/index.js:179
+msgid "Center"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/Button/edit.jsx:240
+#: assets/js/src/blocks/FlexContainer/edit.jsx:245
+#: assets/js/src/blocks/FlexContainer/edit.jsx:276
+msgid "Full Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Button/edit.jsx:267
+#: assets/js/src/blocks/Heading/edit.jsx:179
+#: assets/js/src/blocks/Image/edit.jsx:493
+#: assets/js/src/blocks/PostGrid/edit.jsx:894
+#: assets/js/src/blocks/PostGrid/edit.jsx:985
+#: assets/js/src/blocks/PostGrid/edit.jsx:1076
+#: assets/js/src/blocks/PostGrid/edit.jsx:1167
+#: assets/js/src/blocks/Testimonials/edit.jsx:678
+#: assets/js/src/blocks/Testimonials/edit.jsx:765
+#: assets/js/src/blocks/Testimonials/edit.jsx:852
+#: assets/js/src/blocks/Text/edit.jsx:271
+msgid "Typography"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/index/index.js:270
+#: assets/js/blocks/Button/index.js:270
+#: assets/js/src/blocks/Button/edit.jsx:530
+msgid "Type your text here..."
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:77
+msgid "Type"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:81
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:55
+msgid "Gradient"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:82
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:186
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:92
+#: assets/js/src/blocks/PostGrid/edit.jsx:414
+#: assets/js/src/blocks/PostGrid/edit.jsx:1391
+#: assets/js/src/blocks/Testimonials/edit.jsx:400
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:61
+msgid "Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:165
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:80
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:128
+#: v1/src/components/background-control/index.js:135
+msgid "Select a image"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:194
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:100
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:151
+msgid "Remove Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:199
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:105
+msgid "Change Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:225
+#: assets/js/src/blocks/Testimonials/edit.jsx:420
+msgid "Position"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:259
+msgid "Attachment"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:264
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:193
+msgid "Scroll"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:265
+msgid "Fixed"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:293
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:298
+msgid "Repeat"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:299
+msgid "Repeat X"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:300
+msgid "Repeat Y"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:301
+msgid "No Repeat"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:329
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:147
+#: assets/js/src/blocks/Icon/edit.jsx:213
+#: assets/js/src/blocks/Testimonials/edit.jsx:456
+msgid "Size"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:334
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:163
+msgid "Cover"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:335
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:162
+msgid "Contain"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:336
+#: assets/js/src/blocks/FlexContainer/edit.jsx:489
+#: assets/js/src/blocks/FlexContainer/edit.jsx:679
+msgid "Auto"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:364
+msgid "Overlay"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/block-editor/controls/color-picker-advanced/color-picker-advanced.jsx:380
+msgid "Overlay Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:8
+msgid "1 Column"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:63
+msgid "2 Columns"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:181
+msgid "3 Columns"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:348
+msgid "4 Columns"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:564
+msgid "6 Columns Grid"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:883
+msgid "2 Columns Left Small"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:983
+msgid "3 Columns Left Right Small"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:1123
+msgid "2 Columns Right Small"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:1228
+msgid "Flex Container"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/layout-selector.jsx:1231
+msgid "Select a container layout to get started."
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:242
+msgid "Container Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:246
+#: assets/js/src/blocks/FlexContainer/edit.jsx:275
+msgid "Boxed"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:247
+msgid "Custom"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:272
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:180
+#: v1/src/block/container/edit.js:188
+#: v1/src/block/container/edit.js:196
+msgid "Content Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:298
+msgid "Content Box Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:339
+msgid "Custom Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:375
+msgid "Minimum Height"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:412
+#: assets/js/src/blocks/Heading/edit.jsx:109
+#: assets/js/src/blocks/Text/edit.jsx:123
+msgid "HTML Tag"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:414
+#: assets/js/src/blocks/Heading/edit.jsx:117
+msgid "Div"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:415
+msgid "Header"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:416
+msgid "Footer"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:417
+msgid "Main"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:418
+msgid "Article"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:419
+msgid "Section"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:420
+msgid "Aside"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:421
+msgid "Figure"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:422
+msgid "Figcaption"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:423
+msgid "Summary"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:424
+msgid "Nav"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:465
+msgid "Open in new window"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:484
+msgid "Overflow"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:487
+msgid "Visible"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:519
+msgid "Flex"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:520
+msgid "Grid"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:543
+#: assets/js/src/blocks/PostGrid/edit.jsx:664
+#: assets/js/src/blocks/Testimonials/edit.jsx:289
+#: assets/js/src/blocks/Text/edit.jsx:156
+msgid "Columns"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:578
+msgid "Direction"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:581
+msgid "Row"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:582
+msgid "Column"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:583
+msgid "Row Reverse"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:584
+msgid "Column Reverse"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:606
+#: assets/js/src/blocks/PostGrid/edit.jsx:698
+#: assets/js/src/blocks/Testimonials/edit.jsx:323
+#: assets/js/src/blocks/Text/edit.jsx:189
+msgid "Columns Gap"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:640
+#: assets/js/src/blocks/PostGrid/edit.jsx:736
+msgid "Rows Gap"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:676
+msgid "Children Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:680
+msgid "Equal"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:702
+msgid "Align Items"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/FlexContainer/edit.jsx:705
+#: assets/js/src/blocks/FlexContainer/edit.jsx:763
+#: assets/js/src/blocks/FlexContainer/edit.jsx:824
+#: assets/js/src/blocks/Icon/edit.jsx:154
+#: assets/js/src/blocks/Image/edit.jsx:171
+msgid "Flex Start"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/FlexContainer/edit.jsx:707
+#: assets/js/src/blocks/FlexContainer/edit.jsx:765
+#: assets/js/src/blocks/FlexContainer/edit.jsx:826
+#: assets/js/src/blocks/Icon/edit.jsx:156
+#: assets/js/src/blocks/Image/edit.jsx:173
+msgid "Flex End"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:708
+#: assets/js/src/blocks/FlexContainer/edit.jsx:736
+msgid "Stretch"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:730
+msgid "Justify Items"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/FlexContainer/edit.jsx:733
+#: assets/js/src/blocks/Image/edit.jsx:388
+#: assets/js/src/blocks/Testimonials/edit.jsx:260
+msgid "Start"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/FlexContainer/edit.jsx:735
+#: assets/js/src/blocks/Image/edit.jsx:390
+#: assets/js/src/blocks/Testimonials/edit.jsx:262
+msgid "End"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:760
+msgid "Justify Content"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:766
+#: assets/js/src/blocks/FlexContainer/edit.jsx:827
+msgid "Space Between"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:767
+#: assets/js/src/blocks/FlexContainer/edit.jsx:828
+msgid "Space Around"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:768
+#: assets/js/src/blocks/FlexContainer/edit.jsx:829
+msgid "Space Evenly"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:792
+#: assets/js/src/blocks/FlexContainer/edit.jsx:795
+msgid "Wrap"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:796
+msgid "No Wrap"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:797
+msgid "Wrap Reverse"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:821
+msgid "Align Content"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/FlexContainer/edit.jsx:916
+#: assets/js/src/blocks/PostGrid/edit.jsx:1306
+msgid "Text Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/index/index.js:202
+#: assets/js/blocks/FlexContainer/index.js:202
+#: assets/js/src/blocks/FlexContainer/edit.jsx:953
+msgid "Link Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:111
+#: assets/js/src/blocks/PostGrid/edit.jsx:504
+msgid "H1"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:112
+#: assets/js/src/blocks/PostGrid/edit.jsx:505
+msgid "H2"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:113
+#: assets/js/src/blocks/PostGrid/edit.jsx:506
+msgid "H3"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:114
+#: assets/js/src/blocks/PostGrid/edit.jsx:507
+msgid "H4"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:115
+#: assets/js/src/blocks/PostGrid/edit.jsx:508
+msgid "H5"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:116
+#: assets/js/src/blocks/PostGrid/edit.jsx:509
+msgid "H6"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:118
+msgid "Span"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:119
+msgid "P"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:159
+#: assets/js/src/blocks/Text/edit.jsx:244
+msgid "Justified"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/index/index.js:157
+#: assets/js/blocks/Heading/index.js:157
+#: assets/js/src/blocks/Heading/edit.jsx:311
+#: assets/js/src/blocks/Heading/edit.jsx:319
+msgid "Type your heading here..."
+msgstr ""
+
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Icon/edit.jsx:113
+#: assets/js/src/blocks/Icon/edit.jsx:145
+#: assets/js/src/blocks/Image/edit.jsx:130
+#: assets/js/src/blocks/Image/edit.jsx:162
+#: assets/js/src/blocks/PostGrid/edit.jsx:484
+#: assets/js/src/blocks/Testimonials/edit.jsx:251
+#: assets/js/src/blocks/Testimonials/edit.jsx:635
+#: assets/js/src/blocks/Text/edit.jsx:117
+#: assets/js/src/blocks/Text/edit.jsx:232
+msgid "Content"
+msgstr ""
+
+#: assets/js/blocks/blocks/Icon/index/index.js:240
+#: assets/js/blocks/Icon/index.js:240
+#: assets/js/src/blocks/Icon/edit.jsx:247
+msgid "Rotate"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:131
+msgid "Disable Lazy Load"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:164
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:185
+#: assets/js/src/blocks/Image/edit.jsx:379
+msgid "Caption"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:167
+msgid "Attachment caption"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/block-editor/controls/image-upload/image-upload.jsx:168
+msgid "Custom caption"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:241
+msgid "Max Width"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:289
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:129
+#: v1/src/block/google-maps/edit.js:138
+#: v1/src/block/google-maps/edit.js:147
+msgid "Height"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:337
+#: assets/js/src/blocks/Image/edit.jsx:484
+#: assets/js/src/blocks/PostGrid/edit.jsx:1436
+#: assets/js/src/blocks/Testimonials/edit.jsx:1235
+msgid "Border"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/Image/edit.jsx:447
+#: assets/js/src/blocks/PostGrid/edit.jsx:774
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:66
+msgid "Background Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:502
+#: assets/js/src/blocks/Testimonials/edit.jsx:1251
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:412
+msgid "Spacing"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:640
+msgid "Type the caption here..."
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/index/index.js:316
+#: assets/js/blocks/Image/index.js:316
+#: assets/js/src/blocks/Image/edit.jsx:614
+msgid "Select Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:211
+msgid "Query Settings"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:217
+msgid "Post Type"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:219
+msgid "Post"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:220
+msgid "Page"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:233
+msgid "Taxonomy"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:235
+msgid "Category"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:236
+msgid "Tag"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:249
+msgid "Taxonomy Term"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:251
+msgid "All"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:264
+msgid "Posts Per Page"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:279
+msgid "Exclude Current Post"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:291
+msgid "Offset Starting Point"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:303
+msgid "Order By"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:305
+msgid "Date"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:306
+#: assets/js/src/blocks/PostGrid/edit.jsx:851
+msgid "Title"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:307
+msgid "Author"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:308
+msgid "Comment Count"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:309
+msgid "Menu Order"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:310
+msgid "Random"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:323
+msgid "Order"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:325
+msgid "Ascending"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:326
+msgid "Descending"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:340
+#: assets/js/src/blocks/PostGrid/edit.jsx:346
+#: assets/js/src/blocks/PostGrid/edit.jsx:1300
+msgid "Pagination"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:358
+msgid "Page Limit"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:373
+msgid "Pagination Type"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:375
+msgid "Ajax"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:376
+msgid "Load More"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:389
+msgid "Prev Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:401
+msgid "Next Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:420
+msgid "Display Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:432
+msgid "Image Ratio"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/PostGrid/edit.jsx:434
+#: assets/js/src/blocks/Testimonials/edit.jsx:443
+msgid "Square"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:435
+msgid "Landscape"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:436
+msgid "Portrait"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:449
+msgid "Image Size"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:451
+msgid "Small"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/PostGrid/edit.jsx:452
+#: assets/js/src/blocks/Testimonials/edit.jsx:459
+msgid "Medium"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/PostGrid/edit.jsx:453
+#: assets/js/src/blocks/Testimonials/edit.jsx:460
+msgid "Large"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:466
+msgid "Image Position"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:490
+msgid "Display Title"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:502
+msgid "Title Tag"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:522
+msgid "Display Author"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:534
+msgid "Display Date"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:546
+msgid "Display Comments"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:558
+msgid "Display Taxonomy"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:570
+msgid "Display Meta Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:582
+msgid "Display Excerpt"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:594
+msgid "Excerpt Length"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:609
+#: assets/js/src/blocks/PostGrid/edit.jsx:1124
+msgid "Read More Button"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:615
+msgid "Display Read More Button"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:627
+msgid "Open in New Tab"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:639
+#: assets/js/src/blocks/Text/edit.jsx:265
+msgid "Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/PostGrid/edit.jsx:903
+#: assets/js/src/blocks/PostGrid/edit.jsx:994
+#: assets/js/src/blocks/PostGrid/edit.jsx:1085
+#: assets/js/src/blocks/PostGrid/edit.jsx:1261
+#: assets/js/src/blocks/PostGrid/edit.jsx:1397
+#: assets/js/src/blocks/Testimonials/edit.jsx:687
+#: assets/js/src/blocks/Testimonials/edit.jsx:774
+msgid "Bottom Spacing"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:942
+msgid "Meta"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:1033
+msgid "Excerpt"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/index/index.js:157
+#: assets/js/blocks/PostGrid/index.js:157
+#: assets/js/src/blocks/PostGrid/edit.jsx:1352
+msgid "Items Gap"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:274
+msgid "Number of Testimonials"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:361
+msgid "Content Gap"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:442
+msgid "Circle"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:458
+msgid "Thumbnail"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:461
+msgid "Full"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:523
+msgid "Carousel"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:529
+msgid "Pause on hover"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:541
+msgid "Autoplay"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:555
+msgid "Autoplay speed (ms)"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:572
+msgid "Loop"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:584
+msgid "Auto Height"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:596
+msgid "Transition duration (ms)"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:611
+#: assets/js/src/blocks/Testimonials/edit.jsx:862
+msgid "Navigation"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:614
+msgid "Arrows"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:615
+msgid "Dots"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:616
+msgid "Both"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:722
+#: assets/js/src/blocks/Testimonials/edit.jsx:1444
+#: assets/js/src/blocks/Testimonials/edit.jsx:1495
+msgid "Name"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:809
+#: assets/js/src/blocks/Testimonials/edit.jsx:1454
+#: assets/js/src/blocks/Testimonials/edit.jsx:1505
+msgid "Company"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:868
+msgid "Arrow Size"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:906
+msgid "Arrow Border Size"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:940
+msgid "Arrow Border Radius"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:974
+msgid "Arrow Offset"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1008
+msgid "Arrow Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1045
+msgid "Arrow Background Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1082
+msgid "Arrow Border Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1119
+msgid "Dots Offset"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1153
+msgid "Dots Color"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/index/index.js:316
+#: assets/js/blocks/Testimonials/index.js:316
+#: assets/js/src/blocks/Testimonials/edit.jsx:1432
+#: assets/js/src/blocks/Testimonials/edit.jsx:1471
+msgid "Testimonial text"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Text/edit.jsx:125
+msgid "div"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Text/edit.jsx:126
+msgid "span"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Text/edit.jsx:127
+msgid "p"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Text/edit.jsx:144
+#: assets/js/src/blocks/Text/edit.jsx:364
+msgid "Drop Cap"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/index/index.js:157
+#: assets/js/blocks/Text/index.js:157
+#: assets/js/src/blocks/Text/edit.jsx:446
+msgid "Type your content here..."
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:25
+msgid "Container Block"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:27
+msgid "A style wrapper to combine different blocks in a single row."
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:30
+msgid "wrapper"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:31
+#: v1/src/block/google-maps/index.js:36
+msgid "athemes"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:32
+msgid "container"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:33
+msgid "section"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:46
+msgid "Lorem ipsum dolor"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/index.js:53
+msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id tempus metus. Donec vestibulum, purus at eleifend maximus."
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:172
+#: v1/src/components/global-advanced-controls/index.js:24
+msgid "General"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:205
+msgid "Border Radius"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:217
+msgid "Moves the block to backward or forward"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:219
+msgid "Z-index"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:232
+msgid "Content Alignment"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:330
+msgid "Content Padding"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:373
+msgid "Display On"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:377
+msgid "Desktop"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:387
+msgid "Tablet"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:397
+msgid "Mobile"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:421
+msgid "Paddings"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/container/edit.js:600
+msgid "Margins"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:78
+#: v1/src/components/panel-tabs-buttons/index.js:25
+msgid "Settings"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/panel-tabs-buttons/index.js:37
+msgid "Advanced"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/responsive-controls/index.js:141
+msgid "Units"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/responsive-controls/index.js:155
+msgid "Device"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/advanced-control/index.js:28
+msgid "Element ID"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:74
+msgid "Gradient Color #1"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:79
+msgid "Gradient Color #2"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:84
+msgid "Degree"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:93
+msgid "Color #1 position"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:102
+msgid "Color #2 position"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:135
+msgid "Replace image"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:158
+msgid "Background Image Type"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:167
+msgid "Background Position"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:188
 msgid "Background Effect"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:191
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:192
 msgid "Fixed / Parallax"
 msgstr ""
 
-#: dist/blocks.build.js:1
-#: src/components/background-control/index.js:192
-msgid "Scroll"
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:204
+msgid "Parallax Transition"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/components/background-control/index.js:213
+msgid "Lazy Loading"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/index.js:31
+msgid "Google Maps Block"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/index.js:33
+msgid "A simple Google Maps block."
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/index.js:37
+msgid "google"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/index.js:38
+msgid "maps"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:73
+msgid "here"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:82
+msgid "Iframe Embed Code"
+msgstr ""
+
+#: v1/dist/blocks.build.js:1
+#: v1/src/block/google-maps/edit.js:87
+msgid "The Google Maps embed iframe code. Learn how to get the code"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/block.json
+#: assets/js/blocks/Button/block.json
+#: assets/js/src/blocks/Button/block.json
+msgctxt "block title"
+msgid "Button"
+msgstr ""
+
+#: assets/js/blocks/blocks/Button/block.json
+#: assets/js/blocks/Button/block.json
+#: assets/js/src/blocks/Button/block.json
+msgctxt "block description"
+msgid "A block that allows you to create a button."
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/block.json
+#: assets/js/blocks/FlexContainer/block.json
+#: assets/js/src/blocks/FlexContainer/block.json
+msgctxt "block title"
+msgid "Container"
+msgstr ""
+
+#: assets/js/blocks/blocks/FlexContainer/block.json
+#: assets/js/blocks/FlexContainer/block.json
+#: assets/js/src/blocks/FlexContainer/block.json
+msgctxt "block description"
+msgid "A container block that allows you to create a flex layout."
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/block.json
+#: assets/js/blocks/Heading/block.json
+#: assets/js/src/blocks/Heading/block.json
+msgctxt "block title"
+msgid "Heading"
+msgstr ""
+
+#: assets/js/blocks/blocks/Heading/block.json
+#: assets/js/blocks/Heading/block.json
+#: assets/js/src/blocks/Heading/block.json
+msgctxt "block description"
+msgid "A block that allows you to create a heading."
+msgstr ""
+
+#: assets/js/blocks/blocks/Icon/block.json
+#: assets/js/blocks/Icon/block.json
+#: assets/js/src/blocks/Icon/block.json
+msgctxt "block title"
+msgid "Icon"
+msgstr ""
+
+#: assets/js/blocks/blocks/Icon/block.json
+#: assets/js/blocks/Icon/block.json
+#: assets/js/src/blocks/Icon/block.json
+msgctxt "block description"
+msgid "A block that allows you to create an icon."
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/block.json
+#: assets/js/blocks/Image/block.json
+#: assets/js/src/blocks/Image/block.json
+msgctxt "block title"
+msgid "Image"
+msgstr ""
+
+#: assets/js/blocks/blocks/Image/block.json
+#: assets/js/blocks/Image/block.json
+#: assets/js/src/blocks/Image/block.json
+msgctxt "block description"
+msgid "A block that allows you to create an image."
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/block.json
+#: assets/js/blocks/PostGrid/block.json
+#: assets/js/src/blocks/PostGrid/block.json
+msgctxt "block title"
+msgid "Post Grid"
+msgstr ""
+
+#: assets/js/blocks/blocks/PostGrid/block.json
+#: assets/js/blocks/PostGrid/block.json
+#: assets/js/src/blocks/PostGrid/block.json
+msgctxt "block description"
+msgid "A block that allows you to create a post grid."
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/block.json
+#: assets/js/blocks/Testimonials/block.json
+#: assets/js/src/blocks/Testimonials/block.json
+msgctxt "block title"
+msgid "Testimonials"
+msgstr ""
+
+#: assets/js/blocks/blocks/Testimonials/block.json
+#: assets/js/blocks/Testimonials/block.json
+#: assets/js/src/blocks/Testimonials/block.json
+msgctxt "block description"
+msgid "A block that allows you to create a testimonials."
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/block.json
+#: assets/js/blocks/Text/block.json
+#: assets/js/src/blocks/Text/block.json
+msgctxt "block title"
+msgid "Text"
+msgstr ""
+
+#: assets/js/blocks/blocks/Text/block.json
+#: assets/js/blocks/Text/block.json
+#: assets/js/src/blocks/Text/block.json
+msgctxt "block description"
+msgid "A block that allows you to create a text."
 msgstr ""

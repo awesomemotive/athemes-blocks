@@ -1,13 +1,66 @@
 {
-  "name": "athemes-blocks-cgb-guten-block",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "cgb-scripts start",
-    "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
-  },
-  "dependencies": {
-    "cgb-scripts": "1.23.1"
-  }
+	"name": "athemes-blocks",
+	"version": "1.1.0",
+	"description": "Extend the Gutenberg Block Editor with additional functionality.",
+	"author": "aThemes",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build --webpack-src-dir=assets/js/src",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip && mv athemes-blocks.zip ../athemes-blocks.zip",
+		"plugin-zip-prod": "composer install --no-dev --optimize-autoloader && wp-scripts plugin-zip && mv athemes-blocks.zip ../athemes-blocks.zip && composer install --dev",
+		"start": "wp-scripts start --webpack-src-dir=assets/js/src",
+		"start:plugin-dashboard": "webpack --watch --config webpack.plugin-dashboard.config.js",
+		"start:plugin-dashboard-hot": "cross-env HOT=true webpack serve --config webpack.plugin-dashboard.config.js",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M",
+		"generate-icons": "node generate-icons-php-files.js"
+	},
+	"files": [
+		"athemes-blocks.php",
+		"assets",
+		"includes",
+		"build",
+		"v1/classes",
+		"v1/dist",
+		"v1/assets/js/parallax.min.js",
+		"v1/assets/vendor/ofi/ofi.min.js",
+		"languages",
+		"vendor/autoload.php",
+		"vendor/composer"
+	],
+	"dependencies": {
+		"cross-env": "^7.0.3",
+		"swiper": "^11.2.6"
+	},
+	"devDependencies": {
+		"@emotion/react": "^11.1.5",
+		"@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
+		"@wordpress/api-fetch": "^6.10.0",
+		"@wordpress/components": "^29.11.0",
+		"@wordpress/hooks": "^4.20.0",
+		"@wordpress/icons": "^9.13.0",
+		"@wordpress/scripts": "^27.7.0",
+		"lodash": "^4.17.21",
+		"react-router-dom": "^7.1.5",
+		"archiver": "^6.0.0",
+		"babel-loader": "^10.0.0",
+		"colord": "^2.9.3",
+		"copy-webpack-plugin": "^9.0.0",
+		"css-loader": "^7.1.2",
+		"mini-css-extract-plugin": "^2.9.2",
+		"minimatch": "^9.0.5",
+		"sass": "^1.69.5",
+		"react-refresh": "^0.17.0",
+		"react-virtualized": "^9.22.6",
+		"sass-loader": "^16.0.5",
+		"webpack": "^5.0.0",
+		"webpack-cli": "^6.0.1",
+		"webpack-dev-server": "^4.15.1",
+		"webpack-fix-style-only-entries": "^0.6.1",
+		"webpack-remove-empty-scripts": "^1.1.1",
+		"webpack-sources": "^3.0.2"
+	}
 }

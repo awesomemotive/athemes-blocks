@@ -1,10 +1,25 @@
 node_modules
+/assets/vendor/
+/assets/js/blocks/
+assets/js/**/*.js
+assets/js/**/*.js.map
+!assets/js/src/**/*.js
 /test-results/
 /playwright-report/
 /test-results/
 /playwright/.cache/
 /vendor/
+/docs/
+/build/
 **.code-workspace
 **.vscode
 .DS_Store
 .idea
+**.hot-update.json
+package.json
+*.zip
+.cursorignore
+
+# Claude Code files
+.claude/
+CLAUDE.md

@@ -1,0 +1,15 @@
+.at-block-text {
+    box-sizing: border-box;
+
+    &--has-drop-cap {
+        &::first-letter {
+            float: left;
+            font-size: 2em;
+            margin-right: 0.4em;
+        }
+    }
+}
+
+span.at-block-text {
+    display: block;
+}

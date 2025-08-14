@@ -1,0 +1,83 @@
+// Fade Effect Before Initialization.
+.swiper {
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    
+    &:not(.swiper-initialized) {
+        opacity: 0;
+    }
+}
+
+// Navigation.
+.at-block-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--at-block-nav-arrow-size, 40px);
+    height: var(--at-block-nav-arrow-size, 40px);
+    border: var(--at-block-nav-arrow-border-width, 0px) solid var(--at-block-nav-border-color, transparent);
+    border-radius: var(--at-block-nav-arrow-border-radius, 0px);
+    background-color: var(--at-block-nav-background-color, transparent);
+    cursor: pointer;
+    transition: ease all 250ms;
+    z-index: 1;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 25%;
+        height: 25%;
+        border-top: 2px solid var(--at-block-nav-color, #212121);
+        border-right: 2px solid var(--at-block-nav-color, #212121);
+        transition: ease all 250ms;
+    }
+
+    &--next {
+        right: var(--at-block-nav-arrow-offset, 0px);
+
+        &:before {
+            transform: rotate(45deg) translate3d(-50%, -50%, 0);
+            transform-origin: 0% -20%;
+        }
+    }
+
+    &--prev {
+        left: var(--at-block-nav-arrow-offset, 0px);
+
+        &:before {
+            transform: rotate(-135deg) translate3d(-50%, -50%, 0);
+            transform-origin: 10% -5%;
+        }
+    }
+}
+
+// Pagination bullets.
+.swiper-pagination-bullets {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    bottom: var(--at-block-dots-offset, 0px) !important;
+
+    .at-block-bullets {
+        &--bullet {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background-color: var(--at-block-dots-color, #212121);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        &--bullet-active {
+            opacity: 1;
+        }
+    }
+}

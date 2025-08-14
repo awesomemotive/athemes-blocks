@@ -1,0 +1,68 @@
+{
+    "name": "athemes/athemes-blocks",
+    "description": "Extend the Gutenberg Block Editor with additional functionality.",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://athemes.com/",
+    "authors": [
+        {
+            "name": "aThemes",
+            "homepage": "https://athemes.com/"
+        },
+        {
+            "name": "Rodrigo Teixeira",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": ".packages/composer/phpcs-diff",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "scripts": {
+        "phpcs": "@php ./vendor/bin/phpcs",
+        "phpcs:fix": "@php ./vendor/bin/phpcbf",
+        "run-tests": [
+            "@phpcs:fix",
+            "@phpcs"
+        ]
+    },
+    "require": {
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-libxml": "*"
+    },
+    "require-dev": {
+        "awesomemotive/wpforms-phpcs": "^1.5.0",
+        "wpforms/phpcs-diff": "^1.2",
+        "phpdocumentor/shim": "^3.7",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpdocumentor/shim": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "phpcodesniffer-search-depth": 1
+    },
+    "autoload": {
+        "psr-4": {
+            "AThemes_Blocks\\": "includes/"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "athemes-blocks/post-grid",
+	"version": "1.0.0",
+	"title": "Post Grid",
+	"category": "athemes-blocks",
+	"icon": "grid-view",
+	"description": "A block that allows you to create a post grid.",
+	"textdomain": "athemes-blocks",
+	"render": "file:./render.php",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

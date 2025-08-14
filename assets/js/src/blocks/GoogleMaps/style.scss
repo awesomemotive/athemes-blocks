@@ -1,0 +1,6 @@
+.at-block-google-maps {
+    &__iframe {
+        width: 100%;
+        height: var(--atb-google-maps-height, 300px)
+    }
+}

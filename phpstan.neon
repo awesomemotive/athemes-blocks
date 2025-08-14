@@ -1,0 +1,7 @@
+parameters:
+    bootstrapFiles:
+        - athemes-blocks.php
+    level: 6
+    paths: # the paths to scan
+        - athemes-blocks.php
+        - includes/

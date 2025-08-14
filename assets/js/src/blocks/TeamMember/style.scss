@@ -1,0 +1,176 @@
+.at-block-team-member {
+    box-sizing: border-box;
+
+    // Slide item.
+    &__item {
+        padding: 0;
+    }
+
+    // Inner.
+    &__item-inner {
+        display: flex;
+        flex-direction: column;
+        gap: var(--at-block-team-member-content-gap, 20px);
+    }
+
+    // Content.
+    &__item-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--at-block-team-member-content-gap, 20px);
+    }
+
+    // Image.
+    &__item-image {
+        display: flex;
+        flex: 1 0 auto;
+        width: var(--at-block-team-member-image-width, 85px);
+        max-width: var(--at-block-team-member-image-width, 100%);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    // Alignment.
+    &--left {
+        .at-block-team-member__item-inner {
+            justify-content: flex-start;
+            text-align: left;
+        }
+    }
+
+    &--right {
+        .at-block-team-member__item-inner {
+            justify-content: flex-end;
+            text-align: right;
+        }
+    }
+
+    &--center {
+        .at-block-team-member__item-inner {
+            justify-content: center;
+            text-align: center;
+        }
+    }
+
+    // Image Position.
+    &--image-top {
+        .at-block-team-member__item-inner {
+            flex-direction: column;
+            gap: var(--at-block-team-member-content-gap, 20px);
+        }
+
+        &.at-block-team-member--left {
+            .at-block-team-member__item-inner {
+                align-items: flex-start;
+            }
+        }
+
+        &.at-block-team-member--right {
+            .at-block-team-member__item-inner {
+                align-items: flex-end;
+            }
+        }
+
+        &.at-block-team-member--center {
+            .at-block-team-member__item-inner {
+                align-items: center;
+            }
+        }
+    }
+
+    &--image-bottom {
+        .at-block-team-member__item-inner {
+            flex-direction: column;
+            gap: var(--at-block-team-member-content-gap, 20px);
+        }
+
+        // Left aligned.
+        &.at-block-team-member--left {
+            .at-block-team-member__item-content {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        // Right aligned.
+        &.at-block-team-member--right {
+            .at-block-team-member__item-content {
+                flex-direction: row-reverse;
+                align-items: center;
+            }
+        }
+
+        // Center aligned.
+        &.at-block-team-member--center {
+            .at-block-team-member__item-content {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+
+    &--image-left {
+        .at-block-team-member__item-inner {
+            flex-direction: row;
+            gap: var(--at-block-team-member-content-gap, 20px);
+        }
+
+        .at-block-team-member__item-inner {
+            align-items: var(--atb-block-team-member-vertical-alignment, flex-start);
+        }
+    }
+
+    &--image-right {
+        .at-block-team-member__item-inner {
+            flex-direction: row-reverse;
+        }
+
+        .at-block-team-member__item-inner {
+            align-items: var(--atb-block-team-member-vertical-alignment, flex-end);
+        }
+    }
+
+    // Image Style.
+    &--image-style-circle {
+        .at-block-team-member__item-image {
+            border-radius: 100%;
+        }
+    }
+
+    &--image-style-square {
+        .at-block-team-member__item-image {
+            border-radius: 0;
+        }
+    }
+
+    &--image-style-rounded {
+        .at-block-team-member__item-image {
+            border-radius: 8px;
+        }
+    }
+
+    // Author.
+    &__item-author {
+        display: flex;
+        gap: 10px;
+    }
+
+    &__item-author-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
+    // Social Links.
+    .wp-block-social-links {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+}
