@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Extend the Gutenberg Block Editor with additional functionality.
 
 == Description ==
-= Essential Gutenberg Blocks Plugin with Powerful Blocks for Faster WordPress Websites – No Coding Required
+== Essential Gutenberg Blocks Plugin with Powerful Blocks for Faster WordPress Websites – No Coding Required
 
 Transform your WordPress block editor experience with aThemes Gutenberg Blocks, featuring essential blocks designed for speed, performance, and professional results. Whether you're building with [Sydney](https://athemes.com/theme/sydney/), [Botiga](https://athemes.com/theme/botiga/), or any WordPress theme, our blocks help you create beautiful websites that load fast and convert better.
 
