@@ -3,7 +3,11 @@ Tags: blocks, gutenberg, block-editor, page-builder, website-builder
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 5.6
+<<<<<<< HEAD
 Stable tag: 1.1.1
+=======
+Stable tag: 1.1.0
+>>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
 Contributors: aThemes
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
