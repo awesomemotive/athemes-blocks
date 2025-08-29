@@ -1,0 +1,165 @@
+.at-block-flex-container {
+    min-height: var(--atb-min-height, 100%);
+    box-sizing: border-box;
+    column-gap: var(--atb-container-columns-gap, 15px);
+    row-gap: var(--atb-container-rows-gap, 15px);
+    
+    > * {
+        width: 100%;
+    }
+
+    & :where(.wp-block:not(p):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6)) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    & :where(p.wp-block) {
+        margin-top: 0;
+    }
+
+
+    // For parent container margin-left and margin-right.
+    &.at-block:not(.is-child-container) {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    &.at-block {
+        margin-top: revert;
+        margin-bottom: revert;
+    }
+
+    &--container-full-width.at-block:not(.is-child-container) {
+        margin-left: calc(50% - 50vw) !important;
+        margin-right: calc(50% - 50vw) !important;
+    }
+
+    // Layout Flex.
+    &--layout-flex {
+        display: flex;
+
+        > .at-block-flex-container__inner-blocks-wrapper {
+            display: flex;
+        }
+    }
+
+    // Layout Grid.
+    &--layout-grid {
+        &:not(.at-block-flex-container--container-full-width) {
+            display: grid;
+            grid-template-columns: repeat(var(--atb-layout-grid-columns, 3), 1fr);
+            column-gap: var(--atb-container-columns-gap, 15px);
+            row-gap: var(--atb-container-rows-gap, 15px);
+        }
+
+        > .at-block-flex-container__inner-blocks-wrapper {
+            display: grid;
+            grid-template-columns: repeat(var(--atb-layout-grid-columns, 3), 1fr);
+            gap: var(--atb-container-columns-gap, 15px);
+
+            > .at-block-flex-container {
+                max-width: 100% !important;
+                min-height: 0 !important;
+            }
+        }
+    }
+
+    // Container Full width.
+    &--container-full-width {
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        width: 100vw;
+        max-width: 100vw;
+
+        &.wp-block {
+            max-width: 100vw !important;
+        }
+
+        // Content Full width.
+        .wp-block {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        // Content Boxed.
+        .at-block-flex-container__inner-blocks-wrapper {
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            column-gap: var(--atb-container-columns-gap, 15px);
+            row-gap: var(--atb-container-rows-gap, 15px);
+
+            > * {
+                width: 100%;
+            }
+
+            .wp-block {
+                max-width: var(--atb-content-box-width, 100%);
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
+
+    // Container Boxed.
+    &--container-boxed {
+        max-width: var(--atb-container-boxed-width, 1140px) !important;
+    }
+
+    // Container Custom.
+    &--container-custom {
+        width: var(--atb-container-custom-width, 100%);
+        max-width: var(--atb-container-custom-width, 100%) !important;
+
+        &:not(.is-child-container) {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        &:not(.is-child-container).at-block.at-block-flex-container {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    }
+
+    // Children Width Auto.
+    &--children-w-auto {
+        > * {
+            width: auto;
+        }
+    }
+
+    // Background Image Overlay.
+    &.has-background-image-overlay {
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: var(--atb-background-image-overlay-color, #212121);
+            opacity: var(--atb-background-image-overlay-opacity, 0.5);
+            z-index: 0;
+        }
+    }
+
+    &__inner-blocks-wrapper {
+        width: var(--atb-content-box-width, 100%);
+    }
+
+    figure {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0;
+    }
+}
+
+// As a link tag.
+a.at-block-flex-container {
+    display: block;
+}

@@ -1,9 +1,9 @@
 === aThemes Blocks ===
-Tags: athemes, blocks, gutenberg, sites
+Tags: blocks, gutenberg, block-editor, page-builder, website-builder
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: trunk
+Stable tag: 1.1.0
 Contributors: aThemes
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,47 +11,88 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Extend the Gutenberg Block Editor with additional functionality.
 
 == Description ==
+== Essential Gutenberg Blocks Plugin with Powerful Blocks for Faster WordPress Websites – No Coding Required
 
-== EXTEND THE BLOCK EDITOR ==
+Transform your WordPress block editor experience with aThemes Gutenberg Blocks, featuring essential blocks designed for speed, performance, and professional results. Whether you're building with [Sydney](https://athemes.com/theme/sydney/), [Botiga](https://athemes.com/theme/botiga/), or any WordPress theme, our blocks help you create beautiful websites that load fast and convert better.
 
-With aThemes Blocks, you can extend the Gutenberg block editor with additional functionality.
+== Finally, a Block Plugin That Prioritizes Performance and Simplicity
 
-CURRENTLY, ATHEMES BLOCKS INCLUDE A RESPONSIVE CONTAINER BLOCK WITH ADVANCED SETTINGS THAT ALLOWS YOU TO ADD MULTIPLE BLOCKS IN A SINGLE ROW AND A GOOGLE MAPS BLOCK.
+aThemes Gutenberg Blocks represents a complete rebuild focused on what matters most: creating websites quickly without sacrificing performance. Each block is optimized for speed, accessibility, and ease of use, making it perfect for beginners and experienced designers alike.
 
-Our responsive container block lets you:
+=== Why you'll love aThemes Blocks:
 
-* Add up to six columns to each row
-* Set a different text and background color combination for each block within the same row
-* Access the default settings of each block (e.g. font settings for text blocks, sizing and alignment settings for image blocks, etc.)
-* Customize the overall style of the container (content width, border radius, z-index, content alignment, background, spacing, and more)
-* Define different layouts and styles for mobile, tablet, and desktop screens
-* Create complex layouts easily, without the use of a page builder plugin
+- **Lightning-fast performance** – Optimized code that doesn't slow down your site
+- **Universal compatibility** – Works perfectly with any WordPress theme
+- **Smart block management** – Enable only the blocks you need for optimal performance
 
-As the plugin is under active development... MORE ATHEMES BLOCKS ARE COMING SOON!
+== Essential Blocks for Every Website 🚀
 
-== Frequently Asked Questions ==
+=== Core Building Blocks
 
-= Is aThemes Blocks Free? =
+- **Container Block** – Build advanced layouts with flexbox and responsive design controls
+- **Heading Block** – Customize typography with multiple fonts, sizes, and styling options
+- **Button Block** – High-conversion call-to-action buttons with animations and hover effects
+- **Text Block** – Enhanced paragraph block with rich formatting and advanced typography
+- **Icon Block** – Beautiful icons from popular libraries with extensive styling controls
+- **Image Block** – Add responsive images with animations and customizable styling
 
-Yes, aThemes Blocks is 100% free and will always be.
+=== Dynamic Content Blocks
 
-= Can I use aThemes Blocks with any WordPress theme? =
+- **Testimonial Block** – Showcase customer feedback for social proof and trust
+- **Google Maps Block** – Embed maps with different styling and location markers
+- **Post Grid Block** – Display posts in a customizable grid with advanced styling options
+- **Taxonomy Grid Block** – Highlight categories or tags with flexible layouts and styling
+- **Team Member Block** – Present team profiles with images, bios, and social media links
 
-Yes, It can be used with any properly developed WordPress theme.
+== Smart Block Management Dashboard
 
-= Where can I report a bug or request new features? =
+Our intuitive dashboard lets you enable or disable individual blocks based on your needs. Building a simple site? Enable just 3 blocks and keep everything lightning-fast. Need the full toolkit? Activate all blocks.
 
-You can report bugs on our [support forum](https://wordpress.org/support/plugin/athemes-blocks/) or send us an email using the [contact form on our website](https://athemes.com/contact/).
+== Performance-First Approach
 
-[DOCUMENTATION](https://docs.athemes.com/documentation/other-themes/athemes-blocks/) || [SUPPORT](https://wordpress.org/support/plugin/athemes-blocks/)
+Unlike bloated page builders, aThemes Gutenberg Blocks is built for speed:
 
-= Want to know all the latest news and be part of the aThemes community? =
+- **Conditional loading** – Only loads CSS/JS for blocks you actually use
+- **Optimized assets** – Minimal file sizes for faster loading
+- **Mobile-first design** – Perfect performance on all devices
 
-[Join our Community](https://www.facebook.com/groups/athemes/)
+== Universal Theme Compatibility
 
-= Want to contribute to the plugin? =
+aThemes Gutenberg Blocks works seamlessly with any WordPress theme, including: Sydney, Botiga, Astra, GeneratePress, Kadence, Blocksy, OceanWP, Neve, Avada, Twenty Twenty-Four and hundreds more.
 
-[Find aThemes Blocks on Github](https://github.com/athemes/athemes-blocks)
+== Who Benefits from aThemes Gutenberg Blocks?
+
+- **Small Business Owners** – Build a professional online presence without the cost of hiring developers. Our blocks make it fast, affordable, and easy to create a site that reflects your brand.
+- **Bloggers** – Bring your content to life with visually engaging blocks, from call-to-actions to image galleries, that keep readers hooked and coming back for more.
+- **Web Designers** – Speed up your workflow and impress clients with performance-optimized blocks that give you complete creative control without extra coding.
+- **Freelancers** – Deliver high-quality websites faster with reusable, consistent design tools that save you time and help you scale your business.
+- **Agencies** – Produce pixel-perfect, SEO-friendly websites for clients at scale while maintaining top performance and design flexibility.
+- **WordPress Beginners** – Skip the learning curve and create professional-looking websites with easy-to-use, drag-and-drop blocks, no coding skills required.
+
+== Built by the Team Behind Sydney and Botiga
+
+aThemes Blocks is developed by the same team that created the popular Sydney and Botiga themes, trusted by thousands of WordPress users worldwide with 750+ 5-star reviews. We understand what makes websites successful and have built that expertise into every block.
+
+== Getting Started is Easy
+
+1. Install aThemes Blocks
+2. Choose which blocks to enable in the dashboard
+3. Start building with the WordPress block editor
+4. Create professional websites in minutes, not hours
+
+== Future-Proof Your WordPress Site
+
+As WordPress continues investing in the block editor, aThemes Blocks positions you for success. Learn once, benefit forever with blocks that evolve alongside WordPress core.
+
+== Documentation & Support
+
+- To learn how to use aThemes Blocks, you can check our [**documentation**](https://docs.athemes.com/documentation/other-themes/athemes-blocks/).
+- Need help? Visit our [**support here**](https://athemes.com/support/). Our dedicated support team is here to assist you. We're committed to your success and continuously improve aThemes Gutenberg Blocks based on your feedback.
+
+=== Happy user of aThemes Blocks?
+
+- Join our [**Facebook Group**](https://www.facebook.com/groups/athemes)
+- Or [**rate us on WordPress** 🙂](https://wordpress.org/support/plugin/athemes-blocks/reviews/#new-post)
 
 == Screenshots ==
 

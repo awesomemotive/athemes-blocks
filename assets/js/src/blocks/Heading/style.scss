@@ -1,0 +1,13 @@
+.at-block-heading {
+    box-sizing: border-box;
+
+    h1, h2, h3, h4, h5, h6, p, span {
+        padding: 0 !important;
+        margin: 0 !important;
+
+        &:not(.has-text-color),
+        &:not(.bt-has-text-color) {
+            color: inherit;
+        }
+    }
+}
