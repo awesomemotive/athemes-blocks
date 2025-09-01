@@ -202,6 +202,9 @@ class NotificationsSidebar {
             return $this->notifications;
         }
 
+        // Cache empty result to avoid repeated failed requests.
+        set_transient( $cache_key, array(), 15 * MINUTE_IN_SECONDS );
+        
         return array();
     }
 
