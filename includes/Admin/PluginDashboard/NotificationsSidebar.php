@@ -52,9 +52,22 @@ class NotificationsSidebar {
          */
         $this->notifications_pro = apply_filters( 'athemes_blocks_notifications_pro', array() );
         
-        $this->fetch_notifications();
+        // Only fetch notifications if we're on the plugin dashboard page.
+        if ( $this->is_plugin_dashboard_page() ) {
+            $this->fetch_notifications();
+        }
 
         $this->init_hooks();
+    }
+
+    /**
+     * Check if current screen is the aThemes Blocks plugin dashboard.
+     *
+     * @return bool
+     */
+    private function is_plugin_dashboard_page(): bool {
+        global $pagenow;
+        return $pagenow === 'admin.php' && isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === 'at-blocks';
     }
 
     /**
@@ -90,6 +103,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function enqueue_scripts(): void {
+        if ( ! $this->is_plugin_dashboard_page() ) {
+            return;
+        }
+        
         wp_enqueue_style( 'athemes-blocks-dashboard-sidebar-notifications', ATHEMES_BLOCKS_URL . 'assets/css/admin/plugin-dashboard/sidebar-notifications.css', array(), ATHEMES_BLOCKS_VERSION );
     }
 
@@ -99,6 +116,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function add_internal_script(): void {
+        if ( ! $this->is_plugin_dashboard_page() ) {
+            return;
+        }
+        
         ?>
         <script>
             (function($){
@@ -205,7 +226,7 @@ class NotificationsSidebar {
      * @return void
      */
     public function render(): void {
-        if ( ! $this->notifications ) {
+        if ( ! $this->is_plugin_dashboard_page() || ! $this->notifications ) {
             return;
         }
 
