@@ -183,14 +183,26 @@ class NotificationsSidebar {
      * @return array<object>
      */
     private function fetch_notifications(): array {
-        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
-        $this->notifications = ! is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
-
-        if ( ! $this->notifications ) {
-            return array();
+        $cache_key = 'athemes_blocks_notifications';
+        
+        // Try to get cached notifications first.
+        $cached_notifications = get_transient( $cache_key );
+        if ( $cached_notifications !== false ) {
+            $this->notifications = $cached_notifications;
+            return is_array( $this->notifications ) ? $this->notifications : array();
         }
 
-        return $this->notifications;
+        // Fetch fresh notifications.
+        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
+        $this->notifications = ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
+
+        // Cache the result for 1 hour.
+        if ( $this->notifications ) {
+            set_transient( $cache_key, $this->notifications, HOUR_IN_SECONDS );
+            return $this->notifications;
+        }
+
+        return array();
     }
 
     /**
