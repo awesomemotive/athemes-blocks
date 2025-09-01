@@ -202,7 +202,7 @@ class NotificationsSidebar {
             $this->notifications = array();
         }
 
-        // Cache the result for 1 hour if successful, 15 minutes if empty.
+        // Cache the result for 1 hour if successful, 15 minutes if empty to prevent repeated failed requests.
         if ( ! empty( $this->notifications ) ) {
             set_transient( $cache_key, $this->notifications, HOUR_IN_SECONDS );
         } else {
