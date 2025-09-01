@@ -52,9 +52,22 @@ class NotificationsSidebar {
          */
         $this->notifications_pro = apply_filters( 'athemes_blocks_notifications_pro', array() );
         
-        $this->fetch_notifications();
+        // Only fetch notifications if we're on the plugin dashboard page.
+        if ( $this->is_plugin_dashboard_page() ) {
+            $this->fetch_notifications();
+        }
 
         $this->init_hooks();
+    }
+
+    /**
+     * Check if current screen is the aThemes Blocks plugin dashboard.
+     *
+     * @return bool
+     */
+    private function is_plugin_dashboard_page(): bool {
+        global $pagenow;
+        return $pagenow === 'admin.php' && isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === 'at-blocks';
     }
 
     /**
@@ -90,6 +103,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function enqueue_scripts(): void {
+        if ( ! $this->is_plugin_dashboard_page() ) {
+            return;
+        }
+        
         wp_enqueue_style( 'athemes-blocks-dashboard-sidebar-notifications', ATHEMES_BLOCKS_URL . 'assets/css/admin/plugin-dashboard/sidebar-notifications.css', array(), ATHEMES_BLOCKS_VERSION );
     }
 
@@ -99,6 +116,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function add_internal_script(): void {
+        if ( ! $this->is_plugin_dashboard_page() ) {
+            return;
+        }
+        
         ?>
         <script>
             (function($){
@@ -162,13 +183,32 @@ class NotificationsSidebar {
      * @return array<object>
      */
     private function fetch_notifications(): array {
-        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
-        $this->notifications = ! is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
-
-        if ( ! $this->notifications ) {
-            return array();
+        $cache_key = 'athemes_blocks_notifications';
+        
+        // Try to get cached notifications first.
+        $cached_notifications = get_transient( $cache_key );
+        if ( $cached_notifications !== false && is_array( $cached_notifications ) ) {
+            $this->notifications = $cached_notifications;
+            return $this->notifications;
         }
 
+        // Fetch fresh notifications.
+        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
+        
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $decoded_response = json_decode( wp_remote_retrieve_body( $response ) );
+            $this->notifications = is_array( $decoded_response ) ? $decoded_response : array();
+        } else {
+            $this->notifications = array();
+        }
+
+        // Cache the result for 1 hour if successful, 15 minutes if empty to prevent repeated failed requests.
+        if ( ! empty( $this->notifications ) ) {
+            set_transient( $cache_key, $this->notifications, HOUR_IN_SECONDS );
+        } else {
+            set_transient( $cache_key, array(), 15 * MINUTE_IN_SECONDS );
+        }
+        
         return $this->notifications;
     }
 
@@ -183,7 +223,7 @@ class NotificationsSidebar {
         }
         
         $user_id                     = get_current_user_id();
-        $user_read_meta              = get_user_meta( $user_id, 'athemes_blocks_dashboard_notifications_latest_read', true );
+        $user_read_meta              = get_user_meta( $user_id, 'atb_dashboard_notifications_latest_read', true );
 
         $last_notification_date      = strtotime( is_string( $this->notifications[0]->post_date ) ? $this->notifications[0]->post_date : '' );
         $last_notification_date_ondb = $user_read_meta ? strtotime( $user_read_meta ) : false;
@@ -205,7 +245,7 @@ class NotificationsSidebar {
      * @return void
      */
     public function render(): void {
-        if ( ! $this->notifications ) {
+        if ( ! $this->is_plugin_dashboard_page() || empty( $this->notifications ) ) {
             return;
         }
 
