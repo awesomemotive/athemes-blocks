@@ -219,7 +219,7 @@ class NotificationsSidebar {
         }
         
         $user_id                     = get_current_user_id();
-        $user_read_meta              = get_user_meta( $user_id, 'athemes_blocks_dashboard_notifications_latest_read', true );
+        $user_read_meta              = get_user_meta( $user_id, 'atb_dashboard_notifications_latest_read', true );
 
         $last_notification_date      = strtotime( is_string( $this->notifications[0]->post_date ) ? $this->notifications[0]->post_date : '' );
         $last_notification_date_ondb = $user_read_meta ? strtotime( $user_read_meta ) : false;
