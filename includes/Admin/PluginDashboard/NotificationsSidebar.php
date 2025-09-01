@@ -187,25 +187,29 @@ class NotificationsSidebar {
         
         // Try to get cached notifications first.
         $cached_notifications = get_transient( $cache_key );
-        if ( $cached_notifications !== false ) {
+        if ( $cached_notifications !== false && is_array( $cached_notifications ) ) {
             $this->notifications = $cached_notifications;
-            return is_array( $this->notifications ) ? $this->notifications : array();
+            return $this->notifications;
         }
 
         // Fetch fresh notifications.
         $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
-        $this->notifications = ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
-
-        // Cache the result for 1 hour.
-        if ( $this->notifications ) {
-            set_transient( $cache_key, $this->notifications, HOUR_IN_SECONDS );
-            return $this->notifications;
+        
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $decoded_response = json_decode( wp_remote_retrieve_body( $response ) );
+            $this->notifications = is_array( $decoded_response ) ? $decoded_response : array();
+        } else {
+            $this->notifications = array();
         }
 
-        // Cache empty result to avoid repeated failed requests.
-        set_transient( $cache_key, array(), 15 * MINUTE_IN_SECONDS );
+        // Cache the result for 1 hour if successful, 15 minutes if empty.
+        if ( ! empty( $this->notifications ) ) {
+            set_transient( $cache_key, $this->notifications, HOUR_IN_SECONDS );
+        } else {
+            set_transient( $cache_key, array(), 15 * MINUTE_IN_SECONDS );
+        }
         
-        return array();
+        return $this->notifications;
     }
 
     /**
@@ -241,7 +245,7 @@ class NotificationsSidebar {
      * @return void
      */
     public function render(): void {
-        if ( ! $this->is_plugin_dashboard_page() || ! $this->notifications ) {
+        if ( ! $this->is_plugin_dashboard_page() || empty( $this->notifications ) ) {
             return;
         }
 
