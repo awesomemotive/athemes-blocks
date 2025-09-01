@@ -52,20 +52,15 @@ class NotificationsSidebar {
          */
         $this->notifications_pro = apply_filters( 'athemes_blocks_notifications_pro', array() );
         
-<<<<<<< HEAD
         // Only fetch notifications if we're on the plugin dashboard page.
         if ( $this->is_plugin_dashboard_page() ) {
             $this->fetch_notifications();
         }
-=======
-        $this->fetch_notifications();
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
 
         $this->init_hooks();
     }
 
     /**
-<<<<<<< HEAD
      * Check if current screen is the aThemes Blocks plugin dashboard.
      *
      * @return bool
@@ -76,8 +71,6 @@ class NotificationsSidebar {
     }
 
     /**
-=======
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
      * Init hooks.
      * 
      * @return void
@@ -110,13 +103,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function enqueue_scripts(): void {
-<<<<<<< HEAD
         if ( ! $this->is_plugin_dashboard_page() ) {
             return;
         }
         
-=======
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
         wp_enqueue_style( 'athemes-blocks-dashboard-sidebar-notifications', ATHEMES_BLOCKS_URL . 'assets/css/admin/plugin-dashboard/sidebar-notifications.css', array(), ATHEMES_BLOCKS_VERSION );
     }
 
@@ -126,13 +116,10 @@ class NotificationsSidebar {
      * @return void
      */
     public function add_internal_script(): void {
-<<<<<<< HEAD
         if ( ! $this->is_plugin_dashboard_page() ) {
             return;
         }
         
-=======
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
         ?>
         <script>
             (function($){
@@ -196,7 +183,6 @@ class NotificationsSidebar {
      * @return array<object>
      */
     private function fetch_notifications(): array {
-<<<<<<< HEAD
         $cache_key = 'athemes_blocks_notifications';
         
         // Try to get cached notifications first.
@@ -223,15 +209,6 @@ class NotificationsSidebar {
             set_transient( $cache_key, array(), 15 * MINUTE_IN_SECONDS );
         }
         
-=======
-        $response = wp_remote_get( 'https://athemes.com/wp-json/wp/v2/notifications?theme=7112&per_page=3' );
-        $this->notifications = ! is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) === 200 ? json_decode( wp_remote_retrieve_body( $response ) ) : false;
-
-        if ( ! $this->notifications ) {
-            return array();
-        }
-
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
         return $this->notifications;
     }
 
@@ -246,11 +223,7 @@ class NotificationsSidebar {
         }
         
         $user_id                     = get_current_user_id();
-<<<<<<< HEAD
         $user_read_meta              = get_user_meta( $user_id, 'atb_dashboard_notifications_latest_read', true );
-=======
-        $user_read_meta              = get_user_meta( $user_id, 'athemes_blocks_dashboard_notifications_latest_read', true );
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
 
         $last_notification_date      = strtotime( is_string( $this->notifications[0]->post_date ) ? $this->notifications[0]->post_date : '' );
         $last_notification_date_ondb = $user_read_meta ? strtotime( $user_read_meta ) : false;
@@ -272,11 +245,7 @@ class NotificationsSidebar {
      * @return void
      */
     public function render(): void {
-<<<<<<< HEAD
         if ( ! $this->is_plugin_dashboard_page() || empty( $this->notifications ) ) {
-=======
-        if ( ! $this->notifications ) {
->>>>>>> 0a71a3b (Athemes blocks 1.1.0 (#56))
             return;
         }
 
