@@ -224,10 +224,5 @@ class PluginLoader {
         require_once $v1_path . 'classes/class-athemes-blocks-helpers.php';
         require_once $v1_path . 'classes/class-athemes-blocks-css.php';
         require_once $v1_path . 'classes/class-athemes-blocks-init.php';
-
-        // Initialize v1 blocks (this will handle asset registration and block registration).
-        if ( class_exists( 'ATBLOCKS_Init' ) ) {
-            new \ATBLOCKS_Init();
-        }
     }
 }
