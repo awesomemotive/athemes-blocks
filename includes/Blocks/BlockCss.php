@@ -149,13 +149,16 @@ class BlockCss {
                                 ? str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( !empty($value['value']) ? array_values( $value['value'] )[0] : '', $unit ), $selector_value )
                                 : str_replace( array( '{{VALUE}}', '{{UNIT}}' ), array( $value['value'], $unit ), $selector_value );
 
-                            if ( $is_color_picker ) {
-                                if ( empty( $replaced_selector_value ) || $replaced_selector_value === '{{HOVER}}' && empty( $value['value']['hoverState'] ) ) {
-                                    continue;
-                                }
+							if ( $is_color_picker ) {
+								$default_state = $value['value']['defaultState'] ?? '';
+								$hover_state = $value['value']['hoverState'] ?? '';
+								
+								if ( empty( $replaced_selector_value ) || $replaced_selector_value === '{{HOVER}}' && empty( $hover_state ) ) {
+									continue;
+								}
 
-                                $replaced_selector_value = str_replace( array( '{{VALUE}}', '{{HOVER}}' ), array( $value['value']['defaultState'], $value['value']['hoverState'] ), $selector_value );
-                            }
+								$replaced_selector_value = str_replace( array( '{{VALUE}}', '{{HOVER}}' ), array( $default_state, $hover_state ), $selector_value );
+							}
 
                             if ( $value_is_object ) {
                                 if ( $is_color_picker ) {
@@ -195,15 +198,15 @@ class BlockCss {
                                         }                                
                                     }
     
-                                    if ( $is_color_picker ) {
-                                        if ( $value['value']['defaultState'] !== '' ) {
-                                            $responsive_values['desktop'][$selector][] = sprintf( '%s: %s', $property, $value['value']['defaultState'] );
-                                        }
+									if ( $is_color_picker ) {
+										if ( isset( $value['value']['defaultState'] ) && $value['value']['defaultState'] !== '' ) {
+											$responsive_values['desktop'][$selector][] = sprintf( '%s: %s', $property, $value['value']['defaultState'] );
+										}
 
-                                        if ( $value['value']['hoverState'] !== '' ) {
-                                            $responsive_values['desktop']["$selector:hover"][] = sprintf( '%s: %s', $property, $value['value']['hoverState'] );
-                                        }
-                                    }
+										if ( isset( $value['value']['hoverState'] ) && $value['value']['hoverState'] !== '' ) {
+											$responsive_values['desktop']["$selector:hover"][] = sprintf( '%s: %s', $property, $value['value']['hoverState'] );
+										}
+									}
 
                                     if ( $is_background_image ) {
                                         $image_url = $value['value']['url'] ?? '';
@@ -243,15 +246,15 @@ class BlockCss {
                                         }                                
                                     }
     
-                                    if ( $is_color_picker ) {
-                                        if ( $value['value']['defaultState'] !== '' ) {
-                                            $responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $value['value']['defaultState'], $important ? '!important' : '' );
-                                        }
+									if ( $is_color_picker ) {
+										if ( isset( $value['value']['defaultState'] ) && $value['value']['defaultState'] !== '' ) {
+											$responsive_values[$device][$selector][] = sprintf( '%s: %s %s', $property, $value['value']['defaultState'], $important ? '!important' : '' );
+										}
 
-                                        if ( $value['value']['hoverState'] !== '' ) {
-                                            $responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s %s', $property, $value['value']['hoverState'], $important ? '!important' : '' );
-                                        }
-                                    }
+										if ( isset( $value['value']['hoverState'] ) && $value['value']['hoverState'] !== '' ) {
+											$responsive_values[$device]["$selector:hover"][] = sprintf( '%s: %s %s', $property, $value['value']['hoverState'], $important ? '!important' : '' );
+										}
+									}
 
                                     if ( $is_background_image ) {
                                         $image_url = $value['value']['url'] ?? '';
